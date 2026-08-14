@@ -1,0 +1,351 @@
+#!/usr/bin/env python3
+"""Evidence-gated company earnings analysis pipeline."""
+from __future__ import annotations
+
+import argparse
+import asyncio
+import json
+import math
+import os
+import re
+import sys
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any
+
+sys.path.insert(0, str(Path(__file__).parent / "scripts"))
+from create_one_pager_pdf import create_one_pager_pdf
+from robinhood_mcp_get_quote import get_quote
+from sec_edgar_fetch import fetch_filing
+from sec_edgar_search import search_filings
+from telegram_notify import deliver_reports, generate_call_message, generate_dashboard_message
+from web_search import find_transcript
+from xbrl_parser import parse_xbrl_financials
+from analysis_enrichment import (
+    build_capital_liquidity,
+    classify_financial_signal,
+    classify_valuation_signal,
+    extract_risks,
+    extract_transcript_sections,
+)
+
+LABELS = {"revenue": "Revenue", "gross_profit": "Gross Profit", "operating_income": "Operating Income",
+          "net_income": "Net Income", "eps_diluted": "Diluted EPS", "operating_cash_flow": "Operating Cash Flow",
+          "capex": "Capital Expenditures", "cash": "Cash", "total_assets": "Total Assets",
+          "total_liabilities": "Total Liabilities", "total_equity": "Total Equity", "long_term_debt": "Long-term Debt",
+          "shares_diluted": "Diluted Shares"}
+
+SCENARIO_WEIGHTS = {"base_case": 0.50, "bull_case": 0.30, "bear_case": 0.20}
+HURDLE_RATE = 0.12
+
+
+def _now() -> datetime: return datetime.now(timezone.utc)
+
+def _validate_transcript_call_date(call_date: str | None, report_date: str) -> tuple[str | None, str | None]:
+    if not call_date: return None, None
+    try:
+        call_day = datetime.fromisoformat(call_date).date(); report_day = datetime.fromisoformat(report_date).date()
+    except ValueError:
+        return None, "Transcript provider call date was invalid; displayed as N/A"
+    if call_day < report_day or call_day > report_day + timedelta(days=120):
+        return None, f"Transcript provider call date {call_date} failed report-date consistency validation; displayed as N/A"
+    return call_date, None
+
+def _days_old(value: str) -> int: return (_now().date() - datetime.fromisoformat(value).date()).days
+
+def _display(value: float, metric: str) -> str:
+    if "eps" in metric: return f"${value:.2f}"
+    if "shares" in metric:
+        return f"{value / 1e9:.2f}B" if abs(value) >= 1e9 else f"{value / 1e6:.1f}M"
+    sign = "-" if value < 0 else ""; absolute = abs(value)
+    if absolute >= 1e9: return f"{sign}${absolute / 1e9:.2f}B"
+    if absolute >= 1e6: return f"{sign}${absolute / 1e6:.1f}M"
+    return f"{sign}${absolute:,.0f}"
+
+def _change(current: float, prior: float | None) -> float | None:
+    return None if prior in (None, 0) else (current - prior) / abs(prior)
+
+def _tier(change: float | None, inverse: bool = False) -> str:
+    if change is None: return "medium"
+    adjusted = -change if inverse else change
+    return "best" if adjusted >= 0.10 else "worst" if adjusted < 0 else "medium"
+
+def _citation(source: str, url: str, start: int | None = None, end: int | None = None, **extra) -> dict:
+    return {"source": source, "url": url, "start": start, "end": end, **extra}
+
+def _snippet(text: str, pattern: str, radius: int = 180) -> tuple[str, int, int] | None:
+    match = re.search(pattern, text, re.I)
+    if not match: return None
+    start, end = max(0, match.start() - radius), min(len(text), match.end() + radius)
+    return re.sub(r"\s+", " ", text[start:end]).strip(), start, end
+
+
+class EarningsAnalyzer:
+    def __init__(self, ticker: str, max_filing_age_days: int = 120, output_format: str = "both",
+                 expected_account: str | None = None, allow_stale_quote_for_test: bool = False):
+        self.ticker = ticker.upper(); self.max_age = max_filing_age_days; self.output_format = output_format
+        self.expected_account = expected_account; self.allow_stale_quote_for_test = allow_stale_quote_for_test
+        self.data: dict[str, Any] = {"ticker": self.ticker, "warnings": [], "test_run": allow_stale_quote_for_test}
+        self.filing: dict[str, Any] = {}; self.release: dict[str, Any] | None = None; self.transcript: dict[str, Any] = {}
+        self.release_candidates: list[dict[str, Any]] = []
+
+    def identify(self):
+        filings = search_filings(self.ticker, ["10-Q", "10-Q/A"], limit=20)
+        if not filings: raise RuntimeError("NO_FILINGS: no quarterly SEC filing was found")
+        filings = [row for row in filings if row.get("report_date") and row["report_date"] <= _now().date().isoformat()]
+        if not filings: raise RuntimeError("NO_FILINGS: no completed non-future quarterly filing was found")
+        self.filing = max(filings, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
+        earnings_8k = search_filings(self.ticker, ["8-K"], query="earnings", limit=8)
+        self.release_candidates = earnings_8k
+        nearest = min(earnings_8k, key=lambda row: abs((datetime.fromisoformat(row["filing_date"]) - datetime.fromisoformat(self.filing["filing_date"])).days), default=None)
+        freshest = min(_days_old(self.filing["filing_date"]), _days_old(nearest["filing_date"]) if nearest else 10**6)
+        if freshest > self.max_age: raise RuntimeError(f"STALE_DATA: newest verified earnings evidence is {freshest} days old")
+
+    def retrieve(self):
+        filing_doc = fetch_filing(self.filing["accession_number"], self.filing["cik"], self.filing["primary_document"], include_exhibits=False)
+        if not filing_doc.get("xbrl_content"): raise RuntimeError("XBRL_UNAVAILABLE: quarterly structured financial data was not found")
+        xbrl = parse_xbrl_financials(filing_doc["xbrl_content"], self.filing.get("report_date"))
+        period = (xbrl.get("fiscal_period") or "").upper(); year_text = xbrl.get("fiscal_year")
+        if period not in {"Q1", "Q2", "Q3"}: raise RuntimeError(f"FISCAL_PERIOD_UNVERIFIED: SEC XBRL reported {period or 'no period'}")
+        if not year_text: raise RuntimeError("FISCAL_YEAR_UNVERIFIED: SEC XBRL did not provide DocumentFiscalYearFocus")
+        report_date = xbrl.get("report_date") or self.filing.get("report_date")
+        if not report_date: raise RuntimeError("REPORT_DATE_UNVERIFIED")
+        self.transcript = find_transcript(self.ticker, period, int(year_text))
+        transcript_call_date, call_date_warning = _validate_transcript_call_date(self.transcript.get("call_date"), report_date)
+        if call_date_warning:
+            self.data["warnings"].append(call_date_warning)
+        release_doc = None; scored_releases = []
+        for candidate in self.release_candidates:
+            if abs((datetime.fromisoformat(candidate["filing_date"]) - datetime.fromisoformat(self.filing["filing_date"])).days) > 60: continue
+            candidate_doc = fetch_filing(candidate["accession_number"], candidate["cik"], candidate["primary_document"], include_exhibits=True)
+            release_text = "\n".join(candidate_doc.get("exhibit_content", {}).values())
+            normalized = release_text.lower()
+            period_evidence = report_date in normalized or (period.lower() in normalized and str(year_text) in normalized)
+            if not release_text or not period_evidence: continue
+            score = (3 if "2.02" in candidate.get("items", "") else 0) + (2 if report_date in normalized else 0) + 1
+            scored_releases.append((score, candidate["filing_date"], candidate, candidate_doc, release_text))
+        if scored_releases:
+            scored_releases.sort(key=lambda item: (item[0], item[1]), reverse=True)
+            if len(scored_releases) > 1 and scored_releases[0][:2] == scored_releases[1][:2]:
+                self.data["warnings"].append("Multiple equally strong earnings 8-K candidates; release omitted as ambiguous")
+            else:
+                _, _, self.release, release_doc, release_text = scored_releases[0]
+        if not release_doc: self.data["warnings"].append("No quarter-matched earnings 8-K exhibit was verified")
+        self.data.update({"fiscal_period": period, "fiscal_year": int(year_text), "report_date": report_date,
+                          "filing_date": self.filing["filing_date"], "accession_number": self.filing["accession_number"],
+                          "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc["xbrl_url"],
+                                      "earnings_release_url": release_doc["filing_url"] if release_doc else None,
+                                      "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
+                                      "transcript_call_date": transcript_call_date,
+                                      "transcript_retrieved_at": self.transcript["retrieved_at"],
+                                      "transcript_content_sha256": self.transcript["content_sha256"]},
+                          "_xbrl": xbrl, "_filing_text": filing_doc["content"],
+                          "_release_text": release_text if release_doc else ""})
+
+    def financials(self):
+        rows = []; metrics = self.data["_xbrl"]["metrics"]
+        for name, fact in metrics.items():
+            value, prior = fact["value"], fact.get("prior_value"); change = _change(value, prior)
+            comparison = "prior-year comparison unavailable" if change is None else f"{change:+.1%} YoY"
+            signal = classify_financial_signal(name, change)
+            rows.append({"key": name, "label": LABELS.get(name, name), "value": value, "display": _display(value, name),
+                         "prior_value": prior, "comparison": comparison, "signal": signal, "tier": signal,
+                         "citation": _citation("SEC XBRL", self.data["sources"]["xbrl_url"], concept=fact["concept"],
+                                               taxonomy=fact.get("taxonomy"), context=fact["context"], dimensions=fact.get("dimensions", []),
+                                               unit=fact.get("unit"), decimals=fact.get("decimals"),
+                                               period_start=fact["start"], period_end=fact["end"])})
+        if not any(row["key"] == "revenue" for row in rows): raise RuntimeError("FINANCIAL_DATA_INCOMPLETE: revenue was not extracted")
+        by_key = {row["key"]: row for row in rows}
+        key_ratios = []
+        revenue_value = by_key["revenue"]["value"]
+        for key, label in (("gross_profit", "Gross Margin"), ("operating_income", "Operating Margin"), ("net_income", "Net Margin")):
+            numerator = by_key.get(key, {}).get("value")
+            if revenue_value and numerator is not None:
+                margin = numerator / revenue_value
+                signal = classify_financial_signal(label, margin)
+                key_ratios.append({"key": label.lower().replace(" ", "_"), "label": label, "value": margin,
+                                   "display": f"{margin:.1%}", "comparison": "current quarter", "signal": signal,
+                                   "tier": signal, "citation": [by_key[key]["citation"], by_key["revenue"]["citation"]]})
+        for key in ("revenue", "operating_income", "net_income", "eps_diluted"):
+            row = by_key.get(key)
+            if row and "unavailable" not in row["comparison"]:
+                key_ratios.append({"key": f"{key}_growth", "label": f"{row['label']} Growth", "value": None,
+                                   "display": row["comparison"].replace(" YoY", ""), "comparison": "year over year",
+                                   "signal": row["signal"], "tier": row["signal"], "citation": row["citation"]})
+        self.data["financials"] = {"rows": rows, "key_ratios": key_ratios[:6]}
+
+    def quote_and_valuation(self):
+        quote = get_quote(self.ticker, self.expected_account)
+        timestamp = quote.get("updated_at")
+        quote_age_seconds = None
+        if timestamp:
+            parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+            quote_age_seconds = max(0, (_now() - parsed.astimezone(timezone.utc)).total_seconds())
+            if quote_age_seconds > 900:
+                if not self.allow_stale_quote_for_test:
+                    raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")
+                self.data["warnings"].append(
+                    "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
+                )
+        else: self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
+        metrics = self.data["_xbrl"]["metrics"]
+        revenue = metrics["revenue"]; duration = max(revenue.get("duration_days") or 91, 1)
+        annual_revenue = revenue["value"] * 365 / duration
+        ocf, capex = metrics.get("operating_cash_flow"), metrics.get("capex")
+        annual_fcf = None
+        if ocf and capex and abs((ocf.get("duration_days") or 0) - (capex.get("duration_days") or 0)) <= 7:
+            annual_fcf = (ocf["value"] - abs(capex["value"])) * 365 / max(ocf["duration_days"], 1)
+        market_cap = quote.get("market_cap") or (quote["price"] * quote.get("shares_outstanding") if quote.get("shares_outstanding") else None)
+        valuation = {"current_price": quote["price"], "market_cap": market_cap, "shares_outstanding": quote.get("shares_outstanding"),
+                     "pe_ttm": quote.get("pe_ratio"), "high_52": quote.get("high_52"), "low_52": quote.get("low_52"),
+                     "quote_timestamp": timestamp, "quote_source": quote["source"],
+                     "quote_age_seconds": quote_age_seconds, "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900),
+                     "annualized_revenue": annual_revenue, "annualized_fcf": annual_fcf,
+                     "ps_annualized": market_cap / annual_revenue if market_cap and annual_revenue > 0 else None,
+                     "fcf_yield_annualized": annual_fcf / market_cap * 100 if market_cap and annual_fcf is not None else None}
+        valuation_rows = []
+        for key, label, suffix in (("pe_ttm", "P/E (TTM)", "x"), ("ps_annualized", "P/S (annualized)", "x"),
+                                   ("fcf_yield_annualized", "FCF Yield (annualized)", "%")):
+            value = valuation.get(key)
+            signal, assessment = classify_valuation_signal(label, value)
+            valuation_rows.append({"key": key, "label": label, "value": value,
+                                   "display": "N/A" if value is None else "N/M" if key == "pe_ttm" and value <= 0 else f"{value:.1f}{suffix}",
+                                   "signal": signal, "tier": signal, "assessment": assessment})
+        valuation_rows.append({"key": "ev_ebitda", "label": "EV/EBITDA", "value": None, "display": "N/A",
+                               "signal": "neutral", "tier": "neutral",
+                               "assessment": "Unavailable — verified TTM EBITDA absent"})
+        valuation["rows"] = valuation_rows
+        self.data["valuation"] = valuation
+
+    def qualitative(self):
+        transcript = self.transcript["content"]
+        url = self.transcript["url"]
+        sections = extract_transcript_sections(transcript, url)
+        self.data["transcript_insights"] = sections["insights"]
+        self.data["earnings_call_summary"] = {
+            "insights": sections["insights"],
+            "validated_sentence_count": sections["sentence_count"],
+        }
+        self.data["guidance"] = {"rows": sections["guidance"]}
+        self.data["channels"] = {"items": sections["channels"]}
+        self.data["strategic_pillars"] = sections["strategic_pillars"]
+
+        drivers = []
+        for row in self.data["financials"]["rows"]:
+            if row["key"] in {"revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow"}:
+                drivers.append({"driver": f"{row['label']}: {row['display']} ({row['comparison']})",
+                                "signal": row["signal"], "tier": row["signal"], "citation": row["citation"]})
+        drivers.extend({"driver": f"{item['topic']}: {item['detail']}", "signal": item["signal"],
+                        "tier": item["signal"], "citation": item["citation"]}
+                       for item in sections["insights"][:4])
+        self.data["growth_drivers"] = drivers
+
+        combined = self.data["_filing_text"] + "\n\nTRANSCRIPT\n" + transcript
+        self.data["risks"] = extract_risks(combined, self.data["sources"]["filing_url"], url)
+        self.data["capital_liquidity"] = {
+            "items": build_capital_liquidity(self.data["financials"]["rows"])
+        }
+
+    def grade_and_thesis(self):
+        changes = {row["key"]: _change(row["value"], row.get("prior_value")) for row in self.data["financials"]["rows"]}
+        score = 0
+        for key in ("revenue", "operating_income", "net_income", "operating_cash_flow"):
+            change = changes.get(key)
+            score += 1 if change is not None and change > 0 else -1 if change is not None and change < 0 else 0
+        transcript_score = sum(
+            1 if item["tier"] in {"best", "strong_positive", "positive"}
+            else -1 if item["tier"] in {"negative", "worst"} else 0
+            for item in self.data["transcript_insights"]
+        )
+        score += max(-2, min(2, transcript_score))
+        completeness = sum([bool(self.data["financials"]["rows"]), bool(self.data["sources"].get("earnings_release_url")),
+                            bool(self.data["sources"].get("transcript_url")), bool(self.data["valuation"].get("market_cap")),
+                            bool(self.data["transcript_insights"])]) / 5
+        confidence = min(1.0, 0.55 + 0.4 * completeness)
+        letter = "A" if score >= 4 else "B" if score >= 2 else "C" if score >= 0 else "D" if score >= -2 else "F"
+        self.data["grade"] = {"letter": letter, "confidence": confidence,
+                              "score": score,
+                              "justification": f"Evidence score {score}: reported growth, profitability/cash flow, transcript tone, and source completeness; no ticker-specific grading override."}
+        valuation = self.data["valuation"]
+        pe = valuation.get("pe_ttm")
+        price = valuation["current_price"]
+        revenue_growth = changes.get("revenue")
+        eps = price / pe if pe and pe > 0 else None
+        thesis = {"recommendation": "INSUFFICIENT DATA", "hurdle_rate": HURDLE_RATE,
+                  "scenario_weights": SCENARIO_WEIGHTS,
+                  "method": "Five-year EPS scenarios use broker-derived TTM EPS, bounded reported growth, and transparent scenario weights/multiples."}
+        if eps and revenue_growth is not None:
+            base_growth = max(-0.05, min(0.20, revenue_growth))
+            base_multiple = max(10.0, min(30.0, pe))
+            cases = {"base_case": (base_growth, base_multiple),
+                     "bull_case": (min(0.30, base_growth + 0.08), min(35.0, base_multiple + 3)),
+                     "bear_case": (max(-0.10, base_growth - 0.12), max(8.0, base_multiple - 5))}
+            for name, (growth, multiple) in cases.items():
+                exit_eps = eps * (1 + growth) ** 5
+                exit_price = exit_eps * multiple
+                irr = (exit_price / price) ** (1 / 5) - 1
+                probability = SCENARIO_WEIGHTS[name]
+                summary = (f"TTM EPS ${eps:.2f} -> ${exit_eps:.2f}; EPS CAGR {growth:.1%}; "
+                           f"exit P/E {multiple:.1f}x = ${exit_price:.2f}; IRR {irr:.1%}")
+                thesis[name] = {"eps_cagr": growth, "exit_multiple": multiple, "exit_eps": exit_eps,
+                                "exit_price": exit_price, "irr": irr, "probability": probability,
+                                "summary": summary, "detail": summary}
+            base_irr = thesis["base_case"]["irr"]
+            thesis["base_cagr"] = thesis["base_case"]["eps_cagr"]
+            thesis["irr"] = base_irr
+            thesis["recommendation"] = (
+                "BUY" if base_irr >= HURDLE_RATE and score >= 2 and confidence >= 0.85
+                else "SELL" if base_irr < 0 and score < 0 and confidence >= 0.85
+                else "HOLD"
+            )
+        risk_names = [row["risk"] for row in self.data.get("risks", [])[:3]]
+        thesis["key_risks_summary"] = ", ".join(risk_names) if risk_names else "No quantified risk estimate available"
+        self.data["thesis"] = thesis
+
+    def save(self, output_dir: str, deliver: bool = True, telegram_target: str = "telegram", dry_run: bool = False):
+        safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"; directory = Path(output_dir); directory.mkdir(parents=True, exist_ok=True)
+        public = {key: value for key, value in self.data.items() if not key.startswith("_")}
+        paths = {}
+        if self.output_format in {"json", "both", "pdf"}:
+            path = directory / f"{self.ticker}_{safe_period}_analysis.json"; path.write_text(json.dumps(public, indent=2)); paths["json"] = str(path)
+        if self.output_format in {"markdown", "both"}:
+            path = directory / f"{self.ticker}_{safe_period}_analysis.md"; path.write_text(self.markdown(public)); paths["markdown"] = str(path)
+        pdf_path = directory / f"{self.ticker}_{safe_period}_Earnings_OnePager.pdf"; paths["pdf"] = create_one_pager_pdf(public, str(pdf_path))
+        if deliver: paths["delivery"] = deliver_reports(public, paths["pdf"], telegram_target, dry_run)
+        return paths
+
+    def markdown(self, data: dict[str, Any]) -> str:
+        evidence = ["", "---", "", "## Evidence Register",
+                    f"- SEC filing: {data['sources']['filing_url']}",
+                    f"- SEC XBRL: {data['sources'].get('xbrl_url', 'N/A')}",
+                    f"- Earnings-call transcript: {data['sources']['transcript_url']}",
+                    f"- Market data: {data['valuation'].get('quote_source', 'N/A')} at {data['valuation'].get('quote_timestamp') or 'timestamp unavailable'}"]
+        warnings = ["", "## Warnings"] + [f"- {warning}" for warning in data.get("warnings", [])]
+        return ("# Message 1 — Enhanced Dashboard\n\n" + generate_dashboard_message(data) +
+                "\n\n---\n\n# Message 2 — Earnings Call Summary\n\n" + generate_call_message(data) +
+                "\n" + "\n".join(evidence + warnings) + "\n")
+
+    def run(self, output_dir: str, deliver: bool = True, telegram_target: str = "telegram", dry_run: bool = False):
+        self.identify(); self.retrieve(); self.financials(); self.quote_and_valuation(); self.qualitative(); self.grade_and_thesis()
+        return self.save(output_dir, deliver, telegram_target, dry_run)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Verified company earnings analysis")
+    parser.add_argument("--ticker", required=True); parser.add_argument("--max-filing-age-days", type=int, default=120)
+    parser.add_argument("--output-format", choices=["json", "markdown", "both", "pdf"], default="both")
+    parser.add_argument("--output-dir", default=str(Path.home() / "outputs")); parser.add_argument("--no-deliver", action="store_true",
+                        help="Generate artifacts without automatically delivering them")
+    parser.add_argument("--telegram-target", default="telegram"); parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--test-allow-stale-quote", action="store_true",
+                        help="TEST ONLY: allow stale Robinhood pricing and mark all outputs non-actionable")
+    args = parser.parse_args()
+    analyzer = EarningsAnalyzer(args.ticker, args.max_filing_age_days, args.output_format,
+                                allow_stale_quote_for_test=args.test_allow_stale_quote)
+    try:
+        paths = analyzer.run(args.output_dir, not args.no_deliver, args.telegram_target, args.dry_run); print(json.dumps(paths, indent=2))
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr); return 1
+    return 0
+
+if __name__ == "__main__": raise SystemExit(main())
