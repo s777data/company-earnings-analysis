@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive A4 earnings dashboard">
+  <title>Interactive Earnings Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+  <div class="screen-tools" aria-label="Dashboard controls">
+    <button id="print-button" type="button">Print / Save PDF</button>
+    <label class="file-control">Load report JSON <input id="report-file" type="file" accept="application/json,.json"></label>
+  </div>
+
+  <main id="report" class="a4-sheet" aria-live="polite">
+    <header class="company-band">
+      <div class="grade-block"><strong id="grade">—</strong><span id="confidence">—</span></div>
+      <div class="identity"><div><span id="recommendation">—</span> <strong id="ticker">—</strong></div><p id="period-line">Loading verified report data…</p></div>
+      <div id="test-banner" class="test-banner" hidden>TEST ONLY — STALE MARKET DATA — NOT ACTIONABLE</div>
+    </header>
+
+    <section aria-labelledby="income-heading"><h2 id="income-heading">Income Statement Highlights</h2><div id="income-cards" class="metric-grid income-grid"></div></section>
+    <div class="top-grid">
+      <section aria-labelledby="ratio-heading"><h2 id="ratio-heading">Key Ratios</h2><div id="ratio-cards" class="metric-grid ratio-grid"></div></section>
+      <section aria-labelledby="valuation-heading"><h2 id="valuation-heading">Valuation</h2><div id="valuation-cards" class="metric-grid valuation-grid"></div></section>
+    </div>
+
+    <div class="analysis-grid">
+      <section aria-labelledby="capital-heading"><h2 id="capital-heading">Capital &amp; Liquidity</h2><div id="capital-content" class="dense-list"></div></section>
+      <section aria-labelledby="guidance-heading"><h2 id="guidance-heading">Guidance &amp; Outlook</h2><div id="guidance-content" class="dense-list"></div></section>
+      <section aria-labelledby="call-heading"><h2 id="call-heading">Earnings Call Summary</h2><div id="call-content" class="dense-list"></div></section>
+    </div>
+
+    <section aria-labelledby="channels-heading"><h2 id="channels-heading">Key Channels &amp; Segments</h2><div id="channels-content" class="channel-grid"></div></section>
+    <section aria-labelledby="pillars-heading"><h2 id="pillars-heading">Strategic Pillars</h2><div id="pillars-content" class="pillar-grid"></div></section>
+
+    <div class="bottom-grid">
+      <section aria-labelledby="risks-heading"><h2 id="risks-heading">Key Risks</h2><div id="risks-content" class="dense-list"></div></section>
+      <section aria-labelledby="thesis-heading"><h2 id="thesis-heading">Investment Thesis</h2><div id="thesis-content" class="dense-list"></div></section>
+    </div>
+
+    <footer><span id="source-links"></span><span>Interactive research summary • Verify source evidence before decisions</span></footer>
+  </main>
+
+  <dialog id="metric-dialog" aria-labelledby="dialog-title">
+    <form method="dialog"><button class="dialog-close" aria-label="Close metric details">×</button></form>
+    <div class="dialog-status" id="dialog-status"></div>
+    <h3 id="dialog-title"></h3>
+    <div class="dialog-value" id="dialog-value"></div>
+    <dl>
+      <div><dt>Definition</dt><dd id="dialog-description"></dd></div>
+      <div><dt>Why it matters</dt><dd id="dialog-why"></dd></div>
+      <div><dt>Directionality</dt><dd id="dialog-direction"></dd></div>
+      <div><dt>Calculation</dt><dd id="dialog-formula"></dd></div>
+      <div><dt>Source</dt><dd id="dialog-source"></dd></div>
+    </dl>
+    <div id="dialog-scale" class="scale" aria-label="Metric threshold scale"></div>
+  </dialog>
+  <div id="load-error" class="load-error" role="alert" hidden></div>
+
+  <script src="data/report.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+@page { size: A4 portrait; margin: 0; }
+
+html, body {
+  width: 210mm;
+  height: 297mm;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: white !important;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.screen-tools,
+#metric-dialog,
+.load-error { display: none !important; }
+
+.a4-sheet {
+  width: 210mm;
+  height: 297mm;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  page-break-after: avoid;
+  break-after: avoid-page;
+}
+
+.metric-card {
+  border-color: transparent !important;
+  background: var(--card) !important;
+}
+.metric-card::after { display: none; }
+a { color: inherit; text-decoration: none; }

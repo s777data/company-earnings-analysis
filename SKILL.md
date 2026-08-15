@@ -1,6 +1,6 @@
 ---
 name: company-earnings-analysis
-version: 2.1
+version: 2.2
 description: Evidence-gated analysis of the latest quarterly SEC filing and mandatory web earnings-call transcript
 category: research
 model: high-reasoning
@@ -8,7 +8,7 @@ model: high-reasoning
 
 # Company Earnings Analysis
 
-Produces a source-traceable quarterly earnings analysis, Markdown report, JSON record, validated one-page PDF, and optional verified Telegram delivery.
+Produces a source-traceable quarterly earnings analysis, Markdown report, JSON record, validated one-page PDF, reusable interactive A4 HTML dashboard, and optional verified Telegram delivery.
 
 ## Non-negotiable publication gates
 
@@ -132,8 +132,9 @@ Generated filenames use ticker and verified fiscal period:
 - `<TICKER>_Qn_FYyyyy_analysis.json`
 - `<TICKER>_Qn_FYyyyy_analysis.md`
 - `<TICKER>_Qn_FYyyyy_Earnings_OnePager.pdf`
+- `<TICKER>_Qn_FYyyyy_Interactive_Dashboard/index.html` plus static CSS, JavaScript, bundled Inter font, and reusable JSON data
 
-The JSON excludes raw filing and transcript text while retaining source URLs and citations.
+The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend.
 
 ## Verification
 

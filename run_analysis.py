@@ -15,6 +15,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
 from create_one_pager_pdf import create_one_pager_pdf
+from create_interactive_dashboard import create_interactive_dashboard
 from robinhood_mcp_get_quote import get_quote
 from sec_edgar_fetch import fetch_filing
 from sec_edgar_search import search_filings
@@ -311,6 +312,8 @@ class EarningsAnalyzer:
         if self.output_format in {"markdown", "both"}:
             path = directory / f"{self.ticker}_{safe_period}_analysis.md"; path.write_text(self.markdown(public)); paths["markdown"] = str(path)
         pdf_path = directory / f"{self.ticker}_{safe_period}_Earnings_OnePager.pdf"; paths["pdf"] = create_one_pager_pdf(public, str(pdf_path))
+        dashboard_dir = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
+        paths["html"] = create_interactive_dashboard(public, str(dashboard_dir))
         if deliver: paths["delivery"] = deliver_reports(public, paths["pdf"], telegram_target, dry_run)
         return paths
 

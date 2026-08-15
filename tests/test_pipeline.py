@@ -12,6 +12,7 @@ from create_one_pager_pdf import (create_one_pager_pdf, _compact_summary, _compa
                                   _direction_marker, _select_call_summary_insights, _draw_cards,
                                   COMPACT_LABELS, SEMANTIC_SYMBOL_COLORS, COLORS, OnePager,
                                   PDF_FONT_SCALE)
+from create_interactive_dashboard import build_dashboard_data, create_interactive_dashboard
 from robinhood_mcp_get_quote import get_quote, _decode
 from sec_edgar_search import _matches_query
 from telegram_notify import (deliver_reports, generate_call_message, generate_dashboard_message, _send,
@@ -857,6 +858,80 @@ class OutputTests(unittest.TestCase):
         source = "\n".join(path.read_text() for path in source_paths)
         for forbidden in ("if self.ticker ==", "META Q", "CAT Q", "ABNB Q", "Family of Apps", "Reality Labs"):
             self.assertNotIn(forbidden, source)
+
+
+class InteractiveDashboardTests(unittest.TestCase):
+    def test_dashboard_schema_is_company_neutral_and_metadata_complete(self):
+        data = sample_data()
+        data["financials"]["key_ratios"] = [{
+            "key": "operating_margin", "label": "Operating Margin", "value": 0.25,
+            "display": "25.0%", "comparison": "current quarter", "signal": "positive",
+        }]
+        data["valuation"]["rows"] = [{
+            "key": "ps_annualized", "label": "P/S (annualized)", "value": 2.0,
+            "display": "2.0x", "assessment": "Moderate", "signal": "neutral",
+        }]
+        report = build_dashboard_data(data)
+        self.assertEqual(report["company"]["ticker"], "TEST")
+        cards = (report["sections"]["income_statement"] + report["sections"]["key_ratios"]
+                 + report["sections"]["valuation"])
+        required = {"raw_value", "display_value", "status", "description", "why_it_matters",
+                    "directionality", "formula", "scale", "source_note"}
+        self.assertTrue(cards)
+        self.assertTrue(all(required <= set(card) for card in cards))
+        ps = next(card for card in cards if card["key"] == "ps_annualized")
+        self.assertGreaterEqual(len(ps["scale"]), 4)
+
+    def test_static_site_has_required_structure_and_local_data_wrapper(self):
+        with tempfile.TemporaryDirectory() as directory:
+            index = Path(create_interactive_dashboard(sample_data(), directory))
+            expected = (
+                "index.html", "css/dashboard.css", "css/print.css", "js/dashboard.js",
+                "assets/fonts/InterVariable.woff2", "data/report.json", "data/report.js",
+                "data/TEST-2026-Q2.json",
+            )
+            for relative in expected:
+                path = Path(directory) / relative
+                self.assertTrue(path.is_file() and path.stat().st_size > 0, relative)
+            self.assertIn("window.EARNINGS_REPORT", (Path(directory) / "data/report.js").read_text())
+            self.assertIn('src="data/report.js"', index.read_text())
+
+    def test_presentation_code_has_no_reference_ticker_or_fixed_metric_values(self):
+        files = [ROOT / "earnings-dashboard" / "index.html",
+                 ROOT / "earnings-dashboard" / "css" / "dashboard.css",
+                 ROOT / "earnings-dashboard" / "css" / "print.css",
+                 ROOT / "earnings-dashboard" / "js" / "dashboard.js",
+                 ROOT / "scripts" / "create_interactive_dashboard.py"]
+        source = "\n".join(path.read_text(encoding="utf-8") for path in files)
+        for forbidden in ("RKLB", "$234.1M", "57.9x", "$79.99", "$54.4B"):
+            self.assertNotIn(forbidden, source)
+
+    def test_section_order_interaction_and_accessibility_contract(self):
+        html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
+        headings = [
+            "Income Statement Highlights", "Key Ratios", "Valuation", "Capital &amp; Liquidity",
+            "Guidance &amp; Outlook", "Earnings Call Summary", "Key Channels &amp; Segments",
+            "Strategic Pillars", "Key Risks", "Investment Thesis",
+        ]
+        positions = [html.index(heading) for heading in headings]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn('<dialog id="metric-dialog"', html)
+        self.assertIn('aria-labelledby="dialog-title"', html)
+        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        for behavior in ('button.type = "button"', 'dialog.showModal()', 'lastTrigger.focus()',
+                         'window.print()', 'event.target.files'):
+            self.assertIn(behavior, script)
+
+    def test_a4_print_contract_and_bundled_inter_font(self):
+        dashboard_css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text()
+        print_css = (ROOT / "earnings-dashboard" / "css" / "print.css").read_text()
+        self.assertIn('font-family: "Inter"', dashboard_css)
+        self.assertIn("width: 210mm", dashboard_css)
+        self.assertIn("height: 297mm", dashboard_css)
+        self.assertIn("@page { size: A4 portrait; margin: 0; }", print_css)
+        self.assertIn("print-color-adjust: exact", print_css)
+        font = ROOT / "earnings-dashboard" / "assets" / "fonts" / "InterVariable.woff2"
+        self.assertTrue(font.is_file() and font.stat().st_size > 100_000)
 
 
 if __name__ == "__main__": unittest.main()
