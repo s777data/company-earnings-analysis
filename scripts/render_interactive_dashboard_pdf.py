@@ -11,7 +11,7 @@ from typing import Iterable
 from create_one_pager_pdf import validate_pdf
 
 
-SELECTOR = "#valuation-cards .gauge-card"
+SELECTOR = "body[data-layout-ready='true'] #valuation-cards .gauge-card"
 
 
 def _playwright_executable(explicit: str | None = None) -> str:

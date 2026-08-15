@@ -918,6 +918,42 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertIn('renderMetrics("income-cards", sections.income_statement, "income")', script)
         self.assertIn('renderMetrics("ratio-cards", sections.key_ratios, "ratio")', script)
 
+    def test_narrative_sections_keep_complete_sentences_and_signal_colors(self):
+        data = sample_data()
+        data["channels"] = {"items": [
+            {"name": "Growth", "desc": "A strong pipeline supports growth."},
+            {"name": "Pressure", "desc": "Revenue recorded a 30% decrease."},
+        ]}
+        data["earnings_call_summary"] = {"insights": [{
+            "topic": "Management Tone", "detail": "Demand remains durable.",
+            "signal": "positive", "confidence_category": "Confident",
+            "confidence_subcategory": "Assured",
+        }]}
+        report = build_dashboard_data(data)
+        self.assertEqual([row["signal"] for row in report["sections"]["channels"]], ["positive", "negative"])
+        self.assertEqual(
+            report["sections"]["earnings_call"][0]["detail"],
+            "Confident → Assured, Demand remains durable.",
+        )
+
+        css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text(encoding="utf-8")
+        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        for call in (
+            'renderList("capital-content", sections.capital_liquidity, 8);',
+            'renderList("guidance-content", sections.guidance, 6);',
+            'renderList("call-content", sections.earnings_call, 8);',
+        ):
+            self.assertIn(call, script)
+        self.assertIn('body.textContent = text(detailOf(item), "Not available")', script)
+        self.assertIn("fitNarrativeSections", script)
+        self.assertIn('document.body.dataset.layoutReady = "true"', script)
+        self.assertIn(".channel-card { height: 20mm;", css)
+        self.assertIn(".pillar-card { height: 18mm;", css)
+        self.assertNotIn("color: var(--ink); font-size: 6.1px", css)
+        self.assertIn(".dense-item > span:last-child { color: currentColor; }", css)
+        self.assertIn(".channel-card > div { color: currentColor;", css)
+        self.assertIn(".pillar-card > div { color: currentColor;", css)
+
     def test_static_site_has_required_structure_and_local_data_wrapper(self):
         with tempfile.TemporaryDirectory() as directory:
             index = Path(create_interactive_dashboard(sample_data(), directory))
@@ -991,7 +1027,7 @@ class InteractiveDashboardTests(unittest.TestCase):
             self.assertEqual(result, str(output.resolve()))
             command = run.call_args.args[0]
             self.assertIn("--wait-for-selector", command)
-            self.assertIn("#valuation-cards .gauge-card", command)
+            self.assertIn("body[data-layout-ready='true'] #valuation-cards .gauge-card", command)
             self.assertIn(html.resolve().as_uri(), command)
             validate.assert_called_once_with(str(output.resolve()), ["https://www.sec.gov/filing"])
 

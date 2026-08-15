@@ -1,6 +1,6 @@
 ---
 name: company-earnings-analysis
-version: 2.5
+version: 2.6
 description: Evidence-gated analysis of the latest quarterly SEC filing and mandatory web earnings-call transcript
 category: research
 model: high-reasoning
@@ -140,7 +140,7 @@ Generated filenames use ticker and verified fiscal period:
 - `<TICKER>_Qn_FYyyyy_Interactive_Dashboard/index.html` plus static CSS, JavaScript, bundled Inter font, and reusable JSON data
 - `<TICKER>_Qn_FYyyyy_Interactive_Dashboard.pdf` rendered from the final HTML, validated as one-page A4, and attached to both Telegram messages
 
-The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend. Income Statement Highlights uses the verified core sequence `Revenue`, `Gross Profit`, `Operating Income`, and `Net Income`; Key Ratios uses the six generated margin and growth measures. Valuation and ownership-risk cards use compact semicircular gauges, tier badges, formula and impact copy from the repository reference guide, accessible detail dialogs, and at most eight cards per row. Only applicable metrics with verified, economically meaningful inputs are emitted. All card variants retain keyboard activation. The static dashboard itself has no runtime dependency; pipeline PDF rendering requires Playwright with Chromium or an explicit `PLAYWRIGHT_CLI` path.
+The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend. Income Statement Highlights uses the verified core sequence `Revenue`, `Gross Profit`, `Operating Income`, and `Net Income`; Key Ratios uses the six generated margin and growth measures. Capital & Liquidity, Guidance & Outlook, Earnings Call Summary, Key Channels & Segments, and Strategic Pillars render their selected source-backed statements in full without ellipsis truncation; the renderer waits for local fonts, adapts narrative typography to the fixed one-page panels, and applies each row's full seven-level signal color to its marker, label, value, and narrative. Capital & Liquidity consumes the structured `value` field, channel signals are preserved or derived from unambiguous directional evidence, and Management Tone retains the Telegram classification prefix (`category → subcategory`) before its complete statement. Valuation and ownership-risk cards use compact semicircular gauges, tier badges, formula and impact copy from the repository reference guide, accessible detail dialogs, and at most eight cards per row. Only applicable metrics with verified, economically meaningful inputs are emitted. All card variants retain keyboard activation. The static dashboard itself has no runtime dependency; pipeline PDF rendering requires Playwright with Chromium or an explicit `PLAYWRIGHT_CLI` path.
 
 ## Verification
 

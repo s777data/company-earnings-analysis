@@ -68,6 +68,40 @@ def _metric(row: dict[str, Any], source_note: str = "") -> dict[str, Any]:
     }
 
 
+def _channel_signal(row: dict[str, Any]) -> dict[str, Any]:
+    """Preserve explicit signals or derive one from unambiguous directional evidence."""
+    if row.get("signal") or row.get("tier"):
+        return row
+    detail = str(row.get("detail") or row.get("desc") or "").lower()
+    positive_phrases = (
+        "strong pipeline", "opportunity", "expand", "growth", "high cadence",
+        "full-scale production", "critical communications", "more than $", "eliminate",
+    )
+    negative_phrases = (
+        "decrease", "decline", "lower", "loss", "negative", "delay", "setback",
+    )
+    positive = any(phrase in detail for phrase in positive_phrases)
+    negative = any(phrase in detail for phrase in negative_phrases)
+    enriched = dict(row)
+    enriched["signal"] = "neutral" if positive == negative else "positive" if positive else "negative"
+    return enriched
+
+
+def _call_rows(data: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = data.get("earnings_call_summary", {}).get("insights") or data.get("transcript_insights", [])
+    output: list[dict[str, Any]] = []
+    for row in rows:
+        enriched = dict(row)
+        if str(row.get("topic") or "").strip().lower() == "management tone":
+            category = row.get("confidence_category")
+            subcategory = row.get("confidence_subcategory")
+            detail = row.get("detail")
+            if category and subcategory and detail:
+                enriched["detail"] = f"{category} → {subcategory}, {detail}"
+        output.append(enriched)
+    return output
+
+
 def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
     """Convert the company-neutral analysis schema to the dashboard schema."""
     valuation = data.get("valuation", {})
@@ -106,8 +140,8 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
             "short_interest_sbc": [_metric(row) for row in valuation.get("risk_rows", [])],
             "capital_liquidity": data.get("capital_liquidity", {}).get("items", []),
             "guidance": data.get("guidance", {}).get("rows", []),
-            "earnings_call": data.get("earnings_call_summary", {}).get("insights") or data.get("transcript_insights", []),
-            "channels": data.get("channels", {}).get("items", []),
+            "earnings_call": _call_rows(data),
+            "channels": [_channel_signal(row) for row in data.get("channels", {}).get("items", [])],
             "strategic_pillars": data.get("strategic_pillars", []),
             "risks": data.get("risks", []),
             "thesis": data.get("thesis", {}),

@@ -281,14 +281,14 @@
   }
 
   function detailOf(item) {
-    return item.detail || item.desc || item.evidence || item.driver || item.text || item.summary || item.quantification;
+    return item.detail || item.desc || item.evidence || item.driver || item.text || item.summary || item.quantification || item.value;
   }
 
   function labelOf(item) {
     return item.name || item.topic || item.risk || item.label || "";
   }
 
-  function denseItem(item, limit = 185) {
+  function denseItem(item, limit = null) {
     const status = item.signal || item.tier || "neutral";
     const row = document.createElement("div");
     row.className = `dense-item ${statusClass(status)}`;
@@ -303,12 +303,13 @@
       strong.textContent = `${label}: `;
       body.append(strong);
     }
-    body.append(document.createTextNode(compact(detailOf(item), limit)));
+    const detail = text(detailOf(item), "Not available").replace(/\s+/g, " ").trim();
+    body.append(document.createTextNode(limit ? compact(detail, limit) : detail));
     row.append(icon, body);
     return row;
   }
 
-  function renderList(id, items, maximum, limit) {
+  function renderList(id, items, maximum, limit = null) {
     const container = $(id);
     const selected = (items || []).slice(0, maximum);
     container.replaceChildren(...selected.map((item) => denseItem(item, limit)));
@@ -325,11 +326,27 @@
       const heading = document.createElement("h3");
       heading.textContent = text(labelOf(item), type === "channel" ? "Business area" : "Strategic theme");
       const body = document.createElement("div");
-      body.textContent = compact(detailOf(item), type === "channel" ? 170 : 145);
+      body.textContent = text(detailOf(item), "Not available").replace(/\s+/g, " ").trim();
       card.append(heading, body);
       return card;
     }));
     if (selected.length === 0) container.append(emptyState("No verified evidence available."));
+  }
+
+  function fitText(container, minimumPx, decrementPx = 0.15) {
+    if (!container || container.clientHeight === 0) return;
+    let size = Number.parseFloat(getComputedStyle(container).fontSize);
+    while (container.scrollHeight > container.clientHeight + 1 && size > minimumPx) {
+      size = Math.max(minimumPx, size - decrementPx);
+      container.style.fontSize = `${size.toFixed(2)}px`;
+    }
+    container.dataset.fitted = container.scrollHeight <= container.clientHeight + 1 ? "true" : "false";
+  }
+
+  function fitNarrativeSections() {
+    ["capital-content", "guidance-content", "call-content"].forEach((id) => fitText($(id), 3.65));
+    document.querySelectorAll(".channel-card, .pillar-card").forEach((card) => fitText(card, 3.55));
+    document.body.dataset.layoutReady = "true";
   }
 
   function renderThesis(thesis) {
@@ -382,14 +399,20 @@
     $("valuation-regime").textContent = `${text(sections.valuation_regime, "Applicable metrics")} · guide order · applicable only`;
     renderGaugeMetrics("valuation-cards", sections.valuation);
     renderGaugeMetrics("risk-metric-cards", sections.short_interest_sbc);
-    renderList("capital-content", sections.capital_liquidity, 8, 120);
-    renderList("guidance-content", sections.guidance, 6, 155);
-    renderList("call-content", sections.earnings_call, 8, 165);
+    renderList("capital-content", sections.capital_liquidity, 8);
+    renderList("guidance-content", sections.guidance, 6);
+    renderList("call-content", sections.earnings_call, 8);
     renderCards("channels-content", sections.channels, "channel");
     renderCards("pillars-content", sections.strategic_pillars, "pillar");
     renderList("risks-content", sections.risks, 5, 155);
     renderThesis(sections.thesis || {});
     sourceLinks(report.sources || {});
+    document.body.dataset.layoutReady = "false";
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(fitNarrativeSections));
+    } else {
+      requestAnimationFrame(fitNarrativeSections);
+    }
   }
 
   function showError(error) {

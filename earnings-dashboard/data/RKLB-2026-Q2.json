@@ -803,7 +803,7 @@
       {
         "topic": "Management Tone",
         "category": "outlook",
-        "detail": "We expect this momentum to continue, guiding to strong revenue growth as our satellite platforms business scales exceptionally and Neutron progresses towards first flight.",
+        "detail": "Confident → Assured, We expect this momentum to continue, guiding to strong revenue growth as our satellite platforms business scales exceptionally and Neutron progresses towards first flight.",
         "signal": "best",
         "tier": "best",
         "reasoning": "The cited prepared remarks evidence is supportive for management tone.",
@@ -949,7 +949,8 @@
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
           "start": 14146,
           "end": 14308
-        }
+        },
+        "signal": "positive"
       },
       {
         "name": "Customers & engagement",
@@ -959,7 +960,8 @@
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
           "start": 4277,
           "end": 4424
-        }
+        },
+        "signal": "positive"
       },
       {
         "name": "Markets & distribution",
@@ -969,7 +971,8 @@
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
           "start": 10305,
           "end": 10501
-        }
+        },
+        "signal": "positive"
       },
       {
         "name": "Business lines",
@@ -979,7 +982,8 @@
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
           "start": 19423,
           "end": 19621
-        }
+        },
+        "signal": "negative"
       }
     ],
     "strategic_pillars": [

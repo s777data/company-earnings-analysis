@@ -284,17 +284,20 @@ h2 {
 .risk-metrics-section .gauge-card { min-height: 17mm; }
 .analysis-grid { display: grid; grid-template-columns: .85fr 1fr 1.45fr; gap: 1.2mm; margin-top: .2mm; }
 .analysis-grid section { height: 63mm; overflow: hidden; }
-.dense-list { display: grid; gap: .8mm; padding: 1.2mm 1mm; }
-.dense-item { display: grid; grid-template-columns: 2.3mm 1fr; gap: .4mm; min-width: 0; color: var(--ink); font-size: 6.1px; line-height: 1.28; }
-.dense-item .marker { font-weight: 850; text-align: center; }
-.dense-item strong { font-weight: 760; }
+.dense-list { display: grid; height: calc(100% - 5mm); gap: .8mm; padding: 1.2mm 1mm; overflow: hidden; font-size: 6.1px; }
+.dense-item { display: grid; grid-template-columns: 2.3mm 1fr; gap: .4mm; min-width: 0; font-size: inherit; line-height: 1.28; }
+.dense-item .marker { color: currentColor; font-weight: 850; text-align: center; }
+.dense-item strong { color: currentColor; font-weight: 760; }
+.dense-item > span:last-child { color: currentColor; }
 
 .channel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1mm; padding: 1mm 0 1.2mm; }
-.channel-card { min-height: 20mm; padding: 1mm; background: var(--card); font-size: 5.7px; line-height: 1.22; }
-.channel-card h3 { margin: 0 0 .8mm; font-size: 6.4px; }
+.channel-card { height: 20mm; padding: 1mm; overflow: hidden; background: var(--card); font-size: 5.7px; line-height: 1.22; }
+.channel-card h3 { margin: 0 0 .8mm; color: currentColor; font-size: 6.4px; }
+.channel-card > div { color: currentColor; font-size: inherit; }
 .pillar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: .8mm; padding: 1mm 0 1.2mm; }
-.pillar-card { min-height: 18mm; padding: .9mm; border-left: 1mm solid currentColor; background: var(--card); font-size: 5.5px; line-height: 1.2; }
-.pillar-card h3 { margin: 0 0 .6mm; font-size: 5.8px; }
+.pillar-card { height: 18mm; padding: .9mm; overflow: hidden; border-left: 1mm solid currentColor; background: var(--card); font-size: 5.5px; line-height: 1.2; }
+.pillar-card h3 { margin: 0 0 .6mm; color: currentColor; font-size: 5.8px; }
+.pillar-card > div { color: currentColor; font-size: inherit; }
 .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3mm; }
 .bottom-grid section { height: 34mm; overflow: hidden; }
 
