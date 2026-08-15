@@ -66,10 +66,17 @@
     if (lastTrigger) lastTrigger.focus();
   });
 
-  function metricCard(metric) {
+  function comparisonTrend(comparison) {
+    const value = text(comparison, "");
+    if (/^\s*\+/.test(value)) return { className: "trend-up", marker: "▲" };
+    if (/^\s*-/.test(value)) return { className: "trend-down", marker: "▼" };
+    return { className: "trend-flat", marker: "" };
+  }
+
+  function metricCard(metric, variant = "default") {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `metric-card ${statusClass(metric.status)}`;
+    button.className = `metric-card metric-card--${variant} ${statusClass(metric.status)}`;
     button.setAttribute("aria-label", `Open details for ${text(metric.name)}: ${text(metric.display_value)}, ${statusLabel(metric.status)}`);
     const value = document.createElement("span");
     value.className = "metric-value";
@@ -80,14 +87,27 @@
     const comparison = document.createElement("span");
     comparison.className = "metric-comparison";
     comparison.textContent = text(metric.comparison, "Comparison unavailable");
-    button.append(value, name, comparison);
+
+    if (variant === "income") {
+      const trend = comparisonTrend(metric.comparison);
+      comparison.classList.add("comparison-badge", trend.className);
+      if (trend.marker) comparison.textContent = `${trend.marker}  ${comparison.textContent}`;
+      button.append(name, value, comparison);
+    } else if (variant === "ratio") {
+      const divider = document.createElement("span");
+      divider.className = "metric-divider";
+      divider.setAttribute("aria-hidden", "true");
+      button.append(name, value, divider, comparison);
+    } else {
+      button.append(value, name, comparison);
+    }
     button.addEventListener("click", () => openMetric(metric, button));
     return button;
   }
 
-  function renderMetrics(id, metrics) {
+  function renderMetrics(id, metrics, variant = "default") {
     const container = $(id);
-    container.replaceChildren(...(metrics || []).map(metricCard));
+    container.replaceChildren(...(metrics || []).map((metric) => metricCard(metric, variant)));
     if (!metrics || metrics.length === 0) container.append(emptyState("No verified metrics available."));
   }
 
@@ -195,8 +215,8 @@
     $("period-line").textContent = market.join(" | ") || text(company.period);
     $("test-banner").hidden = !company.test_run;
 
-    renderMetrics("income-cards", sections.income_statement);
-    renderMetrics("ratio-cards", sections.key_ratios);
+    renderMetrics("income-cards", sections.income_statement, "income");
+    renderMetrics("ratio-cards", sections.key_ratios, "ratio");
     renderMetrics("valuation-cards", sections.valuation);
     renderList("capital-content", sections.capital_liquidity, 8, 120);
     renderList("guidance-content", sections.guidance, 6, 155);

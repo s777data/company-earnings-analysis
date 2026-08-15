@@ -1,6 +1,6 @@
 ---
 name: company-earnings-analysis
-version: 2.3
+version: 2.4
 description: Evidence-gated analysis of the latest quarterly SEC filing and mandatory web earnings-call transcript
 category: research
 model: high-reasoning
@@ -135,7 +135,7 @@ Generated filenames use ticker and verified fiscal period:
 - `<TICKER>_Qn_FYyyyy_Interactive_Dashboard/index.html` plus static CSS, JavaScript, bundled Inter font, and reusable JSON data
 - `<TICKER>_Qn_FYyyyy_Interactive_Dashboard.pdf` rendered from the final HTML, validated as one-page A4, and attached to both Telegram messages
 
-The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend. The static dashboard itself has no runtime dependency; pipeline PDF rendering requires Playwright with Chromium or an explicit `PLAYWRIGHT_CLI` path.
+The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend. Income Statement Highlights uses the verified core sequence `Revenue`, `Gross Profit`, `Operating Income`, and `Net Income`; Key Ratios uses the six generated margin and growth measures. Both sections use shared reference-style card renderers with titles above values, comparison treatments, accessible detail dialogs, and keyboard activation. The static dashboard itself has no runtime dependency; pipeline PDF rendering requires Playwright with Chromium or an explicit `PLAYWRIGHT_CLI` path.
 
 ## Verification
 

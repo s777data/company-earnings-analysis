@@ -107,9 +107,36 @@ h2 {
   text-transform: uppercase;
 }
 
-.metric-grid { display: grid; gap: .8mm; padding: .9mm 0 1.2mm; }
-.income-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.ratio-grid, .valuation-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.scorecard-section {
+  margin-bottom: 1.4mm;
+  padding: 2.3mm 2.5mm 2.5mm;
+  border: .25mm solid #e0e5ea;
+  border-radius: 3mm;
+  background: #fff;
+  box-shadow: 0 .8mm 2.4mm rgb(21 38 56 / 9%);
+}
+.scorecard-heading { margin-bottom: 1.7mm; }
+.scorecard-heading h2 {
+  padding: 0;
+  background: transparent;
+  color: #101827;
+  font-size: 10.2px;
+  font-weight: 790;
+  letter-spacing: -.025em;
+  line-height: 1.05;
+  text-transform: none;
+}
+.scorecard-heading p {
+  margin: .65mm 0 0;
+  color: var(--muted);
+  font-size: 5.7px;
+  line-height: 1.1;
+}
+
+.metric-grid { display: grid; gap: 1.4mm; padding: .9mm 0 1.2mm; }
+.income-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 0; }
+.ratio-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); padding: 0; }
+.valuation-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .metric-card {
   position: relative;
   min-width: 0;
@@ -122,12 +149,59 @@ h2 {
   text-align: left;
   cursor: pointer;
 }
-.metric-card::after { content: "ⓘ"; position: absolute; top: .7mm; right: .8mm; color: #58738e; font-size: 6px; }
-.metric-card:hover { border-color: #7f9bb7; background: #eaf1f7; }
+.metric-card::after { content: "ⓘ"; position: absolute; top: .7mm; right: .8mm; color: #58738e; font-size: 5px; opacity: .68; }
+.metric-card:hover { border-color: #7f9bb7; background: #f8fafc; }
 .metric-card:focus-visible { outline: 1.5px solid #0a67b2; outline-offset: 1px; }
 .metric-value { display: block; overflow-wrap: anywhere; font-size: 10.4px; font-weight: 820; line-height: 1.05; }
 .metric-name { display: block; margin-top: .7mm; font-size: 5.9px; font-weight: 720; line-height: 1.08; }
 .metric-comparison { display: block; margin-top: .55mm; font-size: 5.35px; line-height: 1.08; }
+
+.metric-card--income {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 24mm;
+  padding: 2mm 1.5mm;
+  border-color: #e0e5e9;
+  border-radius: 2.1mm;
+  background: linear-gradient(145deg, #fff 0%, #fbfcfd 100%);
+  box-shadow: 0 .6mm 1.7mm rgb(20 35 52 / 9%);
+  text-align: center;
+}
+.metric-card--income .metric-name { margin: 0 0 1.7mm; color: #111827; font-size: 6.4px; font-weight: 570; }
+.metric-card--income .metric-value { color: currentColor; font-size: 15.5px; font-weight: 790; letter-spacing: -.035em; white-space: nowrap; }
+.metric-card--income .comparison-badge {
+  min-width: 28mm;
+  margin-top: 2mm;
+  padding: 1.2mm 2mm;
+  border: .25mm solid;
+  border-radius: 2mm;
+  font-size: 6px;
+  font-weight: 540;
+  line-height: 1;
+}
+.metric-card--income .trend-up { border-color: #c9e1d3; background: #f1f8f4; color: #08784d; }
+.metric-card--income .trend-down { border-color: #efcaca; background: #fff4f4; color: #b42318; }
+.metric-card--income .trend-flat { border-color: #d9dee4; background: #f5f7f9; color: var(--muted); }
+
+.metric-card--ratio {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  align-items: center;
+  min-height: 21mm;
+  padding: 1.7mm 1.3mm 1.4mm;
+  border: .25mm solid #e0e5e9;
+  border-bottom: 1.1mm solid currentColor;
+  border-radius: 1.7mm;
+  background: #fff;
+  box-shadow: 0 .55mm 1.5mm rgb(20 35 52 / 8%);
+  text-align: center;
+}
+.metric-card--ratio .metric-name { margin: 0; min-height: 4mm; color: #111827; font-size: 5.2px; font-weight: 570; }
+.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 12.5px; font-weight: 790; letter-spacing: -.025em; white-space: nowrap; }
+.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .8mm auto 0; border-top: .25mm dashed #d5dbe1; }
+.metric-card--ratio .metric-comparison { margin: .8mm 0 0; color: var(--muted); font-size: 4.8px; font-weight: 500; }
+
 .status-best { color: var(--best); }
 .status-strong_positive { color: var(--strong-positive); }
 .status-positive { color: var(--positive); }
@@ -136,7 +210,7 @@ h2 {
 .status-negative { color: var(--negative); }
 .status-worst { color: var(--worst); }
 
-.top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5mm; }
+.valuation-section { margin-bottom: .3mm; }
 .analysis-grid { display: grid; grid-template-columns: .85fr 1fr 1.45fr; gap: 1.2mm; margin-top: .2mm; }
 .analysis-grid section { height: 70mm; overflow: hidden; }
 .dense-list { display: grid; gap: .8mm; padding: 1.2mm 1mm; }

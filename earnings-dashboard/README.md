@@ -27,6 +27,12 @@ Then open `http://localhost:8000`.
 
 All company values, labels, explanations, formulas, scales, evidence, and sources come from generated data. Presentation files contain no company-specific branches or fixed report values.
 
+## Scorecard presentation
+
+- **Income Statement Highlights:** four core cards in the stable sequence Revenue, Gross Profit, Operating Income, and Net Income. Each card uses a centered label, prominent value, and directional YoY badge.
+- **Key Ratios:** six generated margin/growth cards in one row. Each uses a centered label and value, dashed context divider, period label, and signal-colored bottom rule.
+- Both card variants remain buttons with keyboard activation, focus styling, and the full metric-detail dialog.
+
 ## Generate with the earnings pipeline
 
 `run_analysis.py` now creates an interactive dashboard and a browser-rendered PDF alongside JSON, Markdown, and the original PDF output. After the final JavaScript cards render, headless Chromium prints the HTML to A4 PDF, validates the PDF, and uses that rendered PDF as the attachment for both Telegram messages. A successful run adds:

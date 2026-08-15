@@ -21,11 +21,15 @@
       <div id="test-banner" class="test-banner" hidden>TEST ONLY — STALE MARKET DATA — NOT ACTIONABLE</div>
     </header>
 
-    <section aria-labelledby="income-heading"><h2 id="income-heading">Income Statement Highlights</h2><div id="income-cards" class="metric-grid income-grid"></div></section>
-    <div class="top-grid">
-      <section aria-labelledby="ratio-heading"><h2 id="ratio-heading">Key Ratios</h2><div id="ratio-cards" class="metric-grid ratio-grid"></div></section>
-      <section aria-labelledby="valuation-heading"><h2 id="valuation-heading">Valuation</h2><div id="valuation-cards" class="metric-grid valuation-grid"></div></section>
-    </div>
+    <section class="scorecard-section income-section" aria-labelledby="income-heading">
+      <div class="scorecard-heading"><h2 id="income-heading">Income Statement Highlights</h2><p>Overview of key financial performance metrics</p></div>
+      <div id="income-cards" class="metric-grid income-grid"></div>
+    </section>
+    <section class="scorecard-section ratio-section" aria-labelledby="ratio-heading">
+      <div class="scorecard-heading"><h2 id="ratio-heading">Key Ratios</h2><p>Performance and profitability ratios with year-over-year change</p></div>
+      <div id="ratio-cards" class="metric-grid ratio-grid"></div>
+    </section>
+    <section class="valuation-section" aria-labelledby="valuation-heading"><h2 id="valuation-heading">Valuation</h2><div id="valuation-cards" class="metric-grid valuation-grid"></div></section>
 
     <div class="analysis-grid">
       <section aria-labelledby="capital-heading"><h2 id="capital-heading">Capital &amp; Liquidity</h2><div id="capital-content" class="dense-list"></div></section>

@@ -889,6 +889,34 @@ class InteractiveDashboardTests(unittest.TestCase):
         ps = next(card for card in cards if card["key"] == "ps_annualized")
         self.assertGreaterEqual(len(ps["scale"]), 4)
 
+    def test_income_highlights_are_core_four_in_reference_order(self):
+        data = sample_data()
+        rows = [
+            {"key": "cash", "label": "Cash", "value": 500, "display": "$500"},
+            {"key": "net_income", "label": "Net Income", "value": 40, "display": "$40"},
+            {"key": "revenue", "label": "Revenue", "value": 200, "display": "$200"},
+            {"key": "operating_income", "label": "Operating Income", "value": 60, "display": "$60"},
+            {"key": "gross_profit", "label": "Gross Profit", "value": 90, "display": "$90"},
+            {"key": "eps_diluted", "label": "Diluted EPS", "value": 1, "display": "$1"},
+        ]
+        data["financials"]["rows"] = rows
+        keys = [card["key"] for card in build_dashboard_data(data)["sections"]["income_statement"]]
+        self.assertEqual(keys, ["revenue", "gross_profit", "operating_income", "net_income"])
+
+    def test_reference_scorecard_structure_is_shared_and_data_driven(self):
+        html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
+        css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text(encoding="utf-8")
+        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        self.assertIn('class="scorecard-section income-section"', html)
+        self.assertIn('class="scorecard-section ratio-section"', html)
+        self.assertIn("Overview of key financial performance metrics", html)
+        self.assertIn("repeat(4, minmax(0, 1fr))", css)
+        self.assertIn("repeat(6, minmax(0, 1fr))", css)
+        self.assertIn("metric-card--income", css)
+        self.assertIn("metric-card--ratio", css)
+        self.assertIn('renderMetrics("income-cards", sections.income_statement, "income")', script)
+        self.assertIn('renderMetrics("ratio-cards", sections.key_ratios, "ratio")', script)
+
     def test_static_site_has_required_structure_and_local_data_wrapper(self):
         with tempfile.TemporaryDirectory() as directory:
             index = Path(create_interactive_dashboard(sample_data(), directory))

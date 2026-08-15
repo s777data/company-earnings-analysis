@@ -9,6 +9,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE_DIR = ROOT / "earnings-dashboard"
+INCOME_HIGHLIGHT_KEYS = ("revenue", "gross_profit", "operating_income", "net_income")
 
 METADATA: dict[str, dict[str, Any]] = {
     "revenue": {"description": "Revenue recognized during the reported period.", "why_it_matters": "Shows the scale and growth of the core business.", "directionality": "Higher is generally better when growth is profitable.", "formula": "Reported revenue for the period", "scale": [{"label": "Declining", "max": 0, "signal": "negative"}, {"label": "Stable", "max": 0.10, "signal": "neutral"}, {"label": "Strong growth", "max": None, "signal": "positive"}]},
@@ -74,6 +75,9 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
             for key, label in (("pe_ttm", "P/E (TTM)"), ("ps_annualized", "P/S (annualized)"), ("fcf_yield_annualized", "FCF Yield (annualized)"))
         ]
     sources = data.get("sources", {})
+    financial_rows = data.get("financials", {}).get("rows", [])
+    financial_by_key = {_key(row): row for row in financial_rows}
+    income_highlights = [financial_by_key[key] for key in INCOME_HIGHLIGHT_KEYS if key in financial_by_key]
     return {
         "schema_version": 1,
         "company": {
@@ -92,7 +96,7 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
             "test_run": bool(data.get("test_run")),
         },
         "sections": {
-            "income_statement": [_metric(row) for row in data.get("financials", {}).get("rows", [])],
+            "income_statement": [_metric(row) for row in income_highlights],
             "key_ratios": [_metric(row) for row in data.get("financials", {}).get("key_ratios", [])],
             "valuation": [_metric(row, valuation.get("quote_source", "Verified market data")) for row in valuation_rows],
             "capital_liquidity": data.get("capital_liquidity", {}).get("items", []),

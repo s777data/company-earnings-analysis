@@ -680,11 +680,12 @@ def validate_pdf(path: str, expected_urls: list[str]) -> None:
         if abs(page.width - 595.28) > 2 or abs(page.height - 841.89) > 2:
             raise RuntimeError("PDF page is not A4")
         text = page.extract_text() or ""
+        normalized_text = text.upper()
         headings = ("INCOME STATEMENT HIGHLIGHTS", "KEY RATIOS", "VALUATION", "CAPITAL & LIQUIDITY",
                     "GUIDANCE & OUTLOOK", "EARNINGS CALL SUMMARY", "KEY CHANNELS & SEGMENTS",
                     "STRATEGIC PILLARS", "KEY RISKS", "INVESTMENT THESIS")
         for heading in headings:
-            if heading not in text:
+            if heading.upper() not in normalized_text:
                 raise RuntimeError(f"PDF is missing required section: {heading}")
         links = {item.get("uri") for item in page.hyperlinks if item.get("uri")}
         missing = set(expected_urls) - links
