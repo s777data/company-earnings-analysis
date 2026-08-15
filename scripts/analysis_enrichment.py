@@ -152,6 +152,10 @@ def _qa_boundary_start(text: str) -> int:
             "operator for questions",
             "begin the question portion",
             "one moment for questions",
+            "kick off the q",
+            "go to questions",
+            "turn to questions",
+            "open up the call",
         ))
         # A heading may include decorative words, but it must still consist only
         # of Q&A/session vocabulary after punctuation normalization.

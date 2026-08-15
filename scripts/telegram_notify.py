@@ -8,7 +8,7 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from create_one_pager_pdf import validate_pdf
+from render_interactive_dashboard_pdf import validate_pdf
 
 SIGNAL_EMOJIS = {
     "best": "🟦", "strong_positive": "🔷", "positive": "🔵", "neutral": "🟡",

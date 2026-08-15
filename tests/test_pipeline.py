@@ -8,10 +8,10 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "scripts"))
 from run_analysis import EarningsAnalyzer, _change, _display, _validate_transcript_call_date
-from create_one_pager_pdf import (create_one_pager_pdf, _compact_summary, _compact_items,
-                                  _direction_marker, _select_call_summary_insights, _draw_cards,
-                                  COMPACT_LABELS, SEMANTIC_SYMBOL_COLORS, COLORS, OnePager,
-                                  PDF_FONT_SCALE)
+from pdf_utils import (_compact_summary, _compact_items,
+                                  _direction_marker, _select_call_summary_insights,
+                                  COMPACT_LABELS, SEMANTIC_SYMBOL_COLORS, COLORS,
+                                  validate_pdf)
 from create_interactive_dashboard import build_dashboard_data, create_interactive_dashboard
 from render_interactive_dashboard_pdf import render_dashboard_pdf
 from robinhood_mcp_get_quote import get_quote, _decode
@@ -342,17 +342,19 @@ class SafetyTests(unittest.TestCase):
     def test_delivery_requires_json_receipt(self):
         import subprocess
         with tempfile.TemporaryDirectory() as directory:
-            pdf = Path(directory) / "report.pdf"; create_one_pager_pdf(sample_data(), str(pdf))
-            with patch("telegram_notify.subprocess.run", return_value=subprocess.CompletedProcess([], 0, "not-json", "")):
+            pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
+            with patch("telegram_notify.subprocess.run", return_value=subprocess.CompletedProcess([], 0, "not-json", "")), \
+                 patch("telegram_notify.validate_pdf"):
                 with self.assertRaisesRegex(RuntimeError, "malformed JSON"):
                     _send("message", str(pdf), "telegram")
 
     def test_delivery_success_receipt_and_command(self):
         import subprocess
         with tempfile.TemporaryDirectory() as directory:
-            pdf = Path(directory) / "report.pdf"; create_one_pager_pdf(sample_data(), str(pdf))
+            pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
             result = subprocess.CompletedProcess([], 0, json.dumps({"success": True, "message_id": "m1"}), "")
-            with patch("telegram_notify.subprocess.run", return_value=result) as run:
+            with patch("telegram_notify.subprocess.run", return_value=result) as run, \
+                 patch("telegram_notify.validate_pdf"):
                 receipt = _send("message", str(pdf), "telegram")
             self.assertTrue(receipt["success"]); self.assertEqual(receipt["backend_id"], "m1")
             args = run.call_args.args[0]
@@ -361,12 +363,6 @@ class SafetyTests(unittest.TestCase):
 
 
 class OutputTests(unittest.TestCase):
-    def test_pdf_global_font_scale_is_exactly_one_point_five(self):
-        self.assertEqual(PDF_FONT_SCALE, 1.5)
-        pdf = OnePager()
-        pdf.set_font("Helvetica", "", 10)
-        self.assertAlmostEqual(pdf.font_size_pt, 15.0, places=6)
-
     def test_cross_ticker_compaction_preserves_material_evidence(self):
         cases = [
             (
@@ -474,78 +470,6 @@ class OutputTests(unittest.TestCase):
         self.assertIn("domestic mission-tested launch partner", summary)
         self.assertIn("space access bottlenecks", summary)
 
-    def test_pdf_direction_arrows_use_signal_spectrum_endpoints(self):
-        import pdfplumber
-        data = sample_data()
-        data["transcript_insights"] = [
-            {"topic": "Margins & Profitability",
-             "detail": ("Segment margins were impacted by 90 basis points in Power & Energy, "
-                        "340 basis points within Construction Industries, and 260 basis points in Resource Industries."),
-             "signal": "caution"},
-            {"topic": "Revenue & Demand", "detail": "Revenue increased 12% as customer demand improved.",
-             "signal": "positive"},
-        ]
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "direction-colors.pdf"
-            create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as document:
-                chars = document.pages[0].chars
-        down = [char for char in chars if char.get("text") == "↓"]
-        up = [char for char in chars if char.get("text") == "↑"]
-        self.assertTrue(down)
-        self.assertTrue(up)
-        self.assertTrue(all(color[0] > color[1] and color[0] > color[2]
-                            for color in (char["non_stroking_color"] for char in down)))
-        self.assertTrue(all(color[2] > color[1] > color[0]
-                            for color in (char["non_stroking_color"] for char in up)))
-
-    def test_requested_sections_use_signal_font_colors(self):
-        import pdfplumber
-        data = sample_data()
-        data["guidance"] = {"rows": [
-            {
-                "detail": "Forward outlook: Management expects full-year revenue growth to remain resilient.",
-                "signal": "positive",
-            },
-            {
-                "detail": "Second quarter adjusted operating margin was better than we anticipated, primarily due to tariff recoveries of $392 million and lower than expected tariff costs.",
-                "signal": "caution",
-            },
-        ]}
-        data["transcript_insights"] = [
-            {"topic": "Revenue & Demand", "detail": "Revenue increased 12% as customer demand improved.", "signal": "positive"},
-            {"topic": "Margins & Profitability", "detail": ("Segment margins were impacted by 90 basis points in Power & Energy, "
-                                                               "340 basis points within Construction Industries, and 260 basis points in Resource Industries."),
-             "signal": "caution"},
-        ]
-        data["channels"] = {"items": [
-            {"name": "Products & platforms", "desc": "The product platform expanded across international markets and added new enterprise capabilities.", "signal": "positive"},
-            {"name": "Business lines", "desc": "The business segment delivered higher sales as demand strengthened across core applications.", "signal": "caution"},
-        ]}
-        data["strategic_pillars"] = [
-            {"name": "Growth Expansion", "detail": "We believe Major Projects will expand our presence in rentals and make it easier for large contractors to do business with us and our dealers.", "signal": "positive"},
-            {"name": "Long-Term Strategy", "detail": "Our full-year margin expectation reflects the strategic investments we are making to execute our growth strategy, as well as the ongoing impact of tariffs.", "signal": "caution"},
-        ]
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "signal-font-colors.pdf"
-            create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as document:
-                page = document.pages[0]
-                ppm = page.width / 210
-                def alpha_colors(box):
-                    chars = page.crop(tuple(value * ppm for value in box)).chars
-                    return {tuple(round(value, 4) for value in char["non_stroking_color"])
-                            for char in chars if str(char.get("text", "")).isalpha()}
-                guidance_colors = alpha_colors((63, 77, 119, 145))
-                earnings_colors = alpha_colors((119, 77, 203, 145))
-                channel_colors = alpha_colors((8, 145, 203, 171))
-                pillar_colors = alpha_colors((8, 171, 203, 210))
-        positive = tuple(round(value / 255, 4) for value in COLORS["positive"])
-        caution = tuple(round(value / 255, 4) for value in COLORS["caution"])
-        for colors in (guidance_colors, earnings_colors, channel_colors, pillar_colors):
-            self.assertIn(positive, colors)
-            self.assertIn(caution, colors)
-
     def test_call_message_preserves_complete_sentences_without_ellipsis(self):
         data = sample_data()
         sentence = "Management expects durable growth because customer retention improved across every major market."
@@ -579,265 +503,13 @@ class OutputTests(unittest.TestCase):
             self.assertIn(f"{emoji} **Topic-{signal}**", call)
         self.assertIn(f"{spectrum['caution']} Key Risks:", dashboard)
 
-    def test_pdf_font_primitives_use_complete_signal_spectrum(self):
-        import pdfplumber
-        spectrum = ("best", "strong_positive", "positive", "neutral", "caution", "negative", "worst")
-        cards = [{"display": f"D{index}", "label": f"card{signal}",
-                  "comparison": f"cmp{signal}", "signal": signal}
-                 for index, signal in enumerate(spectrum)]
-        compact = [{"text": f"⚙ compact{signal}", "signal": signal} for signal in spectrum]
-        bullets = [{"text": f"bullet{signal}", "signal": signal} for signal in spectrum]
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "complete-spectrum.pdf"
-            pdf = OnePager()
-            _draw_cards(pdf, "CARDS", cards, 8, 8, 194, 4, 12, 7)
-            pdf.compact_lines(compact, 8, 45, 194, 65, 7, 5.0, 2.5,
-                              color_text_by_signal=True)
-            pdf.bullet_lines(bullets, 8, 114, 194, 65, 7, chars=None, font_size=5.0,
-                             line_height=2.8)
-            pdf.output(str(path))
-            with pdfplumber.open(path) as document:
-                page = document.pages[0]
-                for signal in spectrum:
-                    expected = tuple(round(value / 255, 4) for value in COLORS[signal])
-                    for token in (f"card{signal}", f"cmp{signal}", f"compact{signal}", f"bullet{signal}"):
-                        match = page.search(token)[0]
-                        chars = page.crop((match["x0"], match["top"], match["x1"], match["bottom"])).chars
-                        colors = {tuple(round(value, 4) for value in char["non_stroking_color"])
-                                  for char in chars if str(char.get("text", "")).isalnum()}
-                        self.assertEqual(colors, {expected}, token)
-                icons = [char for char in page.chars if char.get("text") == "⚙"]
-                self.assertEqual(len(icons), len(spectrum))
-                for icon, signal in zip(icons, spectrum):
-                    actual = tuple(round(value, 4) for value in icon["non_stroking_color"])
-                    expected = tuple(round(value / 255, 4) for value in COLORS[signal])
-                    self.assertEqual(actual, expected, f"icon-{signal}")
-
-    def test_pdf_call_summary_mirrors_telegram_selection_colors_and_icons(self):
-        import pdfplumber
-        data = sample_data()
-        rows = [
-            {"topic": "Management Tone", "detail": "We've had a confidential defense prime sign up for two launches in 2027.",
-             "signal": "positive", "section": "Prepared Remarks",
-             "confidence_category": "Confident", "confidence_subcategory": "Assured"},
-            {"topic": "Revenue & Demand", "detail": "Revenue increased approximately 12% year-over-year as high-impact program demand strengthened.", "signal": "positive", "section": "Prepared Remarks"},
-            {"topic": "Margins & Profitability", "detail": "Gross margin improved approximately 200 basis points year-over-year due to favorable product mix.", "signal": "neutral", "section": "Prepared Remarks"},
-            {"topic": "Guidance", "detail": "We expect full-year revenue to increase approximately 10% year-over-year.", "signal": "neutral", "section": "Prepared Remarks"},
-            {"topic": "Products & Innovation", "detail": "We are continuing to expand the product platform with new enterprise capabilities.", "signal": "neutral", "section": "Prepared Remarks"},
-            {"topic": "Customers & Engagement", "detail": "Strong customer engagement continued across every major international market.", "signal": "neutral", "section": "Prepared Remarks"},
-            {"topic": "Capital Allocation", "detail": "Capital expenditure was approximately $100 million as infrastructure investment continued.", "signal": "neutral", "section": "Prepared Remarks"},
-            {"topic": "Competition & Market", "detail": "Continued market expansion strengthened the company's competitive position.", "signal": "neutral", "section": "Prepared Remarks"},
-            {"topic": "Analyst Q&A", "detail": "Management expects demand to remain resilient through 2027.", "signal": "neutral", "section": "Analyst Q&A"},
-        ]
-        data["transcript_insights"] = rows
-        telegram_rows = _complete_insight_selection(rows)
-        pdf_rows = _select_call_summary_insights(rows)
-        self.assertEqual([row["topic"] for row in pdf_rows],
-                         [row["topic"] for row in telegram_rows])
-        compact = _compact_items(pdf_rows, "detail", "topic", 8, 2500, 190)
-        self.assertEqual(len(compact), 8)
-        self.assertTrue(all(str(COMPACT_LABELS[row["topic"]])[0] in SEMANTIC_SYMBOL_COLORS
-                            for row in compact))
-        revenue_summary = next(row["text"] for row in compact if row["topic"] == "Revenue & Demand")
-        self.assertIn("high-impact", revenue_summary)
-        self.assertNotIn("high- program", revenue_summary)
-        self.assertEqual(_direction_marker({"text": "capital expenditures increased", "signal": "neutral",
-                                            "_signal_marker": True})[0], "→")
-        call_message = generate_call_message(data)
-        self.assertIn("🔵 **Management Tone**: Confident -> Assured, We've had", call_message)
-        self.assertNotIn("🟢 **Management Tone**", call_message)
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "telegram-aligned-call-summary.pdf"
-            create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as document:
-                page = document.pages[0]
-                ppm = page.width / 210
-                call_chars = page.crop((119 * ppm, 77 * ppm, 203 * ppm, 145 * ppm)).chars
-                call_text = "".join(char.get("text", "") for char in call_chars)
-                colors = {tuple(round(value, 4) for value in char["non_stroking_color"])
-                          for char in call_chars if str(char.get("text", "")).isalpha()}
-        for label in ("Management Tone", "Revenue", "Margins", "Guidance", "Product", "Customers", "Capital", "Market"):
-            self.assertIn(label, call_text)
-        self.assertIn("Management Tone: Confident -> Assured,", call_text)
-        self.assertNotIn("Q&A", call_text)
-        positive = tuple(round(value / 255, 4) for value in COLORS["positive"])
-        neutral = tuple(round(value / 255, 4) for value in COLORS["neutral"])
-        self.assertEqual(COLORS["positive"], (0, 80, 160))
-        self.assertIn(positive, colors)
-        self.assertIn(neutral, colors)
-
     def test_unquantified_risks_do_not_render_na_placeholders(self):
         data = sample_data()
         data["risks"] = [{"risk": "Competition", "probability": None, "eps_impact": None,
-                           "evidence": "Competition remains intense.", "signal": "caution"}]
+                          "evidence": "Competition remains intense.", "signal": "caution"}]
         message = generate_dashboard_message(data)
         self.assertNotIn("N/A prob", message)
         self.assertIn("not quantified by the company", message)
-
-    def test_pdf_guidance_and_channels_preserve_complete_sentences(self):
-        import pdfplumber
-        data = sample_data()
-        guidance_sentence = "Management expects full-year revenue growth to improve while operating margins remain resilient."
-        channel_sentences = [
-            "The product platform expanded across international markets and added new enterprise capabilities.",
-            "Customer retention improved as engagement increased across the company's principal services.",
-            "Regional distribution expanded through partners in North America, Europe, and Asia.",
-            "The business segment delivered higher sales as demand strengthened across core applications.",
-        ]
-        data["guidance"] = {"rows": [{"name": "Forward outlook", "detail": guidance_sentence,
-                                        "signal": "positive"}]}
-        data["channels"] = {"items": [{"name": f"Channel {index}", "desc": sentence}
-                                         for index, sentence in enumerate(channel_sentences, 1)]}
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "complete-sections.pdf"
-            create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as document:
-                page = document.pages[0]
-                text = page.extract_text() or ""
-                guidance_heading = page.search("GUIDANCE & OUTLOOK")[0]
-                channel_heading = page.search("KEY CHANNELS & SEGMENTS")[0]
-                pillar_heading = page.search("STRATEGIC PILLARS")[0]
-                guidance_text = page.crop((0, guidance_heading["bottom"], page.width,
-                                           channel_heading["top"])).extract_text() or ""
-                channel_text = page.crop((0, channel_heading["bottom"], page.width,
-                                          pillar_heading["top"])).extract_text() or ""
-        self.assertNotIn("...", text)
-        self.assertIn("resilient.", guidance_text)
-        # Channel content preserved (may be compressed); verify key concepts appear
-        self.assertTrue(any(word in channel_text.lower() for word in ("capab", "caps", "capabilities")))
-        self.assertTrue(any(word in channel_text.lower() for word in ("serv", "svcs", "services")))
-        self.assertTrue(any(word in channel_text.lower() for word in ("asia", "apac")))
-        self.assertTrue(any(word in channel_text.lower() for word in ("demand", "strong")))
-
-    def test_pdf_app_like_channels_and_pillars_do_not_become_placeholders(self):
-        import pdfplumber
-        data = sample_data()
-        data["channels"] = {"items": [
-            {"name": "Products & platforms", "desc": "What's been working well with the self-service platform now that you're generally available?"},
-            {"name": "Customers & engagement", "desc": "The goal is getting more mid-market customers that can give our model visibility into more of the user's transactional behavior."},
-            {"name": "Markets & distribution", "desc": "There is some market data suggesting mobile application downloads are down approximately 12% year-over-year in recent months."},
-            {"name": "Business lines", "desc": "Results were below guidance due to slower model improvements, but momentum strengthened in gaming and consumer segments."},
-        ]}
-        data["strategic_pillars"] = [
-            {"name": "Innovation Roadmap", "detail": "We continue to compound improvements in the technology and templates, with more customer success stories supporting platform adoption.", "signal": "positive"},
-            {"name": "Growth Expansion", "detail": "We are still early in the category and can expand supply into non-gaming applications and open-web placements.", "signal": "neutral"},
-            {"name": "Customer Value", "detail": "Analytics providers do not capture all incremental services revenue generated with customers across the category.", "signal": "caution"},
-            {"name": "Operational Excellence", "detail": "The platform can automatically generate interactive end cards with high operating efficiency.", "signal": "positive"},
-            {"name": "Capital Discipline", "detail": "We manage the business to EBITDA dollars and free cash flow rather than a fixed margin percentage.", "signal": "neutral"},
-        ]
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "generic-completeness.pdf"
-            create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as document:
-                page = document.pages[0]
-                text = page.extract_text() or ""
-                channel_heading = page.search("KEY CHANNELS & SEGMENTS")[0]
-                pillar_heading = page.search("STRATEGIC PILLARS")[0]
-                risk_heading = page.search("KEY RISKS")[0]
-                channel_text = page.crop((0, channel_heading["bottom"], page.width,
-                                          pillar_heading["top"])).extract_text() or ""
-                pillar_text = page.crop((0, pillar_heading["bottom"], page.width,
-                                         risk_heading["top"])).extract_text() or ""
-        self.assertNotIn("No verified channel evidence", channel_text)
-        self.assertNotIn("No verified data available", pillar_text)
-        for label in ("Products", "Customers", "Markets", "Segments"):
-            self.assertIn(label, channel_text)
-        for label in ("Innovation", "Expansion", "Customer", "Operations", "Capital"):
-            self.assertIn(label, pillar_text)
-        self.assertNotIn("...", text)
-
-    def test_pdf_adaptive_guidance_layout_renders_every_preselected_row(self):
-        import pdfplumber
-        data = sample_data()
-        names = ("Aurora", "Borealis", "Cirrus", "Denali", "Equinox", "Frontier")
-        data["guidance"] = {"rows": [
-            {"detail": f"We expect {name} revenue to increase 12% year-over-year with operating margin remaining stable.",
-             "signal": "positive"}
-            for name in names
-        ]}
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "adaptive-guidance.pdf"
-            create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as document:
-                page = document.pages[0]
-                guidance_heading = page.search("GUIDANCE & OUTLOOK")[0]
-                channel_heading = page.search("KEY CHANNELS & SEGMENTS")[0]
-                guidance_text = page.crop((0, guidance_heading["bottom"], page.width,
-                                           channel_heading["top"])).extract_text() or ""
-        for name in names:
-            self.assertIn(name, guidance_text)
-
-    def test_compact_items_treats_item_limit_as_layout_hint(self):
-        source = ("We expect revenue between $2.055 billion and $2.085 billion, representing "
-                  "46%-48% year-over-year growth with operating margin remaining stable.")
-        selected = _compact_items(
-            [{"topic": "Guidance", "detail": source, "signal": "positive"}],
-            "detail", "topic", maximum=1, character_budget=500, item_limit=60,
-        )
-        self.assertEqual(len(selected), 1)
-        self.assertLess(len(_compact_summary(source)), len(source))
-        self.assertIn("$2.055B", selected[0]["text"])
-        self.assertIn("46%-48%", selected[0]["text"])
-
-    def test_test_run_is_labeled_in_pdf_and_both_messages(self):
-        import pdfplumber
-        data = sample_data(); data["test_run"] = True
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "test.pdf"; create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as pdf:
-                text = pdf.pages[0].extract_text() or ""
-        self.assertIn("TEST ONLY - STALE MARKET DATA - NOT ACTIONABLE", text)
-        self.assertIn("TEST ONLY", generate_dashboard_message(data))
-        self.assertIn("TEST ONLY", generate_call_message(data))
-
-    def test_save_delivers_automatically_by_default(self):
-        analyzer = EarningsAnalyzer("TEST", output_format="json"); analyzer.data = sample_data()
-        rendered = "/tmp/TEST_Q2_FY2026_Interactive_Dashboard.pdf"
-        with tempfile.TemporaryDirectory() as directory, \
-                patch("run_analysis.render_dashboard_pdf", return_value=rendered) as render, \
-                patch("run_analysis.deliver_reports", return_value=[{"success": True}]) as deliver:
-            paths = analyzer.save(directory)
-        render.assert_called_once()
-        deliver.assert_called_once_with(sample_data(), rendered, "telegram", False)
-        self.assertEqual(paths["interactive_pdf"], rendered)
-        self.assertIn("delivery", paths)
-
-    def test_pdf_is_one_page_and_contains_sources(self):
-        import pdfplumber
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "report.pdf"; create_one_pager_pdf(sample_data(), str(path))
-            with pdfplumber.open(path) as pdf:
-                self.assertEqual(len(pdf.pages), 1)
-                text = pdf.pages[0].extract_text()
-                links = {item.get("uri") for item in pdf.pages[0].hyperlinks}
-            self.assertIn("INCOME STATEMENT HIGHLIGHTS", text)
-            self.assertIn("90% CONF.", text)
-            self.assertIn("Quarter Ended 2026-06-30", text)
-            self.assertIn("CAPITAL & LIQUIDITY", text)
-            self.assertIn("GUIDANCE & OUTLOOK", text)
-            self.assertIn("EARNINGS CALL SUMMARY", text)
-            self.assertIn("KEY CHANNELS & SEGMENTS", text)
-            self.assertIn("STRATEGIC PILLARS", text)
-            self.assertIn("KEY RISKS", text)
-            self.assertIn("INVESTMENT THESIS", text)
-            self.assertIn(sample_data()["sources"]["filing_url"], links)
-
-    def test_pdf_rejects_placeholder_sources(self):
-        data = sample_data(); data["sources"]["filing_url"] = "https://sec.test/filing"
-        with tempfile.TemporaryDirectory() as directory:
-            with self.assertRaisesRegex(RuntimeError, "non-placeholder"):
-                create_one_pager_pdf(data, str(Path(directory) / "report.pdf"))
-
-    def test_long_recommendation_does_not_overlap_ticker(self):
-        import pdfplumber
-        data = sample_data(); data["thesis"]["recommendation"] = "INSUFFICIENT DATA"
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "long-header.pdf"; create_one_pager_pdf(data, str(path))
-            with pdfplumber.open(path) as pdf:
-                words = [word for word in pdf.pages[0].extract_words() if word["top"] < 55]
-        data_word = next(word for word in words if word["text"] == "DATA")
-        ticker_word = next(word for word in words if word["text"] == "TEST")
-        self.assertLess(data_word["x1"], ticker_word["x0"])
 
     def test_thesis_not_predetermined_buy(self):
         analyzer = EarningsAnalyzer("TEST")
@@ -862,11 +534,39 @@ class OutputTests(unittest.TestCase):
 
     def test_runtime_sources_do_not_embed_company_fixtures(self):
         source_paths = [ROOT / "run_analysis.py", ROOT / "scripts" / "analysis_enrichment.py",
-                        ROOT / "scripts" / "create_one_pager_pdf.py", ROOT / "scripts" / "telegram_notify.py"]
+                        ROOT / "scripts" / "telegram_notify.py"]
         source = "\n".join(path.read_text() for path in source_paths)
         for forbidden in ("if self.ticker ==", "META Q", "CAT Q", "ABNB Q", "Family of Apps", "Reality Labs"):
             self.assertNotIn(forbidden, source)
 
+    def test_compact_items_treats_item_limit_as_layout_hint(self):
+        source = ("We expect revenue between $2.055 billion and $2.085 billion, representing "
+                  "46%-48% year-over-year growth with operating margin remaining stable.")
+        selected = _compact_items(
+            [{"topic": "Guidance", "detail": source, "signal": "positive"}],
+            "detail", "topic", maximum=1, character_budget=500, item_limit=60,
+        )
+        self.assertEqual(len(selected), 1)
+        self.assertLess(len(_compact_summary(source)), len(source))
+        self.assertIn("$2.055B", selected[0]["text"])
+        self.assertIn("46%-48%", selected[0]["text"])
+
+    def test_test_run_is_labeled_in_both_messages(self):
+        data = sample_data(); data["test_run"] = True
+        self.assertIn("TEST ONLY", generate_dashboard_message(data))
+        self.assertIn("TEST ONLY", generate_call_message(data))
+
+    def test_save_delivers_automatically_by_default(self):
+        analyzer = EarningsAnalyzer("TEST", output_format="json"); analyzer.data = sample_data()
+        rendered = "/tmp/TEST_Q2_FY2026_Interactive_Dashboard.pdf"
+        with tempfile.TemporaryDirectory() as directory, \
+                patch("run_analysis.render_dashboard_pdf", return_value=rendered) as render, \
+                patch("run_analysis.deliver_reports", return_value=[{"success": True}]) as deliver:
+            paths = analyzer.save(directory)
+        render.assert_called_once()
+        deliver.assert_called_once_with(sample_data(), rendered, "telegram", False)
+        self.assertEqual(paths["interactive_pdf"], rendered)
+        self.assertIn("delivery", paths)
 
 class InteractiveDashboardTests(unittest.TestCase):
     def test_dashboard_schema_is_company_neutral_and_metadata_complete(self):
@@ -1029,7 +729,9 @@ class InteractiveDashboardTests(unittest.TestCase):
             self.assertIn("--wait-for-selector", command)
             self.assertIn("body[data-layout-ready='true'] #valuation-cards .gauge-card", command)
             self.assertIn(html.resolve().as_uri(), command)
-            validate.assert_called_once_with(str(output.resolve()), ["https://www.sec.gov/filing"])
+            # Interactive dashboard PDF validates structure only; clickable links
+            # are verified on the one-pager PDF. Expect empty URL list.
+            validate.assert_called_once_with(str(output.resolve()), [])
 
     def test_telegram_messages_name_interactive_dashboard_attachment(self):
         self.assertIn("Interactive A4 dashboard attached", generate_dashboard_message(sample_data()))

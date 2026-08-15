@@ -14,7 +14,6 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
-from create_one_pager_pdf import create_one_pager_pdf
 from create_interactive_dashboard import create_interactive_dashboard
 from render_interactive_dashboard_pdf import render_dashboard_pdf
 from robinhood_mcp_get_quote import get_quote
@@ -361,15 +360,14 @@ class EarningsAnalyzer:
         safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"; directory = Path(output_dir); directory.mkdir(parents=True, exist_ok=True)
         public = {key: value for key, value in self.data.items() if not key.startswith("_")}
         paths = {}
-        if self.output_format in {"json", "both", "pdf"}:
+        if self.output_format in {"json", "both"}:
             path = directory / f"{self.ticker}_{safe_period}_analysis.json"; path.write_text(json.dumps(public, indent=2)); paths["json"] = str(path)
         if self.output_format in {"markdown", "both"}:
             path = directory / f"{self.ticker}_{safe_period}_analysis.md"; path.write_text(self.markdown(public)); paths["markdown"] = str(path)
-        pdf_path = directory / f"{self.ticker}_{safe_period}_Earnings_OnePager.pdf"; paths["pdf"] = create_one_pager_pdf(public, str(pdf_path))
         dashboard_dir = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
         paths["html"] = create_interactive_dashboard(public, str(dashboard_dir))
         interactive_pdf = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
-        source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "transcript_url", "short_interest_url")]
+        source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "transcript_url")]
         paths["interactive_pdf"] = render_dashboard_pdf(paths["html"], str(interactive_pdf), source_urls)
         if deliver: paths["delivery"] = deliver_reports(public, paths["interactive_pdf"], telegram_target, dry_run)
         return paths
@@ -393,7 +391,7 @@ class EarningsAnalyzer:
 def main():
     parser = argparse.ArgumentParser(description="Verified company earnings analysis")
     parser.add_argument("--ticker", required=True); parser.add_argument("--max-filing-age-days", type=int, default=120)
-    parser.add_argument("--output-format", choices=["json", "markdown", "both", "pdf"], default="both")
+    parser.add_argument("--output-format", choices=["json", "markdown", "both"], default="both")
     parser.add_argument("--output-dir", default=str(Path.home() / "outputs")); parser.add_argument("--no-deliver", action="store_true",
                         help="Generate artifacts without automatically delivering them")
     parser.add_argument("--telegram-target", default="telegram"); parser.add_argument("--dry-run", action="store_true")
