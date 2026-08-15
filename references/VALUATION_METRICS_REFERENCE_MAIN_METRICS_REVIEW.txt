@@ -1,0 +1,303 @@
+================================================================================
+VALUATION METRICS GUIDE
+================================================================================
+
+--------------------------------------------------------------------------------
+1. MAIN VALUE METRICS
+--------------------------------------------------------------------------------
+These are cross-regime valuation metrics that can remain useful whether earnings / FCF
+are positive or negative, as long as the denominator itself is positive and economically
+meaningful. They form the first valuation layer before profitability-specific metrics.
+
+METRIC: P/S (Annualized)
+DEFINITION: Market capitalization / annualized revenue.
+IMPACT: Shows how much equity investors are paying for each dollar of annualized sales. Useful when earnings are negative or too small for P/E to be meaningful.
+SCORE: Tier 1 for unprofitable companies / Tier 2 for profitable companies
+VALUE MEASURE: Lower is better.
+
+Suggested ranges:
+
+< 2x: Low / potentially attractive
+2x–5x: Moderate
+5x–10x: Expensive / growth premium
+> 10x: Very expensive / requires strong growth and margins
+
+--------------------------------------------------
+METRIC: EV / Revenue
+DEFINITION: Enterprise value / total annualized revenue.
+IMPACT: Tells you exactly how much you are paying to buy one dollar of their total sales, adjusting for debt and cash.
+SCORE: Tier 1 (High / Core / Universal Sales Valuation)
+VALUE MEASURE: Lower is better (cheaper).
+  • < 2.0: Deep value
+  • 2.0–5.0: Typical / Average
+  • > 5.0: Expensive (reserved for hyper-growth tech/software)
+
+--------------------------------------------------
+METRIC: EV / Gross Profit
+DEFINITION: Enterprise value / annualized gross profit.
+IMPACT: Shows if the core product itself is actually profitable to make, before paying for all the corporate overhead and management salaries.
+SCORE: Tier 2 (Conditional / Margin Comparison)
+VALUE MEASURE: Lower is better (cheaper).
+  Helps normalize expensive EV/Revenue multiples for companies that have incredibly high gross margins.
+
+--------------------------------------------------
+METRIC: EV / Revenue / Growth
+DEFINITION: (EV / Revenue) / YoY Revenue Growth Rate (%).
+IMPACT: Helps justify a high price tag by factoring in how incredibly fast the company's sales are multiplying year over year.
+SCORE: Tier 2 (Common Context)
+VALUE MEASURE: Lower is better.
+  Functions like a PEG ratio for top-line sales. A lower ratio means you are getting more growth for the price you are paying.
+
+--------------------------------------------------
+METRIC: Price to Book (P/B)
+DEFINITION: Market cap / total equity (or tangible book value).
+IMPACT: Shows if you are paying a fair price for the actual physical "stuff" the company owns (buildings, cash, equipment).
+SCORE: Tier 2 (Asset-Heavy / Financial Companies Only)
+VALUE MEASURE: Lower is better.
+  • < 1.0: Cheap (trading below liquidation value)
+  • 1.0–3.0: Typical
+  • > 3.0: Expensive (unless highly profitable)
+
+
+--------------------------------------------------------------------------------
+2. PROFITABILITY-BASED VALUATION METRICS
+--------------------------------------------------------------------------------
+These metrics depend on positive or meaningfully normalized earnings, EBITDA, EBIT,
+or free cash flow. They should not be forced onto companies with negative denominators.
+
+METRIC: Forward P/E (NTM)
+DEFINITION: Current share price / consensus next-twelve-month diluted EPS.
+IMPACT: Tells you if you are overpaying today for the company's future success. It focuses on where the business is going rather than where it has been.
+looks forward at the Next Twelve Months of expected earnings.
+SCORE: Tier 1 (Very High / Core)
+VALUE MEASURE: Lower is better (cheaper).
+  • < 15: Cheap / Undervalued
+  • 15–25: Typical / Fair
+  • > 25: Expensive (priced for high growth)
+
+--------------------------------------------------
+METRIC: Trailing P/E
+DEFINITION: Market cap / trailing net income, or share price / trailing diluted EPS.
+IMPACT: A reality check based on cold, hard facts. It shows exactly how much you are paying for the actual profits the business generated over the last 12 months.
+SCORE: Tier 1 (Very High / Core)
+VALUE MEASURE: Lower is better (cheaper).
+  • < 15: Cheap / Value territory
+  • 15–25: Typical / Average
+  • > 25: Expensive / Premium
+
+--------------------------------------------------
+METRIC: EV / EBITDA
+DEFINITION: Enterprise value / EBITDA.
+IMPACT: Gives you the total price tag of the entire business compared to its raw earning power. It lets you compare companies regardless of their debt or tax rates.
+SCORE: Tier 1 (High / Core)
+VALUE MEASURE: Lower is better (cheaper).
+  • < 8: Cheap
+  • 8–14: Typical for established companies
+  • > 15: Expensive (implies high growth expectations)
+
+--------------------------------------------------
+METRIC: Levered FCF Yield
+DEFINITION: FCF available to common equity / market cap.
+IMPACT: Shows the true "cash return" you get for buying the stock. It is the actual cash the business puts in its pocket relative to its stock price.
+SCORE: Tier 1 (High / Core)
+VALUE MEASURE: Higher is better.
+  • > 10%: Cheap valuation (high yield)
+  • 5%–10%: Typical / Average
+  • < 5%: Expensive (low yield)
+
+--------------------------------------------------
+METRIC: EV / EBIT
+DEFINITION: Enterprise value / operating income.
+IMPACT: Similar to EV/EBITDA, but it factors in the very real cost of physical equipment wearing out over time.
+SCORE: Tier 2 (Common / Recommended)
+VALUE MEASURE: Lower is better (cheaper).
+  Typically runs slightly higher than EV/EBITDA. Lower values indicate you are paying less for core operating profits.
+
+--------------------------------------------------
+METRIC: EV / FCFF (Unlevered FCF)
+DEFINITION: Enterprise value / free cash flow to the firm.
+IMPACT: Shows the total cash the business generates for everyone involved before any loans are paid off.
+SCORE: Tier 2 (Common / Conditional)
+VALUE MEASURE: Lower is better (cheaper).
+  • < 15: Attractive
+  • 15–25: Typical
+  • > 30: Expensive
+
+--------------------------------------------------
+METRIC: Normalized Multi-Year Multiples
+DEFINITION: 3-to-5 year averaged earnings or FCF / Valuation.
+IMPACT: Smooths out the roller coaster of unusually good and bad years so you can clearly see the true, long-term trend of the business.
+SCORE: Tier 2 (Common)
+VALUE MEASURE: Lower is better (cheaper).
+  Ranges depend on the underlying metric (e.g., smoothed P/E should follow standard P/E ranges).
+
+--------------------------------------------------
+METRIC: PEG Ratio
+DEFINITION: P/E ratio / expected EPS growth rate (as a whole number).
+IMPACT: Helps you figure out if a fast-growing stock is actually a good deal, or if you are just paying a premium price for market hype.
+SCORE: Tier 1 (Optional Context)
+VALUE MEASURE: Lower is better.
+  • < 1.0: Undervalued relative to growth
+  • 1.0–2.0: Typical for growth stocks
+  • > 2.0: Expensive
+
+--------------------------------------------------
+METRIC: FCF Conversion
+DEFINITION: FCF available to equity / net income.
+IMPACT: Acts as a lie-detector test for the company's accountants. It verifies that the "profits" reported on paper are actually backed by real cash.
+SCORE: Tier 3 (Supporting Check)
+VALUE MEASURE: Higher is better.
+  • > 100%: Excellent (profits are fully backed by cash)
+  • < 100%: Needs monitoring (profits exceed actual cash generated)
+
+--------------------------------------------------
+METRIC: Total Shareholder Yield
+DEFINITION: (Cash dividends + share repurchases - share issuance) / market cap.
+IMPACT: Shows the total slice of the pie the company is handing directly back to you, combining dividends and stock buybacks.
+SCORE: Tier 3 (Supporting Check)
+VALUE MEASURE: Higher is better.
+  • > 5%: High cash return to shareholders
+  • 2%–4%: Typical for mature companies
+  • < 2%: Low yield
+
+--------------------------------------------------
+METRIC: Price to Owner Earnings
+DEFINITION: Market cap / (Net income + D&A - maintenance CapEx ± Δ working capital).
+IMPACT: Reveals how much cash the owner can actually pull out of the business without breaking the current day-to-day operations.
+SCORE: Tier 4 (Deep Dive Only)
+VALUE MEASURE: Lower is better (cheaper).
+  Functions similarly to standard P/E ranges but uses a stricter cash definition.
+
+--------------------------------------------------
+METRIC: EV / NOPAT
+DEFINITION: Enterprise value / [EBIT x (1 - normalized operating tax rate)].
+IMPACT: A pure look at the company's operating profits after paying taxes, completely ignoring the costs of their debt.
+SCORE: Tier 4 (Deep Dive / Filter Out)
+VALUE MEASURE: Lower is better (cheaper).
+  Tends to mirror EV/EBIT benchmarks.
+
+
+--------------------------------------------------------------------------------
+3. VALUATION METRICS WHEN PROFITS / FCF ARE NEGATIVE
+--------------------------------------------------------------------------------
+When earnings or FCF are negative, profit-based multiples such as P/E, EV / EBIT,
+EV / EBITDA, and FCF-based valuation multiples can become meaningless or misleading.
+
+
+METRIC: EV / Revenue
+DEFINITION: Enterprise value / total annualized revenue.
+IMPACT: Tells you exactly how much you are paying to buy one dollar of their total sales, adjusting for debt and cash.
+SCORE: Tier 1 (High / Core for Unprofitable Growth)
+VALUE MEASURE: Lower is better (cheaper).
+  • < 2.0: Deep value
+  • 2.0–5.0: Typical / Average
+  • > 5.0: Expensive (reserved for hyper-growth tech/software)
+
+--------------------------------------------------
+METRIC: EV / Gross Profit
+DEFINITION: Enterprise value / annualized gross profit.
+IMPACT: Shows if the core product itself is actually profitable to make, before paying for all the corporate overhead and management salaries.
+SCORE: Tier 1 (High for Segment & Margin Expansion)
+VALUE MEASURE: Lower is better (cheaper).
+  Helps normalize expensive EV/Revenue multiples for companies that have incredibly high gross margins.
+
+--------------------------------------------------
+METRIC: EV / Backlog
+DEFINITION: Enterprise value / total order backlog.
+IMPACT: Essential for project-based companies. It measures your investment against the guaranteed future work the company has already signed contracts for.
+SCORE: Tier 1 (High for Defense / Aerospace / Project-Based)
+VALUE MEASURE: Lower is better (cheaper).
+  A lower number means you are paying less for every dollar of future guaranteed revenue.
+
+--------------------------------------------------
+METRIC: EV / Revenue / Growth
+DEFINITION: (EV / Revenue) / YoY Revenue Growth Rate (%).
+IMPACT: Helps justify a high price tag by factoring in how incredibly fast the company's sales are multiplying year over year.
+SCORE: Tier 2 (Common Context)
+VALUE MEASURE: Lower is better.
+  Functions like a PEG ratio for top-line sales. A lower ratio means you are getting more growth for the price you are paying.
+
+--------------------------------------------------
+METRIC: Price to Book (P/B)
+DEFINITION: Market cap / total equity (or tangible book value).
+IMPACT: Shows if you are paying a fair price for the actual physical "stuff" the company owns (buildings, cash, equipment).
+SCORE: Tier 1 (Asset-Heavy / Financial Exceptions)
+VALUE MEASURE: Lower is better.
+  • < 1.0: Cheap (trading below liquidation value)
+  • 1.0–3.0: Typical
+  • > 3.0: Expensive (unless highly profitable)
+
+
+================================================================================
+4. SHORT INTEREST & STOCK-BASED COMPENSATION METRICS
+================================================================================
+These metrics provide additional risk, dilution, and cash-flow quality context. They are
+especially useful for heavily shorted stocks and companies that rely significantly on
+stock-based compensation.
+
+METRIC: Short Interest % of Float
+DEFINITION: Shares sold short / public float.
+IMPACT: Shows how heavily investors are betting against the stock. Very high short interest can signal concerns about valuation, fundamentals, execution, or accounting, while also increasing short-squeeze potential.
+SCORE: Tier 1 (High / Risk Context)
+VALUE MEASURE: Lower is generally safer.
+  • < 5%: Low / Normal
+  • 5%–10%: Moderate
+  • 10%–20%: High
+  • > 20%: Very High / Significant bearish positioning
+
+--------------------------------------------------
+METRIC: Short Ratio / Days to Cover
+DEFINITION: Shares sold short / average daily trading volume.
+IMPACT: Estimates how many normal trading days it would take short sellers to buy back all shares currently sold short. A high ratio can signal crowded bearish positioning and greater short-squeeze risk.
+SCORE: Tier 1 (High / Risk Context)
+VALUE MEASURE: Lower generally indicates less short-side pressure.
+  • < 2 days: Low
+  • 2–5 days: Normal / Moderate
+  • 5–10 days: High
+  • > 10 days: Very High / Crowded short
+
+--------------------------------------------------
+METRIC: SBC / Revenue
+DEFINITION: Stock-based compensation expense / revenue.
+IMPACT: Shows how much of the company's revenue is being consumed by equity compensation. It is particularly useful for software, technology, and high-growth companies where SBC can be a major recurring expense.
+SCORE: Tier 1 (High / Core SBC Metric)
+VALUE MEASURE: Lower is better.
+  • < 5%: Low / Healthy
+  • 5%–10%: Moderate
+  • 10%–20%: High
+  • > 20%: Very High
+
+--------------------------------------------------
+METRIC: SBC / Free Cash Flow
+DEFINITION: Stock-based compensation / reported free cash flow.
+IMPACT: Shows how dependent reported FCF is on adding back stock compensation. A high ratio can indicate that reported cash generation overstates the economic benefit reaching shareholders.
+SCORE: Tier 2 (High / Core)
+VALUE MEASURE: Lower is better.
+  • < 20%: Strong
+  • 20%–40%: Moderate
+  • 40%–75%: High
+  • > 75%: Very High / FCF quality concern
+  • > 100%: SBC exceeds reported FCF
+
+--------------------------------------------------
+METRIC: SBC-Adjusted FCF Yield
+DEFINITION: (Levered FCF - stock-based compensation) / market capitalization.
+IMPACT: Measures shareholder cash yield after treating stock-based compensation as an economic cost. It provides a stricter valuation view than reported FCF Yield for companies with significant SBC.
+SCORE: Tier 1 (Very High / Core)
+VALUE MEASURE: Higher is better.
+  • > 8%: Attractive
+  • 4%–8%: Reasonable
+  • 2%–4%: Expensive
+  • < 2%: Very Expensive
+
+--------------------------------------------------
+METRIC: Net Share Dilution
+DEFINITION: Percentage change in diluted shares outstanding over the period.
+IMPACT: Shows whether stock-based compensation and new share issuance are diluting existing shareholders after accounting for company buybacks.
+SCORE: Tier 1 (High / Shareholder Impact)
+VALUE MEASURE: Lower is better.
+  • < 0%: Share count shrinking / Positive
+  • 0%–1%: Minimal dilution
+  • 1%–3%: Moderate dilution
+  • 3%–5%: High dilution
+  • > 5%: Very High dilution

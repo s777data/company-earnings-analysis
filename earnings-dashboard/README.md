@@ -31,7 +31,9 @@ All company values, labels, explanations, formulas, scales, evidence, and source
 
 - **Income Statement Highlights:** four core cards in the stable sequence Revenue, Gross Profit, Operating Income, and Net Income. Each card uses a centered label, prominent value, and directional YoY badge.
 - **Key Ratios:** six generated margin/growth cards in one row. Each uses a centered label and value, dashed context divider, period label, and signal-colored bottom rule.
-- Both card variants remain buttons with keyboard activation, focus styling, and the full metric-detail dialog.
+- **Valuation:** compact semicircular gauges populated from `../references/VALUATION_METRICS_REFERENCE_MAIN_METRICS_REVIEW.txt`. The renderer emits all applicable main metrics, then unique regime-specific metrics; profitable-company metrics retain Tier 1→2→3 order. The grid uses no more than eight cards per row.
+- **Short Interest & Stock-Based Compensation:** a separate gauge-card section for applicable official Nasdaq short-interest observations and SEC XBRL SBC/dilution measures.
+- Every card remains a native button with keyboard activation, focus styling, and the full metric-detail dialog.
 
 ## Generate with the earnings pipeline
 

@@ -1,6 +1,6 @@
 ---
 name: company-earnings-analysis
-version: 2.4
+version: 2.5
 description: Evidence-gated analysis of the latest quarterly SEC filing and mandatory web earnings-call transcript
 category: research
 model: high-reasoning
@@ -31,6 +31,8 @@ The run stops rather than substituting plausible values when any of these gates 
 - Earnings release: quarter-matched SEC 8-K Item 2.02 and its exhibits when available.
 - Earnings call: web transcript only. SEC exhibits are not accepted as a substitute.
 - Quote and broker fundamentals: `robinhood-trading` MCP only. When a test explicitly requests market data at close, prefer the newest completed daily regular-session candle, but if the daily series lags a newer broker-stamped regular-session last trade, use that newer regular-session trade and preserve its exact venue timestamp. Never substitute extended-hours pricing.
+- Short interest and days to cover: the official Nasdaq short-interest report. This source is settlement-date data, not a live quote. Calculate Short Interest % of Float only when a separately verified public-float denominator is available; never substitute shares outstanding for public float.
+- Stock-based compensation, diluted shares, backlog, equity, cash, debt, revenue, gross profit, operating income, and cash flow: SEC filing/XBRL facts with period and concept citations.
 
 Supported transcript hosts include StockAnalysis, Seeking Alpha, Motley Fool, MarketBeat, StreetInsider, and Investing.com. The accepted transcript URL is retained in every output.
 
@@ -47,7 +49,9 @@ Never infer a fiscal quarter from the filing month. The report uses SEC XBRL `Do
 - Retain the selected concept, context, start date, end date, duration, and unit.
 - Select prior-year comparisons only when the duration is comparable and the period end is approximately one year earlier.
 - Annualized revenue and free cash flow are explicitly labeled annualized; they are not mislabeled TTM.
+- Extract `RevenueRemainingPerformanceObligation` for backlog and `AllocatedShareBasedCompensationExpense`/`ShareBasedCompensation` for SBC only from matching consolidated periods.
 - A zero or negative earnings-based P/E is displayed as `N/M` (`Not meaningful`), never as cheap or attractive.
+- Valuation cards follow `references/VALUATION_METRICS_REFERENCE_MAIN_METRICS_REVIEW.txt`: all applicable main metrics first, then unique profitability metrics in Tier 1→2→3 order when earnings and FCF are positive, or unique negative-regime metrics otherwise. Omit unsupported or economically meaningless denominator-based metrics rather than forcing an `N/A` multiple.
 
 ## Analysis policy
 
@@ -84,6 +88,7 @@ The renderer consumes a company-neutral schema. Runtime source code must not con
 - Income Statement Highlights
 - Key Ratios
 - Valuation
+- Short Interest & Stock-Based Compensation Metrics
 - Capital & Liquidity / Guidance & Outlook / Earnings Call Summary
 - Key Channels & Segments
 - Strategic Pillars
@@ -135,7 +140,7 @@ Generated filenames use ticker and verified fiscal period:
 - `<TICKER>_Qn_FYyyyy_Interactive_Dashboard/index.html` plus static CSS, JavaScript, bundled Inter font, and reusable JSON data
 - `<TICKER>_Qn_FYyyyy_Interactive_Dashboard.pdf` rendered from the final HTML, validated as one-page A4, and attached to both Telegram messages
 
-The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend. Income Statement Highlights uses the verified core sequence `Revenue`, `Gross Profit`, `Operating Income`, and `Net Income`; Key Ratios uses the six generated margin and growth measures. Both sections use shared reference-style card renderers with titles above values, comparison treatments, accessible detail dialogs, and keyboard activation. The static dashboard itself has no runtime dependency; pipeline PDF rendering requires Playwright with Chromium or an explicit `PLAYWRIGHT_CLI` path.
+The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend. Income Statement Highlights uses the verified core sequence `Revenue`, `Gross Profit`, `Operating Income`, and `Net Income`; Key Ratios uses the six generated margin and growth measures. Valuation and ownership-risk cards use compact semicircular gauges, tier badges, formula and impact copy from the repository reference guide, accessible detail dialogs, and at most eight cards per row. Only applicable metrics with verified, economically meaningful inputs are emitted. All card variants retain keyboard activation. The static dashboard itself has no runtime dependency; pipeline PDF rendering requires Playwright with Chromium or an explicit `PLAYWRIGHT_CLI` path.
 
 ## Verification
 

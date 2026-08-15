@@ -123,8 +123,12 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
                        else "robinhood-trading MCP regular-session last trade")
     result = {
         "symbol": symbol.upper(), "price": selected_price,
-        "market_cap": number("market_cap"), "shares_outstanding": number("shares_outstanding"),
-        "pe_ratio": number("pe_ratio"), "high_52": number("high_52_weeks", "high_52"),
+        "market_cap": number("market_cap"), "enterprise_value": number("enterprise_value", "enterpriseValue"),
+        "shares_outstanding": number("shares_outstanding"),
+        "public_float": number("public_float", "float", "float_shares", "shares_float"),
+        "pe_ratio": number("pe_ratio"), "forward_pe_ratio": number("forward_pe_ratio", "forward_pe"),
+        "peg_ratio": number("peg_ratio", "peg"),
+        "high_52": number("high_52_weeks", "high_52"),
         "low_52": number("low_52_weeks", "low_52"),
         "updated_at": selected_timestamp,
         "source": selected_source,

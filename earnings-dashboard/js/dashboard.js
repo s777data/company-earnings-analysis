@@ -105,6 +105,168 @@
     return button;
   }
 
+  function gaugeDomain(metric) {
+    const value = Number(metric.raw_value);
+    const scale = metric.scale || [];
+    if (!Number.isFinite(value) || scale.length === 0) return null;
+    const finiteMaximums = scale.filter((step) => step.max !== null).map((step) => Number(step.max)).filter(Number.isFinite);
+    if (finiteMaximums.length === 0) return null;
+    const largest = Math.max(...finiteMaximums);
+    const minimum = Math.min(0, value);
+    const ceiling = Math.max(largest * 1.35, 1);
+    return {
+      minimum,
+      ceiling,
+      position: Math.max(0, Math.min(1, (value - minimum) / (ceiling - minimum)))
+    };
+  }
+
+  function arcPoint(position) {
+    const angle = Math.PI * (1 - position);
+    return [50 + 42 * Math.cos(angle), 46 - 42 * Math.sin(angle)];
+  }
+
+  function arcSegment(start, end) {
+    const [x1, y1] = arcPoint(start);
+    const [x2, y2] = arcPoint(end);
+    return `M${x1.toFixed(2)} ${y1.toFixed(2)} A42 42 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
+  }
+
+  function thresholdSuffix(metric) {
+    const display = text(metric.display_value);
+    if (display.endsWith("%")) return "%";
+    if (display.endsWith("d")) return "d";
+    if (display.endsWith("x")) return "x";
+    return "";
+  }
+
+  function gaugeCard(metric) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `gauge-card ${statusClass(metric.status)}`;
+    button.setAttribute("aria-label", `Open details for ${text(metric.name)}: ${text(metric.display_value)}, ${text(metric.assessment)}`);
+
+    const header = document.createElement("span");
+    header.className = "gauge-card-header";
+    const name = document.createElement("span");
+    name.className = "gauge-card-name";
+    name.textContent = text(metric.name);
+    const tier = document.createElement("span");
+    tier.className = "gauge-tier";
+    tier.textContent = Number.isFinite(Number(metric.tier)) ? `Tier ${metric.tier}` : "Context";
+    header.append(name, tier);
+
+    const namespace = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(namespace, "svg");
+    svg.setAttribute("viewBox", "0 0 100 58");
+    svg.setAttribute("aria-hidden", "true");
+    svg.classList.add("mini-gauge");
+    const domain = gaugeDomain(metric);
+    const scale = metric.scale || [];
+    const higherIsBetter = /higher/i.test(text(metric.directionality, ""));
+    const lowerPalettes = {
+      2: ["#16a34a", "#dc2626"],
+      3: ["#16a34a", "#facc15", "#dc2626"],
+      4: ["#16a34a", "#facc15", "#f97316", "#dc2626"],
+      5: ["#16a34a", "#84cc16", "#facc15", "#f97316", "#dc2626"]
+    };
+    const basePalette = lowerPalettes[Math.max(2, Math.min(5, scale.length))] || lowerPalettes[5];
+    const palette = higherIsBetter ? [...basePalette].reverse() : basePalette;
+
+    const track = document.createElementNS(namespace, "path");
+    track.setAttribute("d", "M8 46 A42 42 0 0 1 92 46");
+    track.classList.add("gauge-track");
+    svg.append(track);
+
+    if (domain) {
+      let start = 0;
+      scale.forEach((step, index) => {
+        const rawEnd = step.max === null ? domain.ceiling : Number(step.max);
+        const end = Math.max(start, Math.min(1, (rawEnd - domain.minimum) / (domain.ceiling - domain.minimum)));
+        const segment = document.createElementNS(namespace, "path");
+        segment.setAttribute("d", arcSegment(start, end));
+        segment.setAttribute("stroke", palette[Math.min(index, palette.length - 1)]);
+        segment.classList.add("gauge-arc", "gauge-segment");
+        svg.append(segment);
+        start = end;
+      });
+      if (start < 1) {
+        const finalSegment = document.createElementNS(namespace, "path");
+        finalSegment.setAttribute("d", arcSegment(start, 1));
+        finalSegment.setAttribute("stroke", palette[Math.min(scale.length - 1, palette.length - 1)]);
+        finalSegment.classList.add("gauge-arc", "gauge-segment");
+        svg.append(finalSegment);
+      }
+
+      const suffix = thresholdSuffix(metric);
+      const finiteThresholds = scale.filter((step) => step.max !== null).map((step) => Number(step.max));
+      const labels = [`<${finiteThresholds[0]}${suffix}`, ...finiteThresholds.map((value) => `${value}${suffix}`), `>${finiteThresholds.at(-1)}${suffix}`];
+      const positions = [0, ...finiteThresholds.map((value) => Math.max(0, Math.min(1, (value - domain.minimum) / (domain.ceiling - domain.minimum)))), 1];
+      labels.forEach((label, index) => {
+        const [x, y] = arcPoint(positions[index]);
+        const node = document.createElementNS(namespace, "text");
+        node.setAttribute("x", x.toFixed(2));
+        node.setAttribute("y", (y + (index === 0 || index === labels.length - 1 ? 8 : -3)).toFixed(2));
+        node.setAttribute("text-anchor", index === 0 ? "start" : index === labels.length - 1 ? "end" : "middle");
+        node.classList.add("gauge-threshold");
+        node.textContent = label;
+        svg.append(node);
+      });
+
+      const needle = document.createElementNS(namespace, "line");
+      needle.setAttribute("x1", "50"); needle.setAttribute("y1", "46");
+      needle.setAttribute("x2", "50"); needle.setAttribute("y2", "17");
+      needle.setAttribute("transform", `rotate(${-90 + domain.position * 180} 50 46)`);
+      needle.classList.add("gauge-needle");
+      const hub = document.createElementNS(namespace, "circle");
+      hub.setAttribute("cx", "50"); hub.setAttribute("cy", "46"); hub.setAttribute("r", "2.4");
+      hub.classList.add("gauge-hub");
+      svg.append(needle, hub);
+    } else {
+      svg.classList.add("gauge-unscaled");
+      const fallbackPalette = higherIsBetter
+        ? ["#dc2626", "#facc15", "#f97316", "#16a34a"]
+        : ["#16a34a", "#facc15", "#f97316", "#dc2626"];
+      fallbackPalette.forEach((color, index) => {
+        const segment = document.createElementNS(namespace, "path");
+        segment.setAttribute("d", arcSegment(index / fallbackPalette.length, (index + 1) / fallbackPalette.length));
+        segment.setAttribute("stroke", color);
+        segment.classList.add("gauge-arc", "gauge-segment", "gauge-context-segment");
+        svg.append(segment);
+      });
+    }
+
+    const result = document.createElement("span");
+    result.className = "gauge-result";
+    const value = document.createElement("strong");
+    value.textContent = text(metric.display_value);
+    const assessment = document.createElement("span");
+    assessment.textContent = text(metric.assessment, "Context Only");
+    const direction = document.createElement("small");
+    direction.textContent = text(metric.directionality);
+    result.append(value, assessment, direction);
+
+    const facts = document.createElement("span");
+    facts.className = "gauge-facts";
+    const formula = document.createElement("span");
+    formula.textContent = `▣ ${compact(metric.formula, 62)}`;
+    const impact = document.createElement("span");
+    impact.textContent = `↗ ${compact(metric.why_it_matters, 66)}`;
+    facts.append(formula, impact);
+
+    button.append(header, svg, result, facts);
+    button.addEventListener("click", () => openMetric(metric, button));
+    return button;
+  }
+
+  function renderGaugeMetrics(id, metrics) {
+    const container = $(id);
+    const items = metrics || [];
+    container.style.setProperty("--gauge-columns", String(Math.max(1, Math.min(8, items.length))));
+    container.replaceChildren(...items.map(gaugeCard));
+    if (items.length === 0) container.append(emptyState("No applicable verified metrics available."));
+  }
+
   function renderMetrics(id, metrics, variant = "default") {
     const container = $(id);
     container.replaceChildren(...(metrics || []).map((metric) => metricCard(metric, variant)));
@@ -183,7 +345,7 @@
   function sourceLinks(sources) {
     const container = $("source-links");
     container.replaceChildren();
-    const links = [["SEC", sources.filing_url], ["XBRL", sources.xbrl_url], ["Transcript", sources.transcript_url]].filter(([, url]) => url);
+    const links = [["SEC", sources.filing_url], ["XBRL", sources.xbrl_url], ["Transcript", sources.transcript_url], ["Short interest", sources.short_interest_url]].filter(([, url]) => url);
     links.forEach(([label, url], index) => {
       if (index) container.append(document.createTextNode(" • "));
       const link = document.createElement("a");
@@ -217,7 +379,9 @@
 
     renderMetrics("income-cards", sections.income_statement, "income");
     renderMetrics("ratio-cards", sections.key_ratios, "ratio");
-    renderMetrics("valuation-cards", sections.valuation);
+    $("valuation-regime").textContent = `${text(sections.valuation_regime, "Applicable metrics")} · guide order · applicable only`;
+    renderGaugeMetrics("valuation-cards", sections.valuation);
+    renderGaugeMetrics("risk-metric-cards", sections.short_interest_sbc);
     renderList("capital-content", sections.capital_liquidity, 8, 120);
     renderList("guidance-content", sections.guidance, 6, 155);
     renderList("call-content", sections.earnings_call, 8, 165);

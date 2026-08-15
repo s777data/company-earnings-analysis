@@ -137,6 +137,12 @@ h2 {
 .income-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 0; }
 .ratio-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); padding: 0; }
 .valuation-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.valuation-gauge-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--gauge-columns, 8), minmax(0, 1fr));
+  gap: .55mm;
+  padding: .55mm 0 .65mm;
+}
 .metric-card {
   position: relative;
   min-width: 0;
@@ -160,20 +166,20 @@ h2 {
   display: grid;
   place-items: center;
   align-content: center;
-  min-height: 24mm;
-  padding: 2mm 1.5mm;
+  min-height: 19mm;
+  padding: 1.1mm 1.2mm;
   border-color: #e0e5e9;
   border-radius: 2.1mm;
   background: linear-gradient(145deg, #fff 0%, #fbfcfd 100%);
   box-shadow: 0 .6mm 1.7mm rgb(20 35 52 / 9%);
   text-align: center;
 }
-.metric-card--income .metric-name { margin: 0 0 1.7mm; color: #111827; font-size: 6.4px; font-weight: 570; }
-.metric-card--income .metric-value { color: currentColor; font-size: 15.5px; font-weight: 790; letter-spacing: -.035em; white-space: nowrap; }
+.metric-card--income .metric-name { margin: 0 0 .8mm; color: #111827; font-size: 6px; font-weight: 570; }
+.metric-card--income .metric-value { color: currentColor; font-size: 13px; font-weight: 790; letter-spacing: -.035em; white-space: nowrap; }
 .metric-card--income .comparison-badge {
-  min-width: 28mm;
-  margin-top: 2mm;
-  padding: 1.2mm 2mm;
+  min-width: 25mm;
+  margin-top: 1mm;
+  padding: .7mm 1.5mm;
   border: .25mm solid;
   border-radius: 2mm;
   font-size: 6px;
@@ -188,8 +194,8 @@ h2 {
   display: grid;
   grid-template-rows: auto 1fr auto auto;
   align-items: center;
-  min-height: 21mm;
-  padding: 1.7mm 1.3mm 1.4mm;
+  min-height: 17mm;
+  padding: 1.1mm 1.1mm 1mm;
   border: .25mm solid #e0e5e9;
   border-bottom: 1.1mm solid currentColor;
   border-radius: 1.7mm;
@@ -197,10 +203,10 @@ h2 {
   box-shadow: 0 .55mm 1.5mm rgb(20 35 52 / 8%);
   text-align: center;
 }
-.metric-card--ratio .metric-name { margin: 0; min-height: 4mm; color: #111827; font-size: 5.2px; font-weight: 570; }
-.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 12.5px; font-weight: 790; letter-spacing: -.025em; white-space: nowrap; }
-.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .8mm auto 0; border-top: .25mm dashed #d5dbe1; }
-.metric-card--ratio .metric-comparison { margin: .8mm 0 0; color: var(--muted); font-size: 4.8px; font-weight: 500; }
+.metric-card--ratio .metric-name { margin: 0; min-height: 3mm; color: #111827; font-size: 4.9px; font-weight: 570; }
+.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 10.5px; font-weight: 790; letter-spacing: -.025em; white-space: nowrap; }
+.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .45mm auto 0; border-top: .25mm dashed #d5dbe1; }
+.metric-card--ratio .metric-comparison { margin: .45mm 0 0; color: var(--muted); font-size: 4.5px; font-weight: 500; }
 
 .status-best { color: var(--best); }
 .status-strong_positive { color: var(--strong-positive); }
@@ -210,22 +216,87 @@ h2 {
 .status-negative { color: var(--negative); }
 .status-worst { color: var(--worst); }
 
-.valuation-section { margin-bottom: .3mm; }
+.valuation-section {
+  margin-bottom: .7mm;
+  padding: .5mm .7mm .2mm;
+  border: .25mm solid #dce4eb;
+  border-radius: 1.2mm;
+  background: #fff;
+}
+.compact-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1mm; }
+.compact-section-heading h2 { flex: 1; padding: .85mm 1.3mm .7mm; }
+.compact-section-heading span { color: var(--muted); font-size: 4.6px; font-weight: 650; white-space: nowrap; }
+.gauge-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: 3.2mm 8.4mm 5mm;
+  min-width: 0;
+  min-height: 17.4mm;
+  padding: .6mm .6mm .45mm;
+  overflow: hidden;
+  border: .25mm solid #dbe3ea;
+  border-radius: 1.1mm;
+  background: linear-gradient(150deg, #fff, #fbfcfd);
+  box-shadow: 0 .35mm .9mm rgb(20 35 52 / 7%);
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.gauge-card:hover { border-color: #7f9bb7; }
+.gauge-card:focus-visible { outline: 1.5px solid #0a67b2; outline-offset: 1px; }
+.gauge-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: .35mm; min-width: 0; }
+.gauge-card-name { overflow: hidden; color: #101827; font-size: 4.25px; font-weight: 780; line-height: 1.04; text-overflow: ellipsis; white-space: nowrap; }
+.gauge-tier { flex: none; padding: .35mm .55mm; border-radius: 1.5mm; background: #eef3f7; color: var(--navy); font-size: 3.25px; font-weight: 760; line-height: 1; }
+.mini-gauge { grid-row: 2; width: 100%; height: 8.3mm; overflow: visible; }
+.gauge-track, .gauge-arc { fill: none; stroke-linecap: butt; stroke-width: 8; }
+.gauge-track { stroke: #e5e9ed; }
+.gauge-segment { stroke-linecap: butt; }
+.gauge-threshold { fill: #334155; font-size: 4.1px; font-weight: 720; }
+.gauge-unscaled .gauge-arc { opacity: .72; }
+.gauge-needle { stroke: #0b1e35; stroke-width: 3.2; stroke-linecap: round; }
+.gauge-hub { fill: #0b1e35; }
+.gauge-result {
+  position: absolute;
+  top: 6.4mm;
+  left: .6mm;
+  right: .6mm;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  line-height: 1;
+  text-align: center;
+}
+.gauge-result strong { color: currentColor; font-size: 6.8px; font-weight: 830; letter-spacing: -.03em; }
+.gauge-result span { margin-top: .25mm; color: currentColor; font-size: 3.45px; font-weight: 760; }
+.gauge-result small { margin-top: .25mm; color: var(--muted); font-size: 2.9px; }
+.gauge-facts {
+  grid-row: 3;
+  display: grid;
+  align-content: end;
+  gap: .28mm;
+  padding-top: .45mm;
+  border-top: .2mm solid #e3e8ed;
+  color: #30465d;
+  font-size: 2.75px;
+  line-height: 1.05;
+}
+.gauge-facts span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.risk-metrics-section .gauge-card { min-height: 17mm; }
 .analysis-grid { display: grid; grid-template-columns: .85fr 1fr 1.45fr; gap: 1.2mm; margin-top: .2mm; }
-.analysis-grid section { height: 70mm; overflow: hidden; }
+.analysis-grid section { height: 63mm; overflow: hidden; }
 .dense-list { display: grid; gap: .8mm; padding: 1.2mm 1mm; }
 .dense-item { display: grid; grid-template-columns: 2.3mm 1fr; gap: .4mm; min-width: 0; color: var(--ink); font-size: 6.1px; line-height: 1.28; }
 .dense-item .marker { font-weight: 850; text-align: center; }
 .dense-item strong { font-weight: 760; }
 
 .channel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1mm; padding: 1mm 0 1.2mm; }
-.channel-card { min-height: 24mm; padding: 1.2mm; background: var(--card); font-size: 6px; line-height: 1.27; }
+.channel-card { min-height: 20mm; padding: 1mm; background: var(--card); font-size: 5.7px; line-height: 1.22; }
 .channel-card h3 { margin: 0 0 .8mm; font-size: 6.4px; }
 .pillar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: .8mm; padding: 1mm 0 1.2mm; }
-.pillar-card { min-height: 21mm; padding: 1.1mm; border-left: 1mm solid currentColor; background: var(--card); font-size: 5.8px; line-height: 1.25; }
+.pillar-card { min-height: 18mm; padding: .9mm; border-left: 1mm solid currentColor; background: var(--card); font-size: 5.5px; line-height: 1.2; }
 .pillar-card h3 { margin: 0 0 .6mm; font-size: 5.8px; }
 .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3mm; }
-.bottom-grid section { height: 39mm; overflow: hidden; }
+.bottom-grid section { height: 34mm; overflow: hidden; }
 
 footer {
   display: flex;

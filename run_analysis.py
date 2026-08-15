@@ -18,6 +18,8 @@ from create_one_pager_pdf import create_one_pager_pdf
 from create_interactive_dashboard import create_interactive_dashboard
 from render_interactive_dashboard_pdf import render_dashboard_pdf
 from robinhood_mcp_get_quote import get_quote
+from nasdaq_short_interest import fetch_short_interest
+from valuation_metrics import build_valuation_sections
 from sec_edgar_fetch import fetch_filing
 from sec_edgar_search import search_filings
 from telegram_notify import deliver_reports, generate_call_message, generate_dashboard_message
@@ -33,7 +35,9 @@ from analysis_enrichment import (
 
 LABELS = {"revenue": "Revenue", "gross_profit": "Gross Profit", "operating_income": "Operating Income",
           "net_income": "Net Income", "eps_diluted": "Diluted EPS", "operating_cash_flow": "Operating Cash Flow",
-          "capex": "Capital Expenditures", "cash": "Cash", "total_assets": "Total Assets",
+          "capex": "Capital Expenditures", "stock_based_compensation": "Stock-Based Compensation",
+          "depreciation_amortization": "Depreciation & Amortization", "backlog": "Backlog",
+          "cash": "Cash", "total_assets": "Total Assets",
           "total_liabilities": "Total Liabilities", "total_equity": "Total Equity", "long_term_debt": "Long-term Debt",
           "shares_diluted": "Diluted Shares"}
 
@@ -189,34 +193,83 @@ class EarningsAnalyzer:
                 self.data["warnings"].append(
                     "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
                 )
-        else: self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
+        else:
+            self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
+
         metrics = self.data["_xbrl"]["metrics"]
-        revenue = metrics["revenue"]; duration = max(revenue.get("duration_days") or 91, 1)
-        annual_revenue = revenue["value"] * 365 / duration
+
+        def annualize(fact):
+            if not fact or fact.get("value") is None:
+                return None
+            return fact["value"] * 365 / max(fact.get("duration_days") or 91, 1)
+
+        revenue = metrics["revenue"]
+        annual_revenue = annualize(revenue)
+        annual_gross_profit = annualize(metrics.get("gross_profit"))
+        annual_net_income = annualize(metrics.get("net_income"))
+        annual_ebit = annualize(metrics.get("operating_income"))
+        annual_da = annualize(metrics.get("depreciation_amortization"))
+        annual_ebitda = (annual_ebit + annual_da
+                         if annual_ebit is not None and annual_da is not None else None)
+        annual_sbc = annualize(metrics.get("stock_based_compensation"))
         ocf, capex = metrics.get("operating_cash_flow"), metrics.get("capex")
         annual_fcf = None
         if ocf and capex and abs((ocf.get("duration_days") or 0) - (capex.get("duration_days") or 0)) <= 7:
             annual_fcf = (ocf["value"] - abs(capex["value"])) * 365 / max(ocf["duration_days"], 1)
-        market_cap = quote.get("market_cap") or (quote["price"] * quote.get("shares_outstanding") if quote.get("shares_outstanding") else None)
-        valuation = {"current_price": quote["price"], "market_cap": market_cap, "shares_outstanding": quote.get("shares_outstanding"),
-                     "pe_ttm": quote.get("pe_ratio"), "high_52": quote.get("high_52"), "low_52": quote.get("low_52"),
-                     "quote_timestamp": timestamp, "quote_source": quote["source"],
-                     "quote_age_seconds": quote_age_seconds, "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900),
-                     "annualized_revenue": annual_revenue, "annualized_fcf": annual_fcf,
-                     "ps_annualized": market_cap / annual_revenue if market_cap and annual_revenue > 0 else None,
-                     "fcf_yield_annualized": annual_fcf / market_cap * 100 if market_cap and annual_fcf is not None else None}
-        valuation_rows = []
-        for key, label, suffix in (("pe_ttm", "P/E (TTM)", "x"), ("ps_annualized", "P/S (annualized)", "x"),
-                                   ("fcf_yield_annualized", "FCF Yield (annualized)", "%")):
-            value = valuation.get(key)
-            signal, assessment = classify_valuation_signal(label, value)
-            valuation_rows.append({"key": key, "label": label, "value": value,
-                                   "display": "N/A" if value is None else "N/M" if key == "pe_ttm" and value <= 0 else f"{value:.1f}{suffix}",
-                                   "signal": signal, "tier": signal, "assessment": assessment})
-        valuation_rows.append({"key": "ev_ebitda", "label": "EV/EBITDA", "value": None, "display": "N/A",
-                               "signal": "neutral", "tier": "neutral",
-                               "assessment": "Unavailable — verified TTM EBITDA absent"})
-        valuation["rows"] = valuation_rows
+
+        market_cap = quote.get("market_cap") or (
+            quote["price"] * quote.get("shares_outstanding") if quote.get("shares_outstanding") else None
+        )
+        cash = metrics.get("cash", {}).get("value")
+        debt = metrics.get("long_term_debt", {}).get("value") or 0
+        enterprise_value = quote.get("enterprise_value")
+        if enterprise_value is None and market_cap is not None and cash is not None:
+            enterprise_value = market_cap + debt - cash
+        prior_revenue = revenue.get("prior_value")
+        revenue_growth_pct = ((revenue["value"] - prior_revenue) / abs(prior_revenue) * 100
+                              if prior_revenue not in (None, 0) else None)
+
+        short_data = {}
+        try:
+            short_data = fetch_short_interest(self.ticker)
+            self.data["sources"]["short_interest_url"] = short_data["source_url"]
+        except Exception as exc:
+            self.data["warnings"].append(f"Official Nasdaq short-interest data unavailable: {type(exc).__name__}")
+
+        sections = build_valuation_sections(
+            market_cap=market_cap, enterprise_value=enterprise_value,
+            annual_revenue=annual_revenue, annual_gross_profit=annual_gross_profit,
+            revenue_growth_pct=revenue_growth_pct,
+            total_equity=metrics.get("total_equity", {}).get("value"),
+            backlog=metrics.get("backlog", {}).get("value"),
+            annual_net_income=annual_net_income, annual_fcf=annual_fcf,
+            annual_ebit=annual_ebit, annual_ebitda=annual_ebitda,
+            trailing_pe=quote.get("pe_ratio"), forward_pe=quote.get("forward_pe_ratio"),
+            peg_ratio=quote.get("peg_ratio"),
+            short_interest=short_data.get("short_interest"), public_float=quote.get("public_float"),
+            days_to_cover=short_data.get("days_to_cover"),
+            short_interest_date=short_data.get("settlement_date"),
+            stock_compensation=annual_sbc, period_revenue=annual_revenue, period_fcf=annual_fcf,
+            diluted_shares=metrics.get("shares_diluted", {}).get("value"),
+            prior_diluted_shares=metrics.get("shares_diluted", {}).get("prior_value"),
+            market_source=quote["source"], filing_source="SEC filing/XBRL",
+            short_source=short_data.get("source", "Nasdaq official short-interest report"),
+        )
+        valuation = {
+            "current_price": quote["price"], "market_cap": market_cap,
+            "shares_outstanding": quote.get("shares_outstanding"), "public_float": quote.get("public_float"),
+            "pe_ttm": quote.get("pe_ratio"), "high_52": quote.get("high_52"), "low_52": quote.get("low_52"),
+            "quote_timestamp": timestamp, "quote_source": quote["source"],
+            "quote_age_seconds": quote_age_seconds,
+            "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900),
+            "enterprise_value": enterprise_value, "annualized_revenue": annual_revenue,
+            "annualized_gross_profit": annual_gross_profit, "annualized_fcf": annual_fcf,
+            "ps_annualized": market_cap / annual_revenue if market_cap and annual_revenue and annual_revenue > 0 else None,
+            "fcf_yield_annualized": annual_fcf / market_cap * 100 if market_cap and annual_fcf is not None else None,
+            "regime": sections["regime"], "regime_label": sections["regime_label"],
+            "rows": sections["rows"], "risk_rows": sections["risk_rows"],
+            "short_interest": short_data,
+        }
         self.data["valuation"] = valuation
 
     def qualitative(self):
@@ -316,7 +369,7 @@ class EarningsAnalyzer:
         dashboard_dir = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
         paths["html"] = create_interactive_dashboard(public, str(dashboard_dir))
         interactive_pdf = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
-        source_urls = [public.get("sources", {}).get("filing_url"), public.get("sources", {}).get("transcript_url")]
+        source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "transcript_url", "short_interest_url")]
         paths["interactive_pdf"] = render_dashboard_pdf(paths["html"], str(interactive_pdf), source_urls)
         if deliver: paths["delivery"] = deliver_reports(public, paths["interactive_pdf"], telegram_target, dry_run)
         return paths

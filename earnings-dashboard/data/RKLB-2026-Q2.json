@@ -1,19 +1,19 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "company": {
     "ticker": "RKLB",
     "period": "Q2 FY2026",
     "report_date": "2026-06-30",
-    "call_date": null,
+    "call_date": "2026-08-10",
     "grade": "A",
     "confidence": 0.9500000000000001,
     "recommendation": "INSUFFICIENT DATA",
-    "price": 79.99,
-    "market_cap": 54377233592.813126,
-    "pe_ttm": -242.33,
+    "price": 80.25,
+    "market_cap": 48005661698.75607,
+    "pe_ttm": -287.02,
     "high_52": 150.9999,
     "low_52": 37.57,
-    "test_run": false
+    "test_run": true
   },
   "sections": {
     "income_statement": [
@@ -24,6 +24,8 @@
         "display_value": "$234.1M",
         "comparison": "+62.0% YoY",
         "status": "best",
+        "tier": "best",
+        "assessment": "+62.0% YoY",
         "description": "Revenue recognized during the reported period.",
         "why_it_matters": "Shows the scale and growth of the core business.",
         "directionality": "Higher is generally better when growth is profitable.",
@@ -45,7 +47,8 @@
             "signal": "positive"
           }
         ],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "gross_profit",
@@ -54,12 +57,15 @@
         "display_value": "$84.6M",
         "comparison": "+82.3% YoY",
         "status": "best",
+        "tier": "best",
+        "assessment": "+82.3% YoY",
         "description": "Revenue remaining after direct costs.",
         "why_it_matters": "Funds operating expenses, investment, and profit.",
         "directionality": "Higher and expanding is generally better.",
         "formula": "Revenue − cost of revenue",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "operating_income",
@@ -68,12 +74,15 @@
         "display_value": "-$57.5M",
         "comparison": "+3.6% YoY",
         "status": "neutral",
+        "tier": "neutral",
+        "assessment": "+3.6% YoY",
         "description": "Profit from core operations before interest and taxes.",
         "why_it_matters": "Measures operating execution and cost discipline.",
         "directionality": "Higher is generally better.",
         "formula": "Gross profit − operating expenses",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "net_income",
@@ -82,12 +91,15 @@
         "display_value": "-$49.3M",
         "comparison": "+25.8% YoY",
         "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+25.8% YoY",
         "description": "Profit attributable after all recognized expenses.",
         "why_it_matters": "Captures the period's bottom-line result.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Revenue − all expenses, interest, and tax",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       }
     ],
     "key_ratios": [
@@ -98,12 +110,15 @@
         "display_value": "36.1%",
         "comparison": "current quarter",
         "status": "best",
+        "tier": "best",
+        "assessment": "current quarter",
         "description": "Share of revenue remaining after direct costs.",
         "why_it_matters": "Shows product economics and pricing/cost performance.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Gross profit ÷ revenue",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "operating_margin",
@@ -112,12 +127,15 @@
         "display_value": "-24.6%",
         "comparison": "current quarter",
         "status": "worst",
+        "tier": "worst",
+        "assessment": "current quarter",
         "description": "Share of revenue retained as operating profit.",
         "why_it_matters": "Measures operating efficiency and pricing power.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Operating income ÷ revenue",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "net_margin",
@@ -126,12 +144,15 @@
         "display_value": "-21.0%",
         "comparison": "current quarter",
         "status": "worst",
+        "tier": "worst",
+        "assessment": "current quarter",
         "description": "Share of revenue retained as net income.",
         "why_it_matters": "Summarizes bottom-line profitability.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Net income ÷ revenue",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "revenue_growth",
@@ -140,12 +161,15 @@
         "display_value": "+62.0%",
         "comparison": "year over year",
         "status": "best",
+        "tier": "best",
+        "assessment": "year over year",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
         "formula": "See the cited source and calculation context.",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "operating_income_growth",
@@ -154,12 +178,15 @@
         "display_value": "+3.6%",
         "comparison": "year over year",
         "status": "neutral",
+        "tier": "neutral",
+        "assessment": "year over year",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
         "formula": "See the cited source and calculation context.",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       },
       {
         "key": "net_income_growth",
@@ -168,141 +195,402 @@
         "display_value": "+25.8%",
         "comparison": "year over year",
         "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "year over year",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
         "formula": "See the cited source and calculation context.",
         "scale": [],
-        "source_note": "SEC XBRL"
+        "source_note": "SEC XBRL",
+        "source_date": null
       }
     ],
     "valuation": [
       {
-        "key": "pe_ttm",
-        "name": "P/E (TTM)",
-        "raw_value": -242.33,
-        "display_value": "N/M",
-        "comparison": "Not meaningful",
-        "status": "caution",
-        "description": "Price paid for each dollar of trailing earnings.",
-        "why_it_matters": "Frames valuation relative to realized earnings.",
-        "directionality": "Lower can be more attractive, but quality and growth matter.",
-        "formula": "Share price ÷ trailing-twelve-month EPS",
-        "scale": [
-          {
-            "label": "Attractive",
-            "max": 18,
-            "signal": "positive"
-          },
-          {
-            "label": "Moderate",
-            "max": 35,
-            "signal": "neutral"
-          },
-          {
-            "label": "Premium",
-            "max": 50,
-            "signal": "caution"
-          },
-          {
-            "label": "Extreme",
-            "max": null,
-            "signal": "negative"
-          }
-        ],
-        "source_note": "robinhood-trading MCP"
-      },
-      {
         "key": "ps_annualized",
-        "name": "P/S (annualized)",
-        "raw_value": 57.91983337033255,
-        "display_value": "57.9x",
-        "comparison": "Extreme",
+        "name": "P/S (Annualized)",
+        "raw_value": 51.13316258869033,
+        "display_value": "51.1x",
+        "comparison": "Very Expensive",
         "status": "worst",
-        "description": "Market capitalization relative to annualized quarterly revenue.",
-        "why_it_matters": "Useful when earnings are immature or volatile, but does not capture margins.",
-        "directionality": "Lower is generally better, all else equal.",
-        "formula": "Market capitalization ÷ annualized reported-quarter revenue",
+        "tier": 1,
+        "assessment": "Very Expensive",
+        "description": "Market capitalization / annualized revenue.",
+        "why_it_matters": "Shows how much equity investors are paying for each dollar of annualized sales. Useful when earnings are negative or too small for P/E to be meaningful.",
+        "directionality": "Lower is better",
+        "formula": "Market cap ÷ annualized revenue",
         "scale": [
           {
-            "label": "Low / potentially attractive",
             "max": 2,
+            "label": "Attractive",
             "signal": "positive"
           },
           {
-            "label": "Moderate",
             "max": 5,
+            "label": "Moderate",
             "signal": "neutral"
           },
           {
-            "label": "High",
             "max": 10,
+            "label": "Expensive",
             "signal": "caution"
           },
           {
-            "label": "Extreme",
             "max": null,
+            "label": "Very Expensive",
+            "signal": "worst"
+          }
+        ],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "ev_revenue",
+        "name": "EV / Revenue",
+        "raw_value": 48.87892899177369,
+        "display_value": "48.9x",
+        "comparison": "Expensive",
+        "status": "negative",
+        "tier": 1,
+        "assessment": "Expensive",
+        "description": "Enterprise value / total annualized revenue.",
+        "why_it_matters": "Tells you how much you are paying for one dollar of total sales, adjusting for debt and cash.",
+        "directionality": "Lower is better",
+        "formula": "Enterprise value ÷ annualized revenue",
+        "scale": [
+          {
+            "max": 2,
+            "label": "Deep Value",
+            "signal": "positive"
+          },
+          {
+            "max": 5,
+            "label": "Typical",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Expensive",
             "signal": "negative"
           }
         ],
-        "source_note": "robinhood-trading MCP"
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
       },
       {
-        "key": "fcf_yield_annualized",
-        "name": "FCF Yield (annualized)",
-        "raw_value": -0.5554503021411747,
-        "display_value": "-0.6%",
-        "comparison": "Extreme",
-        "status": "worst",
-        "description": "Annualized free cash flow relative to market value.",
-        "why_it_matters": "Estimates cash generation available per dollar invested.",
-        "directionality": "Higher is generally better when cash flow is sustainable.",
-        "formula": "Annualized free cash flow ÷ market capitalization",
+        "key": "ev_gross_profit",
+        "name": "EV / Gross Profit",
+        "raw_value": 135.27354560854732,
+        "display_value": "135.3x",
+        "comparison": "Context Only",
+        "status": "neutral",
+        "tier": 2,
+        "assessment": "Context Only",
+        "description": "Enterprise value / annualized gross profit.",
+        "why_it_matters": "Shows whether the core product is profitable to make before corporate overhead and management costs.",
+        "directionality": "Lower is better",
+        "formula": "Enterprise value ÷ annualized gross profit",
+        "scale": [],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "ev_revenue_growth",
+        "name": "EV / Revenue / Growth",
+        "raw_value": 0.7885525501801217,
+        "display_value": "0.8x",
+        "comparison": "Context Only",
+        "status": "neutral",
+        "tier": 2,
+        "assessment": "Context Only",
+        "description": "(EV / Revenue) / YoY Revenue Growth Rate (%).",
+        "why_it_matters": "Factors sales growth into the revenue multiple, functioning like a PEG ratio for top-line sales.",
+        "directionality": "Lower is better",
+        "formula": "EV/Revenue ÷ YoY revenue growth %",
+        "scale": [],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "price_to_book",
+        "name": "Price to Book (P/B)",
+        "raw_value": 13.74672349658107,
+        "display_value": "13.7x",
+        "comparison": "Expensive",
+        "status": "negative",
+        "tier": 2,
+        "assessment": "Expensive",
+        "description": "Market cap / total equity (or tangible book value).",
+        "why_it_matters": "Shows the price paid relative to the accounting value of assets after liabilities.",
+        "directionality": "Lower is better",
+        "formula": "Market cap ÷ total equity",
         "scale": [
           {
-            "label": "Low",
-            "max": 2.5,
-            "signal": "caution"
+            "max": 1,
+            "label": "Below Book",
+            "signal": "positive"
           },
           {
-            "label": "Healthy",
-            "max": 6,
+            "max": 3,
+            "label": "Typical",
             "signal": "neutral"
           },
           {
-            "label": "Attractive",
             "max": null,
+            "label": "Expensive",
+            "signal": "negative"
+          }
+        ],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "ev_backlog",
+        "name": "EV / Backlog",
+        "raw_value": 19.478055636499803,
+        "display_value": "19.5x",
+        "comparison": "Context Only",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Context Only",
+        "description": "Enterprise value / total order backlog.",
+        "why_it_matters": "Compares enterprise value with contracted future work for project-based companies.",
+        "directionality": "Lower is better",
+        "formula": "Enterprise value ÷ reported backlog",
+        "scale": [],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
+      }
+    ],
+    "valuation_regime": "Negative Earnings / FCF",
+    "short_interest_sbc": [
+      {
+        "key": "short_interest_float",
+        "name": "Short Interest % of Float",
+        "raw_value": 7.773659126344186,
+        "display_value": "7.8%",
+        "comparison": "Moderate",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Moderate",
+        "description": "Shares sold short / public float.",
+        "why_it_matters": "Shows bearish positioning and potential short-squeeze pressure.",
+        "directionality": "Lower is generally safer",
+        "formula": "Shares sold short ÷ public float",
+        "scale": [
+          {
+            "max": 5,
+            "label": "Low",
+            "signal": "positive"
+          },
+          {
+            "max": 10,
+            "label": "Moderate",
+            "signal": "neutral"
+          },
+          {
+            "max": 20,
+            "label": "High",
+            "signal": "caution"
+          },
+          {
+            "max": null,
+            "label": "Very High",
+            "signal": "worst"
+          }
+        ],
+        "source_note": "Nasdaq official short-interest report",
+        "source_date": "07/31/2026"
+      },
+      {
+        "key": "days_to_cover",
+        "name": "Short Ratio / Days to Cover",
+        "raw_value": 2.418186,
+        "display_value": "2.4d",
+        "comparison": "Moderate",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Moderate",
+        "description": "Shares sold short / average daily trading volume.",
+        "why_it_matters": "Estimates how many normal trading days shorts would need to cover their positions.",
+        "directionality": "Lower is generally safer",
+        "formula": "Shares sold short ÷ average daily volume",
+        "scale": [
+          {
+            "max": 2,
+            "label": "Low",
+            "signal": "positive"
+          },
+          {
+            "max": 5,
+            "label": "Moderate",
+            "signal": "neutral"
+          },
+          {
+            "max": 10,
+            "label": "High",
+            "signal": "caution"
+          },
+          {
+            "max": null,
+            "label": "Very High",
+            "signal": "worst"
+          }
+        ],
+        "source_note": "Nasdaq official short-interest report",
+        "source_date": "07/31/2026"
+      },
+      {
+        "key": "sbc_revenue",
+        "name": "SBC / Revenue",
+        "raw_value": 8.357044594259738,
+        "display_value": "8.4%",
+        "comparison": "Moderate",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Moderate",
+        "description": "Stock-based compensation expense / revenue.",
+        "why_it_matters": "Shows how much revenue is consumed by recurring equity compensation.",
+        "directionality": "Lower is better",
+        "formula": "Stock-based compensation ÷ revenue",
+        "scale": [
+          {
+            "max": 5,
+            "label": "Low",
+            "signal": "positive"
+          },
+          {
+            "max": 10,
+            "label": "Moderate",
+            "signal": "neutral"
+          },
+          {
+            "max": 20,
+            "label": "High",
+            "signal": "caution"
+          },
+          {
+            "max": null,
+            "label": "Very High",
+            "signal": "worst"
+          }
+        ],
+        "source_note": "SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "sbc_adjusted_fcf_yield",
+        "name": "SBC-Adjusted FCF Yield",
+        "raw_value": -0.7926095607616807,
+        "display_value": "-0.8%",
+        "comparison": "Very Expensive",
+        "status": "worst",
+        "tier": 1,
+        "assessment": "Very Expensive",
+        "description": "(Levered FCF - stock-based compensation) / market capitalization.",
+        "why_it_matters": "Measures shareholder cash yield after treating SBC as an economic cost.",
+        "directionality": "Higher is better",
+        "formula": "(Levered FCF − SBC) ÷ market cap",
+        "scale": [
+          {
+            "max": 2,
+            "label": "Very Expensive",
+            "signal": "worst"
+          },
+          {
+            "max": 4,
+            "label": "Expensive",
+            "signal": "negative"
+          },
+          {
+            "max": 8,
+            "label": "Reasonable",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Attractive",
             "signal": "positive"
           }
         ],
-        "source_note": "robinhood-trading MCP"
+        "source_note": "SEC filing/XBRL",
+        "source_date": null
       },
       {
-        "key": "ev_ebitda",
-        "name": "EV/EBITDA",
-        "raw_value": null,
-        "display_value": "N/A",
-        "comparison": "Unavailable — verified TTM EBITDA absent",
-        "status": "neutral",
-        "description": "Enterprise value relative to EBITDA.",
-        "why_it_matters": "Compares operating valuation across different capital structures.",
-        "directionality": "Lower is generally better, subject to growth and quality.",
-        "formula": "Enterprise value ÷ trailing EBITDA",
-        "scale": [],
-        "source_note": "robinhood-trading MCP"
+        "key": "net_share_dilution",
+        "name": "Net Share Dilution",
+        "raw_value": 22.247747292047258,
+        "display_value": "22.2%",
+        "comparison": "Very High",
+        "status": "worst",
+        "tier": 1,
+        "assessment": "Very High",
+        "description": "Percentage change in diluted shares outstanding over the period.",
+        "why_it_matters": "Shows whether issuance and SBC dilute existing shareholders after buybacks.",
+        "directionality": "Lower is better",
+        "formula": "Change in diluted weighted-average shares",
+        "scale": [
+          {
+            "max": 0,
+            "label": "Shrinking",
+            "signal": "positive"
+          },
+          {
+            "max": 1,
+            "label": "Minimal",
+            "signal": "positive"
+          },
+          {
+            "max": 3,
+            "label": "Moderate",
+            "signal": "neutral"
+          },
+          {
+            "max": 5,
+            "label": "High",
+            "signal": "caution"
+          },
+          {
+            "max": null,
+            "label": "Very High",
+            "signal": "worst"
+          }
+        ],
+        "source_note": "SEC filing/XBRL",
+        "source_date": null
       }
     ],
     "capital_liquidity": [
       {
-        "name": "Total Liabilities",
-        "value": "$695.2M",
+        "name": "Capital Expenditures",
+        "value": "$15.4M",
+        "signal": "positive",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000062/rklb-20260630_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "CapitalExpendituresIncurredButNotYetPaid",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-1",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30"
+        }
+      },
+      {
+        "name": "Total Assets",
+        "value": "$4.19B",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
           "url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000062/rklb-20260630_htm.xml",
           "start": null,
           "end": null,
-          "concept": "Liabilities",
+          "concept": "Assets",
           "taxonomy": "http://fasb.org/us-gaap/2026",
           "context": "c-3",
           "dimensions": [],
@@ -332,25 +620,6 @@
         }
       },
       {
-        "name": "Capital Expenditures",
-        "value": "$15.4M",
-        "signal": "positive",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000062/rklb-20260630_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "CapitalExpendituresIncurredButNotYetPaid",
-          "taxonomy": "http://fasb.org/us-gaap/2026",
-          "context": "c-1",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": "2026-01-01",
-          "period_end": "2026-06-30"
-        }
-      },
-      {
         "name": "Operating Cash Flow",
         "value": "-$134.4M",
         "signal": "worst",
@@ -370,15 +639,15 @@
         }
       },
       {
-        "name": "Total Assets",
-        "value": "$4.19B",
+        "name": "Total Liabilities",
+        "value": "$695.2M",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
           "url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000062/rklb-20260630_htm.xml",
           "start": null,
           "end": null,
-          "concept": "Assets",
+          "concept": "Liabilities",
           "taxonomy": "http://fasb.org/us-gaap/2026",
           "context": "c-3",
           "dimensions": [],
@@ -470,8 +739,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 25921,
-          "end": 26078
+          "start": 25920,
+          "end": 26077
         }
       },
       {
@@ -481,8 +750,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 18718,
-          "end": 18951
+          "start": 18717,
+          "end": 18950
         }
       },
       {
@@ -492,8 +761,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 20202,
-          "end": 20315
+          "start": 20201,
+          "end": 20314
         }
       },
       {
@@ -503,8 +772,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 26079,
-          "end": 26187
+          "start": 26078,
+          "end": 26186
         }
       },
       {
@@ -514,8 +783,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 20107,
-          "end": 20201
+          "start": 20106,
+          "end": 20200
         }
       },
       {
@@ -525,8 +794,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 26388,
-          "end": 26563
+          "start": 26387,
+          "end": 26562
         }
       }
     ],
@@ -534,17 +803,21 @@
       {
         "topic": "Management Tone",
         "category": "outlook",
-        "detail": "We've had a confidential defense prime sign up for a pair of HASTE launches in 2027.",
-        "signal": "positive",
-        "tier": "positive",
+        "detail": "We expect this momentum to continue, guiding to strong revenue growth as our satellite platforms business scales exceptionally and Neutron progresses towards first flight.",
+        "signal": "best",
+        "tier": "best",
         "reasoning": "The cited prepared remarks evidence is supportive for management tone.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 11494,
-          "end": 11578
-        }
+          "start": 27708,
+          "end": 27879
+        },
+        "confidence_category": "Confident",
+        "confidence_subcategory": "Assured",
+        "confidence_rank": 4,
+        "confidence_reasoning": "Aggregate management-language scores were Confident 118, Vague 17, and Not Confident 14; the leading assured cues were we expect (10), we anticipate (1), confidence (2)."
       },
       {
         "topic": "Revenue & Demand",
@@ -557,8 +830,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 21146,
-          "end": 21417
+          "start": 21145,
+          "end": 21416
         }
       },
       {
@@ -572,8 +845,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 26188,
-          "end": 26387
+          "start": 26187,
+          "end": 26386
         }
       },
       {
@@ -587,23 +860,23 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 25921,
-          "end": 26078
+          "start": 25920,
+          "end": 26077
         }
       },
       {
         "topic": "Products & Innovation",
         "category": "product",
         "detail": "Our focus is on the bigger picture and making sure that when Neutron flies, it enters service as a system ready for full-scale production and high cadence launch.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for products & innovation.",
+        "signal": "positive",
+        "tier": "positive",
+        "reasoning": "The cited prepared remarks evidence is supportive for products & innovation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 14147,
-          "end": 14309
+          "start": 14146,
+          "end": 14308
         }
       },
       {
@@ -617,8 +890,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 4278,
-          "end": 4425
+          "start": 4277,
+          "end": 4424
         }
       },
       {
@@ -632,8 +905,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 23595,
-          "end": 23766
+          "start": 23594,
+          "end": 23765
         }
       },
       {
@@ -647,8 +920,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 17553,
-          "end": 17687
+          "start": 17552,
+          "end": 17686
         }
       },
       {
@@ -662,8 +935,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 30563,
-          "end": 30697
+          "start": 30562,
+          "end": 30696
         }
       }
     ],
@@ -674,8 +947,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 14147,
-          "end": 14309
+          "start": 14146,
+          "end": 14308
         }
       },
       {
@@ -684,8 +957,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 4278,
-          "end": 4425
+          "start": 4277,
+          "end": 4424
         }
       },
       {
@@ -694,8 +967,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 10306,
-          "end": 10502
+          "start": 10305,
+          "end": 10501
         }
       },
       {
@@ -704,32 +977,32 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 19424,
-          "end": 19622
+          "start": 19423,
+          "end": 19621
         }
       }
     ],
     "strategic_pillars": [
       {
         "name": "Innovation Roadmap",
-        "detail": "We expect this momentum to continue, guiding to strong revenue growth as our satellite platforms business scales exceptionally and Neutron progresses towards first flight.",
-        "signal": "strong_positive",
+        "detail": "Our two new pads in Alaska will be deployed using our GHOST containerized deployable launch site technology.",
+        "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 27709,
-          "end": 27880
+          "start": 12432,
+          "end": 12540
         }
       },
       {
         "name": "Growth Expansion",
         "detail": "That mission will expand the capacity of their network with on-orbit compute, optical comms, and hosted payloads.",
-        "signal": "caution",
+        "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 17336,
-          "end": 17449
+          "start": 17335,
+          "end": 17448
         }
       },
       {
@@ -739,8 +1012,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 3581,
-          "end": 3726
+          "start": 3580,
+          "end": 3725
         }
       },
       {
@@ -750,8 +1023,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 21418,
-          "end": 21579
+          "start": 21417,
+          "end": 21578
         }
       },
       {
@@ -761,8 +1034,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 27208,
-          "end": 27418
+          "start": 27207,
+          "end": 27417
         }
       },
       {
@@ -772,8 +1045,8 @@
         "citation": {
           "source": "earnings call transcript",
           "url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
-          "start": 3727,
-          "end": 3999
+          "start": 3726,
+          "end": 3998
         }
       }
     ],
@@ -853,9 +1126,12 @@
     "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000061/rklb-20260810.htm",
     "transcript_url": "https://stockanalysis.com/stocks/rklb/transcripts/662835-q2-2026/",
     "transcript_provider": "stockanalysis.com",
-    "transcript_call_date": null,
-    "transcript_retrieved_at": "2026-08-11T22:27:36.605904+00:00",
-    "transcript_content_sha256": "0b6adf7b6d547f5a45a2d2d511aa6b0e4cf843623782ca0c7611ff1c4d850c16"
+    "transcript_call_date": "2026-08-10",
+    "transcript_retrieved_at": "2026-08-15T05:30:34.453774+00:00",
+    "transcript_content_sha256": "cabdbbe7cbaba58b111e49da3d098891e8e4b270ad671fbecdb3c6143bf561d4",
+    "short_interest_url": "https://www.nasdaq.com/market-activity/stocks/rklb/short-interest"
   },
-  "warnings": []
+  "warnings": [
+    "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
+  ]
 }

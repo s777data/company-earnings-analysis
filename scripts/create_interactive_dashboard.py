@@ -56,12 +56,15 @@ def _metric(row: dict[str, Any], source_note: str = "") -> dict[str, Any]:
         "display_value": row.get("display", "N/A" if raw is None else str(raw)),
         "comparison": comparison,
         "status": row.get("signal") or row.get("tier") or "neutral",
-        "description": meta.get("description", "A verified company-reported financial measure."),
-        "why_it_matters": meta.get("why_it_matters", "Provides context for operating performance, financial position, or valuation."),
-        "directionality": meta.get("directionality", "Interpret with the company's trend, peers, and business model."),
-        "formula": meta.get("formula", "See the cited source and calculation context."),
-        "scale": meta.get("scale", []),
-        "source_note": source_note or citation.get("source", "Verified report data"),
+        "tier": row.get("tier"),
+        "assessment": row.get("assessment") or comparison,
+        "description": row.get("definition") or meta.get("description", "A verified company-reported financial measure."),
+        "why_it_matters": row.get("impact") or meta.get("why_it_matters", "Provides context for operating performance, financial position, or valuation."),
+        "directionality": row.get("directionality") or meta.get("directionality", "Interpret with the company's trend, peers, and business model."),
+        "formula": row.get("formula") or meta.get("formula", "See the cited source and calculation context."),
+        "scale": row.get("scale") if row.get("scale") is not None else meta.get("scale", []),
+        "source_note": row.get("source_note") or source_note or citation.get("source", "Verified report data"),
+        "source_date": row.get("source_date"),
     }
 
 
@@ -79,7 +82,7 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
     financial_by_key = {_key(row): row for row in financial_rows}
     income_highlights = [financial_by_key[key] for key in INCOME_HIGHLIGHT_KEYS if key in financial_by_key]
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "company": {
             "ticker": data.get("ticker", "N/A"),
             "period": f"{data.get('fiscal_period', 'N/A')} FY{data.get('fiscal_year', 'N/A')}",
@@ -99,6 +102,8 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
             "income_statement": [_metric(row) for row in income_highlights],
             "key_ratios": [_metric(row) for row in data.get("financials", {}).get("key_ratios", [])],
             "valuation": [_metric(row, valuation.get("quote_source", "Verified market data")) for row in valuation_rows],
+            "valuation_regime": valuation.get("regime_label", "Valuation"),
+            "short_interest_sbc": [_metric(row) for row in valuation.get("risk_rows", [])],
             "capital_liquidity": data.get("capital_liquidity", {}).get("items", []),
             "guidance": data.get("guidance", {}).get("rows", []),
             "earnings_call": data.get("earnings_call_summary", {}).get("insights") or data.get("transcript_insights", []),

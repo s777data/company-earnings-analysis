@@ -20,6 +20,7 @@ from telegram_notify import (deliver_reports, generate_call_message, generate_da
                              _complete_insight_selection, SIGNAL_EMOJIS)
 from web_search import _validate as _validate_transcript
 from xbrl_parser import parse_xbrl_financials
+from valuation_metrics import build_valuation_sections, MAIN_ORDER, PROFIT_ORDER, RISK_ORDER
 from analysis_enrichment import (extract_transcript_sections, extract_risks, _sentences, _is_question,
                                  _qa_boundary_start, classify_financial_signal, classify_valuation_signal,
                                  classify_management_confidence, _signal as _transcript_signal)
@@ -990,13 +991,68 @@ class InteractiveDashboardTests(unittest.TestCase):
             self.assertEqual(result, str(output.resolve()))
             command = run.call_args.args[0]
             self.assertIn("--wait-for-selector", command)
-            self.assertIn("#valuation-cards .metric-card", command)
+            self.assertIn("#valuation-cards .gauge-card", command)
             self.assertIn(html.resolve().as_uri(), command)
             validate.assert_called_once_with(str(output.resolve()), ["https://www.sec.gov/filing"])
 
     def test_telegram_messages_name_interactive_dashboard_attachment(self):
         self.assertIn("Interactive A4 dashboard attached", generate_dashboard_message(sample_data()))
         self.assertIn("Interactive A4 dashboard attached", generate_call_message(sample_data()))
+
+
+class ValuationGuideTests(unittest.TestCase):
+    def _sections(self, positive=False):
+        return build_valuation_sections(
+            market_cap=10_000, enterprise_value=9_000, annual_revenue=2_000,
+            annual_gross_profit=800, revenue_growth_pct=25, total_equity=4_000,
+            backlog=3_000, annual_net_income=500 if positive else -500,
+            annual_fcf=400 if positive else -400, annual_ebit=600 if positive else -600,
+            annual_ebitda=800 if positive else None, trailing_pe=20 if positive else -20,
+            forward_pe=18 if positive else None, peg_ratio=1.4 if positive else None,
+            short_interest=100, public_float=1_000, days_to_cover=2.5,
+            stock_compensation=50, period_revenue=2_000,
+            period_fcf=400 if positive else -400,
+            diluted_shares=110, prior_diluted_shares=100,
+        )
+
+    def test_negative_regime_keeps_main_metrics_then_unique_negative_metric(self):
+        result = self._sections(False)
+        keys = [row["key"] for row in result["rows"]]
+        self.assertEqual(result["regime"], "negative_earnings_or_fcf")
+        self.assertEqual(keys[:5], list(MAIN_ORDER))
+        self.assertEqual(keys.count("ev_revenue"), 1)
+        self.assertEqual(keys[-1], "ev_backlog")
+
+    def test_positive_regime_uses_tier_order_and_omits_negative_only_metric(self):
+        result = self._sections(True)
+        keys = [row["key"] for row in result["rows"]]
+        self.assertEqual(result["regime"], "positive_earnings_and_fcf")
+        expected_profit = [key for key in PROFIT_ORDER if key in keys]
+        actual_profit = [key for key in keys if key in PROFIT_ORDER]
+        self.assertEqual(actual_profit, expected_profit)
+        self.assertNotIn("ev_backlog", keys)
+
+    def test_risk_metrics_follow_guide_order_and_require_meaningful_denominators(self):
+        negative = self._sections(False)
+        keys = [row["key"] for row in negative["risk_rows"]]
+        self.assertEqual(keys, [key for key in RISK_ORDER if key in keys])
+        self.assertNotIn("sbc_fcf", keys)
+        self.assertIn("days_to_cover", keys)
+        self.assertIn("net_share_dilution", keys)
+
+    def test_reference_file_and_compact_eight_column_gauge_contract(self):
+        reference = ROOT / "references" / "VALUATION_METRICS_REFERENCE_MAIN_METRICS_REVIEW.txt"
+        self.assertTrue(reference.is_file())
+        self.assertIn("MAIN VALUE METRICS", reference.read_text(encoding="utf-8"))
+        html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
+        css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text(encoding="utf-8")
+        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        self.assertIn('id="risk-metric-cards"', html)
+        self.assertIn("repeat(var(--gauge-columns, 8), minmax(0, 1fr))", css)
+        self.assertIn("Math.min(8, items.length)", script)
+        self.assertIn("function gaugeCard(metric)", script)
+        self.assertIn("gauge-segment", script)
+        self.assertIn('renderGaugeMetrics("risk-metric-cards"', script)
 
 
 if __name__ == "__main__": unittest.main()

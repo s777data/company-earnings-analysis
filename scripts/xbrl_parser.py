@@ -12,6 +12,9 @@ TAGS = {
     "net_income": ("NetIncomeLoss", "ProfitLoss"), "eps_diluted": ("EarningsPerShareDiluted",),
     "operating_cash_flow": ("NetCashProvidedByUsedInOperatingActivities",),
     "capex": ("PaymentsToAcquirePropertyPlantAndEquipment", "CapitalExpendituresIncurredButNotYetPaid"),
+    "stock_based_compensation": ("AllocatedShareBasedCompensationExpense", "ShareBasedCompensation"),
+    "depreciation_amortization": ("DepreciationDepletionAndAmortization", "DepreciationDepletionAndAmortizationPropertyPlantAndEquipment"),
+    "backlog": ("RevenueRemainingPerformanceObligation",),
     "cash": ("CashAndCashEquivalentsAtCarryingValue",),
     "total_assets": ("Assets",), "total_liabilities": ("Liabilities",),
     "total_equity": ("StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"),
@@ -82,7 +85,7 @@ def parse_xbrl_financials(content: str, report_date: str | None = None) -> dict:
     result = {"fiscal_period": period_focus, "fiscal_year": fiscal_year_focus, "report_date": target, "metrics": {}}
     for metric, entries in facts.items():
         if not entries: continue
-        instant_metric = metric in {"cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt"}
+        instant_metric = metric in {"cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt", "backlog"}
         eligible = [entry for entry in entries if entry["end"] == target and entry["instant"] == instant_metric]
         if not eligible:
             eligible = [entry for entry in entries if entry["instant"] == instant_metric]
