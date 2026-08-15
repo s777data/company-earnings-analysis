@@ -112,7 +112,7 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
         if case:
             lines.append(f"{emoji} {label} ({case.get('probability', 0):.0%}): {_clip(case.get('detail') or case.get('summary', ''), 230)}")
     lines.append(f"{SIGNAL_EMOJIS['caution']} Key Risks: {_clip(thesis.get('key_risks_summary', 'Not quantified'), 220)}")
-    lines.extend(["", "📎 PDF: One-pager dashboard attached",
+    lines.extend(["", "📎 PDF: Interactive A4 dashboard attached",
                   f"🔗 SEC: {data['sources']['filing_url']}",
                   f"🔗 Transcript: {data['sources']['transcript_url']}"])
     return "\n".join(lines)
@@ -144,7 +144,7 @@ def generate_call_message(data: dict[str, Any]) -> str:
             lines.append(f"   Evidence: {insight.get('section', 'Transcript')} chars {insight.get('citation', {}).get('start', 'N/A')}–{insight.get('citation', {}).get('end', 'N/A')}")
             lines.append("")
     lines.extend([f"Source: Earnings call transcript (prepared remarks + analyst Q&A) — {data['sources']['transcript_url']}",
-                  "📎 PDF: One-pager dashboard attached"])
+                  "📎 PDF: Interactive A4 dashboard attached"])
     return "\n".join(lines)
 
 

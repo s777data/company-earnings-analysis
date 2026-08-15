@@ -13,6 +13,7 @@ from create_one_pager_pdf import (create_one_pager_pdf, _compact_summary, _compa
                                   COMPACT_LABELS, SEMANTIC_SYMBOL_COLORS, COLORS, OnePager,
                                   PDF_FONT_SCALE)
 from create_interactive_dashboard import build_dashboard_data, create_interactive_dashboard
+from render_interactive_dashboard_pdf import render_dashboard_pdf
 from robinhood_mcp_get_quote import get_quote, _decode
 from sec_edgar_search import _matches_query
 from telegram_notify import (deliver_reports, generate_call_message, generate_dashboard_message, _send,
@@ -790,9 +791,15 @@ class OutputTests(unittest.TestCase):
 
     def test_save_delivers_automatically_by_default(self):
         analyzer = EarningsAnalyzer("TEST", output_format="json"); analyzer.data = sample_data()
-        with tempfile.TemporaryDirectory() as directory, patch("run_analysis.deliver_reports", return_value=[{"success": True}]) as deliver:
+        rendered = "/tmp/TEST_Q2_FY2026_Interactive_Dashboard.pdf"
+        with tempfile.TemporaryDirectory() as directory, \
+                patch("run_analysis.render_dashboard_pdf", return_value=rendered) as render, \
+                patch("run_analysis.deliver_reports", return_value=[{"success": True}]) as deliver:
             paths = analyzer.save(directory)
-        deliver.assert_called_once(); self.assertIn("delivery", paths)
+        render.assert_called_once()
+        deliver.assert_called_once_with(sample_data(), rendered, "telegram", False)
+        self.assertEqual(paths["interactive_pdf"], rendered)
+        self.assertIn("delivery", paths)
 
     def test_pdf_is_one_page_and_contains_sources(self):
         import pdfplumber
@@ -932,6 +939,36 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertIn("print-color-adjust: exact", print_css)
         font = ROOT / "earnings-dashboard" / "assets" / "fonts" / "InterVariable.woff2"
         self.assertTrue(font.is_file() and font.stat().st_size > 100_000)
+
+    def test_browser_pdf_renderer_waits_for_final_cards_and_validates_output(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            html = Path(directory) / "index.html"
+            output = Path(directory) / "rendered.pdf"
+            executable = Path(directory) / "playwright"
+            html.write_text("<html></html>")
+            executable.write_text("#!/bin/sh\n")
+            executable.chmod(0o755)
+
+            def completed(command, **_kwargs):
+                Path(command[-1]).write_bytes(b"%PDF-1.7\n" + b"x" * 1200)
+                return subprocess.CompletedProcess(command, 0, "rendered", "")
+
+            with patch("render_interactive_dashboard_pdf.subprocess.run", side_effect=completed) as run, \
+                    patch("render_interactive_dashboard_pdf.validate_pdf") as validate:
+                result = render_dashboard_pdf(
+                    str(html), str(output), ["https://www.sec.gov/filing"], str(executable)
+                )
+            self.assertEqual(result, str(output.resolve()))
+            command = run.call_args.args[0]
+            self.assertIn("--wait-for-selector", command)
+            self.assertIn("#valuation-cards .metric-card", command)
+            self.assertIn(html.resolve().as_uri(), command)
+            validate.assert_called_once_with(str(output.resolve()), ["https://www.sec.gov/filing"])
+
+    def test_telegram_messages_name_interactive_dashboard_attachment(self):
+        self.assertIn("Interactive A4 dashboard attached", generate_dashboard_message(sample_data()))
+        self.assertIn("Interactive A4 dashboard attached", generate_call_message(sample_data()))
 
 
 if __name__ == "__main__": unittest.main()

@@ -23,12 +23,13 @@ Then open `http://localhost:8000`.
 - `data/RKLB-2026-Q2.json` — reference report generated from the existing analysis pipeline.
 - `data/report.json` / `data/report.js` — active default report. The JavaScript wrapper exists only so direct local opening works without browser `file://` fetch restrictions.
 - `scripts/create_interactive_dashboard.py` — converts the company-neutral earnings-analysis JSON into the interactive schema and generates a complete static site.
+- `scripts/render_interactive_dashboard_pdf.py` — waits for the final JavaScript-rendered cards, prints the page through headless Chromium, and validates the resulting one-page A4 PDF before delivery.
 
 All company values, labels, explanations, formulas, scales, evidence, and sources come from generated data. Presentation files contain no company-specific branches or fixed report values.
 
 ## Generate with the earnings pipeline
 
-`run_analysis.py` now creates an interactive dashboard alongside JSON, Markdown, and PDF outputs. A successful run adds:
+`run_analysis.py` now creates an interactive dashboard and a browser-rendered PDF alongside JSON, Markdown, and the original PDF output. After the final JavaScript cards render, headless Chromium prints the HTML to A4 PDF, validates the PDF, and uses that rendered PDF as the attachment for both Telegram messages. A successful run adds:
 
 ```text
 <TICKER>_Qn_FYyyyy_Interactive_Dashboard/
@@ -40,7 +41,16 @@ All company values, labels, explanations, formulas, scales, evidence, and source
     ├── <TICKER>-<YEAR>-<QUARTER>.json
     ├── report.json
     └── report.js
+<TICKER>_Qn_FYyyyy_Interactive_Dashboard.pdf
 ```
+
+The static dashboard has no runtime dependencies. Pipeline PDF rendering requires the Playwright CLI and Chromium:
+
+```bash
+playwright install chromium
+```
+
+Set `PLAYWRIGHT_CLI=/absolute/path/to/playwright` when the executable is not on `PATH`.
 
 You can also call the generator directly:
 

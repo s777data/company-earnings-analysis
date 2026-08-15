@@ -1,6 +1,6 @@
 ---
 name: company-earnings-analysis
-version: 2.2
+version: 2.3
 description: Evidence-gated analysis of the latest quarterly SEC filing and mandatory web earnings-call transcript
 category: research
 model: high-reasoning
@@ -113,7 +113,7 @@ export ROBINHOOD_EXPECTED_ACCOUNT="<authorized account number>"
 python run_analysis.py --ticker <TICKER> --output-format both
 ```
 
-Successful analyses deliver the two Telegram messages and validated PDF automatically. Optional flags:
+Successful analyses deliver the two Telegram messages with the validated browser-rendered interactive A4 PDF attached automatically. Playwright waits for the final JavaScript metric cards before printing; delivery never uses a partially rendered page. Optional flags:
 
 - `--max-filing-age-days N`
 - `--output-format json|markdown|both|pdf`
@@ -133,8 +133,9 @@ Generated filenames use ticker and verified fiscal period:
 - `<TICKER>_Qn_FYyyyy_analysis.md`
 - `<TICKER>_Qn_FYyyyy_Earnings_OnePager.pdf`
 - `<TICKER>_Qn_FYyyyy_Interactive_Dashboard/index.html` plus static CSS, JavaScript, bundled Inter font, and reusable JSON data
+- `<TICKER>_Qn_FYyyyy_Interactive_Dashboard.pdf` rendered from the final HTML, validated as one-page A4, and attached to both Telegram messages
 
-The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend.
+The JSON excludes raw filing and transcript text while retaining source URLs and citations. The HTML dashboard is company-neutral, renders all repeated cards from generated JSON, works when opened locally, and is deployable to GitHub Pages without a backend. The static dashboard itself has no runtime dependency; pipeline PDF rendering requires Playwright with Chromium or an explicit `PLAYWRIGHT_CLI` path.
 
 ## Verification
 
