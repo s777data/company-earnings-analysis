@@ -100,11 +100,27 @@ def parse_xbrl_financials(content: str, report_date: str | None = None) -> dict:
         prior_candidates = [entry for entry in entries if entry["instant"] == instant_metric and entry["end"] < chosen["end"]]
         if not instant_metric:
             prior_candidates = [entry for entry in prior_candidates if abs(entry["duration_days"] - chosen["duration_days"]) <= 7]
+        prior_value = None
+        prior_end = None
         if prior_candidates:
             target_prior_days = 365
             prior_candidates.sort(key=lambda entry: abs((date.fromisoformat(chosen["end"]) - date.fromisoformat(entry["end"])).days - target_prior_days))
             prior = prior_candidates[0]
             if abs((date.fromisoformat(chosen["end"]) - date.fromisoformat(prior["end"])).days - target_prior_days) <= 45:
-                chosen = {**chosen, "prior_value": prior["value"], "prior_end": prior["end"], "prior_context": prior["context"]}
-        result["metrics"][metric] = chosen
+                prior_value = prior["value"]
+                prior_end = prior["end"]
+        
+        # Find prior quarter (approximately 90 days before)
+        prior_q_value = None
+        prior_q_candidates = [entry for entry in entries if entry["instant"] == instant_metric and entry["end"] < chosen["end"]]
+        if not instant_metric:
+            prior_q_candidates = [entry for entry in prior_q_candidates if abs(entry["duration_days"] - chosen["duration_days"]) <= 7]
+        if prior_q_candidates:
+            target_prior_q_days = 91  # ~1 quarter
+            prior_q_candidates.sort(key=lambda entry: abs((date.fromisoformat(chosen["end"]) - date.fromisoformat(entry["end"])).days - target_prior_q_days))
+            prior_q = prior_q_candidates[0]
+            if abs((date.fromisoformat(chosen["end"]) - date.fromisoformat(prior_q["end"])).days - target_prior_q_days) <= 45:
+                prior_q_value = prior_q["value"]
+        
+        result["metrics"][metric] = {**chosen, "prior_value": prior_value, "prior_end": prior_end, "prior_q_value": prior_q_value}
     return result

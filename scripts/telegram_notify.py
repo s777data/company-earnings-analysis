@@ -34,8 +34,23 @@ def _clip(text: str, maximum: int = 190) -> str:
     text = " ".join(str(text).split())
     if len(text) <= maximum:
         return text
-    shortened = text[:maximum].rsplit(" ", 1)[0].rstrip(" ,;:-")
+    shortened = text[:maximum].rsplit(" ", 1)[0].rstrip(" ,;:-\-")
     return shortened + "…"
+
+
+def _format_metric(metric: dict[str, Any], show_qoq: bool = True) -> str:
+    """Format a single metric line with YoY and QoQ."""
+    emoji = SIGNAL_EMOJIS.get(_signal(metric), "🟡")
+    label = metric.get("label", "")
+    display = metric.get("display", "")
+    comparison = metric.get("comparison", "")
+    # Add QoQ if available and not already in comparison
+    qoq_part = ""
+    if show_qoq:
+        change_qoq = metric.get("change_qoq")
+        if change_qoq is not None and "QoQ" not in comparison:
+            qoq_part = f" ({change_qoq:+.1%} QoQ)"
+    return f"{emoji} {label}: **{metric['display']}** ({comparison}{qoq_part})"
 
 
 def _complete_insight_selection(rows: list[dict[str, Any]], maximum: int = 8,
@@ -69,20 +84,57 @@ def _warning_prefix(data: dict[str, Any]) -> list[str]:
 def generate_dashboard_message(data: dict[str, Any]) -> str:
     grade = data.get("grade", {})
     thesis = data.get("thesis", {})
+    financials = data.get("financials", {}).get("rows", [])
+    valuation = data.get("valuation", {})
+    
+    # Section emojis
     lines = _warning_prefix(data) + [
         f"📊 **{data['ticker']} — {data['fiscal_period']} FY{data['fiscal_year']} Earnings**",
         f"Grade: **{grade.get('letter', 'N/A')}** | Confidence: **{grade.get('confidence', 0):.0%}**",
-        "", "📈 **Financial Highlights (YoY)**",
+        "",
     ]
-    for metric in data.get("financials", {}).get("rows", [])[:14]:
-        emoji = SIGNAL_EMOJIS.get(_signal(metric), "🟡")
-        lines.append(f"{emoji} {metric['label']}: **{metric['display']}** ({metric.get('comparison', 'comparison unavailable')})")
-
+    
+    # FINANCIAL HIGHLIGHTS (YoY) - Tier 1 Income Statement metrics
+    lines.append("📈 **Financial Highlights (YoY)**")
+    tier1_income_keys = ["revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "eps_diluted", "capex"]
+    for key in tier1_income_keys:
+        metric = next((m for m in financials if m.get("key") == key), None)
+        if metric:
+            lines.append(_format_metric(metric))
+    
+    # KEY RATIOS - Tier 1 from reference
+    lines.extend(["", "📊 **Key Ratios**"])
+    tier1_ratio_keys = ["revenue", "operating_income", "net_income", "operating_cash_flow", "eps_diluted"]
+    for key in tier1_ratio_keys:
+        metric = next((m for m in financials if m.get("key") == f"{key}_growth"), None)
+        if metric:
+            lines.append(_format_metric(metric, show_qoq=False))
+    
+    # CAPITAL & LIQUIDITY - Tier 1 from reference
+    lines.extend(["", "💼 **Capital & Liquidity**"])
+    tier1_capital_keys = ["cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt", "backlog"]
+    for key in tier1_capital_keys:
+        metric = next((m for m in financials if m.get("key") == key), None)
+        if metric:
+            lines.append(_format_metric(metric))
+    
+    # VALUATION - Regime-appropriate metrics
     lines.extend(["", "💰 **Valuation**"])
-    for row in data.get("valuation", {}).get("rows", [])[:6]:
+    regime = valuation.get("regime", "negative_earnings_or_fcf")
+    if regime == "positive_earnings_and_fcf":
+        lines.append("🟢 **Profitability-Based Valuation Metrics (Positive Earnings/FCF)**")
+    else:
+        lines.append("🔴 **Valuation Metrics (Negative Earnings/FCF)**")
+    for row in valuation.get("rows", [])[:8]:
         emoji = SIGNAL_EMOJIS.get(_signal(row), "🟡")
         lines.append(f"{emoji} {row['label']}: **{row['display']}** — {row.get('assessment', 'Unclassified')}")
-
+    
+    # SHORT INTEREST & STOCK-BASED COMPENSATION
+    lines.extend(["", "📉 **Short Interest & Stock-Based Compensation**"])
+    for row in valuation.get("risk_rows", []):
+        emoji = SIGNAL_EMOJIS.get(_signal(row), "🟠")
+        lines.append(f"{emoji} {row['label']}: **{row['display']}** — {row.get('assessment', 'Unclassified')}")
+    
     lines.extend(["", "⚠️ **Key Risk Matrix**"])
     risks = data.get("risks", [])[:6]
     if not risks:
@@ -103,9 +155,9 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     base = thesis.get("base_case")
     bull = thesis.get("bull_case")
     bear = thesis.get("bear_case")
-    lines.extend(["", f"🧠 **Thesis: {thesis.get('recommendation', 'INSUFFICIENT DATA')}** | "
-                          f"Base EPS CAGR: {thesis.get('base_cagr', 0):.0%} | "
-                          f"IRR: {thesis.get('irr', 0):.0%} | Hurdle: {thesis.get('hurdle_rate', 0):.0%}"])
+    lines.extend(["", f"🧠 **Thesis: {thesis.get('recommendation', 'INSUFFICIENT DATA')}** | ",
+                  f"Base EPS CAGR: {thesis.get('base_cagr', 0):.0%} | ",
+                  f"IRR: {thesis.get('irr', 0):.0%} | Hurdle: {thesis.get('hurdle_rate', 0):.0%}"])
     for label, case, emoji in (("Base", base, SIGNAL_EMOJIS["best"]),
                                ("Bull", bull, SIGNAL_EMOJIS["strong_positive"]),
                                ("Bear", bear, SIGNAL_EMOJIS["negative"])):
@@ -146,6 +198,10 @@ def generate_call_message(data: dict[str, Any]) -> str:
     lines.extend([f"Source: Earnings call transcript (prepared remarks + analyst Q&A) — {data['sources']['transcript_url']}",
                   "📎 PDF: Interactive A4 dashboard attached"])
     return "\n".join(lines)
+
+
+def _warning_prefix(data: dict[str, Any]) -> list[str]:
+    return ["**TEST ONLY — STALE MARKET DATA — NOT ACTIONABLE**", ""] if data.get("test_run") else []
 
 
 def _send(message: str, pdf_path: str, target: str) -> dict[str, Any]:

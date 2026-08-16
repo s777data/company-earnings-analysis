@@ -486,10 +486,14 @@ class OutputTests(unittest.TestCase):
         }
         self.assertEqual({signal: SIGNAL_EMOJIS[signal] for signal in spectrum}, spectrum)
         data = sample_data()
-        data["financials"]["rows"] = [
-            {"label": f"Metric-{signal}", "display": "1", "comparison": "verified", "signal": signal}
-            for signal in spectrum
-        ]
+        # Create metrics that match the new tier1 structure - one metric per signal
+        tier1_keys = ["revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "eps_diluted", "capex", "stock_based_compensation", "depreciation_amortization", "backlog", "cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt", "shares_diluted"]
+        data["financials"]["rows"] = []
+        for i, (signal, emoji) in enumerate(spectrum.items()):
+            key = tier1_keys[i % len(tier1_keys)]
+            data["financials"]["rows"].append({
+                "key": key, "label": f"Metric-{signal}", "display": "1", "comparison": "verified", "signal": signal
+            })
         data["transcript_insights"] = [
             {"topic": f"Topic-{signal}", "detail": f"Complete evidence for {signal} sentiment.",
              "reasoning": "Signal follows evidence.", "signal": signal,

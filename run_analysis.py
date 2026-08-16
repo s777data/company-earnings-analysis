@@ -70,6 +70,12 @@ def _display(value: float, metric: str) -> str:
 def _change(current: float, prior: float | None) -> float | None:
     return None if prior in (None, 0) else (current - prior) / abs(prior)
 
+
+def _change_qoq(current: float, prior_q: float | None) -> float | None:
+    """Calculate quarter-over-quarter change."""
+    return None if prior_q in (None, 0) else (current - prior_q) / abs(prior_q)
+
+
 def _tier(change: float | None, inverse: bool = False) -> str:
     if change is None: return "medium"
     adjusted = -change if inverse else change
@@ -149,16 +155,28 @@ class EarningsAnalyzer:
 
     def financials(self):
         rows = []; metrics = self.data["_xbrl"]["metrics"]
+        tier1_metrics = {"revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "capex", "stock_based_compensation", "depreciation_amortization", "eps_diluted", "backlog", "cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt", "shares_diluted"}
         for name, fact in metrics.items():
             value, prior = fact["value"], fact.get("prior_value"); change = _change(value, prior)
-            comparison = "prior-year comparison unavailable" if change is None else f"{change:+.1%} YoY"
+            prior_q = fact.get("prior_q_value")
+            change_qoq = _change_qoq(value, prior_q)
+            comparison_parts = []
+            if change is not None:
+                comparison_parts.append(f"{change:+.1%} YoY")
+            if change_qoq is not None:
+                comparison_parts.append(f"{change_qoq:+.1%} QoQ")
+            comparison = ", ".join(comparison_parts) if comparison_parts else "prior-year comparison unavailable"
             signal = classify_financial_signal(name, change)
-            rows.append({"key": name, "label": LABELS.get(name, name), "value": value, "display": _display(value, name),
+            row_data = {"key": name, "label": LABELS.get(name, name), "value": value, "display": _display(value, name),
                          "prior_value": prior, "comparison": comparison, "signal": signal, "tier": signal,
                          "citation": _citation("SEC XBRL", self.data["sources"]["xbrl_url"], concept=fact["concept"],
                                                taxonomy=fact.get("taxonomy"), context=fact["context"], dimensions=fact.get("dimensions", []),
                                                unit=fact.get("unit"), decimals=fact.get("decimals"),
-                                               period_start=fact["start"], period_end=fact["end"])})
+                                               period_start=fact["start"], period_end=fact["end"])}
+            if prior_q is not None:
+                row_data["prior_q_value"] = prior_q
+                row_data["change_qoq"] = change_qoq
+            rows.append(row_data)
         if not any(row["key"] == "revenue" for row in rows): raise RuntimeError("FINANCIAL_DATA_INCOMPLETE: revenue was not extracted")
         by_key = {row["key"]: row for row in rows}
         key_ratios = []
