@@ -134,12 +134,12 @@ h2 {
 }
 
 .metric-grid { display: grid; gap: 1.4mm; padding: .9mm 0 1.2mm; }
-.income-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 0; }
-.ratio-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); padding: 0; }
+.income-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); padding: 0; }
+.ratio-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); padding: 0; }
 .valuation-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .valuation-gauge-grid {
   display: grid;
-  grid-template-columns: repeat(var(--gauge-columns, 8), minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: .55mm;
   padding: .55mm 0 .65mm;
 }
@@ -175,14 +175,15 @@ h2 {
   text-align: center;
 }
 .metric-card--income .metric-name { margin: 0 0 .8mm; color: #111827; font-size: 6px; font-weight: 570; }
-.metric-card--income .metric-value { color: currentColor; font-size: 13px; font-weight: 790; letter-spacing: -.035em; white-space: nowrap; }
+.metric-card--income .metric-value { color: currentColor; font-size: 10.5px; font-weight: 790; letter-spacing: -.035em; white-space: nowrap; }
 .metric-card--income .comparison-badge {
-  min-width: 25mm;
+  width: 100%;
+  min-width: 0;
   margin-top: 1mm;
   padding: .7mm 1.5mm;
   border: .25mm solid;
   border-radius: 2mm;
-  font-size: 6px;
+  font-size: 4.6px;
   font-weight: 540;
   line-height: 1;
 }
@@ -281,9 +282,10 @@ h2 {
   line-height: 1.05;
 }
 .gauge-facts span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.risk-metrics-section .gauge-card { min-height: 17mm; }
 .analysis-grid { display: grid; grid-template-columns: .85fr 1fr 1.45fr; gap: 1.2mm; margin-top: .2mm; }
 .analysis-grid section { height: 63mm; overflow: hidden; }
+.analysis-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 1.2mm; height: 63mm; }
+.analysis-stack section { height: auto; min-height: 0; }
 .dense-list { display: grid; height: calc(100% - 5mm); gap: .8mm; padding: 1.2mm 1mm; overflow: hidden; font-size: 6.1px; }
 .dense-item { display: grid; grid-template-columns: 2.3mm 1fr; gap: .4mm; min-width: 0; font-size: inherit; line-height: 1.28; }
 .dense-item .marker { color: currentColor; font-weight: 850; text-align: center; }

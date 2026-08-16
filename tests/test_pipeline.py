@@ -1,4 +1,5 @@
 import json
+import shutil
 import sys
 import tempfile
 import unittest
@@ -564,9 +565,12 @@ class OutputTests(unittest.TestCase):
         analyzer = EarningsAnalyzer("TEST", output_format="json"); analyzer.data = sample_data()
         rendered = "/tmp/TEST_Q2_FY2026_Interactive_Dashboard.pdf"
         with tempfile.TemporaryDirectory() as directory, \
+                patch("run_analysis.create_interactive_dashboard", return_value="/tmp/index.html") as create, \
                 patch("run_analysis.render_dashboard_pdf", return_value=rendered) as render, \
                 patch("run_analysis.deliver_reports", return_value=[{"success": True}]) as deliver:
             paths = analyzer.save(directory)
+        create.assert_called_once()
+        self.assertTrue(create.call_args.kwargs["publish_template_data"])
         render.assert_called_once()
         deliver.assert_called_once_with(sample_data(), rendered, "telegram", False)
         self.assertEqual(paths["interactive_pdf"], rendered)
@@ -594,7 +598,7 @@ class InteractiveDashboardTests(unittest.TestCase):
         ps = next(card for card in cards if card["key"] == "ps_annualized")
         self.assertGreaterEqual(len(ps["scale"]), 4)
 
-    def test_income_highlights_are_core_four_in_reference_order(self):
+    def test_income_highlights_are_all_eight_tier_one_metrics_in_reference_order(self):
         data = sample_data()
         rows = [
             {"key": "cash", "label": "Cash", "value": 500, "display": "$500"},
@@ -603,10 +607,42 @@ class InteractiveDashboardTests(unittest.TestCase):
             {"key": "operating_income", "label": "Operating Income", "value": 60, "display": "$60"},
             {"key": "gross_profit", "label": "Gross Profit", "value": 90, "display": "$90"},
             {"key": "eps_diluted", "label": "Diluted EPS", "value": 1, "display": "$1"},
+            {"key": "operating_cash_flow", "label": "Operating Cash Flow", "value": 70, "display": "$70"},
+            {"key": "free_cash_flow", "label": "Free Cash Flow", "value": 55, "display": "$55"},
+            {"key": "capex", "label": "Capital Expenditures", "value": 15, "display": "$15"},
         ]
         data["financials"]["rows"] = rows
         keys = [card["key"] for card in build_dashboard_data(data)["sections"]["income_statement"]]
-        self.assertEqual(keys, ["revenue", "gross_profit", "operating_income", "net_income"])
+        self.assertEqual(keys, [
+            "revenue", "gross_profit", "operating_income", "net_income",
+            "free_cash_flow", "operating_cash_flow", "capex", "eps_diluted",
+        ])
+        comparisons = [card["comparison"] for card in build_dashboard_data(data)["sections"]["income_statement"]]
+        self.assertTrue(all("YoY" in value and "QoQ" in value for value in comparisons))
+
+    def test_key_ratios_keep_reference_metrics_and_add_yoy_qoq_to_tier_one(self):
+        data = sample_data()
+        data["financials"]["rows"] = [
+            {"key": "revenue", "label": "Revenue", "value": 200, "prior_value": 160, "prior_q_value": 180},
+            {"key": "gross_profit", "label": "Gross Profit", "value": 100, "prior_value": 72, "prior_q_value": 81},
+            {"key": "operating_income", "label": "Operating Income", "value": 40, "prior_value": 24, "prior_q_value": 27},
+            {"key": "net_income", "label": "Net Income", "value": 20, "prior_value": 8, "prior_q_value": 9},
+            {"key": "stock_based_compensation", "label": "Stock-Based Compensation", "value": 10,
+             "prior_value": 6.4, "prior_q_value": 7.2},
+        ]
+        data["financials"]["key_ratios"] = [
+            {"key": "gross_margin", "label": "Gross Margin", "value": .5, "display": "50.0%", "signal": "positive"},
+            {"key": "operating_margin", "label": "Operating Margin", "value": .2, "display": "20.0%", "signal": "positive"},
+            {"key": "net_margin", "label": "Net Margin", "value": .1, "display": "10.0%", "signal": "positive"},
+            {"key": "sbc_revenue", "label": "SBC / Revenue", "value": .05, "display": "5.0%", "signal": "neutral"},
+            {"key": "revenue_growth", "label": "Revenue Growth", "display": "+25.0%", "signal": "positive"},
+        ]
+        cards = build_dashboard_data(data)["sections"]["key_ratios"]
+        self.assertEqual([card["key"] for card in cards], [
+            "gross_margin", "operating_margin", "net_margin", "sbc_revenue",
+        ])
+        self.assertTrue(all("YoY" in card["comparison"] and "QoQ" in card["comparison"] for card in cards))
+        self.assertEqual(cards[0]["comparison"], "+5.0 pp YoY, +5.0 pp QoQ")
 
     def test_reference_scorecard_structure_is_shared_and_data_driven(self):
         html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
@@ -615,12 +651,34 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertIn('class="scorecard-section income-section"', html)
         self.assertIn('class="scorecard-section ratio-section"', html)
         self.assertIn("Overview of key financial performance metrics", html)
-        self.assertIn("repeat(4, minmax(0, 1fr))", css)
-        self.assertIn("repeat(6, minmax(0, 1fr))", css)
+        self.assertGreaterEqual(css.count("repeat(8, minmax(0, 1fr))"), 3)
         self.assertIn("metric-card--income", css)
         self.assertIn("metric-card--ratio", css)
         self.assertIn('renderMetrics("income-cards", sections.income_statement, "income")', script)
         self.assertIn('renderMetrics("ratio-cards", sections.key_ratios, "ratio")', script)
+
+    def test_short_interest_sbc_keeps_tier_one_placeholders_and_selected_tier_two(self):
+        data = sample_data()
+        data["valuation"]["risk_rows"] = [{
+            "key": "sbc_fcf", "label": "SBC / Free Cash Flow", "value": 12,
+            "display": "12.0%", "assessment": "Strong", "signal": "positive", "tier": 2,
+        }]
+        rows = build_dashboard_data(data)["sections"]["short_interest_sbc"]
+        self.assertEqual(len(rows), 6)
+        self.assertEqual(rows[0]["name"], "Short Interest % of Float")
+        self.assertEqual(rows[0]["detail"], "N/A — Unavailable")
+        self.assertEqual(rows[3]["name"], "SBC / Free Cash Flow")
+
+    def test_valuation_one_row_limit_never_drops_applicable_tier_one_metrics(self):
+        data = sample_data()
+        data["valuation"]["rows"] = [
+            {"key": f"metric_{index}", "label": f"Metric {index}", "value": index + 1,
+             "display": f"{index + 1}.0x", "tier": 1 if index in {0, 7, 8, 9} else 2}
+            for index in range(10)
+        ]
+        rows = build_dashboard_data(data)["sections"]["valuation"]
+        self.assertEqual(len(rows), 8)
+        self.assertTrue({"metric_0", "metric_7", "metric_8", "metric_9"} <= {row["key"] for row in rows})
 
     def test_narrative_sections_keep_complete_sentences_and_signal_colors(self):
         data = sample_data()
@@ -672,6 +730,22 @@ class InteractiveDashboardTests(unittest.TestCase):
             self.assertIn("window.EARNINGS_REPORT", (Path(directory) / "data/report.js").read_text())
             self.assertIn('src="data/report.js"', index.read_text())
 
+    def test_latest_repository_dashboard_data_replaces_stale_ticker_json(self):
+        import create_interactive_dashboard as dashboard_module
+        with tempfile.TemporaryDirectory() as directory:
+            template = Path(directory) / "template"
+            shutil.copytree(ROOT / "earnings-dashboard", template)
+            stale = template / "data" / "STALE-2025-Q1.json"
+            stale.write_text("{}", encoding="utf-8")
+            output = Path(directory) / "output"
+            with patch.object(dashboard_module, "TEMPLATE_DIR", template):
+                dashboard_module.create_interactive_dashboard(
+                    sample_data(), str(output), publish_template_data=True,
+                )
+            json_names = sorted(path.name for path in (template / "data").glob("*.json"))
+            self.assertEqual(json_names, ["TEST-2026-Q2.json", "report.json"])
+            self.assertFalse(stale.exists())
+
     def test_presentation_code_has_no_reference_ticker_or_fixed_metric_values(self):
         files = [ROOT / "earnings-dashboard" / "index.html",
                  ROOT / "earnings-dashboard" / "css" / "dashboard.css",
@@ -686,11 +760,13 @@ class InteractiveDashboardTests(unittest.TestCase):
         html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
         headings = [
             "Income Statement Highlights", "Key Ratios", "Valuation", "Capital &amp; Liquidity",
+            "Short Interest &amp; SBC",
             "Guidance &amp; Outlook", "Earnings Call Summary", "Key Channels &amp; Segments",
             "Strategic Pillars", "Key Risks", "Investment Thesis",
         ]
         positions = [html.index(heading) for heading in headings]
         self.assertEqual(positions, sorted(positions))
+        self.assertNotIn("risk-metric-cards", html)
         self.assertIn('<dialog id="metric-dialog"', html)
         self.assertIn('aria-labelledby="dialog-title"', html)
         script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
@@ -789,12 +865,12 @@ class ValuationGuideTests(unittest.TestCase):
         html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
         css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text(encoding="utf-8")
         script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
-        self.assertIn('id="risk-metric-cards"', html)
-        self.assertIn("repeat(var(--gauge-columns, 8), minmax(0, 1fr))", css)
-        self.assertIn("Math.min(8, items.length)", script)
+        self.assertIn('id="short-interest-content"', html)
+        self.assertIn("grid-template-columns: repeat(8, minmax(0, 1fr))", css)
+        self.assertIn("(metrics || []).slice(0, 8)", script)
         self.assertIn("function gaugeCard(metric)", script)
         self.assertIn("gauge-segment", script)
-        self.assertIn('renderGaugeMetrics("risk-metric-cards"', script)
+        self.assertIn('renderList("short-interest-content", sections.short_interest_sbc, 6)', script)
 
 
 if __name__ == "__main__": unittest.main()

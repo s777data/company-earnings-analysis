@@ -32,7 +32,7 @@ def validate_pdf(path: str, expected_urls: list[str]) -> None:
         text = page.extract_text() or ""
         normalized_text = text.upper()
         headings = ("INCOME STATEMENT HIGHLIGHTS", "KEY RATIOS", "VALUATION", "CAPITAL & LIQUIDITY",
-                    "GUIDANCE & OUTLOOK", "EARNINGS CALL SUMMARY", "KEY CHANNELS & SEGMENTS",
+                    "SHORT INTEREST & SBC", "GUIDANCE & OUTLOOK", "EARNINGS CALL SUMMARY", "KEY CHANNELS & SEGMENTS",
                     "STRATEGIC PILLARS", "KEY RISKS", "INVESTMENT THESIS")
         for heading in headings:
             if heading.upper() not in normalized_text:

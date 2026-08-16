@@ -9,7 +9,41 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE_DIR = ROOT / "earnings-dashboard"
-INCOME_HIGHLIGHT_KEYS = ("revenue", "gross_profit", "operating_income", "net_income")
+INCOME_HIGHLIGHT_KEYS = (
+    "revenue", "gross_profit", "operating_income", "net_income",
+    "free_cash_flow", "operating_cash_flow", "capex", "eps_diluted",
+)
+INCOME_HIGHLIGHT_LABELS = {
+    "revenue": "Revenue", "gross_profit": "Gross Profit",
+    "operating_income": "Operating Income", "net_income": "Net Income",
+    "free_cash_flow": "Free Cash Flow", "operating_cash_flow": "Operating Cash Flow",
+    "capex": "Capital Expenditures", "eps_diluted": "Diluted EPS",
+}
+KEY_RATIO_ORDER = (
+    "gross_margin", "operating_margin", "net_margin", "sbc_revenue",
+    "operating_expense_revenue", "sales_marketing_revenue", "rd_revenue",
+    "income_tax_expense_benefit", "ga_revenue", "cost_of_revenue_revenue",
+    "largest_segment_revenue_mix", "gross_margin_excluding_sbc", "contribution_margin",
+)
+KEY_RATIO_TIER_ONE = KEY_RATIO_ORDER[:4]
+KEY_RATIO_LABELS = {
+    "gross_margin": "Gross Margin", "operating_margin": "Operating Margin",
+    "net_margin": "Net Margin", "sbc_revenue": "SBC / Revenue",
+}
+RISK_ORDER = (
+    "short_interest_float", "days_to_cover", "sbc_revenue", "sbc_fcf",
+    "sbc_adjusted_fcf_yield", "net_share_dilution",
+)
+RISK_TIER_ONE = {"short_interest_float", "days_to_cover", "sbc_revenue",
+                 "sbc_adjusted_fcf_yield", "net_share_dilution"}
+RISK_LABELS = {
+    "short_interest_float": "Short Interest % of Float",
+    "days_to_cover": "Short Ratio / Days to Cover",
+    "sbc_revenue": "SBC / Revenue",
+    "sbc_fcf": "SBC / Free Cash Flow",
+    "sbc_adjusted_fcf_yield": "SBC-Adjusted FCF Yield",
+    "net_share_dilution": "Net Share Dilution",
+}
 
 METADATA: dict[str, dict[str, Any]] = {
     "revenue": {"description": "Revenue recognized during the reported period.", "why_it_matters": "Shows the scale and growth of the core business.", "directionality": "Higher is generally better when growth is profitable.", "formula": "Reported revenue for the period", "scale": [{"label": "Declining", "max": 0, "signal": "negative"}, {"label": "Stable", "max": 0.10, "signal": "neutral"}, {"label": "Strong growth", "max": None, "signal": "positive"}]},
@@ -28,6 +62,7 @@ METADATA: dict[str, dict[str, Any]] = {
     "operating_margin": {"description": "Share of revenue retained as operating profit.", "why_it_matters": "Measures operating efficiency and pricing power.", "directionality": "Higher and durable is generally better.", "formula": "Operating income ÷ revenue"},
     "gross_margin": {"description": "Share of revenue remaining after direct costs.", "why_it_matters": "Shows product economics and pricing/cost performance.", "directionality": "Higher and durable is generally better.", "formula": "Gross profit ÷ revenue"},
     "net_margin": {"description": "Share of revenue retained as net income.", "why_it_matters": "Summarizes bottom-line profitability.", "directionality": "Higher and durable is generally better.", "formula": "Net income ÷ revenue"},
+    "sbc_revenue": {"description": "Stock-based compensation expense relative to revenue.", "why_it_matters": "Highlights equity-compensation intensity and potential dilution pressure.", "directionality": "Lower is generally better.", "formula": "Stock-based compensation ÷ revenue"},
     "pe_ttm": {"description": "Price paid for each dollar of trailing earnings.", "why_it_matters": "Frames valuation relative to realized earnings.", "directionality": "Lower can be more attractive, but quality and growth matter.", "formula": "Share price ÷ trailing-twelve-month EPS", "scale": [{"label": "Attractive", "max": 18, "signal": "positive"}, {"label": "Moderate", "max": 35, "signal": "neutral"}, {"label": "Premium", "max": 50, "signal": "caution"}, {"label": "Extreme", "max": None, "signal": "negative"}]},
     "ps_annualized": {"description": "Market capitalization relative to annualized quarterly revenue.", "why_it_matters": "Useful when earnings are immature or volatile, but does not capture margins.", "directionality": "Lower is generally better, all else equal.", "formula": "Market capitalization ÷ annualized reported-quarter revenue", "scale": [{"label": "Low / potentially attractive", "max": 2, "signal": "positive"}, {"label": "Moderate", "max": 5, "signal": "neutral"}, {"label": "High", "max": 10, "signal": "caution"}, {"label": "Extreme", "max": None, "signal": "negative"}]},
     "fcf_yield_annualized": {"description": "Annualized free cash flow relative to market value.", "why_it_matters": "Estimates cash generation available per dollar invested.", "directionality": "Higher is generally better when cash flow is sustainable.", "formula": "Annualized free cash flow ÷ market capitalization", "scale": [{"label": "Low", "max": 2.5, "signal": "caution"}, {"label": "Healthy", "max": 6, "signal": "neutral"}, {"label": "Attractive", "max": None, "signal": "positive"}]},
@@ -66,6 +101,118 @@ def _metric(row: dict[str, Any], source_note: str = "") -> dict[str, Any]:
         "source_note": row.get("source_note") or source_note or citation.get("source", "Verified report data"),
         "source_date": row.get("source_date"),
     }
+
+
+def _unavailable_income_row(key: str) -> dict[str, Any]:
+    return {
+        "key": key, "label": INCOME_HIGHLIGHT_LABELS[key], "value": None,
+        "display": "N/A", "comparison": "YoY unavailable, QoQ unavailable",
+        "signal": "neutral", "tier": 1,
+    }
+
+
+def _income_row(key: str, row: dict[str, Any] | None) -> dict[str, Any]:
+    output = dict(row) if row is not None else _unavailable_income_row(key)
+    comparison = str(output.get("comparison") or "")
+    parts = [comparison] if comparison else []
+    if "YoY" not in comparison:
+        parts.append("YoY unavailable")
+    if "QoQ" not in comparison:
+        parts.append("QoQ unavailable")
+    output["comparison"] = ", ".join(parts)
+    return output
+
+
+def _period_ratio(financial_by_key: dict[str, dict[str, Any]], numerator: str,
+                  denominator: str, value_key: str) -> float | None:
+    numerator_value = financial_by_key.get(numerator, {}).get(value_key)
+    denominator_value = financial_by_key.get(denominator, {}).get(value_key)
+    if numerator_value is None or denominator_value in (None, 0):
+        return None
+    return numerator_value / denominator_value
+
+
+def _ratio_comparisons(financial_by_key: dict[str, dict[str, Any]]) -> dict[str, str]:
+    components = {
+        "gross_margin": ("gross_profit", "revenue"),
+        "operating_margin": ("operating_income", "revenue"),
+        "net_margin": ("net_income", "revenue"),
+        "sbc_revenue": ("stock_based_compensation", "revenue"),
+    }
+    comparisons: dict[str, str] = {}
+    for key, (numerator, denominator) in components.items():
+        current = _period_ratio(financial_by_key, numerator, denominator, "value")
+        prior = _period_ratio(financial_by_key, numerator, denominator, "prior_value")
+        prior_q = _period_ratio(financial_by_key, numerator, denominator, "prior_q_value")
+        parts = []
+        if current is not None and prior is not None:
+            parts.append(f"{(current - prior) * 100:+.1f} pp YoY")
+        if current is not None and prior_q is not None:
+            parts.append(f"{(current - prior_q) * 100:+.1f} pp QoQ")
+        if parts:
+            comparisons[key] = ", ".join(parts)
+    return comparisons
+
+
+def _key_ratio_rows(data: dict[str, Any], financial_by_key: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    selected = {_key(row): dict(row) for row in data.get("financials", {}).get("key_ratios", [])}
+    comparisons = _ratio_comparisons(financial_by_key)
+    output = []
+    for key in KEY_RATIO_ORDER:
+        row = selected.get(key)
+        if row is None:
+            if key not in KEY_RATIO_TIER_ONE:
+                continue
+            row = {
+                "key": key, "label": KEY_RATIO_LABELS[key], "value": None,
+                "display": "N/A", "signal": "neutral", "tier": 1,
+            }
+        if key in comparisons:
+            row["comparison"] = comparisons[key]
+        elif key in KEY_RATIO_TIER_ONE:
+            row["comparison"] = "YoY unavailable, QoQ unavailable"
+        output.append(row)
+        if len(output) == 8:
+            break
+    return output
+
+
+def _risk_item(row: dict[str, Any]) -> dict[str, Any]:
+    display = row.get("display", "N/A" if row.get("value") is None else str(row["value"]))
+    assessment = row.get("assessment")
+    return {
+        "name": row.get("label") or _key(row).replace("_", " ").title(),
+        "detail": f"{display} — {assessment}" if assessment else display,
+        "signal": row.get("signal") or "neutral",
+        "tier": row.get("tier"),
+    }
+
+
+def _risk_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    selected = {_key(row): row for row in rows}
+    output = []
+    for key in RISK_ORDER:
+        row = selected.get(key)
+        if row is None:
+            if key not in RISK_TIER_ONE:
+                continue
+            row = {
+                "key": key, "label": RISK_LABELS[key], "value": None, "display": "N/A",
+                "assessment": "Unavailable", "signal": "neutral", "tier": 1,
+            }
+        output.append(row)
+    return output
+
+
+def _valuation_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if len(rows) <= 8:
+        return rows
+    selected_ids = {id(row) for row in rows if row.get("tier") == 1}
+    for row in rows:
+        if len(selected_ids) >= 8:
+            break
+        selected_ids.add(id(row))
+    return [row for row in rows if id(row) in selected_ids][:8]
 
 
 def _channel_signal(row: dict[str, Any]) -> dict[str, Any]:
@@ -114,7 +261,7 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
     sources = data.get("sources", {})
     financial_rows = data.get("financials", {}).get("rows", [])
     financial_by_key = {_key(row): row for row in financial_rows}
-    income_highlights = [financial_by_key[key] for key in INCOME_HIGHLIGHT_KEYS if key in financial_by_key]
+    income_highlights = [_income_row(key, financial_by_key.get(key)) for key in INCOME_HIGHLIGHT_KEYS]
     return {
         "schema_version": 2,
         "company": {
@@ -134,10 +281,10 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
         },
         "sections": {
             "income_statement": [_metric(row) for row in income_highlights],
-            "key_ratios": [_metric(row) for row in data.get("financials", {}).get("key_ratios", [])],
-            "valuation": [_metric(row, valuation.get("quote_source", "Verified market data")) for row in valuation_rows],
+            "key_ratios": [_metric(row) for row in _key_ratio_rows(data, financial_by_key)],
+            "valuation": [_metric(row, valuation.get("quote_source", "Verified market data")) for row in _valuation_rows(valuation_rows)],
             "valuation_regime": valuation.get("regime_label", "Valuation"),
-            "short_interest_sbc": [_metric(row) for row in valuation.get("risk_rows", [])],
+            "short_interest_sbc": [_risk_item(row) for row in _risk_rows(valuation.get("risk_rows", []))],
             "capital_liquidity": data.get("capital_liquidity", {}).get("items", []),
             "guidance": data.get("guidance", {}).get("rows", []),
             "earnings_call": _call_rows(data),
@@ -152,20 +299,30 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def create_interactive_dashboard(data: dict[str, Any], output_dir: str) -> str:
-    """Create a complete static site and return its index path."""
-    target = Path(output_dir)
-    if target.exists():
-        shutil.rmtree(target)
-    shutil.copytree(TEMPLATE_DIR, target, ignore=shutil.ignore_patterns("data", "*.pyc", "__pycache__"))
-    data_dir = target / "data"
+def _write_dashboard_data(data_dir: Path, json_text: str, ticker: str, period: str,
+                          replace_ticker_json: bool = False) -> None:
     data_dir.mkdir(parents=True, exist_ok=True)
+    if replace_ticker_json:
+        for path in data_dir.glob("*.json"):
+            path.unlink()
+    (data_dir / f"{ticker}-{period}.json").write_text(json_text, encoding="utf-8")
+    (data_dir / "report.json").write_text(json_text, encoding="utf-8")
+    (data_dir / "report.js").write_text("window.EARNINGS_REPORT = " + json_text + ";\n", encoding="utf-8")
+
+
+def create_interactive_dashboard(data: dict[str, Any], output_dir: str,
+                                 publish_template_data: bool = False) -> str:
+    """Create a complete static site and return its index path."""
     payload = build_dashboard_data(data)
     json_text = json.dumps(payload, indent=2, ensure_ascii=False)
     ticker = str(data.get("ticker", "REPORT")).upper()
     period = f"{data.get('fiscal_year', 'NA')}-{data.get('fiscal_period', 'NA')}"
-    named_json = data_dir / f"{ticker}-{period}.json"
-    named_json.write_text(json_text, encoding="utf-8")
-    (data_dir / "report.json").write_text(json_text, encoding="utf-8")
-    (data_dir / "report.js").write_text("window.EARNINGS_REPORT = " + json_text + ";\n", encoding="utf-8")
+    if publish_template_data:
+        _write_dashboard_data(TEMPLATE_DIR / "data", json_text, ticker, period, replace_ticker_json=True)
+
+    target = Path(output_dir)
+    if target.exists():
+        shutil.rmtree(target)
+    shutil.copytree(TEMPLATE_DIR, target, ignore=shutil.ignore_patterns("data", "*.pyc", "__pycache__"))
+    _write_dashboard_data(target / "data", json_text, ticker, period)
     return str(target / "index.html")

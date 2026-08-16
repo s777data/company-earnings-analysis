@@ -777,7 +777,7 @@ class EarningsAnalyzer:
         if self.output_format in {"markdown", "both"}:
             path = directory / f"{self.ticker}_{safe_period}_analysis.md"; path.write_text(self.markdown(public)); paths["markdown"] = str(path)
         dashboard_dir = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
-        paths["html"] = create_interactive_dashboard(public, str(dashboard_dir))
+        paths["html"] = create_interactive_dashboard(public, str(dashboard_dir), publish_template_data=True)
         interactive_pdf = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
         source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "transcript_url")]
         paths["interactive_pdf"] = render_dashboard_pdf(paths["html"], str(interactive_pdf), source_urls)

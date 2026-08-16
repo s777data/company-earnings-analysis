@@ -261,15 +261,15 @@
 
   function renderGaugeMetrics(id, metrics) {
     const container = $(id);
-    const items = metrics || [];
-    container.style.setProperty("--gauge-columns", String(Math.max(1, Math.min(8, items.length))));
+    const items = (metrics || []).slice(0, 8);
     container.replaceChildren(...items.map(gaugeCard));
     if (items.length === 0) container.append(emptyState("No applicable verified metrics available."));
   }
 
   function renderMetrics(id, metrics, variant = "default") {
     const container = $(id);
-    container.replaceChildren(...(metrics || []).map((metric) => metricCard(metric, variant)));
+    const items = (metrics || []).slice(0, 8);
+    container.replaceChildren(...items.map((metric) => metricCard(metric, variant)));
     if (!metrics || metrics.length === 0) container.append(emptyState("No verified metrics available."));
   }
 
@@ -344,7 +344,7 @@
   }
 
   function fitNarrativeSections() {
-    ["capital-content", "guidance-content", "call-content"].forEach((id) => fitText($(id), 3.65));
+    ["capital-content", "short-interest-content", "guidance-content", "call-content"].forEach((id) => fitText($(id), 3.65));
     document.querySelectorAll(".channel-card, .pillar-card").forEach((card) => fitText(card, 3.55));
     document.body.dataset.layoutReady = "true";
   }
@@ -459,8 +459,8 @@
     renderMetrics("ratio-cards", sections.key_ratios, "ratio");
     $("valuation-regime").textContent = `${text(sections.valuation_regime, "Applicable metrics")} · guide order · applicable only`;
     renderGaugeMetrics("valuation-cards", sections.valuation);
-    renderGaugeMetrics("risk-metric-cards", sections.short_interest_sbc);
     renderList("capital-content", sections.capital_liquidity, 8);
+    renderList("short-interest-content", sections.short_interest_sbc, 6);
     renderList("guidance-content", sections.guidance, 6);
     renderList("call-content", sections.earnings_call, 8);
     renderCards("channels-content", sections.channels, "channel");
