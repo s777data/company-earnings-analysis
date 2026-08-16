@@ -382,6 +382,7 @@
       
       const grade = data.grade || "N/A";
       const reason = data.reason || "No reasoning available";
+      const weight = data.weight || 0;
       
       // Signal based on grade
       let signal = "neutral";
@@ -393,7 +394,7 @@
       else if (grade === "F") signal = "worst";
       
       rows.push({ 
-        name: `${cat.icon} ${cat.label}`, 
+        name: `${cat.icon} ${cat.label} (${Math.round(weight * 100)}%)`, 
         detail: `${grade} — ${reason}`, 
         signal 
       });
@@ -401,6 +402,7 @@
     
     // Final grade
     const finalGrade = gradeBreakdown.final_grade || "N/A";
+    const finalScore = gradeBreakdown.final_score || 0;
     let finalSignal = "neutral";
     if (finalGrade.startsWith("A")) finalSignal = "best";
     else if (finalGrade.startsWith("B")) finalSignal = "positive";
@@ -410,8 +412,8 @@
     else if (finalGrade === "F") finalSignal = "worst";
     
     rows.push({ 
-      name: "🏁 Final Grade (75th percentile)", 
-      detail: finalGrade, 
+      name: "🏁 Final Grade (weighted)", 
+      detail: `${finalGrade} (score: ${finalScore.toFixed(2)})`, 
       signal: finalSignal 
     });
     

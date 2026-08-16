@@ -102,6 +102,7 @@ def _generate_grade_reasoning(data: dict[str, Any]) -> str:
         cat = grade_breakdown.get(key, {})
         grade = cat.get("grade", "N/A")
         reason = cat.get("reason", "No reasoning available")
+        weight = cat.get("weight", 0)
         
         # Emoji for grade
         grade_emoji = {
@@ -111,10 +112,11 @@ def _generate_grade_reasoning(data: dict[str, Any]) -> str:
             "D+": "🟠", "D": "🔴", "D-": "🔴", "F": "🟥",
         }.get(grade, "🟡")
         
-        lines.append(f"{grade_emoji} **{label}: {grade}** — {reason}")
+        lines.append(f"{grade_emoji} **{label} ({weight:.0%}): {grade}** — {reason}")
     
     # Final grade
     final_grade = grade_breakdown.get("final_grade", "N/A")
+    final_score = grade_breakdown.get("final_score", 0)
     final_emoji = {
         "A+": "🟦", "A": "🟦", "A-": "🔷",
         "B+": "🔷", "B": "🔵", "B-": "🔵",
@@ -122,7 +124,7 @@ def _generate_grade_reasoning(data: dict[str, Any]) -> str:
         "D+": "🟠", "D": "🔴", "D-": "🔴", "F": "🟥",
     }.get(final_grade, "🟡")
     
-    lines.extend(["", f"🏁 **Final Grade (75th percentile): {final_emoji} {final_grade}**"])
+    lines.extend(["", f"🏁 **Final Grade (weighted): {final_emoji} {final_grade}** (score: {final_score:.2f})"])
     
     return "\n".join(lines)
 

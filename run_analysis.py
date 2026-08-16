@@ -120,7 +120,9 @@ def _percentile_75(values: list[int]) -> int:
 
 def _grade_financial_metrics(data: dict[str, Any]) -> tuple[str, str]:
     """Grade financial metrics: revenue growth, profitability, cash flow, margins."""
-    changes = {row["key"]: _change(row["value"], row.get("prior_value")) for row in data["financials"]["rows"]}
+    financials = data.get("financials", {})
+    rows = financials.get("rows", [])
+    changes = {row["key"]: _change(row["value"], row.get("prior_value")) for row in rows}
     
     # Count positive/negative changes in core metrics
     core_keys = ("revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "eps_diluted")
@@ -129,8 +131,8 @@ def _grade_financial_metrics(data: dict[str, Any]) -> tuple[str, str]:
     neutral = sum(1 for k in core_keys if changes.get(k) is not None and 0 <= changes[k] <= 0.10)
     
     # Key ratios: margins
-    margins = data["financials"]["key_ratios"]
-    margin_improving = sum(1 for m in margins if m["key"] in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0.15)
+    margins = financials.get("key_ratios", [])
+    margin_improving = sum(1 for m in margins if m.get("key") in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0.15)
     
     if positive >= 4 and negative == 0 and margin_improving >= 2:
         return "A+", "Exceptional growth across revenue, profit, and cash flow with expanding margins"
@@ -157,7 +159,7 @@ def _grade_financial_metrics(data: dict[str, Any]) -> tuple[str, str]:
 
 def _grade_valuation(data: dict[str, Any]) -> tuple[str, str]:
     """Grade valuation: P/E, EV/EBITDA, FCF yield vs. growth and quality."""
-    valuation = data["valuation"]
+    valuation = data.get("valuation", {})
     regime = valuation.get("regime", "")
     rows = valuation.get("rows", [])
     
@@ -243,8 +245,9 @@ def _grade_earnings_call(data: dict[str, Any]) -> tuple[str, str]:
 
 def _grade_management_execution(data: dict[str, Any]) -> tuple[str, str]:
     """Grade confidence in management execution: capital allocation, buybacks, margin trends, guidance track record."""
-    financials = data["financials"]["rows"]
-    by_key = {row["key"]: row for row in financials}
+    financials = data.get("financials", {})
+    rows = financials.get("rows", [])
+    by_key = {row["key"]: row for row in rows}
     
     # Share count trend (buybacks)
     shares = by_key.get("shares_diluted", {})
@@ -260,8 +263,8 @@ def _grade_management_execution(data: dict[str, Any]) -> tuple[str, str]:
     high_quality = ocf_vs_ni is not None and ocf_vs_ni > 1.1
     
     # Margin trends
-    margins = data["financials"]["key_ratios"]
-    margin_improving = sum(1 for m in margins if m["key"] in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0)
+    margins = financials.get("key_ratios", [])
+    margin_improving = sum(1 for m in margins if m.get("key") in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0)
     
     # Debt management
     debt = by_key.get("long_term_debt", {})
@@ -270,7 +273,7 @@ def _grade_management_execution(data: dict[str, Any]) -> tuple[str, str]:
     
     # Capital allocation signals from call
     cap_alloc_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Capital Allocation"), None)
-    cap_alloc_positive = cap_alloc_insight and _signal(cap_alloc_insight) in ("best", "strong_positive", "positive")
+    cap_alloc_positive = bool(cap_alloc_insight and _signal(cap_alloc_insight) in ("best", "strong_positive", "positive"))
     
     positives = sum([buyback_positive, high_quality, margin_improving >= 2, debt_decreasing, cap_alloc_positive])
     
@@ -295,8 +298,9 @@ def _grade_management_execution(data: dict[str, Any]) -> tuple[str, str]:
 
 def _grade_future_growth(data: dict[str, Any]) -> tuple[str, str]:
     """Grade future growth: backlog, guidance, pipeline, market opportunity, secular trends."""
-    financials = data["financials"]["rows"]
-    by_key = {row["key"]: row for row in financials}
+    financials = data.get("financials", {})
+    rows = financials.get("rows", [])
+    by_key = {row["key"]: row for row in rows}
     
     # Backlog growth
     backlog = by_key.get("backlog", {})
@@ -315,11 +319,11 @@ def _grade_future_growth(data: dict[str, Any]) -> tuple[str, str]:
     
     # Revenue & Demand insight
     demand_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Revenue & Demand"), None)
-    demand_positive = demand_insight and _signal(demand_insight) in ("best", "strong_positive", "positive")
+    demand_positive = bool(demand_insight and _signal(demand_insight) in ("best", "strong_positive", "positive"))
     
     # Products & Innovation
     product_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Products & Innovation"), None)
-    product_positive = product_insight and _signal(product_insight) in ("best", "strong_positive", "positive")
+    product_positive = bool(product_insight and _signal(product_insight) in ("best", "strong_positive", "positive"))
     
     # Strategic pillars (durable themes)
     pillars = data.get("strategic_pillars", [])
@@ -609,26 +613,33 @@ class EarningsAnalyzer:
         management_grade, management_reason = _grade_management_execution(self.data)
         growth_grade, growth_reason = _grade_future_growth(self.data)
         
-        # Calculate 75th percentile as final grade
-        grade_scores = [
-            _letter_to_score(financial_grade),
-            _letter_to_score(valuation_grade),
-            _letter_to_score(earnings_call_grade),
-            _letter_to_score(management_grade),
-            _letter_to_score(growth_grade),
-        ]
-        final_score = _percentile_75(grade_scores)
-        final_letter = _score_to_letter(final_score)
+        # Calculate weighted final grade
+        # Final Grade = (Financial Metrics × 0.30) + (Valuation × 0.30) + (Earnings Call × 0.10) + (Management Execution × 0.10) + (Future Growth × 0.20)
+        grade_scores = {
+            "financial_metrics": _letter_to_score(financial_grade),
+            "valuation": _letter_to_score(valuation_grade),
+            "earnings_call": _letter_to_score(earnings_call_grade),
+            "management_execution": _letter_to_score(management_grade),
+            "future_growth": _letter_to_score(growth_grade),
+        }
+        final_score = (
+            grade_scores["financial_metrics"] * 0.30 +
+            grade_scores["valuation"] * 0.30 +
+            grade_scores["earnings_call"] * 0.10 +
+            grade_scores["management_execution"] * 0.10 +
+            grade_scores["future_growth"] * 0.20
+        )
+        final_letter = _score_to_letter(round(final_score))
         
         # Store granular grades and reasoning
         self.data["grade_breakdown"] = {
-            "financial_metrics": {"grade": financial_grade, "reason": financial_reason},
-            "valuation": {"grade": valuation_grade, "reason": valuation_reason},
-            "earnings_call": {"grade": earnings_call_grade, "reason": earnings_call_reason},
-            "management_execution": {"grade": management_grade, "reason": management_reason},
-            "future_growth": {"grade": growth_grade, "reason": growth_reason},
+            "financial_metrics": {"grade": financial_grade, "reason": financial_reason, "weight": 0.30},
+            "valuation": {"grade": valuation_grade, "reason": valuation_reason, "weight": 0.30},
+            "earnings_call": {"grade": earnings_call_grade, "reason": earnings_call_reason, "weight": 0.10},
+            "management_execution": {"grade": management_grade, "reason": management_reason, "weight": 0.10},
+            "future_growth": {"grade": growth_grade, "reason": growth_reason, "weight": 0.20},
             "final_grade": final_letter,
-            "final_score": final_score,
+            "final_score": round(final_score, 2),
             "all_scores": grade_scores,
         }
         
