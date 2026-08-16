@@ -359,6 +359,65 @@
     renderList("thesis-content", rows, 4, 155);
   }
 
+  function renderGradeReasoning(gradeBreakdown) {
+    const container = $("grade-reasoning-content");
+    if (!gradeBreakdown) {
+      container.append(emptyState("Grade breakdown not available."));
+      return;
+    }
+    
+    const categories = [
+      { key: "financial_metrics", label: "Financial Metrics", icon: "📊" },
+      { key: "valuation", label: "Valuation", icon: "💰" },
+      { key: "earnings_call", label: "Earnings Call", icon: "📞" },
+      { key: "management_execution", label: "Management Execution", icon: "👔" },
+      { key: "future_growth", label: "Future Growth", icon: "🚀" },
+    ];
+    
+    const rows = [];
+    
+    for (const cat of categories) {
+      const data = gradeBreakdown[cat.key];
+      if (!data) continue;
+      
+      const grade = data.grade || "N/A";
+      const reason = data.reason || "No reasoning available";
+      
+      // Signal based on grade
+      let signal = "neutral";
+      if (grade.startsWith("A")) signal = "positive";
+      else if (grade.startsWith("B")) signal = "positive";
+      else if (grade.startsWith("C+")) signal = "neutral";
+      else if (grade.startsWith("C")) signal = "caution";
+      else if (grade.startsWith("D")) signal = "negative";
+      else if (grade === "F") signal = "worst";
+      
+      rows.push({ 
+        name: `${cat.icon} ${cat.label}`, 
+        detail: `${grade} — ${reason}`, 
+        signal 
+      });
+    }
+    
+    // Final grade
+    const finalGrade = gradeBreakdown.final_grade || "N/A";
+    let finalSignal = "neutral";
+    if (finalGrade.startsWith("A")) finalSignal = "best";
+    else if (finalGrade.startsWith("B")) finalSignal = "positive";
+    else if (finalGrade.startsWith("C+")) finalSignal = "neutral";
+    else if (finalGrade.startsWith("C")) finalSignal = "caution";
+    else if (finalGrade.startsWith("D")) finalSignal = "negative";
+    else if (finalGrade === "F") finalSignal = "worst";
+    
+    rows.push({ 
+      name: "🏁 Final Grade (75th percentile)", 
+      detail: finalGrade, 
+      signal: finalSignal 
+    });
+    
+    renderList("grade-reasoning-content", rows, 6, 200);
+  }
+
   function sourceLinks(sources) {
     const container = $("source-links");
     container.replaceChildren();
@@ -406,6 +465,10 @@
     renderCards("pillars-content", sections.strategic_pillars, "pillar");
     renderList("risks-content", sections.risks, 5, 155);
     renderThesis(sections.thesis || {});
+    
+    // Render grade reasoning
+    renderGradeReasoning(report.grade_breakdown);
+    
     sourceLinks(report.sources || {});
     document.body.dataset.layoutReady = "false";
     if (document.fonts && document.fonts.ready) {

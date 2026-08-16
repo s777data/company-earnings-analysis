@@ -81,6 +81,52 @@ def _warning_prefix(data: dict[str, Any]) -> list[str]:
     return ["**TEST ONLY — STALE MARKET DATA — NOT ACTIONABLE**", ""] if data.get("test_run") else []
 
 
+def _generate_grade_reasoning(data: dict[str, Any]) -> str:
+    """Generate the GRADE REASONING section for Telegram and dashboard."""
+    grade_breakdown = data.get("grade_breakdown", {})
+    if not grade_breakdown:
+        return ""
+    
+    lines = ["", "📋 **GRADE REASONING**", ""]
+    
+    # Order: Financial Metrics, Valuation, Earnings Call, Management Execution, Future Growth
+    categories = [
+        ("financial_metrics", "📊 Financial Metrics"),
+        ("valuation", "💰 Valuation"),
+        ("earnings_call", "📞 Earnings Call"),
+        ("management_execution", "👔 Management Execution"),
+        ("future_growth", "🚀 Future Growth"),
+    ]
+    
+    for key, label in categories:
+        cat = grade_breakdown.get(key, {})
+        grade = cat.get("grade", "N/A")
+        reason = cat.get("reason", "No reasoning available")
+        
+        # Emoji for grade
+        grade_emoji = {
+            "A+": "🟦", "A": "🟦", "A-": "🔷",
+            "B+": "🔷", "B": "🔵", "B-": "🔵",
+            "C+": "🟡", "C": "🟡", "C-": "🟠",
+            "D+": "🟠", "D": "🔴", "D-": "🔴", "F": "🟥",
+        }.get(grade, "🟡")
+        
+        lines.append(f"{grade_emoji} **{label}: {grade}** — {reason}")
+    
+    # Final grade
+    final_grade = grade_breakdown.get("final_grade", "N/A")
+    final_emoji = {
+        "A+": "🟦", "A": "🟦", "A-": "🔷",
+        "B+": "🔷", "B": "🔵", "B-": "🔵",
+        "C+": "🟡", "C": "🟡", "C-": "🟠",
+        "D+": "🟠", "D": "🔴", "D-": "🔴", "F": "🟥",
+    }.get(final_grade, "🟡")
+    
+    lines.extend(["", f"🏁 **Final Grade (75th percentile): {final_emoji} {final_grade}**"])
+    
+    return "\n".join(lines)
+
+
 def generate_dashboard_message(data: dict[str, Any]) -> str:
     grade = data.get("grade", {})
     thesis = data.get("thesis", {})
@@ -148,12 +194,12 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
         else:
             quantification = "Probability and EPS impact not quantified by the company"
         lines.append(f"{emoji} {risk['risk']}: {quantification} — {_clip(risk.get('evidence', ''), 110)}")
-
+    
     lines.extend(["", "🎯 **Key Drivers**"])
     for driver in data.get("growth_drivers", [])[:7]:
         emoji = SIGNAL_EMOJIS.get(_signal(driver), "🟡")
         lines.append(f"{emoji} {_clip(driver['driver'], 170)}")
-
+    
     base = thesis.get("base_case")
     bull = thesis.get("bull_case")
     bear = thesis.get("bear_case")
@@ -166,6 +212,10 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
         if case:
             lines.append(f"{emoji} {label} ({case.get('probability', 0):.0%}): {_clip(case.get('detail') or case.get('summary', ''), 230)}")
     lines.append(f"{SIGNAL_EMOJIS['caution']} Key Risks: {_clip(thesis.get('key_risks_summary', 'Not quantified'), 220)}")
+    
+    # GRADE REASONING section
+    lines.append(_generate_grade_reasoning(data))
+    
     lines.extend(["", "📎 PDF: Interactive A4 dashboard attached",
                   f"🔗 SEC: {data['sources']['filing_url']}",
                   f"🔗 Transcript: {data['sources']['transcript_url']}"])
@@ -200,10 +250,6 @@ def generate_call_message(data: dict[str, Any]) -> str:
     lines.extend([f"Source: Earnings call transcript (prepared remarks + analyst Q&A) — {data['sources']['transcript_url']}",
                   "📎 PDF: Interactive A4 dashboard attached"])
     return "\n".join(lines)
-
-
-def _warning_prefix(data: dict[str, Any]) -> list[str]:
-    return ["**TEST ONLY — STALE MARKET DATA — NOT ACTIONABLE**", ""] if data.get("test_run") else []
 
 
 def _send(message: str, pdf_path: str, target: str) -> dict[str, Any]:

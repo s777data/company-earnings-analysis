@@ -148,6 +148,7 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
         },
         "sources": sources,
         "warnings": data.get("warnings", []),
+        "grade_breakdown": data.get("grade_breakdown", {}),
     }
 
 

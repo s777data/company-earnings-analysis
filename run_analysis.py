@@ -32,6 +32,10 @@ from analysis_enrichment import (
     extract_transcript_sections,
 )
 
+
+def _signal(item: dict[str, Any]) -> str:
+    return item.get("signal") or item.get("tier") or "neutral"
+
 LABELS = {"revenue": "Revenue", "gross_profit": "Gross Profit", "operating_income": "Operating Income",
           "net_income": "Net Income", "eps_diluted": "Diluted EPS", "operating_cash_flow": "Operating Cash Flow",
           "capex": "Capital Expenditures", "stock_based_compensation": "Stock-Based Compensation",
@@ -81,8 +85,270 @@ def _tier(change: float | None, inverse: bool = False) -> str:
     adjusted = -change if inverse else change
     return "best" if adjusted >= 0.10 else "worst" if adjusted < 0 else "medium"
 
+
+# Grade mapping for 75th percentile calculation
+GRADE_SCALE = {
+    "A+": 13, "A": 12, "A-": 11,
+    "B+": 10, "B": 9, "B-": 8,
+    "C+": 7, "C": 6, "C-": 5,
+    "D+": 4, "D": 3, "D-": 2,
+    "F": 1,
+}
+GRADE_SCALE_REV = {v: k for k, v in GRADE_SCALE.items()}
+
+
+def _letter_to_score(letter: str) -> int:
+    """Convert letter grade to numeric score for percentile calculation."""
+    return GRADE_SCALE.get(letter, 0)
+
+
+def _score_to_letter(score: int) -> str:
+    """Convert numeric score back to letter grade."""
+    return GRADE_SCALE_REV.get(score, "F")
+
+
+def _percentile_75(values: list[int]) -> int:
+    """Calculate 75th percentile of a list of numeric values."""
+    if not values:
+        return 0
+    sorted_vals = sorted(values)
+    n = len(sorted_vals)
+    # 75th percentile index (0-indexed)
+    idx = min(n - 1, int((n - 1) * 0.75))
+    return sorted_vals[idx]
+
+
+def _grade_financial_metrics(data: dict[str, Any]) -> tuple[str, str]:
+    """Grade financial metrics: revenue growth, profitability, cash flow, margins."""
+    changes = {row["key"]: _change(row["value"], row.get("prior_value")) for row in data["financials"]["rows"]}
+    
+    # Count positive/negative changes in core metrics
+    core_keys = ("revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "eps_diluted")
+    positive = sum(1 for k in core_keys if changes.get(k) is not None and changes[k] > 0.10)
+    negative = sum(1 for k in core_keys if changes.get(k) is not None and changes[k] < 0)
+    neutral = sum(1 for k in core_keys if changes.get(k) is not None and 0 <= changes[k] <= 0.10)
+    
+    # Key ratios: margins
+    margins = data["financials"]["key_ratios"]
+    margin_improving = sum(1 for m in margins if m["key"] in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0.15)
+    
+    if positive >= 4 and negative == 0 and margin_improving >= 2:
+        return "A+", "Exceptional growth across revenue, profit, and cash flow with expanding margins"
+    if positive >= 3 and negative == 0:
+        return "A", "Strong growth in most core metrics with healthy profitability"
+    if positive >= 2 and negative <= 1:
+        return "A-", "Solid growth in key metrics, minor softness in one area"
+    if positive >= 2 and negative == 0:
+        return "B+", "Good growth in multiple metrics, margins stable"
+    if positive >= 1 and negative <= 1:
+        return "B", "Mixed but net positive financial performance"
+    if positive >= 1 and negative >= 2:
+        return "B-", "Growth offset by notable weakness in some metrics"
+    if positive == 0 and negative <= 1:
+        return "C+", "Flat performance with stable margins"
+    if positive == 0 and negative == 2:
+        return "C", "Stagnant growth with some declining metrics"
+    if negative >= 3:
+        return "C-", "Multiple metrics declining"
+    if negative >= 4:
+        return "D", "Broad-based deterioration in financial metrics"
+    return "D-", "Severe financial weakness across the board"
+
+
+def _grade_valuation(data: dict[str, Any]) -> tuple[str, str]:
+    """Grade valuation: P/E, EV/EBITDA, FCF yield vs. growth and quality."""
+    valuation = data["valuation"]
+    regime = valuation.get("regime", "")
+    rows = valuation.get("rows", [])
+    
+    # Find key valuation metrics
+    pe_row = next((r for r in rows if "P/E" in r.get("label", "") or "pe_ttm" in r.get("key", "")), None)
+    fcf_row = next((r for r in rows if "FCF" in r.get("label", "")), None)
+    ev_ebitda_row = next((r for r in rows if "EBITDA" in r.get("label", "")), None)
+    ps_row = next((r for r in rows if "P/S" in r.get("label", "")), None)
+    
+    pe_signal = _signal(pe_row) if pe_row else "neutral"
+    fcf_signal = _signal(fcf_row) if fcf_row else "neutral"
+    ev_signal = _signal(ev_ebitda_row) if ev_ebitda_row else "neutral"
+    ps_signal = _signal(ps_row) if ps_row else "neutral"
+    
+    positive_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("best", "strong_positive", "positive"))
+    negative_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("negative", "worst"))
+    
+    if regime == "positive_earnings_and_fcf":
+        if positive_signals >= 3:
+            return "A+", "Attractive valuation across P/E, FCF yield, and EV/EBITDA for quality growth"
+        if positive_signals >= 2:
+            return "A", "Reasonable valuation with strong cash generation"
+        if positive_signals >= 1 and negative_signals == 0:
+            return "A-", "Fair valuation, one metric slightly rich"
+        if positive_signals == 1 and negative_signals <= 1:
+            return "B+", "Moderate valuation, mixed signals"
+        if positive_signals == 0 and negative_signals <= 1:
+            return "B", "Full valuation but supported by profitability"
+        if negative_signals >= 2:
+            return "B-", "Rich valuation on multiple metrics"
+        if negative_signals >= 3:
+            return "C", "Expensive across P/E, EV/EBITDA, and FCF yield"
+        return "C-", "Very expensive for the growth profile"
+    else:
+        # Negative earnings/FCF regime
+        if negative_signals <= 1:
+            return "B", "Speculative valuation but not extreme"
+        if negative_signals == 2:
+            return "B-", "Elevated price/sales for pre-profit company"
+        if negative_signals == 3:
+            return "C", "High multiples without earnings support"
+        return "C-", "Very high speculative valuation"
+
+
+def _grade_earnings_call(data: dict[str, Any]) -> tuple[str, str]:
+    """Grade earnings call: prepared remarks quality, Q&A substance, guidance clarity."""
+    insights = data.get("transcript_insights", [])
+    if not insights:
+        return "C", "No transcript insights available"
+    
+    # Count positive/negative insights from management (not analysts)
+    mgmt_insights = [i for i in insights if i.get("section") in ("Prepared Remarks", "Analyst Q&A")]
+    positive = sum(1 for i in mgmt_insights if _signal(i) in ("best", "strong_positive", "positive"))
+    negative = sum(1 for i in mgmt_insights if _signal(i) in ("negative", "worst"))
+    neutral = sum(1 for i in mgmt_insights if _signal(i) in ("neutral", "medium"))
+    
+    # Check for guidance
+    guidance = data.get("guidance", {}).get("rows", [])
+    has_guidance = len(guidance) > 0
+    
+    # Check management tone
+    tone_insight = next((i for i in insights if i.get("topic") == "Management Tone"), None)
+    tone_positive = tone_insight and _signal(tone_insight) in ("best", "strong_positive", "positive")
+    
+    if positive >= 4 and negative == 0 and tone_positive and has_guidance:
+        return "A+", "Highly confident tone, clear guidance, substantive positive Q&A"
+    if positive >= 3 and negative <= 1 and tone_positive:
+        return "A", "Confident management, good guidance, mostly positive discussion"
+    if positive >= 2 and negative <= 1 and has_guidance:
+        return "A-", "Solid call with guidance, minor caution in Q&A"
+    if positive >= 2 and negative <= 2:
+        return "B+", "Balanced call with adequate guidance"
+    if positive >= 1 and negative <= 2:
+        return "B", "Mixed tone, guidance present but not compelling"
+    if positive == 0 and negative <= 1:
+        return "B-", "Neutral call, limited forward-looking commentary"
+    if positive == 0 and negative >= 2:
+        return "C+", "Cautious tone, guidance vague or absent"
+    if negative >= 3:
+        return "C", "Negative tone, weak or no guidance"
+    return "C-", "Evasive or concerning management commentary"
+
+
+def _grade_management_execution(data: dict[str, Any]) -> tuple[str, str]:
+    """Grade confidence in management execution: capital allocation, buybacks, margin trends, guidance track record."""
+    financials = data["financials"]["rows"]
+    by_key = {row["key"]: row for row in financials}
+    
+    # Share count trend (buybacks)
+    shares = by_key.get("shares_diluted", {})
+    shares_change = _change(shares.get("value"), shares.get("prior_value"))
+    buyback_positive = shares_change is not None and shares_change < -0.01
+    
+    # Operating cash flow vs net income (earnings quality)
+    ocf = by_key.get("operating_cash_flow", {})
+    ni = by_key.get("net_income", {})
+    ocf_vs_ni = None
+    if ocf.get("value") and ni.get("value") and ni["value"] != 0:
+        ocf_vs_ni = ocf["value"] / ni["value"]
+    high_quality = ocf_vs_ni is not None and ocf_vs_ni > 1.1
+    
+    # Margin trends
+    margins = data["financials"]["key_ratios"]
+    margin_improving = sum(1 for m in margins if m["key"] in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0)
+    
+    # Debt management
+    debt = by_key.get("long_term_debt", {})
+    debt_change = _change(debt.get("value"), debt.get("prior_value"))
+    debt_decreasing = debt_change is not None and debt_change < -0.05
+    
+    # Capital allocation signals from call
+    cap_alloc_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Capital Allocation"), None)
+    cap_alloc_positive = cap_alloc_insight and _signal(cap_alloc_insight) in ("best", "strong_positive", "positive")
+    
+    positives = sum([buyback_positive, high_quality, margin_improving >= 2, debt_decreasing, cap_alloc_positive])
+    
+    if positives >= 4:
+        return "A+", "Buybacks, high earnings quality, expanding margins, debt reduction, disciplined capital allocation"
+    if positives >= 3:
+        return "A", "Strong execution on multiple fronts: buybacks, quality earnings, margin improvement"
+    if positives >= 2:
+        return "A-", "Good execution with buybacks or quality earnings, minor gap in one area"
+    if positives == 2:
+        return "B+", "Solid execution: quality earnings and stable margins"
+    if positives == 1:
+        return "B", "Adequate execution, one clear positive signal"
+    if positives == 0:
+        return "B-", "Neutral execution, no strong signals either way"
+    if not buyback_positive and not high_quality:
+        return "C+", "No buybacks, earnings quality concerns, flat margins"
+    if not buyback_positive and not high_quality and not debt_decreasing:
+        return "C", "Share dilution, low earnings quality, rising debt"
+    return "C-", "Poor capital allocation, deteriorating quality, leverage increasing"
+
+
+def _grade_future_growth(data: dict[str, Any]) -> tuple[str, str]:
+    """Grade future growth: backlog, guidance, pipeline, market opportunity, secular trends."""
+    financials = data["financials"]["rows"]
+    by_key = {row["key"]: row for row in financials}
+    
+    # Backlog growth
+    backlog = by_key.get("backlog", {})
+    backlog_change = _change(backlog.get("value"), backlog.get("prior_value"))
+    backlog_growing = backlog_change is not None and backlog_change > 0.10
+    
+    # Revenue growth rate
+    revenue = by_key.get("revenue", {})
+    rev_change = _change(revenue.get("value"), revenue.get("prior_value"))
+    high_growth = rev_change is not None and rev_change > 0.20
+    mid_growth = rev_change is not None and rev_change > 0.10
+    
+    # Guidance from call
+    guidance = data.get("guidance", {}).get("rows", [])
+    guidance_positive = len(guidance) > 0
+    
+    # Revenue & Demand insight
+    demand_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Revenue & Demand"), None)
+    demand_positive = demand_insight and _signal(demand_insight) in ("best", "strong_positive", "positive")
+    
+    # Products & Innovation
+    product_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Products & Innovation"), None)
+    product_positive = product_insight and _signal(product_insight) in ("best", "strong_positive", "positive")
+    
+    # Strategic pillars (durable themes)
+    pillars = data.get("strategic_pillars", [])
+    strong_pillars = len(pillars) >= 3
+    
+    positives = sum([backlog_growing, high_growth, mid_growth, guidance_positive, demand_positive, product_positive, strong_pillars])
+    
+    if positives >= 5:
+        return "A+", "Explosive growth trajectory: backlog expanding, >20% revenue growth, strong pipeline, clear secular tailwinds"
+    if positives >= 4:
+        return "A", "Strong growth outlook: high revenue growth, backlog building, positive guidance"
+    if positives >= 3:
+        return "A-", "Solid growth prospects: double-digit growth, visible pipeline, good guidance"
+    if positives >= 2:
+        return "B+", "Moderate growth with clear catalysts"
+    if positives >= 1:
+        return "B", "Steady growth, some visibility"
+    if positives == 0:
+        return "B-", "Low growth, limited visibility"
+    if not high_growth and not backlog_growing and not demand_positive:
+        return "C+", "Growth decelerating, no clear catalysts"
+    if not mid_growth and not demand_positive and not product_positive:
+        return "C", "Stagnant growth, weak pipeline"
+    return "C-", "Structural growth challenges, declining demand signals"
+
+
 def _citation(source: str, url: str, start: int | None = None, end: int | None = None, **extra) -> dict:
     return {"source": source, "url": url, "start": start, "end": end, **extra}
+
 
 def _snippet(text: str, pattern: str, radius: int = 180) -> tuple[str, int, int] | None:
     match = re.search(pattern, text, re.I)
@@ -335,7 +601,38 @@ class EarningsAnalyzer:
                             bool(self.data["transcript_insights"])]) / 5
         confidence = min(1.0, 0.55 + 0.4 * completeness)
         letter = "A" if score >= 4 else "B" if score >= 2 else "C" if score >= 0 else "D" if score >= -2 else "F"
-        self.data["grade"] = {"letter": letter, "confidence": confidence,
+        
+        # NEW: Compute granular grades for 5 categories
+        financial_grade, financial_reason = _grade_financial_metrics(self.data)
+        valuation_grade, valuation_reason = _grade_valuation(self.data)
+        earnings_call_grade, earnings_call_reason = _grade_earnings_call(self.data)
+        management_grade, management_reason = _grade_management_execution(self.data)
+        growth_grade, growth_reason = _grade_future_growth(self.data)
+        
+        # Calculate 75th percentile as final grade
+        grade_scores = [
+            _letter_to_score(financial_grade),
+            _letter_to_score(valuation_grade),
+            _letter_to_score(earnings_call_grade),
+            _letter_to_score(management_grade),
+            _letter_to_score(growth_grade),
+        ]
+        final_score = _percentile_75(grade_scores)
+        final_letter = _score_to_letter(final_score)
+        
+        # Store granular grades and reasoning
+        self.data["grade_breakdown"] = {
+            "financial_metrics": {"grade": financial_grade, "reason": financial_reason},
+            "valuation": {"grade": valuation_grade, "reason": valuation_reason},
+            "earnings_call": {"grade": earnings_call_grade, "reason": earnings_call_reason},
+            "management_execution": {"grade": management_grade, "reason": management_reason},
+            "future_growth": {"grade": growth_grade, "reason": growth_reason},
+            "final_grade": final_letter,
+            "final_score": final_score,
+            "all_scores": grade_scores,
+        }
+        
+        self.data["grade"] = {"letter": final_letter, "confidence": confidence,
                               "score": score,
                               "justification": f"Evidence score {score}: reported growth, profitability/cash flow, transcript tone, and source completeness; no ticker-specific grading override."}
         valuation = self.data["valuation"]
@@ -423,5 +720,6 @@ def main():
     except Exception as exc:
         print(f"ERROR: {exc}", file=sys.stderr); return 1
     return 0
+
 
 if __name__ == "__main__": raise SystemExit(main())
