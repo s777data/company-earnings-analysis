@@ -46,6 +46,7 @@ def _validate(text: str, ticker: str, quarter: str, year: int) -> tuple[bool, li
     prepared = any(term in lower for term in (
         "prepared remarks", "opening remarks", "initial remarks", "business update",
         "chief executive officer", "chief financial officer", "chairman and ceo",
+        "ceo", "cfo", "co-founder and ceo", "founder and ceo",
     ))
     qa = any(term in lower for term in ("question-and-answer", "question and answer", "q&a", "q and a", "our first question", "analyst"))
     if not prepared: failures.append("prepared remarks were not detected")
@@ -114,3 +115,37 @@ def find_transcript(ticker: str, fiscal_period: str, fiscal_year: int) -> dict[s
 # Backward-compatible alias used by older callers.
 def web_search(query: str, max_results: int = 10, source_filter=None):
     return [{"url": url} for url in _duckduckgo(query, max_results)]
+
+
+def fetch_forward_pe_ntm(ticker: str) -> tuple[float | None, str | None]:
+    """
+    Fetch Forward P/E (NTM) from StockAnalysis.com which uses S&P Global Market Intelligence.
+    Returns (forward_pe, source_url) or (None, None) if not available.
+    """
+    url = f"https://stockanalysis.com/stocks/{ticker.lower()}/statistics/"
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=25)
+        if response.status_code != 200:
+            return None, None
+        soup = BeautifulSoup(response.text, "html.parser")
+        text = soup.get_text("\n", strip=True)
+        
+        # Look for Forward P/E pattern - StockAnalysis format: "forward PE ratio is 113.27"
+        patterns = [
+            r"forward\s+pe\s+ratio\s+is\s+([\d,]+\.?\d*)",
+            r"forward\s+p/e\s+ratio\s+is\s+([\d,]+\.?\d*)",
+            r"forward\s+pe\s*[:\-]?\s*([\d,]+\.?\d*)\s*x",
+            r"forward\s+p/e\s*[:\-]?\s*([\d,]+\.?\d*)\s*x",
+            r"forward\s+p/e\s*ratio\s*[:\-]?\s*([\d,]+\.?\d*)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    value = float(match.group(1).replace(",", ""))
+                    return value, url
+                except ValueError:
+                    continue
+        return None, None
+    except requests.RequestException:
+        return None, None

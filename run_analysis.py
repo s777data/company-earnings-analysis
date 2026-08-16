@@ -22,7 +22,7 @@ from valuation_metrics import build_valuation_sections
 from sec_edgar_fetch import fetch_filing
 from sec_edgar_search import search_filings
 from telegram_notify import deliver_reports, generate_call_message, generate_dashboard_message
-from web_search import find_transcript
+from web_search import find_transcript, fetch_forward_pe_ntm
 from xbrl_parser import parse_xbrl_financials
 from analysis_enrichment import (
     build_capital_liquidity,
@@ -465,6 +465,57 @@ class EarningsAnalyzer:
                 key_ratios.append({"key": f"{key}_growth", "label": f"{row['label']} Growth", "value": None,
                                    "display": row["comparison"].replace(" YoY", ""), "comparison": "year over year",
                                    "signal": row["signal"], "tier": row["signal"], "citation": row["citation"]})
+
+        # Add SBC/Revenue as a Tier 1 ratio metric (from FINANCIAL_DASHBOARD_METRICS_REFERENCE.txt)
+        sbc_row = by_key.get("stock_based_compensation")
+        revenue_row = by_key.get("revenue")
+        if sbc_row and revenue_row and revenue_row["value"]:
+            sbc_revenue_value = sbc_row["value"] / revenue_row["value"]
+            sbc_prior = None
+            if sbc_row.get("prior_value") is not None and revenue_row.get("prior_value") is not None and revenue_row["prior_value"]:
+                sbc_prior = sbc_row["prior_value"] / revenue_row["prior_value"]
+            sbc_change = _change(sbc_revenue_value, sbc_prior)
+            signal = classify_financial_signal("sbc_revenue", sbc_change)
+            key_ratios.append({"key": "sbc_revenue", "label": "SBC / Revenue", "value": sbc_revenue_value,
+                               "display": f"{sbc_revenue_value:.1%}", "comparison": "current quarter", "signal": signal,
+                               "tier": signal, "citation": [sbc_row["citation"], revenue_row["citation"]]})
+
+        # Add Free Cash Flow as a derived metric (OCF - CapEx) (from FINANCIAL_DASHBOARD_METRICS_REFERENCE.txt)
+        ocf_row = by_key.get("operating_cash_flow")
+        capex_row = by_key.get("capex")
+        if ocf_row and capex_row:
+            fcf_value = ocf_row["value"] - abs(capex_row["value"])
+            fcf_prior = None
+            if ocf_row.get("prior_value") is not None and capex_row.get("prior_value") is not None:
+                fcf_prior = ocf_row["prior_value"] - abs(capex_row["prior_value"])
+            fcf_change = _change(fcf_value, fcf_prior)
+            
+            # Get QoQ if available
+            fcf_prior_q = None
+            if ocf_row.get("prior_q_value") is not None and capex_row.get("prior_q_value") is not None:
+                fcf_prior_q = ocf_row["prior_q_value"] - abs(capex_row["prior_q_value"])
+            fcf_change_qoq = _change_qoq(fcf_value, fcf_prior_q)
+            
+            comparison_parts = []
+            if fcf_change is not None:
+                comparison_parts.append(f"{fcf_change:+.1%} YoY")
+            if fcf_change_qoq is not None:
+                comparison_parts.append(f"{fcf_change_qoq:+.1%} QoQ")
+            comparison = ", ".join(comparison_parts) if comparison_parts else "prior-year comparison unavailable"
+            
+            signal = classify_financial_signal("free_cash_flow", fcf_change)
+            fcf_row_data = {"key": "free_cash_flow", "label": "Free Cash Flow", "value": fcf_value,
+                           "display": _display(fcf_value, "free_cash_flow"), "prior_value": fcf_prior,
+                           "comparison": comparison, "signal": signal, "tier": signal,
+                           "citation": _citation("SEC XBRL (derived)", self.data["sources"]["xbrl_url"],
+                                                 concept="OperatingCashFlow minus CapitalExpenditures",
+                                                 period_start=ocf_row.get("period_start"), period_end=ocf_row.get("period_end"))}
+            if fcf_prior_q is not None:
+                fcf_row_data["prior_q_value"] = fcf_prior_q
+                fcf_row_data["change_qoq"] = fcf_change_qoq
+            rows.append(fcf_row_data)
+            by_key["free_cash_flow"] = fcf_row_data
+
         self.data["financials"] = {"rows": rows, "key_ratios": key_ratios}
 
     def quote_and_valuation(self):
@@ -542,6 +593,41 @@ class EarningsAnalyzer:
             market_source=quote["source"], filing_source="SEC filing/XBRL",
             short_source=short_data.get("source", "Nasdaq official short-interest report"),
         )
+        
+        # Fallback: fetch Forward P/E from StockAnalysis.com if Robinhood doesn't provide it
+        forward_pe = quote.get("forward_pe_ratio")
+        if forward_pe is None:
+            try:
+                forward_pe_sa, sa_url = fetch_forward_pe_ntm(self.ticker)
+                if forward_pe_sa:
+                    forward_pe = forward_pe_sa
+                    self.data["warnings"].append(
+                        f"Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): {forward_pe}x"
+                    )
+            except Exception as exc:
+                self.data["warnings"].append(f"Forward P/E fallback failed: {type(exc).__name__}")
+        
+        # Rebuild valuation with the (possibly updated) forward_pe
+        if forward_pe is not None and forward_pe != quote.get("forward_pe_ratio"):
+            sections = build_valuation_sections(
+                market_cap=market_cap, enterprise_value=enterprise_value,
+                annual_revenue=annual_revenue, annual_gross_profit=annual_gross_profit,
+                revenue_growth_pct=revenue_growth_pct,
+                total_equity=metrics.get("total_equity", {}).get("value"),
+                backlog=metrics.get("backlog", {}).get("value"),
+                annual_net_income=annual_net_income, annual_fcf=annual_fcf,
+                annual_ebit=annual_ebit, annual_ebitda=annual_ebitda,
+                trailing_pe=quote.get("pe_ratio"), forward_pe=forward_pe,
+                peg_ratio=quote.get("peg_ratio"),
+                short_interest=short_data.get("short_interest"), public_float=quote.get("public_float"),
+                days_to_cover=short_data.get("days_to_cover"),
+                short_interest_date=short_data.get("settlement_date"),
+                stock_compensation=annual_sbc, period_revenue=annual_revenue, period_fcf=annual_fcf,
+                diluted_shares=metrics.get("shares_diluted", {}).get("value"),
+                prior_diluted_shares=metrics.get("shares_diluted", {}).get("prior_value"),
+                market_source=quote["source"], filing_source="SEC filing/XBRL",
+                short_source=short_data.get("source", "Nasdaq official short-interest report"),
+            )
         valuation = {
             "current_price": quote["price"], "market_cap": market_cap,
             "shares_outstanding": quote.get("shares_outstanding"), "public_float": quote.get("public_float"),
