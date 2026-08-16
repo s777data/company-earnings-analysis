@@ -1,0 +1,415 @@
+================================================================================
+FINANCIAL DASHBOARD METRICS REFERENCE
+Sections: Income Statement Highlights | Capital & Liquidity | Key Ratios
+================================================================================
+
+TIER GUIDE
+Tier 1 = Core / primary dashboard metric
+Tier 2 = Important supporting metric
+Tier 3 = Contextual / deeper-dive metric
+
+ANALYST NOTES
+• For absolute dollar metrics, there is no universal "good" dollar value because company size varies. Their VALUE RANGE therefore focuses on profitability, trend, and growth.
+• For percentage ratios, ranges are broad investor-oriented benchmarks and should always be interpreted with industry, business model, and company maturity in mind.
+• Operating Income Growth, Net Income Growth, and EPS Growth should not be interpreted normally when the current or prior comparison period is negative or near zero.
+• Backlog is most useful for contract-driven, aerospace, defense, infrastructure, industrial, and project-based businesses.
+
+
+================================================================================
+1. INCOME STATEMENT HIGHLIGHTS
+================================================================================
+
+--------------------------------------------------------------------------------
+TIER 1 — CORE
+--------------------------------------------------------------------------------
+
+METRIC: Revenue
+DEFINITION: Total sales recognized during the reporting period.
+IMPACT: Shows the size of the company's top line and how much business it generated before expenses.
+SCORE: Tier 1 (Very High / Core)
+VALUE MEASURE: Higher is generally better when growth is sustainable and profitable.
+VALUE RANGE:
+  • < 0% YoY growth: Contracting
+  • 0%-10%: Slow growth
+  • 10%-20%: Healthy growth
+  • 20%-40%: High growth
+  • > 40%: Hyper-growth
+
+--------------------------------------------------
+
+METRIC: Gross Profit
+DEFINITION: Revenue - cost of revenue.
+IMPACT: Shows how much money remains after directly delivering the product or service.
+SCORE: Tier 1 (Very High / Core)
+VALUE MEASURE: Higher is better, especially when gross profit grows faster than revenue.
+VALUE RANGE:
+  • < 0: Gross loss
+  • Around 0: Gross break-even
+  • > 0: Positive gross profit
+  • Best trend: Positive and growing faster than revenue
+
+--------------------------------------------------
+
+METRIC: Operating Income
+DEFINITION: Gross profit - operating expenses.
+IMPACT: Shows whether the core business is profitable after normal operating costs but before interest and taxes.
+SCORE: Tier 1 (Very High / Core)
+VALUE MEASURE: Higher is better; positive and expanding is preferred.
+VALUE RANGE:
+  • < 0: Operating loss
+  • Around 0: Operating break-even
+  • > 0: Operating profit
+  • Best trend: Margin expansion and sustained positive growth
+
+--------------------------------------------------
+
+METRIC: Net Income
+DEFINITION: Profit remaining after operating expenses, interest, taxes, and other income or expenses.
+IMPACT: Shows the company's final GAAP profit attributable to the reporting period.
+SCORE: Tier 1 (Very High / Core)
+VALUE MEASURE: Higher is better; consistent positive growth is preferred.
+VALUE RANGE:
+  • < 0: Net loss
+  • Around 0: Net break-even
+  • > 0: Net profit
+  • Best trend: Positive and consistently growing
+
+--------------------------------------------------
+
+METRIC: Free Cash Flow
+DEFINITION: Operating cash flow - capital expenditures.
+IMPACT: Shows how much cash remains after funding the capital investment required to operate and grow the business.
+SCORE: Tier 1 (Very High / Core Cash Generation)
+VALUE MEASURE: Higher is better.
+VALUE RANGE:
+  • < 0: Negative free cash flow
+  • Around 0: FCF break-even
+  • > 0: Positive free cash flow
+  • Strongest signal: Positive FCF with expanding FCF margin
+
+--------------------------------------------------
+METRIC: Operating Cash Flow
+DEFINITION: Cash generated from the company's normal business operations.
+IMPACT: Shows whether the company's core business is converting activity into real cash.
+SCORE: Tier 1 (Very High / Core Cash Generation)
+VALUE MEASURE: Higher is better; positive and consistently growing is preferred.
+VALUE RANGE:
+  • < 0: Negative operating cash flow
+  • Around 0: Cash break-even
+  • > 0: Positive operating cash flow
+  • Best trend: Positive and growing faster than revenue
+--------------------------------------------------
+
+METRIC: Capital Expenditures
+DEFINITION: Cash spent on property, equipment, infrastructure, and other long-lived operating assets.
+IMPACT: Shows how much cash must be reinvested into the physical or technical asset base.
+SCORE: Tier 1 (High / Required for FCF)
+VALUE MEASURE: Lower relative to operating cash flow or revenue is generally better, unless investment is driving attractive growth.
+VALUE RANGE:
+  • < 5% of revenue: Low capital intensity
+  • 5%-10%: Moderate
+  • 10%-20%: High
+  • > 20%: Very High
+
+--------------------------------------------------
+
+METRIC: Diluted EPS
+DEFINITION: Net income available to common shareholders / diluted weighted-average shares outstanding.
+IMPACT: Shows the amount of GAAP profit attributable to each diluted share.
+SCORE: Tier 1 (High / Core Per-Share Profitability)
+VALUE MEASURE: Higher is better.
+VALUE RANGE:
+  • < $0: Loss per share
+  • Around $0: Per-share break-even
+  • > $0: Positive EPS
+  • Best trend: Positive EPS with sustainable YoY growth
+
+--------------------------------------------------------------------------------
+TIER 2 — IMPORTANT SUPPORTING
+--------------------------------------------------------------------------------
+--------------------------------------------------
+
+METRIC: Total Operating Expenses
+DEFINITION: Total operating costs below gross profit, typically including sales and marketing, R&D, and G&A.
+IMPACT: Shows how much the company spends to run and grow the business after direct delivery costs.
+SCORE: Tier 2 (High / Cost Structure)
+VALUE MEASURE: Lower relative to revenue is generally better if growth remains healthy.
+VALUE RANGE:
+  • < 40% of revenue: Lean
+  • 40%-70%: Moderate
+  • 70%-100%: High
+  • > 100%: Operating expenses exceed revenue
+
+
+
+--------------------------------------------------
+
+METRIC: Research & Development Expense
+DEFINITION: Spending on product development, engineering, research, and technical innovation.
+IMPACT: Shows how aggressively the company is investing in future products and technology.
+SCORE: Tier 2 (High for Innovation-Driven Companies)
+VALUE MEASURE: Context-dependent; spending should ultimately support growth or competitive advantage.
+VALUE RANGE:
+  • < 5% of revenue: Low
+  • 5%-15%: Moderate
+  • 15%-25%: High
+  • > 25%: Very High
+
+--------------------------------------------------
+
+METRIC: Sales & Marketing Expense
+DEFINITION: Costs associated with sales, marketing, customer acquisition, and related personnel.
+IMPACT: Shows how much the company spends to acquire and expand customer relationships.
+SCORE: Tier 2 (Growth Efficiency)
+VALUE MEASURE: Lower relative to revenue is generally better if growth remains strong.
+VALUE RANGE:
+  • < 10% of revenue: Low
+  • 10%-25%: Moderate
+  • 25%-40%: High
+  • > 40%: Very High
+
+
+--------------------------------------------------------------------------------
+TIER 3 — CONTEXT / DEEP DIVE
+--------------------------------------------------------------------------------
+
+METRIC: General & Administrative Expense
+DEFINITION: Corporate overhead such as finance, legal, HR, executive, and administrative costs.
+IMPACT: Shows the corporate overhead burden required to operate the company.
+SCORE: Tier 3 (Context / Cost Discipline)
+VALUE MEASURE: Lower relative to revenue is generally better.
+VALUE RANGE:
+  • < 10% of revenue: Efficient
+  • 10%-20%: Moderate
+  • 20%-30%: High
+  • > 30%: Very High
+
+--------------------------------------------------
+
+METRIC: Interest Expense
+DEFINITION: Cost incurred on debt and other interest-bearing obligations.
+IMPACT: Shows how much operating performance is being consumed by financing costs.
+SCORE: Tier 3 (Capital Structure Context)
+VALUE MEASURE: Lower is better, all else equal.
+VALUE RANGE:
+  • < 10% of operating income: Low burden
+  • 10%-25%: Moderate
+  • 25%-50%: High
+  • > 50%: Very High
+  • > 100%: Interest expense exceeds operating income
+
+--------------------------------------------------
+
+METRIC: Income Tax Expense / Benefit
+DEFINITION: Current-period provision for income taxes or tax benefit recognized in earnings.
+IMPACT: Shows the tax effect between pre-tax income and net income.
+SCORE: Tier 3 (Tax Context)
+VALUE MEASURE: Context-dependent.
+VALUE RANGE:
+  • Tax benefit: Often associated with losses or discrete tax items
+  • 0%-15% effective rate: Low
+  • 15%-30%: Typical broad range
+  • > 30%: High
+  • Not meaningful when pre-tax income is negative or distorted
+
+
+
+================================================================================
+2. CAPITAL & LIQUIDITY
+================================================================================
+
+--------------------------------------------------------------------------------
+TIER 1 — CORE
+--------------------------------------------------------------------------------
+
+
+METRIC: Cash & Cash Equivalents
+DEFINITION: Cash and highly liquid short-term investments readily available to the company.
+IMPACT: Shows the company's immediate liquidity and financial flexibility.
+SCORE: Tier 1 (High / Core Liquidity)
+VALUE MEASURE: Higher is generally safer, but excessive idle cash can reduce capital efficiency.
+VALUE RANGE:
+  • < 3 months of operating expenses: Thin liquidity
+  • 3-6 months: Adequate
+  • 6-12 months: Strong
+  • > 12 months: Very Strong
+  • Best evaluated together with debt and cash burn
+
+--------------------------------------------------
+
+METRIC: Total Assets
+DEFINITION: Total economic resources controlled by the company.
+IMPACT: Shows the size of the company's asset base and provides context for capital intensity and balance-sheet scale.
+SCORE: Tier 1 (Balance Sheet Context)
+VALUE MEASURE: Context-dependent; asset productivity matters more than absolute size.
+VALUE RANGE:
+  • Declining: Asset base shrinking
+  • Stable: Little change
+  • Growing: Asset base expanding
+  • Strongest signal: Assets growing with healthy revenue and returns
+
+--------------------------------------------------
+
+METRIC: Total Liabilities
+DEFINITION: Total obligations owed to creditors, suppliers, employees, governments, and other parties.
+IMPACT: Shows the amount of claims against the company's assets and the overall liability burden.
+SCORE: Tier 3 (Balance Sheet Risk Context)
+VALUE MEASURE: Lower relative to assets, equity, and cash flow is generally safer.
+VALUE RANGE:
+  • < 40% of total assets: Low
+  • 40%-60%: Moderate
+  • 60%-80%: High
+  • > 80%: Very High
+--------------------------------------------------
+
+METRIC: Backlog / Remaining Deal Value
+DEFINITION: Contracted or committed future revenue not yet recognized.
+IMPACT: Shows visibility into future business already signed or committed.
+SCORE: Tier 1 (High for Contract-Driven / Project-Based Companies)
+VALUE MEASURE: Higher is generally better when backlog quality and conversion are strong.
+VALUE RANGE:
+  • < 0.5x annual revenue: Low visibility
+  • 0.5x-1.0x: Moderate
+  • 1.0x-2.0x: Strong
+  • > 2.0x: Very Strong
+  • Evaluate backlog growth, duration, and cancellation risk
+
+
+================================================================================
+3. KEY RATIOS
+================================================================================
+
+--------------------------------------------------------------------------------
+TIER 1 — CORE
+--------------------------------------------------------------------------------
+
+METRIC: Revenue Growth YoY
+DEFINITION: (Current-period revenue - prior-year comparable revenue) / prior-year comparable revenue.
+IMPACT: Shows how quickly the company's top line is expanding or contracting.
+SCORE: Tier 1 (Very High / Core Growth)
+VALUE MEASURE: Higher is generally better if margins and cash economics remain healthy.
+VALUE RANGE:
+  • < 0%: Contracting
+  • 0%-10%: Slow Growth
+  • 10%-20%: Healthy Growth
+  • 20%-40%: High Growth
+  • > 40%: Hyper-Growth
+
+--------------------------------------------------
+
+METRIC: Gross Margin
+DEFINITION: Gross profit / revenue.
+IMPACT: Shows how much of each revenue dollar remains after direct delivery costs.
+SCORE: Tier 1 (Very High / Core Profitability)
+VALUE MEASURE: Higher is better.
+VALUE RANGE:
+  • < 20%: Low
+  • 20%-40%: Moderate
+  • 40%-60%: Strong
+  • 60%-80%: Very Strong
+  • > 80%: Exceptional
+
+--------------------------------------------------
+
+METRIC: Operating Margin
+DEFINITION: Operating income / revenue.
+IMPACT: Shows how much operating profit is generated from each dollar of revenue after core operating expenses.
+SCORE: Tier 1 (Very High / Core Profitability)
+VALUE MEASURE: Higher is better.
+VALUE RANGE:
+  • < 0%: Operating loss
+  • 0%-10%: Thin
+  • 10%-20%: Healthy
+  • 20%-30%: Strong
+  • > 30%: Excellent
+
+--------------------------------------------------
+
+METRIC: Net Margin
+DEFINITION: Net income / revenue.
+IMPACT: Shows how much final GAAP profit remains from each dollar of revenue after all expenses.
+SCORE: Tier 1 (Very High / Core Profitability)
+VALUE MEASURE: Higher is better.
+VALUE RANGE:
+  • < 0%: Net loss
+  • 0%-5%: Thin
+  • 5%-10%: Moderate
+  • 10%-20%: Strong
+  • > 20%: Excellent
+
+--------------------------------------------------
+
+METRIC: Free Cash Flow Margin
+DEFINITION: Free cash flow / revenue.
+IMPACT: Shows how much free cash the company retains from each dollar of revenue after capital expenditures.
+SCORE: Tier 1 (Very High / Core Cash Efficiency)
+VALUE MEASURE: Higher is better.
+VALUE RANGE:
+  • < 0%: Negative FCF
+  • 0%-10%: Thin
+  • 10%-20%: Healthy
+  • 20%-30%: Strong
+  • > 30%: Excellent
+
+--------------------------------------------------
+
+METRIC: SBC / Revenue
+DEFINITION: Stock-based compensation / revenue.
+IMPACT: Shows how much of revenue is being consumed by equity compensation and highlights potential dilution.
+SCORE: Tier 1 (High / Core for SBC-Heavy Growth Companies)
+VALUE MEASURE: Lower is better.
+VALUE RANGE:
+  • < 5%: Low / Healthy
+  • 5%-10%: Moderate
+  • 10%-20%: High
+  • > 20%: Very High
+
+
+--------------------------------------------------------------------------------
+TIER 2 — IMPORTANT SUPPORTING
+--------------------------------------------------------------------------------
+
+--------------------------------------------------
+
+METRIC: Sales & Marketing / Revenue
+DEFINITION: Sales and marketing expense / revenue.
+IMPACT: Shows sales-acquisition intensity and how much revenue is being reinvested into growth.
+SCORE: Tier 2 (Growth Efficiency)
+VALUE MEASURE: Lower is generally better if revenue growth remains strong.
+VALUE RANGE:
+  • < 10%: Low
+  • 10%-25%: Moderate
+  • 25%-40%: High
+  • > 40%: Very High
+
+
+--------------------------------------------------------------------------------
+TIER 3 — CONTEXT / DEEP DIVE
+--------------------------------------------------------------------------------
+
+METRIC: G&A / Revenue
+DEFINITION: General and administrative expense / revenue.
+IMPACT: Shows the corporate overhead burden relative to the size of the business.
+SCORE: Tier 3 (Cost Discipline)
+VALUE MEASURE: Lower is generally better.
+VALUE RANGE:
+  • < 10%: Efficient
+  • 10%-20%: Moderate
+  • 20%-30%: High
+  • > 30%: Very High
+
+
+
+
+--------------------------------------------------
+
+METRIC: Largest Segment Revenue Mix
+DEFINITION: Revenue from the company's largest segment or customer category / total revenue.
+IMPACT: Shows how dependent the company is on one major segment or customer category.
+SCORE: Tier 3 (Concentration Context)
+VALUE MEASURE: Lower concentration is generally safer, although strategic specialization can be intentional.
+VALUE RANGE:
+  • < 40%: Diversified
+  • 40%-60%: Moderate concentration
+  • 60%-80%: High concentration
+  • > 80%: Very High concentration
