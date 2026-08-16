@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#!/usr/bin/env python3
 """Dimension-aware parser for SEC XBRL instance documents."""
 from __future__ import annotations
 
@@ -83,6 +84,8 @@ def parse_xbrl_financials(content: str, report_date: str | None = None) -> dict:
                               "taxonomy": node.tag.split("}")[0].lstrip("{") if "}" in node.tag else None})
     target = report_date or max((ctx.end for ctx in contexts.values()), default=None)
     result = {"fiscal_period": period_focus, "fiscal_year": fiscal_year_focus, "report_date": target, "metrics": {}}
+    
+    # First pass: collect all entries by metric
     for metric, entries in facts.items():
         if not entries: continue
         instant_metric = metric in {"cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt", "backlog"}
@@ -110,7 +113,7 @@ def parse_xbrl_financials(content: str, report_date: str | None = None) -> dict:
                 prior_value = prior["value"]
                 prior_end = prior["end"]
         
-        # Find prior quarter (approximately 90 days before)
+        # Find prior quarter (approximately 90 days before) - for BOTH instant and duration metrics
         prior_q_value = None
         prior_q_candidates = [entry for entry in entries if entry["instant"] == instant_metric and entry["end"] < chosen["end"]]
         if not instant_metric:
@@ -121,6 +124,27 @@ def parse_xbrl_financials(content: str, report_date: str | None = None) -> dict:
             prior_q = prior_q_candidates[0]
             if abs((date.fromisoformat(chosen["end"]) - date.fromisoformat(prior_q["end"])).days - target_prior_q_days) <= 45:
                 prior_q_value = prior_q["value"]
+        else:
+            # For duration metrics, also try instant candidates (some filings may have both)
+            if not instant_metric:
+                instant_q_candidates = [entry for entry in entries if entry["instant"] != instant_metric and entry["end"] < chosen["end"]]
+                if instant_q_candidates:
+                    target_prior_q_days = 91
+                    instant_q_candidates.sort(key=lambda entry: abs((date.fromisoformat(chosen["end"]) - date.fromisoformat(entry["end"])).days - target_prior_q_days))
+                    prior_q = instant_q_candidates[0]
+                    if abs((date.fromisoformat(chosen["end"]) - date.fromisoformat(prior_q["end"])).days - target_prior_q_days) <= 45:
+                        prior_q_value = prior_q["value"]
+        
+        # NEW: If no prior_q found for duration metric, try computing from YTD data
+        # e.g., Q2 = H1 YTD - Q1 YTD (if both H1 and Q2 are present)
+        if prior_q_value is None and not instant_metric:
+            ytd_candidates = [entry for entry in entries if entry["instant"] == instant_metric 
+                             and entry["duration_days"] > chosen["duration_days"] + 30
+                             and entry["end"] == chosen["end"]]
+            if ytd_candidates:
+                ytd = ytd_candidates[0]
+                # Q1 = YTD - Q2
+                prior_q_value = ytd["value"] - chosen["value"]
         
         result["metrics"][metric] = {**chosen, "prior_value": prior_value, "prior_end": prior_end, "prior_q_value": prior_q_value}
     return result

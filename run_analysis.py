@@ -189,13 +189,13 @@ class EarningsAnalyzer:
                 key_ratios.append({"key": label.lower().replace(" ", "_"), "label": label, "value": margin,
                                    "display": f"{margin:.1%}", "comparison": "current quarter", "signal": signal,
                                    "tier": signal, "citation": [by_key[key]["citation"], by_key["revenue"]["citation"]]})
-        for key in ("revenue", "operating_income", "net_income", "eps_diluted"):
+        for key in ("revenue", "operating_income", "net_income", "operating_cash_flow", "eps_diluted"):
             row = by_key.get(key)
             if row and "unavailable" not in row["comparison"]:
                 key_ratios.append({"key": f"{key}_growth", "label": f"{row['label']} Growth", "value": None,
                                    "display": row["comparison"].replace(" YoY", ""), "comparison": "year over year",
                                    "signal": row["signal"], "tier": row["signal"], "citation": row["citation"]})
-        self.data["financials"] = {"rows": rows, "key_ratios": key_ratios[:6]}
+        self.data["financials"] = {"rows": rows, "key_ratios": key_ratios}
 
     def quote_and_valuation(self):
         quote = get_quote(self.ticker, self.expected_account)

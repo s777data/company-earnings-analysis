@@ -104,9 +104,11 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     
     # KEY RATIOS - Tier 1 from reference
     lines.extend(["", "📊 **Key Ratios**"])
-    tier1_ratio_keys = ["revenue", "operating_income", "net_income", "operating_cash_flow", "eps_diluted"]
+    # Growth metrics are in key_ratios, not rows
+    key_ratios = data.get("financials", {}).get("key_ratios", [])
+    tier1_ratio_keys = ["revenue_growth", "operating_income_growth", "net_income_growth", "operating_cash_flow_growth", "eps_diluted_growth"]
     for key in tier1_ratio_keys:
-        metric = next((m for m in financials if m.get("key") == f"{key}_growth"), None)
+        metric = next((m for m in key_ratios if m.get("key") == key), None)
         if metric:
             lines.append(_format_metric(metric, show_qoq=False))
     
