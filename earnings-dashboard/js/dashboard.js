@@ -111,6 +111,9 @@
     button.className = `kpi-card ${statusClass(metric.status)}`;
     button.setAttribute("aria-label", `Open KPI details for ${text(metric.name)}: ${text(metric.latest_value)}`);
 
+    const header = document.createElement("span");
+    header.className = "kpi-card-header";
+
     const heading = document.createElement("span");
     heading.className = "kpi-card-name";
     heading.textContent = text(metric.name);
@@ -123,6 +126,7 @@
       badge.textContent = text(label);
       badges.append(badge);
     }
+    header.append(heading, badges);
 
     const latest = document.createElement("span");
     latest.className = "kpi-latest";
@@ -131,6 +135,10 @@
     const latestPeriod = document.createElement("small");
     latestPeriod.textContent = text(metric.latest_period);
     latest.append(latestValue, latestPeriod);
+
+    const divider = document.createElement("span");
+    divider.className = "kpi-divider";
+    divider.setAttribute("aria-hidden", "true");
 
     const prior = document.createElement("span");
     prior.className = "kpi-prior";
@@ -146,7 +154,7 @@
     viewLabel.textContent = "Analyst view";
     view.append(viewLabel, document.createTextNode(text(metric.analyst_view, "No source-backed comparison available.")));
 
-    button.append(heading, badges, latest, prior, view);
+    button.append(header, latest, divider, prior, view);
     button.addEventListener("click", () => openMetric(metric, button));
     return button;
   }

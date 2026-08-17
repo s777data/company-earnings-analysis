@@ -202,7 +202,7 @@ h2 {
 }
 .kpi-card {
   display: grid;
-  grid-template-rows: 3.4mm 2.7mm 2.7mm 2.55mm 5.8mm;
+  grid-template-rows: 5.2mm 3.25mm .3mm 2.15mm 5.8mm;
   min-width: 0;
   min-height: 19mm;
   padding: .4mm .45mm;
@@ -218,34 +218,62 @@ h2 {
 }
 .kpi-card:hover { border-color: #7f9bb7; }
 .kpi-card:focus-visible { outline: 1.5px solid #0a67b2; outline-offset: 1px; }
+.kpi-card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: .35mm;
+  min-width: 0;
+  overflow: hidden;
+}
 .kpi-card-name {
+  display: -webkit-box;
+  min-width: 0;
   overflow: hidden;
   overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   color: #111827;
-  font-size: 4.5px;
-  font-weight: 780;
-  line-height: .95;
+  font-size: 4.25px;
+  font-weight: 790;
+  letter-spacing: -.02em;
+  line-height: .98;
 }
-.kpi-badges { display: flex; gap: .25mm; min-width: 0; }
+.kpi-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .3mm;
+  min-width: 0;
+}
 .kpi-badges > span {
+  max-width: 8.1mm;
   overflow: hidden;
-  padding: .18mm .25mm;
-  border: .2mm solid #d6e0e8;
-  border-radius: .7mm;
+  padding: .25mm .4mm;
+  border: .2mm solid currentColor;
+  border-radius: .75mm;
   color: var(--navy);
-  font-size: 3px;
+  font-size: 2.55px;
   font-weight: 760;
   line-height: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.kpi-source { flex: none; }
-.kpi-tier { flex: 1; }
-.kpi-latest, .kpi-prior { display: flex; align-items: baseline; justify-content: space-between; gap: .25mm; min-width: 0; }
-.kpi-latest { color: currentColor; border-bottom: .2mm solid #e2e7eb; }
+.kpi-tier::before { content: "◎ "; font-weight: 850; }
+.kpi-latest, .kpi-prior {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .35mm;
+  min-width: 0;
+}
+.kpi-latest { color: currentColor; }
 .kpi-prior { color: var(--muted); }
-.kpi-latest strong, .kpi-prior strong { overflow: hidden; font-size: 5.3px; font-weight: 810; line-height: 1; text-overflow: ellipsis; white-space: nowrap; }
+.kpi-latest strong, .kpi-prior strong { overflow: hidden; font-weight: 810; line-height: 1; text-overflow: ellipsis; white-space: nowrap; }
+.kpi-latest strong { font-size: 9px; letter-spacing: -.045em; }
+.kpi-prior strong { font-size: 6.1px; }
 .kpi-latest small, .kpi-prior small { flex: none; color: inherit; font-size: 2.8px; }
+.kpi-divider { align-self: center; width: 100%; border-top: .2mm solid #d8dee4; }
 .kpi-view {
   display: block;
   padding: .25mm .3mm;
