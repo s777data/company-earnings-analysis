@@ -131,7 +131,9 @@
     const latest = document.createElement("span");
     latest.className = "kpi-latest";
     const latestValue = document.createElement("strong");
-    latestValue.textContent = text(metric.latest_value);
+    const latestText = text(metric.latest_value);
+    latestValue.textContent = latestText;
+    if (latestText.length > 12) latestValue.classList.add("kpi-value--long");
     const latestPeriod = document.createElement("small");
     latestPeriod.textContent = text(metric.latest_period);
     latest.append(latestValue, latestPeriod);
@@ -143,7 +145,9 @@
     const prior = document.createElement("span");
     prior.className = "kpi-prior";
     const priorValue = document.createElement("strong");
-    priorValue.textContent = text(metric.prior_value);
+    const priorText = text(metric.prior_value);
+    priorValue.textContent = priorText;
+    if (priorText.length > 12) priorValue.classList.add("kpi-value--long");
     const priorPeriod = document.createElement("small");
     priorPeriod.textContent = text(metric.prior_period);
     prior.append(priorValue, priorPeriod);

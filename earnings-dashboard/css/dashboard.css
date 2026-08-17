@@ -202,7 +202,7 @@ h2 {
 }
 .kpi-card {
   display: grid;
-  grid-template-rows: 5.2mm 3.25mm .3mm 2.15mm 5.8mm;
+  grid-template-rows: 6.2mm 2.8mm .2mm 1.7mm 5.8mm;
   min-width: 0;
   min-height: 19mm;
   padding: .4mm .45mm;
@@ -232,12 +232,12 @@ h2 {
   overflow: hidden;
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   color: #111827;
-  font-size: 4.25px;
+  font-size: 6.375px;
   font-weight: 790;
   letter-spacing: -.02em;
-  line-height: .98;
+  line-height: .9;
 }
 .kpi-badges {
   display: flex;
@@ -272,6 +272,20 @@ h2 {
 .kpi-latest strong, .kpi-prior strong { overflow: hidden; font-weight: 810; line-height: 1; text-overflow: ellipsis; white-space: nowrap; }
 .kpi-latest strong { font-size: 9px; letter-spacing: -.045em; }
 .kpi-prior strong { font-size: 6.1px; }
+.kpi-latest strong.kpi-value--long,
+.kpi-prior strong.kpi-value--long {
+  align-self: center;
+  min-width: 0;
+  max-height: 100%;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.05;
+  text-overflow: clip;
+  white-space: normal;
+}
+.kpi-latest strong.kpi-value--long { font-size: 4.5px; letter-spacing: normal; }
+.kpi-prior strong.kpi-value--long { font-size: 3.05px; }
 .kpi-latest small, .kpi-prior small { flex: none; color: inherit; font-size: 2.8px; }
 .kpi-divider { align-self: center; width: 100%; border-top: .2mm solid #d8dee4; }
 .kpi-view {
