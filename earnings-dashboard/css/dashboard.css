@@ -202,9 +202,9 @@ h2 {
 }
 .kpi-card {
   display: grid;
-  grid-template-rows: 2.2mm 1.5mm 1.5mm 1.5mm 3mm;
+  grid-template-rows: 3.4mm 2.7mm 2.7mm 2.55mm 5.8mm;
   min-width: 0;
-  min-height: 11.5mm;
+  min-height: 19mm;
   padding: .4mm .45mm;
   overflow: hidden;
   border: .25mm solid #dfe5ea;
@@ -262,19 +262,19 @@ h2 {
   display: grid;
   grid-template-rows: auto 1fr auto auto;
   align-items: center;
-  min-height: 17mm;
-  padding: 1.1mm 1.1mm 1mm;
+  min-height: 8.5mm;
+  padding: .45mm .7mm .4mm;
   border: .25mm solid #e0e5e9;
-  border-bottom: 1.1mm solid currentColor;
-  border-radius: 1.7mm;
+  border-bottom: .7mm solid currentColor;
+  border-radius: 1.3mm;
   background: #fff;
   box-shadow: 0 .55mm 1.5mm rgb(20 35 52 / 8%);
   text-align: center;
 }
-.metric-card--ratio .metric-name { margin: 0; min-height: 3mm; color: #111827; font-size: 4.9px; font-weight: 570; }
-.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 10.5px; font-weight: 790; letter-spacing: -.025em; white-space: nowrap; }
-.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .45mm auto 0; border-top: .25mm dashed #d5dbe1; }
-.metric-card--ratio .metric-comparison { margin: .45mm 0 0; color: var(--muted); font-size: 4.5px; font-weight: 500; }
+.metric-card--ratio .metric-name { margin: 0; min-height: 1.8mm; overflow-wrap: anywhere; color: #111827; font-size: 3.9px; font-weight: 570; line-height: 1; white-space: normal; }
+.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 7px; font-weight: 790; line-height: 1; letter-spacing: -.025em; white-space: nowrap; }
+.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .15mm auto 0; border-top: .2mm dashed #d5dbe1; }
+.metric-card--ratio .metric-comparison { margin: .2mm 0 0; overflow-wrap: anywhere; color: var(--muted); font-size: 3.4px; font-weight: 500; line-height: 1; white-space: normal; }
 
 .status-best { color: var(--best); }
 .status-strong_positive { color: var(--strong-positive); }
@@ -368,18 +368,28 @@ h2 {
 .pillar-card h3 { margin: 0 0 .3mm; color: currentColor; font-size: 4.6px; }
 .pillar-card > div { color: currentColor; font-size: inherit; }
 .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3mm; }
-.bottom-grid section { height: 34mm; overflow: hidden; }
+.bottom-grid section { height: 17mm; overflow: hidden; }
+.bottom-grid .dense-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  height: calc(100% - 5mm);
+  gap: .3mm .7mm;
+  padding: .5mm .7mm;
+  font-size: 3.7px;
+}
+.bottom-grid .dense-item { grid-template-columns: 1.4mm 1fr; line-height: 1.05; overflow-wrap: anywhere; }
 
 #grade-reasoning-heading { margin-top: .6mm; }
 #grade-reasoning-content {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: minmax(0, 1fr);
-  height: 12.5mm;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  height: 20mm;
   gap: .45mm 1mm;
   padding: .75mm 1mm;
-  font-size: 4.7px;
+  font-size: 4.5px;
 }
-#grade-reasoning-content .dense-item { grid-template-columns: 1.8mm 1fr; line-height: 1.12; }
+#grade-reasoning-content .dense-item { grid-template-columns: 1.8mm 1fr; min-width: 0; overflow-wrap: anywhere; line-height: 1.1; }
+#grade-reasoning-content .dense-item > span:last-child { min-width: 0; white-space: normal; }
 
 footer {
   display: flex;
