@@ -135,7 +135,7 @@ h2 {
 
 .metric-grid { display: grid; gap: 1.4mm; padding: .9mm 0 1.2mm; }
 .income-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); padding: 0; }
-.ratio-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); padding: 0; }
+.ratio-grid { grid-template-columns: repeat(var(--ratio-columns, 8), minmax(0, 1fr)); padding: 0; }
 .valuation-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .valuation-gauge-grid {
   display: grid;
@@ -197,11 +197,19 @@ h2 {
 .kpi-section .scorecard-heading p { margin-top: .3mm; font-size: 4.4px; }
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: .45mm;
 }
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(var(--kpi-columns, 8), minmax(0, 1fr));
+  gap: .45mm;
+  min-width: 0;
+}
+.kpi-grid--single .kpi-card { height: 28.5mm; }
+.kpi-grid--double .kpi-card { height: 23.75mm; }
 .kpi-card {
   display: grid;
+  align-content: start;
   grid-template-rows: 6.2mm 2.8mm .2mm 1.7mm 5.8mm;
   min-width: 0;
   min-height: 19mm;

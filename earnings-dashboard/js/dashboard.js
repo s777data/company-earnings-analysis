@@ -166,8 +166,22 @@
   function renderKpis(metrics) {
     const container = $("kpi-cards");
     const items = (metrics || []).slice(0, 16);
-    container.replaceChildren(...items.map(kpiCard));
-    if (items.length === 0) container.append(emptyState("No applicable source-backed business KPI catalogue was available."));
+    container.classList.remove("kpi-grid--single", "kpi-grid--double");
+    if (items.length === 0) {
+      container.replaceChildren(emptyState("No applicable source-backed business KPI catalogue was available."));
+      return;
+    }
+
+    const split = Math.ceil(items.length / 2);
+    const rows = items.length <= 8 ? [items] : [items.slice(0, split), items.slice(split)];
+    container.classList.add(items.length <= 8 ? "kpi-grid--single" : "kpi-grid--double");
+    container.replaceChildren(...rows.map((rowItems) => {
+      const row = document.createElement("div");
+      row.className = "kpi-row";
+      row.style.setProperty("--kpi-columns", String(rowItems.length));
+      row.replaceChildren(...rowItems.map(kpiCard));
+      return row;
+    }));
   }
 
   function gaugeDomain(metric) {
@@ -334,6 +348,9 @@
   function renderMetrics(id, metrics, variant = "default") {
     const container = $(id);
     const items = (metrics || []).slice(0, 8);
+    if (variant === "ratio") {
+      container.style.setProperty("--ratio-columns", String(Math.max(items.length, 1)));
+    }
     container.replaceChildren(...items.map((metric) => metricCard(metric, variant)));
     if (!metrics || metrics.length === 0) container.append(emptyState("No verified metrics available."));
   }
