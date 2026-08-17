@@ -144,7 +144,7 @@
     view.className = "kpi-view";
     const viewLabel = document.createElement("strong");
     viewLabel.textContent = "Analyst view";
-    view.append(viewLabel, document.createTextNode(compact(metric.analyst_view, 92)));
+    view.append(viewLabel, document.createTextNode(text(metric.analyst_view, "No source-backed comparison available.")));
 
     button.append(heading, badges, latest, prior, view);
     button.addEventListener("click", () => openMetric(metric, button));

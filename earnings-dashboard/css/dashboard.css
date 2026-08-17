@@ -248,13 +248,15 @@ h2 {
 .kpi-latest small, .kpi-prior small { flex: none; color: inherit; font-size: 2.8px; }
 .kpi-view {
   display: block;
-  overflow: hidden;
   padding: .25mm .3mm;
   border-radius: .7mm;
   background: #f2f5f7;
   color: #32475c;
   font-size: 3px;
   line-height: 1.08;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 .kpi-view strong { display: block; color: #15263a; font-size: 3.1px; }
 
