@@ -290,5 +290,110 @@
         "importance": "Tier 4 — Context"
       }
     }
+  },
+  {
+    "COMPANY": "Figure Technology, Inc.",
+    "TICKER": "FIGR",
+    "SECTOR": "Financial Technology",
+    "metric": "Figure Connect Volume Share",
+    "details_map": {
+      "2026-08-17": {
+        "latest_quarter_value": "Q2 2026: 40% from repeat customers",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "40% of Figure Connect volume growth attributed to customers with >1 year tenure, indicating strong retention and network effects.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Figure Technology, Inc.",
+    "TICKER": "FIGR",
+    "SECTOR": "Financial Technology",
+    "metric": "Marketplace Volume",
+    "details_map": {
+      "2026-08-17": {
+        "latest_quarter_value": "Q2 2026: $4.3B",
+        "last_year_quarter_value": "Q2 2025: $1.85B",
+        "analyst_view": "Consumer loan marketplace volume grew 132% YoY, beating guidance by 4%, driven by Figure Connect expansion and partner network growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Figure Technology, Inc.",
+    "TICKER": "FIGR",
+    "SECTOR": "Financial Technology",
+    "metric": "Operating Margin Target",
+    "details_map": {
+      "2026-08-17": {
+        "latest_quarter_value": "Q2 2026: Progressing to 60%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management reaffirmed medium-term goal of 60% operating margins through Connect growth and operating leverage.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Figure Technology, Inc.",
+    "TICKER": "FIGR",
+    "SECTOR": "Financial Technology",
+    "metric": "AI-Enabled Onboarding Adoption",
+    "details_map": {
+      "2026-08-17": {
+        "latest_quarter_value": "Q2 2026: Scaling",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Investments in AI-enabled onboarding processes proving scalability of model and value for partners.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Figure Technology, Inc.",
+    "TICKER": "FIGR",
+    "SECTOR": "Financial Technology",
+    "metric": "Loan Book Quality",
+    "details_map": {
+      "2026-08-17": {
+        "latest_quarter_value": "Q2 2026: Strong post-delinquency recovery",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Disciplined underwriting combined with strong post-delinquency recovery gives management confidence in book as it scales.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Figure Technology, Inc.",
+    "TICKER": "FIGR",
+    "SECTOR": "Financial Technology",
+    "metric": "Partner Network Expansion",
+    "details_map": {
+      "2026-08-17": {
+        "latest_quarter_value": "Q2 2026: Rapid expansion",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Rapid expansion of Figure Connect and partner network driving record marketplace volume and revenue growth.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Figure Technology, Inc.",
+    "TICKER": "FIGR",
+    "SECTOR": "Financial Technology",
+    "metric": "Capital Marketplace Pricing Advantage",
+    "details_map": {
+      "2026-08-17": {
+        "latest_quarter_value": "Q2 2026: Competitive",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Capital availability and pricing advantage spreading across existing partner base, expected to drive continued volume growth.",
+        "source": "IR",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
   }
 ]

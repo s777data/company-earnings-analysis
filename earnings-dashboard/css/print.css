@@ -24,6 +24,13 @@ html, body {
   break-after: avoid-page;
 }
 
+/* Ensure analysis-stack sections have explicit height in print layout */
+.analysis-stack section {
+  height: 31.5mm !important;
+  min-height: 31.5mm !important;
+  max-height: 31.5mm !important;
+}
+
 .metric-card {
   border-color: transparent !important;
   background: var(--card) !important;
