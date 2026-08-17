@@ -105,6 +105,32 @@
     return button;
   }
 
+  function compactKpiNumber(value) {
+    const match = text(value, "").replace(/,/g, "").match(/^\s*[$€£]?\s*(-?\d+(?:\.\d+)?)\s*([KMBT%]?)\s*$/i);
+    if (!match) return null;
+    const multipliers = { "": 1, "%": 1, K: 1e3, M: 1e6, B: 1e9, T: 1e12 };
+    const multiplier = multipliers[match[2].toUpperCase()];
+    const numeric = Number(match[1]);
+    return Number.isFinite(numeric) && multiplier ? numeric * multiplier : null;
+  }
+
+  function kpiYoy(metric) {
+    const provided = text(metric.yoy_change || metric.yoy, "").trim();
+    if (provided && provided !== "N/A") {
+      const label = /yoy/i.test(provided) ? provided : `${provided} YoY`;
+      const className = /^\s*\+/.test(provided) ? "kpi-yoy--positive" : /^\s*-/.test(provided) ? "kpi-yoy--negative" : "kpi-yoy--neutral";
+      return { label, className };
+    }
+    const latest = compactKpiNumber(metric.latest_value);
+    const prior = compactKpiNumber(metric.prior_value);
+    if (latest === null || prior === null || prior === 0) return null;
+    const percentage = Math.round(((latest - prior) / Math.abs(prior)) * 100);
+    return {
+      label: `${percentage >= 0 ? "+" : ""}${percentage}% YoY`,
+      className: percentage > 0 ? "kpi-yoy--positive" : percentage < 0 ? "kpi-yoy--negative" : "kpi-yoy--neutral"
+    };
+  }
+
   function kpiCard(metric) {
     const button = document.createElement("button");
     button.type = "button";
@@ -130,13 +156,23 @@
 
     const latest = document.createElement("span");
     latest.className = "kpi-latest";
+    const current = document.createElement("span");
+    current.className = "kpi-current-value";
     const latestValue = document.createElement("strong");
     const latestText = text(metric.latest_value);
     latestValue.textContent = latestText;
     if (latestText.length > 12) latestValue.classList.add("kpi-value--long");
     const latestPeriod = document.createElement("small");
     latestPeriod.textContent = text(metric.latest_period);
-    latest.append(latestValue, latestPeriod);
+    current.append(latestValue, latestPeriod);
+    latest.append(current);
+    const yoy = kpiYoy(metric);
+    if (yoy) {
+      const yoyNode = document.createElement("span");
+      yoyNode.className = `kpi-yoy ${yoy.className}`;
+      yoyNode.textContent = yoy.label;
+      latest.append(yoyNode);
+    }
 
     const divider = document.createElement("span");
     divider.className = "kpi-divider";
@@ -179,7 +215,12 @@
       const row = document.createElement("div");
       row.className = "kpi-row";
       row.style.setProperty("--kpi-columns", String(rowItems.length));
-      row.replaceChildren(...rowItems.map(kpiCard));
+      row.replaceChildren(...rowItems.map((metric) => {
+        const shell = document.createElement("div");
+        shell.className = "kpi-card-shell";
+        shell.append(kpiCard(metric));
+        return shell;
+      }));
       return row;
     }));
   }
