@@ -202,9 +202,9 @@ h2 {
 }
 .kpi-card {
   display: grid;
-  grid-template-rows: 2.3mm 1.8mm 1.8mm 1.7mm 3mm;
+  grid-template-rows: 3.45mm 2.7mm 2.7mm 2.55mm 4.5mm;
   min-width: 0;
-  min-height: 11.4mm;
+  min-height: 17.1mm;
   padding: .4mm .45mm;
   overflow: hidden;
   border: .25mm solid #dfe5ea;
@@ -263,19 +263,19 @@ h2 {
   display: grid;
   grid-template-rows: auto 1fr auto auto;
   align-items: center;
-  min-height: 17mm;
-  padding: 1.1mm 1.1mm 1mm;
+  min-height: 8.5mm;
+  padding: .45mm .7mm .4mm;
   border: .25mm solid #e0e5e9;
-  border-bottom: 1.1mm solid currentColor;
-  border-radius: 1.7mm;
+  border-bottom: .7mm solid currentColor;
+  border-radius: 1.3mm;
   background: #fff;
   box-shadow: 0 .55mm 1.5mm rgb(20 35 52 / 8%);
   text-align: center;
 }
-.metric-card--ratio .metric-name { margin: 0; min-height: 3mm; color: #111827; font-size: 4.9px; font-weight: 570; }
-.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 10.5px; font-weight: 790; letter-spacing: -.025em; white-space: nowrap; }
-.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .45mm auto 0; border-top: .25mm dashed #d5dbe1; }
-.metric-card--ratio .metric-comparison { margin: .45mm 0 0; color: var(--muted); font-size: 4.5px; font-weight: 500; }
+.metric-card--ratio .metric-name { margin: 0; min-height: 1.8mm; color: #111827; font-size: 3.9px; font-weight: 570; line-height: 1; }
+.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 7px; font-weight: 790; line-height: 1; letter-spacing: -.025em; white-space: nowrap; }
+.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .15mm auto 0; border-top: .2mm dashed #d5dbe1; }
+.metric-card--ratio .metric-comparison { margin: .2mm 0 0; color: var(--muted); font-size: 3.4px; font-weight: 500; line-height: 1; }
 
 .status-best { color: var(--best); }
 .status-strong_positive { color: var(--strong-positive); }
