@@ -153,7 +153,7 @@
 
   function renderKpis(metrics) {
     const container = $("kpi-cards");
-    const items = (metrics || []).slice(0, 12);
+    const items = (metrics || []).slice(0, 16);
     container.replaceChildren(...items.map(kpiCard));
     if (items.length === 0) container.append(emptyState("No applicable source-backed business KPI catalogue was available."));
   }

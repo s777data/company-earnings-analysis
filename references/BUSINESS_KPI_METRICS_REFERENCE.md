@@ -34,8 +34,8 @@ Machine-readable rows also carry `key`, `latest_period`, `prior_period`, `tier`,
    - **Tier 3 — Supporting:** useful diagnostics with more overlap or narrower explanatory value.
    - **Tier 4 — Context:** include only when selected by source-backed research and space permits.
 4. Retain every applicable Tier 1 metric.
-5. Fill the remaining slots by tier and source availability.
-6. Display **12 to 15** KPI cards. If a relevant Tier 1 or high-priority Tier 2 metric is not disclosed, keep the card visible with `N/A` rather than silently dropping it.
+5. Display all lower-tier rows in descending importance after Tier 1.
+6. Display all **16** KPI cards. If a metric is not disclosed, keep the importance-ordered card visible with `N/A` rather than silently dropping or reordering it.
 7. Preserve exactly the source labels `IR`, `SEC`, or `IR/SEC`.
 
 ## Restaurant KPI catalogue derived from the supplied research
@@ -74,7 +74,7 @@ Machine-readable rows also carry `key`, `latest_period`, `prior_period`, `tier`,
 ## Presentation contract
 
 - Place **KPI** immediately below **Income Statement Highlights** in both Telegram and the HTML dashboard.
-- Use 12–15 compact cards across the same available dashboard width as Income Statement Highlights.
+- Use 16 readable cards in two rows of eight across the same available dashboard width as Income Statement Highlights.
 - Each card presents metric name, source/importance, current-quarter value, prior-year-quarter value, and a short analyst view.
 - Use the existing dashboard's seven-state signal color spectrum.
-- Keep the report within one A4 portrait page; reduce only the Grade Reasoning footprint and KPI card typography/spacing as required. Do not restyle unrelated sections.
+- Keep the report within one A4 portrait page; halve only the Key Channels & Segments and Strategic Pillars card heights to make room, while preserving enough Grade Reasoning height to display its text.

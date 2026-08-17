@@ -11,8 +11,8 @@ import re
 from typing import Any
 
 ALLOWED_SOURCES = {"IR", "SEC", "IR/SEC"}
-MIN_KPIS = 12
-MAX_KPIS = 12
+MIN_KPIS = 16
+MAX_KPIS = 16
 
 # The first catalogue implements the restaurant operating-KPI framework supplied
 # with the feature request. The selector activates it only for restaurant filings.
@@ -142,11 +142,11 @@ def _restaurant_context(filing_text: str, release_text: str) -> bool:
 
 def build_business_kpis(*, filing_text: str, release_text: str, filing_url: str,
                         release_url: str | None, fiscal_period: str, fiscal_year: int) -> dict[str, Any]:
-    """Select 12–15 source-backed, company-specific operating KPIs.
+    """Select all 16 source-backed, company-specific operating KPIs.
 
     All applicable Tier 1 rows are retained. Lower tiers fill the report in tier
-    order. If a restaurant source identifies fewer than 12 populated rows, Tier 1
-    and the highest-priority Tier 2 rows remain visible with explicit N/A values.
+    order. Unavailable rows remain visible with explicit N/A values so the
+    importance-ordered catalogue is never silently shortened or reordered.
     """
     if not _restaurant_context(filing_text, release_text):
         return {
@@ -187,16 +187,10 @@ def build_business_kpis(*, filing_text: str, release_text: str, filing_url: str,
             "available": latest is not None,
         })
 
-    tier_one = [row for row in rows if row["tier"] == 1]
-    lower_available = [row for row in rows if row["tier"] > 1 and row["available"]]
-    lower_missing = [row for row in rows if row["tier"] > 1 and not row["available"]]
-    selected = tier_one + lower_available
-    if len(selected) < MIN_KPIS:
-        selected.extend(lower_missing[:MIN_KPIS - len(selected)])
-    # The supplied reporting recommendation permits 12–15 rows. Select 12 so
-    # every complete result remains legible inside the validated A4 layout.
-    report_limit = min(MAX_KPIS, max(MIN_KPIS, len(tier_one)))
-    selected = selected[:report_limit]
+    # The catalogue itself is maintained in descending importance order:
+    # every Tier 1 row, then Tier 2 and Tier 3. Preserve that exact order and
+    # keep every row visible, including source-backed N/A states.
+    selected = rows[:MAX_KPIS]
     return {
         "rows": selected,
         "selection_status": "COMPLETE" if len(selected) >= MIN_KPIS else "INCOMPLETE",

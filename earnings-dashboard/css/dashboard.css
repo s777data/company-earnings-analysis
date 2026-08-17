@@ -197,14 +197,14 @@ h2 {
 .kpi-section .scorecard-heading p { margin-top: .3mm; font-size: 4.4px; }
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: .45mm;
 }
 .kpi-card {
   display: grid;
-  grid-template-rows: 3.45mm 2.7mm 2.7mm 2.55mm 4.5mm;
+  grid-template-rows: 2.2mm 1.5mm 1.5mm 1.5mm 3mm;
   min-width: 0;
-  min-height: 17.1mm;
+  min-height: 11.5mm;
   padding: .4mm .45mm;
   overflow: hidden;
   border: .25mm solid #dfe5ea;
@@ -220,12 +220,11 @@ h2 {
 .kpi-card:focus-visible { outline: 1.5px solid #0a67b2; outline-offset: 1px; }
 .kpi-card-name {
   overflow: hidden;
+  overflow-wrap: anywhere;
   color: #111827;
-  font-size: 3.35px;
+  font-size: 4.5px;
   font-weight: 780;
-  line-height: 1.02;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: .95;
 }
 .kpi-badges { display: flex; gap: .25mm; min-width: 0; }
 .kpi-badges > span {
@@ -234,7 +233,7 @@ h2 {
   border: .2mm solid #d6e0e8;
   border-radius: .7mm;
   color: var(--navy);
-  font-size: 2.35px;
+  font-size: 3px;
   font-weight: 760;
   line-height: 1;
   text-overflow: ellipsis;
@@ -245,8 +244,8 @@ h2 {
 .kpi-latest, .kpi-prior { display: flex; align-items: baseline; justify-content: space-between; gap: .25mm; min-width: 0; }
 .kpi-latest { color: currentColor; border-bottom: .2mm solid #e2e7eb; }
 .kpi-prior { color: var(--muted); }
-.kpi-latest strong, .kpi-prior strong { overflow: hidden; font-size: 4.25px; font-weight: 810; text-overflow: ellipsis; white-space: nowrap; }
-.kpi-latest small, .kpi-prior small { flex: none; color: inherit; font-size: 2.15px; }
+.kpi-latest strong, .kpi-prior strong { overflow: hidden; font-size: 5.3px; font-weight: 810; line-height: 1; text-overflow: ellipsis; white-space: nowrap; }
+.kpi-latest small, .kpi-prior small { flex: none; color: inherit; font-size: 2.8px; }
 .kpi-view {
   display: block;
   overflow: hidden;
@@ -254,28 +253,28 @@ h2 {
   border-radius: .7mm;
   background: #f2f5f7;
   color: #32475c;
-  font-size: 2.2px;
+  font-size: 3px;
   line-height: 1.08;
 }
-.kpi-view strong { display: block; color: #15263a; font-size: 2.25px; }
+.kpi-view strong { display: block; color: #15263a; font-size: 3.1px; }
 
 .metric-card--ratio {
   display: grid;
   grid-template-rows: auto 1fr auto auto;
   align-items: center;
-  min-height: 8.5mm;
-  padding: .45mm .7mm .4mm;
+  min-height: 17mm;
+  padding: 1.1mm 1.1mm 1mm;
   border: .25mm solid #e0e5e9;
-  border-bottom: .7mm solid currentColor;
-  border-radius: 1.3mm;
+  border-bottom: 1.1mm solid currentColor;
+  border-radius: 1.7mm;
   background: #fff;
   box-shadow: 0 .55mm 1.5mm rgb(20 35 52 / 8%);
   text-align: center;
 }
-.metric-card--ratio .metric-name { margin: 0; min-height: 1.8mm; color: #111827; font-size: 3.9px; font-weight: 570; line-height: 1; }
-.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 7px; font-weight: 790; line-height: 1; letter-spacing: -.025em; white-space: nowrap; }
-.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .15mm auto 0; border-top: .2mm dashed #d5dbe1; }
-.metric-card--ratio .metric-comparison { margin: .2mm 0 0; color: var(--muted); font-size: 3.4px; font-weight: 500; line-height: 1; }
+.metric-card--ratio .metric-name { margin: 0; min-height: 3mm; color: #111827; font-size: 4.9px; font-weight: 570; }
+.metric-card--ratio .metric-value { align-self: center; color: currentColor; font-size: 10.5px; font-weight: 790; letter-spacing: -.025em; white-space: nowrap; }
+.metric-card--ratio .metric-divider { display: block; width: 82%; margin: .45mm auto 0; border-top: .25mm dashed #d5dbe1; }
+.metric-card--ratio .metric-comparison { margin: .45mm 0 0; color: var(--muted); font-size: 4.5px; font-weight: 500; }
 
 .status-best { color: var(--best); }
 .status-strong_positive { color: var(--strong-positive); }
@@ -361,28 +360,26 @@ h2 {
 .dense-item > span:last-child { color: currentColor; }
 
 .channel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1mm; padding: 1mm 0 1.2mm; }
-.channel-card { height: 20mm; padding: 1mm; overflow: hidden; background: var(--card); font-size: 5.7px; line-height: 1.22; }
-.channel-card h3 { margin: 0 0 .8mm; color: currentColor; font-size: 6.4px; }
+.channel-card { height: 10mm; padding: .7mm; overflow: hidden; background: var(--card); font-size: 4.5px; line-height: 1.12; }
+.channel-card h3 { margin: 0 0 .35mm; color: currentColor; font-size: 5px; }
 .channel-card > div { color: currentColor; font-size: inherit; }
 .pillar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: .8mm; padding: 1mm 0 1.2mm; }
-.pillar-card { height: 18mm; padding: .9mm; overflow: hidden; border-left: 1mm solid currentColor; background: var(--card); font-size: 5.5px; line-height: 1.2; }
-.pillar-card h3 { margin: 0 0 .6mm; color: currentColor; font-size: 5.8px; }
+.pillar-card { height: 9mm; padding: .6mm; overflow: hidden; border-left: 1mm solid currentColor; background: var(--card); font-size: 4.2px; line-height: 1.1; }
+.pillar-card h3 { margin: 0 0 .3mm; color: currentColor; font-size: 4.6px; }
 .pillar-card > div { color: currentColor; font-size: inherit; }
 .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3mm; }
 .bottom-grid section { height: 34mm; overflow: hidden; }
 
-#grade-reasoning-heading { margin-top: .4mm; }
+#grade-reasoning-heading { margin-top: .6mm; }
 #grade-reasoning-content {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
-  height: 6mm;
-  gap: .4mm;
-  padding: .55mm .7mm;
-  overflow: hidden;
-  font-size: 3.5px;
+  height: 12.5mm;
+  gap: .45mm 1mm;
+  padding: .75mm 1mm;
+  font-size: 4.7px;
 }
-#grade-reasoning-content .dense-item { grid-template-columns: 1.4mm 1fr; line-height: 1.05; overflow: hidden; }
-#grade-reasoning-content .dense-item > span:last-child { overflow: hidden; }
+#grade-reasoning-content .dense-item { grid-template-columns: 1.8mm 1fr; line-height: 1.12; }
 
 footer {
   display: flex;

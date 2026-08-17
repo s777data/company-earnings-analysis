@@ -169,7 +169,7 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     # KPI — company-specific operating measures from verified IR and SEC evidence.
     lines.extend(["", "🎯 **KPI**"])
     business_kpis = data.get("business_kpis", {})
-    kpi_rows = business_kpis.get("rows", [])[:12]
+    kpi_rows = business_kpis.get("rows", [])[:16]
     if kpi_rows:
         lines.extend(_format_business_kpi(row) for row in kpi_rows)
     else:

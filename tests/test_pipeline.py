@@ -25,7 +25,7 @@ from valuation_metrics import build_valuation_sections, MAIN_ORDER, PROFIT_ORDER
 from analysis_enrichment import (extract_transcript_sections, extract_risks, _sentences, _is_question,
                                  _qa_boundary_start, classify_financial_signal, classify_valuation_signal,
                                  classify_management_confidence, _signal as _transcript_signal)
-from kpi_metrics import ALLOWED_SOURCES, build_business_kpis
+from kpi_metrics import ALLOWED_SOURCES, RESTAURANT_KPIS, build_business_kpis
 
 XBRL = '''<?xml version="1.0"?>
 <xbrl xmlns="http://www.xbrl.org/2003/instance" xmlns:us-gaap="http://fasb.org/us-gaap/2026" xmlns:dei="http://xbrl.sec.gov/dei/2026">
@@ -82,7 +82,11 @@ class BusinessKpiTests(unittest.TestCase):
             fiscal_period="Q2", fiscal_year=2026,
         )
         self.assertEqual(result["selection_status"], "COMPLETE")
-        self.assertEqual(len(result["rows"]), 12)
+        self.assertEqual(len(result["rows"]), 16)
+        self.assertEqual(
+            [row["key"] for row in result["rows"]],
+            [definition["key"] for definition in RESTAURANT_KPIS],
+        )
         self.assertEqual({row["tier"] for row in result["rows"][:7]}, {1})
         self.assertTrue(all(row["source"] in ALLOWED_SOURCES for row in result["rows"]))
         same_sales = result["rows"][0]
@@ -709,7 +713,7 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertTrue(all("YoY" in card["comparison"] and "QoQ" in card["comparison"] for card in cards))
         self.assertEqual(cards[0]["comparison"], "+5.0 pp YoY, +5.0 pp QoQ")
 
-    def test_kpi_section_maps_twelve_to_fifteen_source_backed_cards_and_telegram_fields(self):
+    def test_kpi_section_maps_all_sixteen_source_backed_cards_and_telegram_fields(self):
         data = sample_data()
         source = BusinessKpiTests()._source_text()
         data["business_kpis"] = build_business_kpis(
@@ -719,7 +723,7 @@ class InteractiveDashboardTests(unittest.TestCase):
             fiscal_period="Q2", fiscal_year=2026,
         )
         cards = build_dashboard_data(data)["sections"]["business_kpis"]
-        self.assertEqual(len(cards), 12)
+        self.assertEqual(len(cards), 16)
         required = {"name", "latest_value", "latest_period", "prior_value", "prior_period",
                     "analyst_view", "source", "importance", "status", "source_note"}
         self.assertTrue(all(required <= set(card) for card in cards))
@@ -738,8 +742,10 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertIn('id="kpi-cards"', html)
         self.assertIn('class="scorecard-section ratio-section"', html)
         self.assertIn("Overview of key financial performance metrics", html)
-        self.assertGreaterEqual(css.count("repeat(8, minmax(0, 1fr))"), 3)
-        self.assertIn("repeat(12, minmax(0, 1fr))", css)
+        self.assertGreaterEqual(css.count("repeat(8, minmax(0, 1fr))"), 4)
+        self.assertIn("height: 10mm", css)
+        self.assertIn("height: 9mm", css)
+        self.assertIn("height: 12.5mm", css)
         self.assertIn("metric-card--income", css)
         self.assertIn(".kpi-card", css)
         self.assertIn("metric-card--ratio", css)
@@ -799,8 +805,8 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertIn('body.textContent = text(detailOf(item), "Not available")', script)
         self.assertIn("fitNarrativeSections", script)
         self.assertIn('document.body.dataset.layoutReady = "true"', script)
-        self.assertIn(".channel-card { height: 20mm;", css)
-        self.assertIn(".pillar-card { height: 18mm;", css)
+        self.assertIn(".channel-card { height: 10mm;", css)
+        self.assertIn(".pillar-card { height: 9mm;", css)
         self.assertNotIn("color: var(--ink); font-size: 6.1px", css)
         self.assertIn(".dense-item > span:last-child { color: currentColor; }", css)
         self.assertIn(".channel-card > div { color: currentColor;", css)
