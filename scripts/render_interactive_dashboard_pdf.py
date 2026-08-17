@@ -31,7 +31,7 @@ def validate_pdf(path: str, expected_urls: list[str]) -> None:
             raise RuntimeError("PDF page is not A4")
         text = page.extract_text() or ""
         normalized_text = text.upper()
-        headings = ("INCOME STATEMENT HIGHLIGHTS", "KEY RATIOS", "VALUATION", "CAPITAL & LIQUIDITY",
+        headings = ("INCOME STATEMENT HIGHLIGHTS", "KPI", "KEY RATIOS", "VALUATION", "CAPITAL & LIQUIDITY",
                     "SHORT INTEREST & SBC", "GUIDANCE & OUTLOOK", "EARNINGS CALL SUMMARY", "KEY CHANNELS & SEGMENTS",
                     "STRATEGIC PILLARS", "KEY RISKS", "INVESTMENT THESIS")
         for heading in headings:

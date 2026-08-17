@@ -105,6 +105,59 @@
     return button;
   }
 
+  function kpiCard(metric) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `kpi-card ${statusClass(metric.status)}`;
+    button.setAttribute("aria-label", `Open KPI details for ${text(metric.name)}: ${text(metric.latest_value)}`);
+
+    const heading = document.createElement("span");
+    heading.className = "kpi-card-name";
+    heading.textContent = text(metric.name);
+
+    const badges = document.createElement("span");
+    badges.className = "kpi-badges";
+    for (const [className, label] of [["kpi-source", metric.source], ["kpi-tier", metric.importance]]) {
+      const badge = document.createElement("span");
+      badge.className = className;
+      badge.textContent = text(label);
+      badges.append(badge);
+    }
+
+    const latest = document.createElement("span");
+    latest.className = "kpi-latest";
+    const latestValue = document.createElement("strong");
+    latestValue.textContent = text(metric.latest_value);
+    const latestPeriod = document.createElement("small");
+    latestPeriod.textContent = text(metric.latest_period);
+    latest.append(latestValue, latestPeriod);
+
+    const prior = document.createElement("span");
+    prior.className = "kpi-prior";
+    const priorValue = document.createElement("strong");
+    priorValue.textContent = text(metric.prior_value);
+    const priorPeriod = document.createElement("small");
+    priorPeriod.textContent = text(metric.prior_period);
+    prior.append(priorValue, priorPeriod);
+
+    const view = document.createElement("span");
+    view.className = "kpi-view";
+    const viewLabel = document.createElement("strong");
+    viewLabel.textContent = "Analyst view";
+    view.append(viewLabel, document.createTextNode(compact(metric.analyst_view, 92)));
+
+    button.append(heading, badges, latest, prior, view);
+    button.addEventListener("click", () => openMetric(metric, button));
+    return button;
+  }
+
+  function renderKpis(metrics) {
+    const container = $("kpi-cards");
+    const items = (metrics || []).slice(0, 12);
+    container.replaceChildren(...items.map(kpiCard));
+    if (items.length === 0) container.append(emptyState("No applicable source-backed business KPI catalogue was available."));
+  }
+
   function gaugeDomain(metric) {
     const value = Number(metric.raw_value);
     const scale = metric.scale || [];
@@ -423,7 +476,7 @@
   function sourceLinks(sources) {
     const container = $("source-links");
     container.replaceChildren();
-    const links = [["SEC", sources.filing_url], ["XBRL", sources.xbrl_url], ["Transcript", sources.transcript_url], ["Short interest", sources.short_interest_url]].filter(([, url]) => url);
+    const links = [["SEC", sources.filing_url], ["XBRL", sources.xbrl_url], ["IR/SEC release", sources.earnings_release_url], ["Transcript", sources.transcript_url], ["Short interest", sources.short_interest_url]].filter(([, url]) => url);
     links.forEach(([label, url], index) => {
       if (index) container.append(document.createTextNode(" • "));
       const link = document.createElement("a");
@@ -456,6 +509,7 @@
     $("test-banner").hidden = !company.test_run;
 
     renderMetrics("income-cards", sections.income_statement, "income");
+    renderKpis(sections.business_kpis);
     renderMetrics("ratio-cards", sections.key_ratios, "ratio");
     $("valuation-regime").textContent = `${text(sections.valuation_regime, "Applicable metrics")} · guide order · applicable only`;
     renderGaugeMetrics("valuation-cards", sections.valuation);

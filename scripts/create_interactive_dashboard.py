@@ -188,6 +188,35 @@ def _risk_item(row: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _business_kpi(row: dict[str, Any]) -> dict[str, Any]:
+    """Map the source-backed KPI schema to the dashboard card schema."""
+    citation = row.get("citation") if isinstance(row.get("citation"), dict) else {}
+    return {
+        "key": row.get("key"),
+        "name": row.get("metric", "KPI"),
+        "latest_value": row.get("latest_quarter", "N/A"),
+        "latest_period": row.get("latest_period", "Latest quarter"),
+        "prior_value": row.get("prior_year_quarter", "N/A"),
+        "prior_period": row.get("prior_period", "Prior-year quarter"),
+        "display_value": row.get("latest_quarter", "N/A"),
+        "comparison": (
+            f"{row.get('prior_period', 'Prior-year quarter')}: "
+            f"{row.get('prior_year_quarter', 'N/A')}"
+        ),
+        "analyst_view": row.get("analyst_view", "No source-backed comparison available."),
+        "source": row.get("source", "SEC"),
+        "importance": row.get("importance", "Tier unavailable"),
+        "tier": row.get("tier"),
+        "status": row.get("signal", "neutral"),
+        "description": row.get("impact", "Company-specific operating performance measure."),
+        "why_it_matters": row.get("impact", "Provides company-specific operating context."),
+        "directionality": row.get("directionality", "context"),
+        "formula": "Company-reported operating KPI; see cited source.",
+        "source_note": f"{row.get('source', 'SEC')} — {citation.get('url', 'verified source')}",
+        "scale": [],
+    }
+
+
 def _risk_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     selected = {_key(row): row for row in rows}
     output = []
@@ -281,6 +310,9 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
         },
         "sections": {
             "income_statement": [_metric(row) for row in income_highlights],
+            "business_kpis": [
+                _business_kpi(row) for row in data.get("business_kpis", {}).get("rows", [])
+            ][:12],
             "key_ratios": [_metric(row) for row in _key_ratio_rows(data, financial_by_key)],
             "valuation": [_metric(row, valuation.get("quote_source", "Verified market data")) for row in _valuation_rows(valuation_rows)],
             "valuation_regime": valuation.get("regime_label", "Valuation"),

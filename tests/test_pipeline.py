@@ -25,6 +25,7 @@ from valuation_metrics import build_valuation_sections, MAIN_ORDER, PROFIT_ORDER
 from analysis_enrichment import (extract_transcript_sections, extract_risks, _sentences, _is_question,
                                  _qa_boundary_start, classify_financial_signal, classify_valuation_signal,
                                  classify_management_confidence, _signal as _transcript_signal)
+from kpi_metrics import ALLOWED_SOURCES, build_business_kpis
 
 XBRL = '''<?xml version="1.0"?>
 <xbrl xmlns="http://www.xbrl.org/2003/instance" xmlns:us-gaap="http://fasb.org/us-gaap/2026" xmlns:dei="http://xbrl.sec.gov/dei/2026">
@@ -49,6 +50,70 @@ def sample_data():
             "transcript_insights":[{"topic":"Q&A","detail":"Analyst questions were answered.","tier":"medium"}],
             "growth_drivers":[{"driver":"Revenue increased.","tier":"best"}],"risks":[{"risk":"Competition disclosed"}],
             "sources":{"filing_url":"https://www.sec.gov/Archives/edgar/data/1/filing.htm","transcript_url":"https://stockanalysis.com/stocks/test/transcripts/1-q2-2026/"}}
+
+
+class BusinessKpiTests(unittest.TestCase):
+    def _source_text(self):
+        rows = [
+            "Same Restaurant Sales Growth 9.0% 2.1%",
+            "Guest Traffic Growth 5.3% 1.0%",
+            "Average Unit Volume $3.088M $2.939M",
+            "Restaurant-Level Profit Margin 25.7% 26.3%",
+            "Net New Restaurant Openings 17 16",
+            "Total Restaurants 476 398",
+            "CAVA Revenue $365.433M $278.249M",
+            "Menu Price + Product Mix 3.7% 2.0%",
+            "Digital Revenue Mix 39.0% 37.3%",
+            "Food, Beverage and Packaging percentage of CAVA Revenue 30.0% 29.5%",
+            "Labor percentage of CAVA Revenue 25.3% 25.0%",
+            "Restaurant count increased 19.6% 15.0%",
+            "Restaurant Operating Weeks 5,606 4,659",
+            "Restaurant-Level Profit $93.812M $73.262M",
+            "Occupancy percentage of CAVA Revenue 6.3% 6.8%",
+            "Other Restaurant Operating Expenses percentage of CAVA Revenue 12.8% 12.4%",
+        ]
+        return "\n".join(rows + ["restaurant operating performance"] * 10)
+
+    def test_source_backed_kpis_preserve_tier_one_and_allowed_sources(self):
+        source = self._source_text()
+        result = build_business_kpis(
+            filing_text=source, release_text=source,
+            filing_url="https://www.sec.gov/filing", release_url="https://www.sec.gov/ex99-1",
+            fiscal_period="Q2", fiscal_year=2026,
+        )
+        self.assertEqual(result["selection_status"], "COMPLETE")
+        self.assertEqual(len(result["rows"]), 12)
+        self.assertEqual({row["tier"] for row in result["rows"][:7]}, {1})
+        self.assertTrue(all(row["source"] in ALLOWED_SOURCES for row in result["rows"]))
+        same_sales = result["rows"][0]
+        self.assertEqual(same_sales["latest_quarter"], "9.0%")
+        self.assertEqual(same_sales["prior_year_quarter"], "2.1%")
+        self.assertEqual(same_sales["signal"], "positive")
+        self.assertEqual(same_sales["source"], "IR/SEC")
+
+    def test_missing_prior_value_does_not_bleed_from_the_next_metric(self):
+        source = "\n".join([
+            "Same Restaurant Sales Growth 9.0%",
+            "Guest Traffic Growth 5.3% 1.0%",
+            *(["restaurant operating performance"] * 10),
+        ])
+        result = build_business_kpis(
+            filing_text=source, release_text="",
+            filing_url="https://www.sec.gov/filing", release_url=None,
+            fiscal_period="Q2", fiscal_year=2026,
+        )
+        same_sales = next(row for row in result["rows"] if row["key"] == "same_restaurant_sales_growth")
+        self.assertEqual(same_sales["latest_quarter"], "9.0%")
+        self.assertEqual(same_sales["prior_year_quarter"], "N/A")
+
+    def test_unsupported_industry_does_not_invent_business_kpis(self):
+        result = build_business_kpis(
+            filing_text="Software revenue and ordinary financial statements.", release_text="",
+            filing_url="https://www.sec.gov/filing", release_url=None,
+            fiscal_period="Q2", fiscal_year=2026,
+        )
+        self.assertEqual(result["rows"], [])
+        self.assertEqual(result["selection_status"], "NO_APPLICABLE_REFERENCE_CATALOGUE")
 
 
 class ExtractionTests(unittest.TestCase):
@@ -539,9 +604,9 @@ class OutputTests(unittest.TestCase):
 
     def test_runtime_sources_do_not_embed_company_fixtures(self):
         source_paths = [ROOT / "run_analysis.py", ROOT / "scripts" / "analysis_enrichment.py",
-                        ROOT / "scripts" / "telegram_notify.py"]
+                        ROOT / "scripts" / "telegram_notify.py", ROOT / "scripts" / "kpi_metrics.py"]
         source = "\n".join(path.read_text() for path in source_paths)
-        for forbidden in ("if self.ticker ==", "META Q", "CAT Q", "ABNB Q", "Family of Apps", "Reality Labs"):
+        for forbidden in ("if self.ticker ==", "META Q", "CAT Q", "ABNB Q", "CAVA", "Family of Apps", "Reality Labs"):
             self.assertNotIn(forbidden, source)
 
     def test_compact_items_treats_item_limit_as_layout_hint(self):
@@ -644,17 +709,42 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertTrue(all("YoY" in card["comparison"] and "QoQ" in card["comparison"] for card in cards))
         self.assertEqual(cards[0]["comparison"], "+5.0 pp YoY, +5.0 pp QoQ")
 
+    def test_kpi_section_maps_twelve_to_fifteen_source_backed_cards_and_telegram_fields(self):
+        data = sample_data()
+        source = BusinessKpiTests()._source_text()
+        data["business_kpis"] = build_business_kpis(
+            filing_text=source, release_text=source,
+            filing_url=data["sources"]["filing_url"],
+            release_url="https://www.sec.gov/Archives/edgar/data/1/ex99-1.htm",
+            fiscal_period="Q2", fiscal_year=2026,
+        )
+        cards = build_dashboard_data(data)["sections"]["business_kpis"]
+        self.assertEqual(len(cards), 12)
+        required = {"name", "latest_value", "latest_period", "prior_value", "prior_period",
+                    "analyst_view", "source", "importance", "status", "source_note"}
+        self.assertTrue(all(required <= set(card) for card in cards))
+        message = generate_dashboard_message(data)
+        self.assertLess(message.index("🎯 **KPI**"), message.index("📊 **Key Ratios**"))
+        self.assertIn("Q2 2026: **9.0%**", message)
+        self.assertIn("Q2 2025: **2.1%**", message)
+        self.assertIn("[IR/SEC · T1 — Core]", message)
+
     def test_reference_scorecard_structure_is_shared_and_data_driven(self):
         html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
         css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text(encoding="utf-8")
         script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
         self.assertIn('class="scorecard-section income-section"', html)
+        self.assertIn('class="scorecard-section kpi-section"', html)
+        self.assertIn('id="kpi-cards"', html)
         self.assertIn('class="scorecard-section ratio-section"', html)
         self.assertIn("Overview of key financial performance metrics", html)
         self.assertGreaterEqual(css.count("repeat(8, minmax(0, 1fr))"), 3)
+        self.assertIn("repeat(12, minmax(0, 1fr))", css)
         self.assertIn("metric-card--income", css)
+        self.assertIn(".kpi-card", css)
         self.assertIn("metric-card--ratio", css)
         self.assertIn('renderMetrics("income-cards", sections.income_statement, "income")', script)
+        self.assertIn("renderKpis(sections.business_kpis)", script)
         self.assertIn('renderMetrics("ratio-cards", sections.key_ratios, "ratio")', script)
 
     def test_short_interest_sbc_keeps_tier_one_placeholders_and_selected_tier_two(self):
@@ -759,7 +849,7 @@ class InteractiveDashboardTests(unittest.TestCase):
     def test_section_order_interaction_and_accessibility_contract(self):
         html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
         headings = [
-            "Income Statement Highlights", "Key Ratios", "Valuation", "Capital &amp; Liquidity",
+            "Income Statement Highlights", ">KPI<", "Key Ratios", "Valuation", "Capital &amp; Liquidity",
             "Short Interest &amp; SBC",
             "Guidance &amp; Outlook", "Earnings Call Summary", "Key Channels &amp; Segments",
             "Strategic Pillars", "Key Risks", "Investment Thesis",

@@ -53,6 +53,20 @@ def _format_metric(metric: dict[str, Any], show_qoq: bool = True) -> str:
     return f"{emoji} {label}: **{display}** ({comparison}{qoq_part})"
 
 
+def _format_business_kpi(row: dict[str, Any]) -> str:
+    """Format one compact source-backed KPI observation for Telegram."""
+    emoji = SIGNAL_EMOJIS.get(row.get("signal", "neutral"), "🟡")
+    importance = str(row.get("importance", "Tier unavailable")).replace("Tier ", "T")
+    latest_period = row.get("latest_period", "Latest")
+    prior_period = row.get("prior_period", "Prior-year")
+    analyst_view = _clip(row.get("analyst_view", "No comparison available."), 105)
+    return (
+        f"{emoji} **{row.get('metric', 'KPI')}** [{row.get('source', 'SEC')} · {importance}]\n"
+        f"   {latest_period}: **{row.get('latest_quarter', 'N/A')}** | "
+        f"{prior_period}: **{row.get('prior_year_quarter', 'N/A')}** — {analyst_view}"
+    )
+
+
 def _complete_insight_selection(rows: list[dict[str, Any]], maximum: int = 8,
                                 character_budget: int = 2500) -> list[dict[str, Any]]:
     """Select complete observations that fit Telegram without truncating evidence."""
@@ -151,6 +165,15 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
         metric = next((m for m in financials if m.get("key") == key), None)
         if metric:
             lines.append(_format_metric(metric))
+
+    # KPI — company-specific operating measures from verified IR and SEC evidence.
+    lines.extend(["", "🎯 **KPI**"])
+    business_kpis = data.get("business_kpis", {})
+    kpi_rows = business_kpis.get("rows", [])[:12]
+    if kpi_rows:
+        lines.extend(_format_business_kpi(row) for row in kpi_rows)
+    else:
+        lines.append("🟡 No applicable source-backed company KPI catalogue was available.")
 
     # KEY RATIOS - Only Tier 1 from reference (Gross Margin, Operating Margin, Net Margin, SBC/Revenue)
     # Growth metrics are NOT Tier 1 Key Ratios per reference file
@@ -270,8 +293,10 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
         lines.append("\n📝 **Metrics Note:** All Tier 1 metrics displayed.")
 
     lines.extend(["", "📎 PDF: Interactive A4 dashboard attached",
-                  f"🔗 SEC: {data['sources']['filing_url']}",
-                  f"🔗 Transcript: {data['sources']['transcript_url']}"])
+                  f"🔗 SEC: {data['sources']['filing_url']}"])
+    if data["sources"].get("earnings_release_url"):
+        lines.append(f"🔗 IR/SEC release: {data['sources']['earnings_release_url']}")
+    lines.append(f"🔗 Transcript: {data['sources']['transcript_url']}")
     return "\n".join(lines)
 
 

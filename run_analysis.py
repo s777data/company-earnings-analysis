@@ -31,6 +31,7 @@ from analysis_enrichment import (
     extract_risks,
     extract_transcript_sections,
 )
+from kpi_metrics import build_business_kpis
 
 
 def _signal(item: dict[str, Any]) -> str:
@@ -412,16 +413,37 @@ class EarningsAnalyzer:
             else:
                 _, _, self.release, release_doc, release_text = scored_releases[0]
         if not release_doc: self.data["warnings"].append("No quarter-matched earnings 8-K exhibit was verified")
+        release_url = None
+        if release_doc:
+            release_url = next(
+                (meta.get("url") for meta in release_doc.get("exhibits", {}).values() if meta.get("url")),
+                release_doc.get("filing_url"),
+            )
         self.data.update({"fiscal_period": period, "fiscal_year": int(year_text), "report_date": report_date,
                           "filing_date": self.filing["filing_date"], "accession_number": self.filing["accession_number"],
                           "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc["xbrl_url"],
-                                      "earnings_release_url": release_doc["filing_url"] if release_doc else None,
+                                      "earnings_release_url": release_url,
                                       "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
                                       "transcript_call_date": transcript_call_date,
                                       "transcript_retrieved_at": self.transcript["retrieved_at"],
                                       "transcript_content_sha256": self.transcript["content_sha256"]},
                           "_xbrl": xbrl, "_filing_text": filing_doc["content"],
                           "_release_text": release_text if release_doc else ""})
+
+    def business_kpis(self):
+        """Build source-backed, company-specific operating KPIs."""
+        self.data["business_kpis"] = build_business_kpis(
+            filing_text=self.data.get("_filing_text", ""),
+            release_text=self.data.get("_release_text", ""),
+            filing_url=self.data["sources"]["filing_url"],
+            release_url=self.data["sources"].get("earnings_release_url"),
+            fiscal_period=self.data["fiscal_period"],
+            fiscal_year=self.data["fiscal_year"],
+        )
+        if self.data["business_kpis"]["selection_status"] != "COMPLETE":
+            self.data["warnings"].append(
+                "Company-specific KPI selection was incomplete; unsupported metrics were not invented"
+            )
 
     def financials(self):
         rows = []; metrics = self.data["_xbrl"]["metrics"]
@@ -779,7 +801,7 @@ class EarningsAnalyzer:
         dashboard_dir = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
         paths["html"] = create_interactive_dashboard(public, str(dashboard_dir), publish_template_data=True)
         interactive_pdf = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
-        source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "transcript_url")]
+        source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "earnings_release_url", "transcript_url")]
         paths["interactive_pdf"] = render_dashboard_pdf(paths["html"], str(interactive_pdf), source_urls)
         if deliver: paths["delivery"] = deliver_reports(public, paths["interactive_pdf"], telegram_target, dry_run)
         return paths
@@ -796,7 +818,7 @@ class EarningsAnalyzer:
                 "\n" + "\n".join(evidence + warnings) + "\n")
 
     def run(self, output_dir: str, deliver: bool = True, telegram_target: str = "telegram", dry_run: bool = False):
-        self.identify(); self.retrieve(); self.financials(); self.quote_and_valuation(); self.qualitative(); self.grade_and_thesis()
+        self.identify(); self.retrieve(); self.business_kpis(); self.financials(); self.quote_and_valuation(); self.qualitative(); self.grade_and_thesis()
         return self.save(output_dir, deliver, telegram_target, dry_run)
 
 
