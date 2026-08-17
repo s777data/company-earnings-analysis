@@ -71,6 +71,7 @@ def search_filings(ticker: str, form_types: list[str] | None = None, start_date:
             "items": row.get("items") or "", "primary_document": primary,
             "primary_doc_description": row.get("primaryDocDescription") or "",
             "fiscal_year_end": submission.get("fiscalYearEnd"),
+            "sector": submission.get("sicDescription") or "Unclassified",
             "url": f"{SEC_WWW}/Archives/edgar/data/{int(cik)}/{accession}/{primary}" if primary else None,
         })
         if len(results) >= limit:

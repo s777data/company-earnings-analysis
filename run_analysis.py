@@ -61,6 +61,22 @@ def _validate_transcript_call_date(call_date: str | None, report_date: str) -> t
         return None, f"Transcript provider call date {call_date} failed report-date consistency validation; displayed as N/A"
     return call_date, None
 
+def _extract_investor_relations_url(text: str) -> str | None:
+    candidate_urls = re.findall(r"https?://[^\s<>\"']+", text)
+    candidate_urls.extend(
+        "https://" + host for host in re.findall(
+            r"\b(?:ir|investor|investors)\.[a-z0-9.-]+\.[a-z]{2,}(?:/[^\s<>\"']*)?",
+            text, re.I,
+        )
+    )
+    for candidate_url in candidate_urls:
+        cleaned_url = candidate_url.rstrip(".,;:)]}")
+        hostname = cleaned_url.split("://", 1)[-1].split("/", 1)[0].casefold()
+        if hostname.startswith(("ir.", "investor.", "investors.")) or "investor" in hostname:
+            return cleaned_url
+    return None
+
+
 def _days_old(value: str) -> int: return (_now().date() - datetime.fromisoformat(value).date()).days
 
 def _display(value: float, metric: str) -> str:
@@ -419,10 +435,12 @@ class EarningsAnalyzer:
                 (meta.get("url") for meta in release_doc.get("exhibits", {}).values() if meta.get("url")),
                 release_doc.get("filing_url"),
             )
+        investor_relations_url = _extract_investor_relations_url(release_text) if release_doc else None
         self.data.update({"fiscal_period": period, "fiscal_year": int(year_text), "report_date": report_date,
                           "filing_date": self.filing["filing_date"], "accession_number": self.filing["accession_number"],
                           "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc["xbrl_url"],
                                       "earnings_release_url": release_url,
+                                      "investor_relations_url": investor_relations_url,
                                       "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
                                       "transcript_call_date": transcript_call_date,
                                       "transcript_retrieved_at": self.transcript["retrieved_at"],
@@ -433,16 +451,20 @@ class EarningsAnalyzer:
     def business_kpis(self):
         """Build source-backed, company-specific operating KPIs."""
         self.data["business_kpis"] = build_business_kpis(
+            company=self.filing.get("company_name") or self.ticker,
+            ticker=self.ticker,
+            sector=self.filing.get("sector") or "Unclassified",
             filing_text=self.data.get("_filing_text", ""),
             release_text=self.data.get("_release_text", ""),
             filing_url=self.data["sources"]["filing_url"],
             release_url=self.data["sources"].get("earnings_release_url"),
+            ir_url=self.data["sources"].get("investor_relations_url"),
             fiscal_period=self.data["fiscal_period"],
             fiscal_year=self.data["fiscal_year"],
         )
         if self.data["business_kpis"]["selection_status"] != "COMPLETE":
             self.data["warnings"].append(
-                "Company-specific KPI selection was incomplete; unsupported metrics were not invented"
+                "Source-derived KPI reference is missing or incomplete for the current ticker and fiscal period"
             )
 
     def financials(self):

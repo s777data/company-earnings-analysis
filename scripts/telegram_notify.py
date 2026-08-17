@@ -169,11 +169,11 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     # KPI — company-specific operating measures from verified IR and SEC evidence.
     lines.extend(["", "🎯 **KPI**"])
     business_kpis = data.get("business_kpis", {})
-    kpi_rows = business_kpis.get("rows", [])[:16]
+    kpi_rows = business_kpis.get("rows", [])[:12]
     if kpi_rows:
         lines.extend(_format_business_kpi(row) for row in kpi_rows)
     else:
-        lines.append("🟡 No applicable source-backed company KPI catalogue was available.")
+        lines.append("🟡 No current-period source-derived KPI reference rows were available.")
 
     # KEY RATIOS - Only Tier 1 from reference (Gross Margin, Operating Margin, Net Margin, SBC/Revenue)
     # Growth metrics are NOT Tier 1 Key Ratios per reference file
@@ -294,6 +294,8 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
 
     lines.extend(["", "📎 PDF: Interactive A4 dashboard attached",
                   f"🔗 SEC: {data['sources']['filing_url']}"])
+    if data["sources"].get("investor_relations_url"):
+        lines.append(f"🔗 IR: {data['sources']['investor_relations_url']}")
     if data["sources"].get("earnings_release_url"):
         lines.append(f"🔗 IR/SEC release: {data['sources']['earnings_release_url']}")
     lines.append(f"🔗 Transcript: {data['sources']['transcript_url']}")

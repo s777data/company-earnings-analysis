@@ -8,7 +8,8 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "scripts"))
-from run_analysis import EarningsAnalyzer, _change, _display, _validate_transcript_call_date
+from run_analysis import (EarningsAnalyzer, _change, _display, _extract_investor_relations_url,
+                          _validate_transcript_call_date)
 from pdf_utils import (_compact_summary, _compact_items,
                                   _direction_marker, _select_call_summary_insights,
                                   COMPACT_LABELS, SEMANTIC_SYMBOL_COLORS, COLORS,
@@ -25,7 +26,8 @@ from valuation_metrics import build_valuation_sections, MAIN_ORDER, PROFIT_ORDER
 from analysis_enrichment import (extract_transcript_sections, extract_risks, _sentences, _is_question,
                                  _qa_boundary_start, classify_financial_signal, classify_valuation_signal,
                                  classify_management_confidence, _signal as _transcript_signal)
-from kpi_metrics import ALLOWED_SOURCES, RESTAURANT_KPIS, build_business_kpis
+from kpi_metrics import (ALLOWED_SOURCES, DASHBOARD_KPI_LIMIT, build_business_kpis,
+                         read_derived_kpis, upsert_derived_kpis)
 
 XBRL = '''<?xml version="1.0"?>
 <xbrl xmlns="http://www.xbrl.org/2003/instance" xmlns:us-gaap="http://fasb.org/us-gaap/2026" xmlns:dei="http://xbrl.sec.gov/dei/2026">
@@ -53,71 +55,68 @@ def sample_data():
 
 
 class BusinessKpiTests(unittest.TestCase):
-    def _source_text(self):
-        rows = [
-            "Same Restaurant Sales Growth 9.0% 2.1%",
-            "Guest Traffic Growth 5.3% 1.0%",
-            "Average Unit Volume $3.088M $2.939M",
-            "Restaurant-Level Profit Margin 25.7% 26.3%",
-            "Net New Restaurant Openings 17 16",
-            "Total Restaurants 476 398",
-            "CAVA Revenue $365.433M $278.249M",
-            "Menu Price + Product Mix 3.7% 2.0%",
-            "Digital Revenue Mix 39.0% 37.3%",
-            "Food, Beverage and Packaging percentage of CAVA Revenue 30.0% 29.5%",
-            "Labor percentage of CAVA Revenue 25.3% 25.0%",
-            "Restaurant count increased 19.6% 15.0%",
-            "Restaurant Operating Weeks 5,606 4,659",
-            "Restaurant-Level Profit $93.812M $73.262M",
-            "Occupancy percentage of CAVA Revenue 6.3% 6.8%",
-            "Other Restaurant Operating Expenses percentage of CAVA Revenue 12.8% 12.4%",
-        ]
-        return "\n".join(rows + ["restaurant operating performance"] * 10)
+    def _rows(self, count=13):
+        rows = []
+        for index in range(count):
+            rows.append({
+                "company": "Example Corp", "ticker": "TEST", "sector": "Industrial Technology",
+                "metric": f"Operating KPI {index + 1}",
+                "latest_quarter": f"Q2 2026: {index + 10}%",
+                "prior_year_quarter": f"Q2 2025: {index + 8}%",
+                "analyst_view": "Improved versus the prior-year quarter on a core operating driver.",
+                "source": ("IR", "SEC", "IR/SEC")[index % 3],
+                "importance": "Tier 1 — Core" if index < 8 else "Tier 2 — High",
+            })
+        return rows
 
-    def test_source_backed_kpis_preserve_tier_one_and_allowed_sources(self):
-        source = self._source_text()
-        result = build_business_kpis(
-            filing_text=source, release_text=source,
-            filing_url="https://www.sec.gov/filing", release_url="https://www.sec.gov/ex99-1",
-            fiscal_period="Q2", fiscal_year=2026,
-        )
+    def test_reference_upsert_dedupes_and_selects_top_twelve(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "KPI_derived_reference.txt"
+            upsert_derived_kpis(self._rows(), path, added_on="2026-08-16")
+            update = self._rows(1)[0]
+            update["latest_quarter"] = "Q2 2026: 99%"
+            upsert_derived_kpis([update], path, added_on="2026-08-17")
+            stored = read_derived_kpis(path)
+            self.assertEqual(len(stored), 13)
+            self.assertEqual(stored[0]["latest_quarter"], "Q2 2026: 99%")
+            self.assertEqual(stored[0]["date_added"], "2026-08-16")
+            result = build_business_kpis(
+                company="Example Corp", ticker="TEST", sector="Industrial Technology",
+                filing_url="https://www.sec.gov/filing", release_url="https://www.sec.gov/ex99-1",
+                ir_url="https://ir.example.com/q2-2026", fiscal_period="Q2", fiscal_year=2026,
+                reference_path=path,
+            )
         self.assertEqual(result["selection_status"], "COMPLETE")
-        self.assertEqual(len(result["rows"]), 16)
-        self.assertEqual(
-            [row["key"] for row in result["rows"]],
-            [definition["key"] for definition in RESTAURANT_KPIS],
-        )
-        self.assertEqual({row["tier"] for row in result["rows"][:7]}, {1})
+        self.assertEqual(len(result["rows"]), DASHBOARD_KPI_LIMIT)
         self.assertTrue(all(row["source"] in ALLOWED_SOURCES for row in result["rows"]))
-        same_sales = result["rows"][0]
-        self.assertEqual(same_sales["latest_quarter"], "9.0%")
-        self.assertEqual(same_sales["prior_year_quarter"], "2.1%")
-        self.assertEqual(same_sales["signal"], "positive")
-        self.assertEqual(same_sales["source"], "IR/SEC")
+        self.assertEqual(result["rows"][0]["latest_quarter"], "99%")
+        self.assertEqual(result["rows"][0]["latest_period"], "Q2 2026")
 
-    def test_missing_prior_value_does_not_bleed_from_the_next_metric(self):
-        source = "\n".join([
-            "Same Restaurant Sales Growth 9.0%",
-            "Guest Traffic Growth 5.3% 1.0%",
-            *(["restaurant operating performance"] * 10),
-        ])
-        result = build_business_kpis(
-            filing_text=source, release_text="",
-            filing_url="https://www.sec.gov/filing", release_url=None,
-            fiscal_period="Q2", fiscal_year=2026,
-        )
-        same_sales = next(row for row in result["rows"] if row["key"] == "same_restaurant_sales_growth")
-        self.assertEqual(same_sales["latest_quarter"], "9.0%")
-        self.assertEqual(same_sales["prior_year_quarter"], "N/A")
-
-    def test_unsupported_industry_does_not_invent_business_kpis(self):
-        result = build_business_kpis(
-            filing_text="Software revenue and ordinary financial statements.", release_text="",
-            filing_url="https://www.sec.gov/filing", release_url=None,
-            fiscal_period="Q2", fiscal_year=2026,
-        )
+    def test_stale_period_rows_are_not_reused(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "KPI_derived_reference.txt"
+            stale = self._rows(1)[0]
+            stale["latest_quarter"] = "Q1 2026: 10%"
+            upsert_derived_kpis([stale], path)
+            result = build_business_kpis(
+                company="Example Corp", ticker="TEST", sector="Industrial Technology",
+                filing_url="https://www.sec.gov/filing", release_url=None,
+                fiscal_period="Q2", fiscal_year=2026, reference_path=path,
+            )
         self.assertEqual(result["rows"], [])
-        self.assertEqual(result["selection_status"], "NO_APPLICABLE_REFERENCE_CATALOGUE")
+        self.assertEqual(result["selection_status"], "INCOMPLETE")
+        self.assertEqual(result["stale_period_rows"], 1)
+
+    def test_missing_company_requires_derived_reference(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = build_business_kpis(
+                company="No Rows Inc", ticker="NONE", sector="Software",
+                filing_url="https://www.sec.gov/filing", release_url=None,
+                fiscal_period="Q2", fiscal_year=2026,
+                reference_path=Path(directory) / "KPI_derived_reference.txt",
+            )
+        self.assertEqual(result["rows"], [])
+        self.assertEqual(result["selection_status"], "DERIVED_REFERENCE_REQUIRED")
 
 
 class ExtractionTests(unittest.TestCase):
@@ -363,6 +362,17 @@ class ExtractionTests(unittest.TestCase):
         text = ("Commercial readiness continues to advance, government demand continues to expand, "
                 "our deployment roadmap remains on track, and our operational capabilities continue to scale.")
         self.assertIn(_transcript_signal(text), {"positive", "strong_positive", "best"})
+
+    def test_investor_relations_url_accepts_full_and_bare_official_hosts(self):
+        self.assertEqual(
+            _extract_investor_relations_url("Materials are available at https://ir.example.com."),
+            "https://ir.example.com",
+        )
+        self.assertEqual(
+            _extract_investor_relations_url("See ir.example.com/results for details."),
+            "https://ir.example.com/results",
+        )
+        self.assertIsNone(_extract_investor_relations_url("https://example.com/about"))
 
     def test_transcript_call_date_must_follow_report_date(self):
         value, warning = _validate_transcript_call_date("2025-12-31", "2026-06-30")
@@ -713,25 +723,28 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertTrue(all("YoY" in card["comparison"] and "QoQ" in card["comparison"] for card in cards))
         self.assertEqual(cards[0]["comparison"], "+5.0 pp YoY, +5.0 pp QoQ")
 
-    def test_kpi_section_maps_all_sixteen_source_backed_cards_and_telegram_fields(self):
+    def test_kpi_section_maps_top_twelve_source_derived_cards_and_telegram_fields(self):
         data = sample_data()
-        source = BusinessKpiTests()._source_text()
-        data["business_kpis"] = build_business_kpis(
-            filing_text=source, release_text=source,
-            filing_url=data["sources"]["filing_url"],
-            release_url="https://www.sec.gov/Archives/edgar/data/1/ex99-1.htm",
-            fiscal_period="Q2", fiscal_year=2026,
-        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "KPI_derived_reference.txt"
+            upsert_derived_kpis(BusinessKpiTests()._rows(), path, added_on="2026-08-16")
+            data["business_kpis"] = build_business_kpis(
+                company="Example Corp", ticker="TEST", sector="Industrial Technology",
+                filing_url=data["sources"]["filing_url"],
+                release_url="https://www.sec.gov/Archives/edgar/data/1/ex99-1.htm",
+                ir_url="https://ir.example.com/q2-2026",
+                fiscal_period="Q2", fiscal_year=2026, reference_path=path,
+            )
         cards = build_dashboard_data(data)["sections"]["business_kpis"]
-        self.assertEqual(len(cards), 16)
+        self.assertEqual(len(cards), 12)
         required = {"name", "latest_value", "latest_period", "prior_value", "prior_period",
                     "analyst_view", "source", "importance", "status", "source_note"}
         self.assertTrue(all(required <= set(card) for card in cards))
         message = generate_dashboard_message(data)
         self.assertLess(message.index("🎯 **KPI**"), message.index("📊 **Key Ratios**"))
-        self.assertIn("Q2 2026: **9.0%**", message)
-        self.assertIn("Q2 2025: **2.1%**", message)
-        self.assertIn("[IR/SEC · T1 — Core]", message)
+        self.assertIn("Q2 2026: **10%**", message)
+        self.assertIn("Q2 2025: **8%**", message)
+        self.assertIn("[IR · T1 — Core]", message)
 
     def test_reference_scorecard_structure_is_shared_and_data_driven(self):
         html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")

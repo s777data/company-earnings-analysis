@@ -1,80 +1,53 @@
-# Business KPI Metrics Reference
+# Source-Derived Business KPI Protocol
 
-## Provenance and scope
+## Purpose
 
-This reference is derived only from the supplied **KPIs research.pdf** and defines the new company-specific operating-KPI section. It does not import metrics from the financial-dashboard or valuation reference files. Generic income-statement, valuation, cash-flow, and stock-compensation metrics remain in their existing dashboard sections and should not be duplicated as business KPIs.
+Business KPIs are derived from each company's current official evidence. Runtime source code must not contain industry catalogues, ticker branches, or company-specific metric definitions.
 
-The supplied research uses a restaurant business to demonstrate the selection process. The implemented catalogue is therefore activated only when verified source text contains strong restaurant context. Unsupported industries must return an explicit no-applicable-catalogue status rather than fabricate company-specific KPIs.
+The official dashboard registry is `references/KPI_derived_reference.txt`.
 
-## Evidence policy
+## Required sources for every company and quarter
 
-Allowed source labels are exactly:
+1. **IR:** Inspect the company's official investor-relations page and all quarter-matched materials, including the earnings release, shareholder/investor letter, results snapshot, earnings presentation, and supplemental operating schedules when available.
+2. **SEC:** Inspect the matching SEC 10-Q and the quarter-matched 8-K Item 2.02 earnings exhibit.
+3. Identify business-model-specific operating measures as an expert financial analyst. Ordinary consolidated income-statement, valuation, liquidity, cash-flow, and stock-compensation rows already displayed elsewhere must not be duplicated merely to fill space.
+4. Start from SEC evidence, then reconcile against IR evidence and identify IR-only or SEC-only gaps. Never infer an undisclosed value.
 
-- `IR` — a company investor-relations earnings release or supplemental operating report.
-- `SEC` — a company filing or structured fact from SEC.gov.
-- `IR/SEC` — the metric is present in both the company-prepared earnings release and SEC filing evidence.
+## Derivation output
 
-Every value must preserve a citation URL and source excerpt. Missing values are displayed as `N/A`; they are never inferred. Analyst views must be generated from the reported current/prior values and the metric directionality, not from unsupported claims.
-
-## Required row schema
+First produce the complete research table:
 
 ```text
-metric | latest quarter value | last-year quarter value | analyst view | source | importance
+metric|latest quarter value (for example, Q2 2026)|last year quarter value (for example, Q2 2025)|Analyst view|source|importance
 ```
 
-Machine-readable rows also carry `key`, `latest_period`, `prior_period`, `tier`, `signal`, `impact`, `directionality`, `citation`, and `available`.
+Allowed source values are exactly `IR`, `SEC`, and `IR/SEC`.
 
-## Selection policy
+Importance uses this hierarchy:
 
-1. Research the company's business model and management-defined operating measures from the verified IR release and SEC filing.
-2. Separate company-specific operating KPIs from ordinary financial statement, valuation, liquidity, and SBC metrics already shown elsewhere.
-3. Assign importance based on decision usefulness:
-   - **Tier 1 — Core:** demand, unit productivity, core unit economics, expansion engine, and operating scale.
-   - **Tier 2 — High:** operating drivers, mix, capacity, and cost inputs that explain Tier 1 movement.
-   - **Tier 3 — Supporting:** useful diagnostics with more overlap or narrower explanatory value.
-   - **Tier 4 — Context:** include only when selected by source-backed research and space permits.
-4. Retain every applicable Tier 1 metric.
-5. Display all lower-tier rows in descending importance after Tier 1.
-6. Display all **16** KPI cards. If a metric is not disclosed, keep the importance-ordered card visible with `N/A` rather than silently dropping or reordering it.
-7. Preserve exactly the source labels `IR`, `SEC`, or `IR/SEC`.
+- `Tier 1 — Core`: demand, capacity/utilization, business mix, unit economics, installed-base or recurring-revenue drivers, and segment profitability central to the business model.
+- `Tier 2 — High`: product, customer, channel, service, operational-efficiency, market-share, and forward demand indicators that explain Tier 1 outcomes.
+- `Tier 3 — Supporting`: useful diagnostics with narrower explanatory value or without a comparable prior period.
+- `Tier 4 — Context`: verified context that is decision-useful but not a primary operating driver.
 
-## Restaurant KPI catalogue derived from the supplied research
+Analyst views must interpret the verified current/prior observations and identify direction, business significance, and any forward-looking limitation. They must not invent causes, probabilities, or values.
 
-### Tier 1 — Core
+## Official registry contract
 
-| Metric | Why it matters | Directionality |
-|---|---|---|
-| Same Restaurant Sales Growth | Existing-store demand independent of new openings | Higher is generally better |
-| Guest Traffic Growth | Demand quality; separates traffic from pricing | Higher is generally better |
-| Average Unit Volume (AUV) | Mature-location sales productivity | Higher is generally better |
-| Restaurant-Level Profit Margin | Core unit economics | Higher and expanding is better |
-| Net New Restaurant Openings | Physical expansion engine | Higher is favorable when unit economics remain healthy |
-| Total Restaurant Count | Operating scale and footprint | Higher is favorable when productivity remains healthy |
-| Restaurant Revenue | Connects store growth and comparable sales to scale | Higher profitable growth is better |
+`references/KPI_derived_reference.txt` uses this exact pipe-delimited header:
 
-### Tier 2 — High
+```text
+COMPANY|TICKER|SECTOR|metric|latest quarter value( eg,Q2 2026)|last year quarter value ( eg,Q2 2025)|Analyst_view|source|importance|date_added
+```
 
-| Metric | Why it matters | Directionality |
-|---|---|---|
-| Menu Price + Product Mix | Explains the non-traffic component of comparable sales | Context-dependent |
-| Digital Revenue Mix | Channel adoption and delivery/margin mix | Context-dependent |
-| Food, Beverage & Packaging % of Revenue | Largest restaurant input-cost bucket | Lower is generally better |
-| Labor % of Revenue | Labor efficiency and wage pressure | Lower is generally better |
-| Restaurant Footprint Growth | Normalizes expansion relative to existing scale | Higher is favorable with healthy unit economics |
-| Restaurant Operating Weeks | Capacity actually available during the period | Higher indicates more capacity; assess productivity too |
-| Restaurant-Level Profit | Restaurant profitability dollars | Higher is generally better |
+Each value cell includes its period, for example `Q2 2026: 67%` and `Q2 2025: 66%`. Undisclosed comparisons use the expected prior period plus `N/A`.
 
-### Tier 3 — Supporting
+Every row is deduplicated by normalized `COMPANY|TICKER|SECTOR|metric`. A new quarter updates the existing metric observation rather than creating a duplicate. `date_added` preserves the original addition date. New source-backed metrics may be added in future runs.
 
-| Metric | Why it matters | Directionality |
-|---|---|---|
-| Occupancy % of Revenue | Fixed-cost operating leverage | Lower is generally better |
-| Other Restaurant Operating Expenses % | Delivery and other controllable operating costs | Lower is generally better |
+Use `upsert_derived_kpis()` in `scripts/kpi_metrics.py` to update the registry atomically. The reader rejects malformed headers, unsupported source labels, malformed rows, and duplicate identities.
 
-## Presentation contract
+## Dashboard selection
 
-- Place **KPI** immediately below **Income Statement Highlights** in both Telegram and the HTML dashboard.
-- Use 16 readable cards in two rows of eight across the same available dashboard width as Income Statement Highlights.
-- Each card presents metric name, source/importance, current-quarter value, prior-year-quarter value, and a short analyst view.
-- Use the existing dashboard's seven-state signal color spectrum.
-- Keep the report within one A4 portrait page. Each KPI row uses the same card height as Income Statement Highlights; Key Ratios uses half-height wrapping cards; Key Risks and Investment Thesis use compact 12 mm two-column wrapped lists; and Grade Reasoning uses a half-height 10 mm wrapped grid that displays all rows without overlap. Key Channels & Segments and Strategic Pillars retain their previously validated half-height cards.
+The dashboard and Telegram message display the top **12** current-period metrics by importance. Tier 1 rows rank before Tier 2, Tier 3, and Tier 4. Current-quarter rows from an older fiscal period are not reused.
+
+If the registry lacks current-period rows for the requested ticker, the result is `DERIVED_REFERENCE_REQUIRED` or `INCOMPLETE`; the skill must complete the IR/SEC derivation before publication. It must never fall back to an industry catalogue or claim that source data is unavailable merely because a ticker-specific catalogue does not exist.

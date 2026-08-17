@@ -476,7 +476,7 @@
   function sourceLinks(sources) {
     const container = $("source-links");
     container.replaceChildren();
-    const links = [["SEC", sources.filing_url], ["XBRL", sources.xbrl_url], ["IR/SEC release", sources.earnings_release_url], ["Transcript", sources.transcript_url], ["Short interest", sources.short_interest_url]].filter(([, url]) => url);
+    const links = [["SEC", sources.filing_url], ["XBRL", sources.xbrl_url], ["IR", sources.investor_relations_url], ["IR/SEC release", sources.earnings_release_url], ["Transcript", sources.transcript_url], ["Short interest", sources.short_interest_url]].filter(([, url]) => url);
     links.forEach(([label, url], index) => {
       if (index) container.append(document.createTextNode(" • "));
       const link = document.createElement("a");
