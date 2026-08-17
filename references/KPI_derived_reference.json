@@ -1,0 +1,294 @@
+[
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "AIx-connected Chambers",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: >35,000",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "More than 35,000 connected chambers expand the installed base for AI-powered monitoring, diagnostics and service monetization.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Applied Global Services Growth Outlook",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: Mid-teens or higher",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management expects mid-teens or potentially higher services growth, supporting recurring revenue momentum.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Applied Global Services Operating Margin",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 29.2%",
+        "last_year_quarter_value": "Q2 2025: 26.6%",
+        "analyst_view": "Services operating margin expanded 260 bps YoY, showing improved profitability alongside double-digit growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Applied Global Services Revenue",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: $1.665B",
+        "last_year_quarter_value": "Q2 2025: $1.420B",
+        "analyst_view": "Services revenue grew 17.3% YoY, providing a stronger recurring and installed-base-linked growth contribution.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Calendar 2026 Advanced Packaging Revenue Growth Outlook",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: >50%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Expected advanced-packaging revenue growth above 50% identifies packaging as a major AI-driven expansion engine.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Calendar 2026 Semiconductor Equipment Growth Outlook",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: >30%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management raised its semiconductor-equipment growth expectation above 30%, signaling stronger demand visibility but remaining forward-looking.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "DRAM Revenue Mix",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 29%",
+        "last_year_quarter_value": "Q2 2025: 27%",
+        "analyst_view": "DRAM mix increased 2 points as AI computing accelerated capacity additions and next-generation architecture investment.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Flash Memory Revenue Mix",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 4%",
+        "last_year_quarter_value": "Q2 2025: 7%",
+        "analyst_view": "Flash mix declined 3 points, showing weaker relative contribution than DRAM and foundry/logic.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Foundry, Logic and Other Revenue Mix",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 67%",
+        "last_year_quarter_value": "Q2 2025: 66%",
+        "analyst_view": "Foundry/logic mix increased 1 point and remains the largest Semiconductor Systems demand pool.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Leading-edge Foundry/Logic, DRAM and Advanced Packaging Share of 2026 WFE Growth",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: >80%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "More than 80% of expected 2026 WFE growth is concentrated in markets where Applied reports number-one process-equipment positions.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Semiconductor Systems Operating Margin",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 35.1%",
+        "last_year_quarter_value": "Q2 2025: 32.8%",
+        "analyst_view": "Segment operating margin expanded 230 bps YoY, indicating favorable mix, pricing and manufacturing leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Semiconductor Systems Revenue",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: $5.965B",
+        "last_year_quarter_value": "Q2 2025: $5.401B",
+        "analyst_view": "Core equipment revenue grew 10.4% YoY as AI-related foundry/logic, DRAM and advanced-packaging demand strengthened.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      },
+      "2026-11-15": {
+        "latest_quarter_value": "Q3 2026: $6.200B",
+        "last_year_quarter_value": "Q3 2025: $5.500B",
+        "analyst_view": "Q3 update: Continued strong growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "AIx Customer Response-Time Improvement",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 30% faster",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "AI-powered monitoring delivered 30% faster response times, supporting higher customer wafer output and service value.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Applied Global Services Gross Margin",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 34.7%",
+        "last_year_quarter_value": "Q2 2025: 33.5%",
+        "analyst_view": "Services gross margin expanded 120 bps YoY while revenue accelerated.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Manufacturing Capacity Expansion",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: Nearly 2x",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Nearly doubled manufacturing capacity across the U.S., Europe and Singapore improves readiness for higher customer demand.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Semiconductor Systems Gross Margin",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 54.7%",
+        "last_year_quarter_value": "Q2 2025: 53.5%",
+        "analyst_view": "Segment gross margin expanded 120 bps YoY, demonstrating stronger equipment economics and favorable product mix.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Employees Using AI",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: >35,000",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Broad internal AI adoption is intended to accelerate R&D, optimize operations and redirect resources to higher-value work.",
+        "source": "IR",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "EPIC Center Named Partners",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: 9",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Nine named chipmaker, innovation and research partners strengthen the collaborative development ecosystem, though commercialization impact is not yet quantified.",
+        "source": "IR",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Other Segment Revenue",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: $280M",
+        "last_year_quarter_value": "Q2 2025: $279M",
+        "analyst_view": "Other segment revenue was essentially flat YoY and remains a small contributor relative to core equipment and services.",
+        "source": "IR/SEC",
+        "importance": "Tier 4 — Context"
+      }
+    }
+  }
+]

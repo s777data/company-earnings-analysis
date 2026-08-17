@@ -5,9 +5,29 @@ The registry is intentionally company-neutral: analysts derive metrics from the
 current company's official IR materials and SEC earnings filing, then upsert the
 observations here. Runtime code selects the twelve highest-importance rows for
 the requested company and period; it contains no industry catalogue.
+
+The registry is stored as JSON with this structure:
+[
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Semiconductor Systems Revenue",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: $5.965B",
+        "last_year_quarter_value": "Q2 2025: $5.401B",
+        "analyst_view": "Core equipment revenue grew 10.4% YoY...",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  }
+]
 """
 from __future__ import annotations
 
+import json
 import re
 from datetime import date
 from pathlib import Path
@@ -15,15 +35,17 @@ from typing import Any, Iterable
 
 ALLOWED_SOURCES = {"IR", "SEC", "IR/SEC"}
 DASHBOARD_KPI_LIMIT = 12
-REFERENCE_HEADER = (
-    "COMPANY|TICKER|SECTOR|metric|latest quarter value( eg,Q2 2026)|"
-    "last year quarter value ( eg,Q2 2025)|Analyst_view|source|importance|date_added"
-)
+
+# Default JSON reference path
+DEFAULT_REFERENCE_PATH = Path(__file__).resolve().parents[1] / "references" / "KPI_derived_reference.json"
+
+# Legacy text path for backwards compatibility (if JSON doesn't exist)
+LEGACY_REFERENCE_PATH = Path(__file__).resolve().parents[1] / "references" / "KPI_derived_reference.txt"
+
 REFERENCE_FIELDS = (
     "company", "ticker", "sector", "metric", "latest_quarter", "prior_year_quarter",
     "analyst_view", "source", "importance", "date_added",
 )
-DEFAULT_REFERENCE_PATH = Path(__file__).resolve().parents[1] / "references" / "KPI_derived_reference.txt"
 
 
 def _clean(value: Any) -> str:
@@ -70,16 +92,90 @@ def _signal(analyst_view: str) -> str:
     return "neutral"
 
 
-def read_derived_kpis(path: str | Path = DEFAULT_REFERENCE_PATH) -> list[dict[str, str]]:
-    """Read and validate the pipe-delimited official KPI reference."""
+def _load_json_references(path: str | Path) -> list[dict[str, Any]]:
+    """Load KPI references from JSON format."""
     reference = Path(path)
     if not reference.exists():
         return []
+    try:
+        data = json.loads(reference.read_text(encoding="utf-8"))
+        if not isinstance(data, list):
+            raise RuntimeError(f"KPI_REFERENCE_INVALID_JSON: {reference}: expected array")
+        return data
+    except json.JSONDecodeError as e:
+        raise RuntimeError(f"KPI_REFERENCE_JSON_DECODE_ERROR: {reference}: {e}")
+
+
+def _convert_json_to_flat_rows(json_data: list[dict[str, Any]]) -> list[dict[str, str]]:
+    """Convert JSON format with details_map to flat rows for processing."""
+    rows = []
+    for metric_obj in json_data:
+        company = metric_obj.get("COMPANY", "")
+        ticker = metric_obj.get("TICKER", "")
+        sector = metric_obj.get("SECTOR", "")
+        metric = metric_obj.get("metric", "")
+        details_map = metric_obj.get("details_map", {})
+        
+        # Use the most recent date_added entry
+        if details_map:
+            latest_date = max(details_map.keys())
+            details = details_map[latest_date]
+            row = {
+                "company": company,
+                "ticker": ticker,
+                "sector": sector,
+                "metric": metric,
+                "latest_quarter": details.get("latest_quarter_value", "N/A"),
+                "prior_year_quarter": details.get("last_year_quarter_value", "N/A"),
+                "analyst_view": details.get("analyst_view", ""),
+                "source": details.get("source", ""),
+                "importance": details.get("importance", ""),
+                "date_added": latest_date,
+            }
+            rows.append(row)
+    return rows
+
+
+def read_derived_kpis(path: str | Path = DEFAULT_REFERENCE_PATH) -> list[dict[str, str]]:
+    """Read and validate the KPI reference from JSON format.
+    
+    Falls back to legacy pipe-delimited text format if JSON doesn't exist.
+    """
+    reference = Path(path)
+    
+    # Try JSON format first
+    if reference.suffix == ".json" and reference.exists():
+        json_data = _load_json_references(reference)
+        return _convert_json_to_flat_rows(json_data)
+    
+    # Try legacy text format
+    if reference.suffix == ".txt" and reference.exists():
+        # For backward compatibility, we still support reading the old format
+        return _read_legacy_text_format(reference)
+    
+    # If the default path doesn't exist, check if we should fall back
+    if path == DEFAULT_REFERENCE_PATH and LEGACY_REFERENCE_PATH.exists():
+        return _read_legacy_text_format(LEGACY_REFERENCE_PATH)
+    
+    return []
+
+
+def _read_legacy_text_format(reference: Path) -> list[dict[str, str]]:
+    """Read legacy pipe-delimited text format."""
     lines = reference.read_text(encoding="utf-8").splitlines()
     if not lines:
         return []
-    if lines[0].strip() != REFERENCE_HEADER:
+    
+    # Check if it's the old header format
+    legacy_header = (
+        "COMPANY|TICKER|SECTOR|metric|latest quarter value( eg,Q2 2026)|"
+        "last year quarter value ( eg,Q2 2025)|Analyst_view|source|importance|date_added"
+    )
+    
+    # If no header or doesn't match, try to parse as-is
+    if lines[0].strip() != legacy_header:
         raise RuntimeError(f"KPI_REFERENCE_INVALID_HEADER: {reference}")
+    
     rows: list[dict[str, str]] = []
     seen: set[tuple[str, str, str, str]] = set()
     for line_number, line in enumerate(lines[1:], 2):
@@ -101,11 +197,17 @@ def read_derived_kpis(path: str | Path = DEFAULT_REFERENCE_PATH) -> list[dict[st
 
 def upsert_derived_kpis(rows: Iterable[dict[str, Any]], path: str | Path = DEFAULT_REFERENCE_PATH,
                          added_on: str | None = None) -> list[dict[str, str]]:
-    """Atomically upsert rows, deduped by COMPANY|TICKER|SECTOR|metric."""
+    """Atomically upsert rows, deduped by COMPANY|TICKER|SECTOR|metric.
+    
+    Writes to JSON format. If path is .txt, writes legacy format for backward compatibility.
+    """
     reference = Path(path)
-    existing = read_derived_kpis(reference)
-    by_identity = {_identity(row): row for row in existing}
+    
+    # Load existing data (from JSON or legacy)
+    existing_flat = read_derived_kpis(reference)
+    by_identity = {_identity(row): row for row in existing_flat}
     today = added_on or date.today().isoformat()
+    
     for incoming in rows:
         row = {field: _clean(incoming.get(field)) for field in REFERENCE_FIELDS}
         missing = [field for field in ("company", "ticker", "sector", "metric", "analyst_view", "source", "importance")
@@ -119,19 +221,98 @@ def upsert_derived_kpis(rows: Iterable[dict[str, Any]], path: str | Path = DEFAU
         row["prior_year_quarter"] = row["prior_year_quarter"] or "N/A"
         identity = _identity(row)
         previous = by_identity.get(identity)
-        row["date_added"] = (previous or {}).get("date_added") or row["date_added"] or today
+        # For legacy format (.txt), preserve original date_added to maintain single-date behavior
+        # For JSON format, the new date is added as a separate entry in details_map
+        if reference.suffix == ".json":
+            row["date_added"] = today
+        else:
+            row["date_added"] = (previous or {}).get("date_added") or row["date_added"] or today
         by_identity[identity] = row
+    
     ordered = sorted(by_identity.values(), key=lambda row: (
         row["company"].casefold(), row["ticker"].casefold(), _importance_rank(row["importance"]),
         row["metric"].casefold(),
     ))
+    
     reference.parent.mkdir(parents=True, exist_ok=True)
-    payload = [REFERENCE_HEADER]
-    payload.extend("|".join(_clean(row[field]) for field in REFERENCE_FIELDS) for row in ordered)
+    
+    # Write in the appropriate format based on file extension
+    if reference.suffix == ".json":
+        _write_json_format(reference, ordered)
+    else:
+        _write_legacy_format(reference, ordered)
+    
+    return ordered
+
+
+def _write_json_format(reference: Path, ordered_rows: list[dict[str, str]]) -> None:
+    """Write KPI references in JSON format with details_map."""
+    # Load existing JSON to preserve historical details_map entries
+    existing_json = _load_json_references(reference)
+    existing_by_key = {}
+    for obj in existing_json:
+        key = (obj.get("COMPANY", ""), obj.get("TICKER", ""), obj.get("SECTOR", ""), obj.get("metric", ""))
+        existing_by_key[key] = obj
+    
+    # Build new JSON structure
+    result = []
+    for row in ordered_rows:
+        key = (row["company"], row["ticker"], row["sector"], row["metric"])
+        existing = existing_by_key.get(key)
+        
+        if existing:
+            # Update existing metric with new date entry
+            details_map = existing.get("details_map", {})
+            date_key = row["date_added"]
+            details_map[date_key] = {
+                "latest_quarter_value": row["latest_quarter"],
+                "last_year_quarter_value": row["prior_year_quarter"],
+                "analyst_view": row["analyst_view"],
+                "source": row["source"],
+                "importance": row["importance"],
+            }
+            result.append({
+                "COMPANY": row["company"],
+                "TICKER": row["ticker"],
+                "SECTOR": row["sector"],
+                "metric": row["metric"],
+                "details_map": details_map,
+            })
+        else:
+            # New metric
+            details_map = {
+                row["date_added"]: {
+                    "latest_quarter_value": row["latest_quarter"],
+                    "last_year_quarter_value": row["prior_year_quarter"],
+                    "analyst_view": row["analyst_view"],
+                    "source": row["source"],
+                    "importance": row["importance"],
+                }
+            }
+            result.append({
+                "COMPANY": row["company"],
+                "TICKER": row["ticker"],
+                "SECTOR": row["sector"],
+                "metric": row["metric"],
+                "details_map": details_map,
+            })
+    
+    temporary = reference.with_suffix(reference.suffix + ".tmp")
+    temporary.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    temporary.replace(reference)
+
+
+def _write_legacy_format(reference: Path, ordered_rows: list[dict[str, str]]) -> None:
+    """Write KPI references in legacy pipe-delimited text format."""
+    legacy_header = (
+        "COMPANY|TICKER|SECTOR|metric|latest quarter value( eg,Q2 2026)|"
+        "last year quarter value ( eg,Q2 2025)|Analyst_view|source|importance|date_added"
+    )
+    payload = [legacy_header]
+    payload.extend("|".join(_clean(row[field]) for field in REFERENCE_FIELDS) for row in ordered_rows)
     temporary = reference.with_suffix(reference.suffix + ".tmp")
     temporary.write_text("\n".join(payload) + "\n", encoding="utf-8")
     temporary.replace(reference)
-    return ordered
 
 
 def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: str,
