@@ -174,6 +174,108 @@ class DashboardRenderTests(unittest.TestCase):
         
         self.assertEqual(kpis["rows"], [])
         self.assertEqual(kpis["note"], "No current-period source-derived KPI rows exist for this ticker.")
+
+    def test_kpi_derived_reference_populated_for_ticker_and_quarter(self):
+        """Test that when KPI data is added for the ticker/quarter, it's used in analysis.
+        
+        This regression test ensures the workflow: BUSINESS_KPI_METRICS_REFERENCE.md 
+        derivation -> KPI_derived_reference.json population -> analysis uses it.
+        """
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "KPI_derived_reference.json"
+            
+            # Simulate deriving KPIs from IR/SEC sources per BUSINESS_KPI_METRICS_REFERENCE.md
+            # for TPR Q3 FY2026
+            tpr_kpi_rows = [
+                {
+                    "company": "Tapestry, Inc.",
+                    "ticker": "TPR",
+                    "sector": "Consumer Discretionary",
+                    "metric": "Global Brand Revenue",
+                    "latest_quarter": "Q3 2026: $1.92B",
+                    "prior_year_quarter": "Q3 2025: $1.58B",
+                    "analyst_view": "Global brand revenue grew 21% YoY driven by Coach and Kate Spade strength.",
+                    "source": "IR/SEC",
+                    "importance": "Tier 1 — Core",
+                },
+                {
+                    "company": "Tapestry, Inc.",
+                    "ticker": "TPR",
+                    "sector": "Consumer Discretionary",
+                    "metric": "Direct-to-Consumer Revenue",
+                    "latest_quarter": "Q3 2026: $1.15B",
+                    "prior_year_quarter": "Q3 2025: $0.92B",
+                    "analyst_view": "DTC channel grew 25% YoY, outpacing wholesale and showing brand engagement.",
+                    "source": "IR",
+                    "importance": "Tier 1 — Core",
+                },
+                {
+                    "company": "Tapestry, Inc.",
+                    "ticker": "TPR",
+                    "sector": "Consumer Discretionary",
+                    "metric": "Operating Margin Expansion",
+                    "latest_quarter": "Q3 2026: 22.3%",
+                    "prior_year_quarter": "Q3 2025: 16.1%",
+                    "analyst_view": "Operating margin expanded 620 bps YoY on scale and pricing power.",
+                    "source": "SEC",
+                    "importance": "Tier 2 — High",
+                },
+            ]
+            
+            # Populate the reference (simulates upsert_derived_kpis after manual derivation)
+            upsert_derived_kpis(tpr_kpi_rows, path, added_on="2026-08-18")
+            
+            # Verify the reference was populated correctly
+            stored = read_derived_kpis(path)
+            tpr_rows = [r for r in stored if r["ticker"].casefold() == "tpr"]
+            self.assertGreaterEqual(len(tpr_rows), 3)
+            
+            # Run build_business_kpis for the exact ticker/quarter the skill would analyze
+            result = build_business_kpis(
+                company="Tapestry, Inc.",
+                ticker="TPR",
+                sector="Consumer Discretionary",
+                filing_url="https://www.sec.gov/filing",
+                release_url="https://www.sec.gov/release",
+                ir_url="https://ir.tapestry.com",
+                fiscal_period="Q3",
+                fiscal_year=2026,
+                reference_path=path,
+            )
+            
+            # Should now be INCOMPLETE with 3 rows (need 12 for COMPLETE)
+            self.assertEqual(result["selection_status"], "INCOMPLETE")
+            self.assertEqual(len(result["rows"]), 3)
+            self.assertEqual(result["available_reference_rows"], 3)
+            
+            # Verify the data matches what was derived
+            metrics_by_name = {row["metric"]: row for row in result["rows"]}
+            self.assertIn("Global Brand Revenue", metrics_by_name)
+            self.assertIn("Direct-to-Consumer Revenue", metrics_by_name)
+            self.assertIn("Operating Margin Expansion", metrics_by_name)
+            
+            # Verify dashboard data structure includes the populated KPIs
+            from create_interactive_dashboard import build_dashboard_data
+            sample = sample_data()
+            sample["business_kpis"] = result
+            sample["ticker"] = "TPR"
+            sample["fiscal_period"] = "Q3"
+            sample["fiscal_year"] = 2026
+            
+            dashboard = build_dashboard_data(sample)
+            kpi_section = dashboard["sections"]["business_kpis"]
+            
+            # Should be object format with rows
+            self.assertIsInstance(kpi_section, dict)
+            self.assertIn("rows", kpi_section)
+            self.assertEqual(len(kpi_section["rows"]), 3)
+            self.assertEqual(kpi_section["selection_status"], "INCOMPLETE")
+            
+            # Verify the note is not the generic one
+            self.assertNotIn("business KPI catalogue was available", kpi_section.get("note", ""))
+
+
+class ExtractionTests(unittest.TestCase):
     def test_xbrl_current_prior_and_dimension_filter(self):
         result = parse_xbrl_financials(XBRL, "2026-06-30")
         self.assertEqual(result["fiscal_period"], "Q2")
