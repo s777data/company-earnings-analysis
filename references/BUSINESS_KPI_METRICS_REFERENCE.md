@@ -4,7 +4,7 @@
 
 Business KPIs are derived from each company's current official evidence. Runtime source code must not contain industry catalogues, ticker branches, or company-specific metric definitions.
 
-The official dashboard registry is `references/KPI_derived_reference.txt`.
+The official dashboard registry is `references/KPI_derived_reference.json`.
 
 ## Required sources for every company and quarter
 
@@ -34,17 +34,33 @@ Analyst views must interpret the verified current/prior observations and identif
 
 ## Official registry contract
 
-`references/KPI_derived_reference.txt` uses this exact pipe-delimited header:
+`references/KPI_derived_reference.json` uses this JSON structure:
 
-```text
-COMPANY|TICKER|SECTOR|metric|latest quarter value( eg,Q2 2026)|last year quarter value ( eg,Q2 2025)|Analyst_view|source|importance|date_added
+```json
+[
+  {
+    "COMPANY": "Applied Materials, Inc.",
+    "TICKER": "AMAT",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Semiconductor Systems Revenue",
+    "details_map": {
+      "2026-08-16": {
+        "latest_quarter_value": "Q2 2026: $5.965B",
+        "last_year_quarter_value": "Q2 2025: $5.401B",
+        "analyst_view": "Core equipment revenue grew 10.4% YoY...",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  }
+]
 ```
 
-Each value cell includes its period, for example `Q2 2026: 67%` and `Q2 2025: 66%`. Undisclosed comparisons use the expected prior period plus `N/A`.
+Each `details_map` entry includes its date as the key, with the period embedded in the value fields (e.g., `Q2 2026: $5.965B` and `Q2 2025: $5.401B`). Undisclosed comparisons use the expected prior period plus `N/A`.
 
-Every row is deduplicated by normalized `COMPANY|TICKER|SECTOR|metric`. A new quarter updates the existing metric observation rather than creating a duplicate. `date_added` preserves the original addition date. New source-backed metrics may be added in future runs.
+Every metric is deduplicated by normalized `COMPANY|TICKER|SECTOR|metric`. A new quarter updates the existing metric's `details_map` with a new date key rather than creating a duplicate. `date_added` within each entry preserves the addition date. New source-backed metrics may be added in future runs.
 
-Use `upsert_derived_kpis()` in `scripts/kpi_metrics.py` to update the registry atomically. The reader rejects malformed headers, unsupported source labels, malformed rows, and duplicate identities.
+Use `upsert_derived_kpis()` in `scripts/kpi_metrics.py` to update the registry atomically. The reader rejects malformed JSON, unsupported source labels, malformed entries, and duplicate identities.
 
 ## Dashboard selection
 

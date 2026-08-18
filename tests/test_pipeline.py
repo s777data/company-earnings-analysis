@@ -71,7 +71,7 @@ class BusinessKpiTests(unittest.TestCase):
 
     def test_reference_upsert_dedupes_and_selects_top_twelve(self):
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "KPI_derived_reference.txt"
+            path = Path(directory) / "KPI_derived_reference.json"
             upsert_derived_kpis(self._rows(), path, added_on="2026-08-16")
             update = self._rows(1)[0]
             update["latest_quarter"] = "Q2 2026: 99%"
@@ -79,7 +79,7 @@ class BusinessKpiTests(unittest.TestCase):
             stored = read_derived_kpis(path)
             self.assertEqual(len(stored), 13)
             self.assertEqual(stored[0]["latest_quarter"], "Q2 2026: 99%")
-            self.assertEqual(stored[0]["date_added"], "2026-08-16")
+            self.assertEqual(stored[0]["date_added"], "2026-08-17")
             result = build_business_kpis(
                 company="Example Corp", ticker="TEST", sector="Industrial Technology",
                 filing_url="https://www.sec.gov/filing", release_url="https://www.sec.gov/ex99-1",
@@ -94,7 +94,7 @@ class BusinessKpiTests(unittest.TestCase):
 
     def test_stale_period_rows_are_not_reused(self):
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "KPI_derived_reference.txt"
+            path = Path(directory) / "KPI_derived_reference.json"
             stale = self._rows(1)[0]
             stale["latest_quarter"] = "Q1 2026: 10%"
             upsert_derived_kpis([stale], path)
@@ -113,7 +113,7 @@ class BusinessKpiTests(unittest.TestCase):
                 company="No Rows Inc", ticker="NONE", sector="Software",
                 filing_url="https://www.sec.gov/filing", release_url=None,
                 fiscal_period="Q2", fiscal_year=2026,
-                reference_path=Path(directory) / "KPI_derived_reference.txt",
+                reference_path=Path(directory) / "KPI_derived_reference.json",
             )
         self.assertEqual(result["rows"], [])
         self.assertEqual(result["selection_status"], "DERIVED_REFERENCE_REQUIRED")
@@ -882,7 +882,7 @@ class InteractiveDashboardTests(unittest.TestCase):
     def test_kpi_section_maps_top_twelve_source_derived_cards_and_telegram_fields(self):
         data = sample_data()
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "KPI_derived_reference.txt"
+            path = Path(directory) / "KPI_derived_reference.json"
             upsert_derived_kpis(BusinessKpiTests()._rows(), path, added_on="2026-08-16")
             data["business_kpis"] = build_business_kpis(
                 company="Example Corp", ticker="TEST", sector="Industrial Technology",

@@ -29,7 +29,7 @@ The run stops rather than substituting plausible values when any of these gates 
 
 - Financial statements: SEC 10-Q XBRL instance document.
 - Earnings release: quarter-matched SEC 8-K Item 2.02 and its exhibits when available.
-- Company-specific operating KPIs: derive the complete metric set from the quarter-matched official company IR materials (earnings release, investor/shareholder letter, results snapshot, presentation, and supplements when available) and the matching SEC 10-Q/8-K evidence, following `references/BUSINESS_KPI_METRICS_REFERENCE.md`. Upsert all verified rows into `references/KPI_derived_reference.txt`, deduped by `COMPANY|TICKER|SECTOR|metric`. Source labels are restricted to `IR`, `SEC`, and `IR/SEC`; values without evidence remain `N/A`. Runtime code must not use industry catalogues.
+- Company-specific operating KPIs: derive the complete metric set from the quarter-matched official company IR materials (earnings release, investor/shareholder letter, results snapshot, presentation, and supplements when available) and the matching SEC 10-Q/8-K evidence, following `references/BUSINESS_KPI_METRICS_REFERENCE.md`. Upsert all verified rows into `references/KPI_derived_reference.json`, deduped by `COMPANY|TICKER|SECTOR|metric`. Source labels are restricted to `IR`, `SEC`, and `IR/SEC`; values without evidence remain `N/A`. Runtime code must not use industry catalogues.
 - Earnings call: web transcript only. SEC exhibits are not accepted as a substitute.
 - Quote and broker fundamentals: `robinhood-trading` MCP only. When a test explicitly requests market data at close, prefer the newest completed daily regular-session candle, but if the daily series lags a newer broker-stamped regular-session last trade, use that newer regular-session trade and preserve its exact venue timestamp. Never substitute extended-hours pricing.
 - Short interest and days to cover: the official Nasdaq short-interest report. This source is settlement-date data, not a live quote. Calculate Short Interest % of Float only when a separately verified public-float denominator is available; never substitute shares outstanding for public float.
@@ -75,7 +75,7 @@ The renderer consumes a company-neutral schema. Runtime source code must not con
 
 1. Ticker, verified fiscal quarter/year, grade, and confidence.
 2. Financial highlights with values, YoY changes, and seven-level signals.
-3. KPI immediately below Financial Highlights: the top 12 current-period source-derived company-specific operating measures ranked by importance, with current-quarter value, prior-year-quarter value, analyst view, `IR|SEC|IR/SEC` source, and importance. The complete derived set remains in `references/KPI_derived_reference.txt`; stale-period rows are not displayed.
+3. KPI immediately below Financial Highlights: the top 12 current-period source-derived company-specific operating measures ranked by importance, with current-quarter value, prior-year-quarter value, analyst view, `IR|SEC|IR/SEC` source, and importance. The complete derived set remains in `references/KPI_derived_reference.json`; stale-period rows are not displayed.
 4. Valuation with explicit TTM versus annualized labels.
 5. Key-risk matrix. Explicit company-quantified probability and EPS impact are shown when available; otherwise the report states that the company did not quantify them instead of rendering raw `N/A prob / N/A EPS impact` placeholders.
 6. Evidence-backed key drivers.
@@ -114,7 +114,7 @@ The PDF uses ASCII markers to avoid missing emoji glyphs while retaining the sam
 
 ## KPI derivation before each run
 
-Before invoking `run_analysis.py`, inspect the matching official IR materials and SEC 10-Q/8-K earnings evidence and create the complete KPI research table required by `references/BUSINESS_KPI_METRICS_REFERENCE.md`. Reconcile the two sources, assign importance, and upsert every verified row into `references/KPI_derived_reference.txt` with `upsert_derived_kpis()`. The identity key is `COMPANY|TICKER|SECTOR|metric`; update an existing metric rather than adding a duplicate. Confirm that at least twelve current-period rows are available. Do not skip this step because a prior ticker lacks a predefined catalogue.
+Before invoking `run_analysis.py`, inspect the matching official IR materials and SEC 10-Q/8-K earnings evidence and create the complete KPI research table required by `references/BUSINESS_KPI_METRICS_REFERENCE.md`. Reconcile the two sources, assign importance, and upsert every verified row into `references/KPI_derived_reference.json` with `upsert_derived_kpis()`. The identity key is `COMPANY|TICKER|SECTOR|metric`; update an existing metric rather than adding a duplicate. Confirm that at least twelve current-period rows are available. Do not skip this step because a prior ticker lacks a predefined catalogue.
 
 ## Usage
 
