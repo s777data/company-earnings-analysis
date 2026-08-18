@@ -117,9 +117,63 @@ class BusinessKpiTests(unittest.TestCase):
             )
         self.assertEqual(result["rows"], [])
         self.assertEqual(result["selection_status"], "DERIVED_REFERENCE_REQUIRED")
+        self.assertIn("No current-period source-derived KPI rows exist", result["note"])
+
+    def test_build_business_kpis_note_contains_specific_message(self):
+        """Test that the note message is specific and actionable, not generic."""
+        with tempfile.TemporaryDirectory() as directory:
+            result = build_business_kpis(
+                company="Test Corp", ticker="TEST", sector="Technology",
+                filing_url="https://www.sec.gov/filing", release_url=None,
+                fiscal_period="Q2", fiscal_year=2026,
+                reference_path=Path(directory) / "KPI_derived_reference.txt",
+            )
+        # The note should be the specific message about current ticker, not generic catalogue message
+        self.assertIn("current-period source-derived KPI rows exist for this ticker", result["note"])
+        self.assertNotIn("business KPI catalogue was available", result["note"])
 
 
-class ExtractionTests(unittest.TestCase):
+class DashboardRenderTests(unittest.TestCase):
+    """Tests for dashboard data structure and rendering."""
+
+    def test_business_kpis_object_format_in_dashboard_data(self):
+        """Test that business_kpis is an object with rows, selection_status, and note."""
+        from create_interactive_dashboard import build_dashboard_data
+        
+        sample = sample_data()
+        sample["business_kpis"] = {
+            "rows": [],
+            "selection_status": "DERIVED_REFERENCE_REQUIRED",
+            "note": "No current-period source-derived KPI rows exist for this ticker."
+        }
+        
+        dashboard = build_dashboard_data(sample)
+        kpis = dashboard["sections"]["business_kpis"]
+        
+        # Should be an object, not an array
+        self.assertIsInstance(kpis, dict)
+        self.assertIn("rows", kpis)
+        self.assertIn("selection_status", kpis)
+        self.assertIn("note", kpis)
+        self.assertEqual(kpis["selection_status"], "DERIVED_REFERENCE_REQUIRED")
+        self.assertEqual(kpis["note"], "No current-period source-derived KPI rows exist for this ticker.")
+
+    def test_business_kpis_empty_rows_shows_correct_note(self):
+        """Test that empty KPI rows use the specific note from analysis data."""
+        from create_interactive_dashboard import build_dashboard_data
+        
+        sample = sample_data()
+        sample["business_kpis"] = {
+            "rows": [],
+            "selection_status": "DERIVED_REFERENCE_REQUIRED",
+            "note": "No current-period source-derived KPI rows exist for this ticker."
+        }
+        
+        dashboard = build_dashboard_data(sample)
+        kpis = dashboard["sections"]["business_kpis"]
+        
+        self.assertEqual(kpis["rows"], [])
+        self.assertEqual(kpis["note"], "No current-period source-derived KPI rows exist for this ticker.")
     def test_xbrl_current_prior_and_dimension_filter(self):
         result = parse_xbrl_financials(XBRL, "2026-06-30")
         self.assertEqual(result["fiscal_period"], "Q2")
@@ -735,7 +789,7 @@ class InteractiveDashboardTests(unittest.TestCase):
                 ir_url="https://ir.example.com/q2-2026",
                 fiscal_period="Q2", fiscal_year=2026, reference_path=path,
             )
-        cards = build_dashboard_data(data)["sections"]["business_kpis"]
+        cards = build_dashboard_data(data)["sections"]["business_kpis"]["rows"]
         self.assertEqual(len(cards), 12)
         required = {"name", "latest_value", "latest_period", "prior_value", "prior_period",
                     "analyst_view", "source", "importance", "status", "source_note"}

@@ -310,9 +310,13 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
         },
         "sections": {
             "income_statement": [_metric(row) for row in income_highlights],
-            "business_kpis": [
-                _business_kpi(row) for row in data.get("business_kpis", {}).get("rows", [])
-            ][:12],
+            "business_kpis": {
+                "rows": [
+                    _business_kpi(row) for row in data.get("business_kpis", {}).get("rows", [])
+                ][:12],
+                "selection_status": data.get("business_kpis", {}).get("selection_status", "DERIVED_REFERENCE_REQUIRED"),
+                "note": data.get("business_kpis", {}).get("note", "No applicable source-backed business KPI catalogue was available."),
+            },
             "key_ratios": [_metric(row) for row in _key_ratio_rows(data, financial_by_key)],
             "valuation": [_metric(row, valuation.get("quote_source", "Verified market data")) for row in _valuation_rows(valuation_rows)],
             "valuation_regime": valuation.get("regime_label", "Valuation"),

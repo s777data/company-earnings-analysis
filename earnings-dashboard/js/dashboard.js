@@ -165,10 +165,13 @@
 
   function renderKpis(metrics) {
     const container = $("kpi-cards");
-    const items = (metrics || []).slice(0, 16);
+    // Handle both old format (array) and new format (object with rows, selection_status, note)
+    const isNewFormat = metrics && typeof metrics === "object" && !Array.isArray(metrics);
+    const items = isNewFormat ? ((metrics.rows || []).slice(0, 16)) : ((metrics || []).slice(0, 16));
+    const note = isNewFormat ? (metrics.note || "No applicable source-backed business KPI catalogue was available.") : "No applicable source-backed business KPI catalogue was available.";
     container.classList.remove("kpi-grid--single", "kpi-grid--double");
     if (items.length === 0) {
-      container.replaceChildren(emptyState("No applicable source-backed business KPI catalogue was available."));
+      container.replaceChildren(emptyState(note));
       return;
     }
 
