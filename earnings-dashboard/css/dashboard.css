@@ -309,8 +309,8 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.kpi-latest strong { font-size: calc(var(--kpi-scale) * 10.089); letter-spacing: -.045em; }
-.kpi-prior strong { font-size: calc(var(--kpi-scale) * 6.838); }
+.kpi-latest strong { font-size: calc(var(--kpi-scale) * 13.620); letter-spacing: -.045em; }
+.kpi-prior strong { font-size: calc(var(--kpi-scale) * 9.231); }
 .kpi-latest strong.kpi-value--long,
 .kpi-prior strong.kpi-value--long {
   align-self: center;
@@ -328,7 +328,7 @@ h2 {
 .kpi-latest small, .kpi-prior small {
   flex: none;
   color: inherit;
-  font-size: calc(var(--kpi-scale) * 3.139);
+  font-size: calc(var(--kpi-scale) * 5.493);
 }
 .kpi-divider {
   align-self: center;
@@ -344,7 +344,7 @@ h2 {
   border-radius: calc(var(--kpi-scale) * 2.966);
   background: #f2f5f7;
   color: #32475c;
-  font-size: calc(var(--kpi-scale) * 3.363);
+  font-size: calc(var(--kpi-scale) * 5.045);
   line-height: 1.08;
   white-space: normal;
   word-wrap: break-word;
@@ -353,7 +353,7 @@ h2 {
 .kpi-view strong {
   display: block;
   color: #15263a;
-  font-size: calc(var(--kpi-scale) * 3.475);
+  font-size: calc(var(--kpi-scale) * 5.213);
 }
 
 .metric-card--ratio {
