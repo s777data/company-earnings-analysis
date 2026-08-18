@@ -179,7 +179,12 @@
       const row = document.createElement("div");
       row.className = "kpi-row";
       row.style.setProperty("--kpi-columns", String(rowItems.length));
-      row.replaceChildren(...rowItems.map(kpiCard));
+      row.replaceChildren(...rowItems.map((metric) => {
+        const shell = document.createElement("div");
+        shell.className = "kpi-card-shell";
+        shell.append(kpiCard(metric));
+        return shell;
+      }));
       return row;
     }));
   }
