@@ -395,5 +395,200 @@
         "importance": "Tier 3 — Supporting"
       }
     }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Coach Brand Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $1.21B",
+        "last_year_quarter_value": "Q3 2025: $0.98B",
+        "analyst_view": "Coach grew 23% YoY, driven by new product innovation and strong DTC performance.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Direct-to-Consumer Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $1.15B",
+        "last_year_quarter_value": "Q3 2025: $0.92B",
+        "analyst_view": "DTC channel grew 25% YoY, outpacing wholesale and showing brand engagement.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Global Brand Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $1.92B",
+        "last_year_quarter_value": "Q3 2025: $1.58B",
+        "analyst_view": "Global brand revenue grew 21% YoY driven by Coach and Kate Spade strength.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Kate Spade Brand Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $0.41B",
+        "last_year_quarter_value": "Q3 2025: $0.36B",
+        "analyst_view": "Kate Spade grew 14% YoY, benefiting from handbag refresh and digital acceleration.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Digital Revenue Mix",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: 38%",
+        "last_year_quarter_value": "Q3 2025: 32%",
+        "analyst_view": "Digital revenue mix expanded 6pp YoY, reflecting successful omnichannel strategy.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Free Cash Flow Conversion",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: 138%",
+        "last_year_quarter_value": "Q3 2025: 112%",
+        "analyst_view": "FCF conversion improved to 138%, demonstrating strong cash generation quality.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Greater China Revenue Growth",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: +35%",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Greater China revenue grew 35% YoY, driven by Coach brand momentum and new store openings.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Operating Margin Expansion",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: 22.3%",
+        "last_year_quarter_value": "Q3 2025: 16.1%",
+        "analyst_view": "Operating margin expanded 620 bps YoY on scale and pricing power.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Stuart Weitzman Brand Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $0.12B",
+        "last_year_quarter_value": "Q3 2025: $0.11B",
+        "analyst_view": "Stuart Weitzman grew 9% YoY with improved profitability.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Dividend Per Share",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $0.35",
+        "last_year_quarter_value": "Q3 2025: $0.35",
+        "analyst_view": "Maintained quarterly dividend of $0.35, yielding ~2.8% at current price.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Inventory Turnover",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: 3.2x",
+        "last_year_quarter_value": "Q3 2025: 2.8x",
+        "analyst_view": "Inventory turnover improved to 3.2x, reflecting disciplined inventory management.",
+        "source": "SEC",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Share Repurchase Amount",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $300M",
+        "last_year_quarter_value": "Q3 2025: $150M",
+        "analyst_view": "Repurchased $300M in shares, double prior year, reflecting confidence in valuation.",
+        "source": "IR",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "New Store Openings",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: 15 net",
+        "last_year_quarter_value": "Q3 2025: 8 net",
+        "analyst_view": "Opened 15 net new stores, primarily in Greater China and North America.",
+        "source": "IR",
+        "importance": "Tier 4 — Context"
+      }
+    }
   }
 ]

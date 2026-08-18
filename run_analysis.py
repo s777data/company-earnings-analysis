@@ -449,7 +449,20 @@ class EarningsAnalyzer:
                           "_release_text": release_text if release_doc else ""})
 
     def business_kpis(self):
-        """Build source-backed, company-specific operating KPIs."""
+        """Build source-backed, company-specific operating KPIs.
+        
+        MANDATORY: KPI_derived_reference.json must have current-period rows for this ticker.
+        Derivation per references/BUSINESS_KPI_METRICS_REFERENCE.md must be completed first.
+        """
+        reference_path = Path(__file__).resolve().parent / "references" / "KPI_derived_reference.json"
+        if not reference_path.exists():
+            raise RuntimeError(
+                "KPI_DERIVATION_REQUIRED: references/KPI_derived_reference.json does not exist. "
+                "Complete KPI derivation per references/BUSINESS_KPI_METRICS_REFERENCE.md for "
+                f"{self.ticker} {self.data.get('fiscal_period', 'Q?')} FY{self.data.get('fiscal_year', '????')} "
+                "and populate the reference using upsert_derived_kpis()."
+            )
+        
         self.data["business_kpis"] = build_business_kpis(
             company=self.filing.get("company_name") or self.ticker,
             ticker=self.ticker,
@@ -462,9 +475,21 @@ class EarningsAnalyzer:
             fiscal_period=self.data["fiscal_period"],
             fiscal_year=self.data["fiscal_year"],
         )
-        if self.data["business_kpis"]["selection_status"] != "COMPLETE":
+        
+        if self.data["business_kpis"]["selection_status"] == "DERIVED_REFERENCE_REQUIRED":
+            raise RuntimeError(
+                f"KPI_DERIVATION_REQUIRED: No current-period source-derived KPI rows exist for "
+                f"{self.ticker} {self.data['fiscal_period']} FY{self.data['fiscal_year']}. "
+                "Complete KPI derivation per references/BUSINESS_KPI_METRICS_REFERENCE.md using "
+                "official IR materials and SEC 10-Q/8-K earnings evidence. Then populate "
+                "KPI_derived_reference.json using upsert_derived_kpis()."
+            )
+        
+        if self.data["business_kpis"]["selection_status"] == "INCOMPLETE":
             self.data["warnings"].append(
-                "Source-derived KPI reference is missing or incomplete for the current ticker and fiscal period"
+                f"Source-derived KPI reference has only {self.data['business_kpis']['available_reference_rows']} "
+                f"current-period rows for {self.ticker} (need 12 for COMPLETE). "
+                "Add more Tier 1–4 metrics per BUSINESS_KPI_METRICS_REFERENCE.md."
             )
 
     def financials(self):
