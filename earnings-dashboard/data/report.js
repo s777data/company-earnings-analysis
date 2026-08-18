@@ -1,18 +1,18 @@
 window.EARNINGS_REPORT = {
   "schema_version": 2,
   "company": {
-    "ticker": "FIGR",
-    "period": "Q2 FY2026",
-    "report_date": "2026-06-30",
-    "call_date": "2026-08-13",
-    "grade": "A-",
+    "ticker": "TPR",
+    "period": "Q3 FY2026",
+    "report_date": "2026-03-28",
+    "call_date": "2026-05-07",
+    "grade": "A",
     "confidence": 0.9500000000000001,
     "recommendation": "BUY",
-    "price": 35.76,
-    "market_cap": 7885645226.451152,
-    "pe_ttm": 36.051847,
-    "high_52": 78.0,
-    "low_52": 24.11,
+    "price": 129.03,
+    "market_cap": 26069866350.0,
+    "pe_ttm": 17.746773,
+    "high_52": 164.8,
+    "low_52": 93.0,
     "test_run": true
   },
   "sections": {
@@ -20,12 +20,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "revenue",
         "name": "Revenue",
-        "raw_value": 225588000.0,
-        "display_value": "$225.6M",
-        "comparison": "+112.7% YoY, +35.1% QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+112.7% YoY, +35.1% QoQ",
+        "raw_value": 1920600000.0,
+        "display_value": "$1.92B",
+        "comparison": "+21.2% YoY, -54.3% QoQ",
+        "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+21.2% YoY, -54.3% QoQ",
         "description": "Revenue recognized during the reported period.",
         "why_it_matters": "Shows the scale and growth of the core business.",
         "directionality": "Higher is generally better when growth is profitable.",
@@ -53,29 +53,29 @@ window.EARNINGS_REPORT = {
       {
         "key": "gross_profit",
         "name": "Gross Profit",
-        "raw_value": null,
-        "display_value": "N/A",
-        "comparison": "YoY unavailable, QoQ unavailable",
-        "status": "neutral",
-        "tier": 1,
-        "assessment": "YoY unavailable, QoQ unavailable",
+        "raw_value": 1476500000.0,
+        "display_value": "$1.48B",
+        "comparison": "+22.4% YoY, -53.7% QoQ",
+        "status": "positive",
+        "tier": "positive",
+        "assessment": "+22.4% YoY, -53.7% QoQ",
         "description": "Revenue remaining after direct costs.",
         "why_it_matters": "Funds operating expenses, investment, and profit.",
         "directionality": "Higher and expanding is generally better.",
         "formula": "Revenue − cost of revenue",
         "scale": [],
-        "source_note": "Verified report data",
+        "source_note": "SEC XBRL",
         "source_date": null
       },
       {
         "key": "operating_income",
         "name": "Operating Income",
-        "raw_value": 77737000.0,
-        "display_value": "$77.7M",
-        "comparison": "+180.4% YoY, +85.3% QoQ",
+        "raw_value": 427500000.0,
+        "display_value": "$427.5M",
+        "comparison": "+68.5% YoY, -59.1% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+180.4% YoY, +85.3% QoQ",
+        "assessment": "+68.5% YoY, -59.1% QoQ",
         "description": "Profit from core operations before interest and taxes.",
         "why_it_matters": "Measures operating execution and cost discipline.",
         "directionality": "Higher is generally better.",
@@ -87,12 +87,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_income",
         "name": "Net Income",
-        "raw_value": 87446000.0,
-        "display_value": "$87.4M",
-        "comparison": "+191.5% YoY, +94.2% QoQ",
+        "raw_value": 343800000.0,
+        "display_value": "$343.8M",
+        "comparison": "+69.1% YoY, -38.7% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+191.5% YoY, +94.2% QoQ",
+        "assessment": "+69.1% YoY, -38.7% QoQ",
         "description": "Profit attributable after all recognized expenses.",
         "why_it_matters": "Captures the period's bottom-line result.",
         "directionality": "Higher and durable is generally better.",
@@ -104,29 +104,29 @@ window.EARNINGS_REPORT = {
       {
         "key": "free_cash_flow",
         "name": "Free Cash Flow",
-        "raw_value": null,
-        "display_value": "N/A",
-        "comparison": "YoY unavailable, QoQ unavailable",
-        "status": "neutral",
-        "tier": 1,
-        "assessment": "YoY unavailable, QoQ unavailable",
+        "raw_value": 1424800000.0,
+        "display_value": "$1.42B",
+        "comparison": "+108.8% YoY, QoQ unavailable",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+108.8% YoY, QoQ unavailable",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
         "formula": "See the cited source and calculation context.",
         "scale": [],
-        "source_note": "Verified report data",
+        "source_note": "SEC XBRL (derived)",
         "source_date": null
       },
       {
         "key": "operating_cash_flow",
         "name": "Operating Cash Flow",
-        "raw_value": -72969000.0,
-        "display_value": "-$73.0M",
-        "comparison": "-195.9% YoY, QoQ unavailable",
-        "status": "worst",
-        "tier": "worst",
-        "assessment": "-195.9% YoY, QoQ unavailable",
+        "raw_value": 1456300000.0,
+        "display_value": "$1.46B",
+        "comparison": "+89.2% YoY, QoQ unavailable",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+89.2% YoY, QoQ unavailable",
         "description": "Cash generated by operating activities.",
         "why_it_matters": "Tests whether accounting earnings convert into cash.",
         "directionality": "Higher and consistent is generally better.",
@@ -138,29 +138,29 @@ window.EARNINGS_REPORT = {
       {
         "key": "capex",
         "name": "Capital Expenditures",
-        "raw_value": null,
-        "display_value": "N/A",
-        "comparison": "YoY unavailable, QoQ unavailable",
-        "status": "neutral",
-        "tier": 1,
-        "assessment": "YoY unavailable, QoQ unavailable",
+        "raw_value": 31500000.0,
+        "display_value": "$31.5M",
+        "comparison": "-64.0% YoY, QoQ unavailable",
+        "status": "positive",
+        "tier": "positive",
+        "assessment": "-64.0% YoY, QoQ unavailable",
         "description": "Cash or obligations used for long-lived productive assets.",
         "why_it_matters": "Indicates reinvestment needs and pressure on free cash flow.",
         "directionality": "Context dependent; efficiency matters more than simply lower or higher.",
         "formula": "Purchases/investment in property and equipment",
         "scale": [],
-        "source_note": "Verified report data",
+        "source_note": "SEC XBRL",
         "source_date": null
       },
       {
         "key": "eps_diluted",
         "name": "Diluted EPS",
-        "raw_value": 0.35,
-        "display_value": "$0.35",
-        "comparison": "+337.5% YoY, +94.4% QoQ",
+        "raw_value": 1.65,
+        "display_value": "$1.65",
+        "comparison": "+73.7% YoY, -58.0% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+337.5% YoY, +94.4% QoQ",
+        "assessment": "+73.7% YoY, -58.0% QoQ",
         "description": "Earnings allocated to each diluted weighted-average share.",
         "why_it_matters": "Connects company profit to shareholder economics.",
         "directionality": "Higher sustainable EPS is generally better.",
@@ -170,182 +170,34 @@ window.EARNINGS_REPORT = {
         "source_date": null
       }
     ],
-    "business_kpis": [
-      {
-        "key": "figure_connect_volume_share",
-        "name": "Figure Connect Volume Share",
-        "latest_value": "40% from repeat customers",
-        "latest_period": "Q2 2026",
-        "prior_value": "N/A",
-        "prior_period": "Q2 2025",
-        "display_value": "40% from repeat customers",
-        "comparison": "Q2 2025: N/A",
-        "analyst_view": "40% of Figure Connect volume growth attributed to customers with >1 year tenure, indicating strong retention and network effects.",
-        "source": "IR",
-        "importance": "Tier 1 — Core",
-        "tier": 1,
-        "status": "positive",
-        "description": "Company-specific operating performance measure.",
-        "why_it_matters": "Provides company-specific operating context.",
-        "directionality": "context",
-        "formula": "Company-reported operating KPI; see cited source.",
-        "source_note": "IR — https://investors.figure.com/",
-        "scale": []
-      },
-      {
-        "key": "marketplace_volume",
-        "name": "Marketplace Volume",
-        "latest_value": "$4.3B",
-        "latest_period": "Q2 2026",
-        "prior_value": "$1.85B",
-        "prior_period": "Q2 2025",
-        "display_value": "$4.3B",
-        "comparison": "Q2 2025: $1.85B",
-        "analyst_view": "Consumer loan marketplace volume grew 132% YoY, beating guidance by 4%, driven by Figure Connect expansion and partner network growth.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core",
-        "tier": 1,
-        "status": "positive",
-        "description": "Company-specific operating performance measure.",
-        "why_it_matters": "Provides company-specific operating context.",
-        "directionality": "context",
-        "formula": "Company-reported operating KPI; see cited source.",
-        "source_note": "IR/SEC — https://investors.figure.com/",
-        "scale": []
-      },
-      {
-        "key": "operating_margin_target",
-        "name": "Operating Margin Target",
-        "latest_value": "Progressing to 60%",
-        "latest_period": "Q2 2026",
-        "prior_value": "N/A",
-        "prior_period": "Q2 2025",
-        "display_value": "Progressing to 60%",
-        "comparison": "Q2 2025: N/A",
-        "analyst_view": "Management reaffirmed medium-term goal of 60% operating margins through Connect growth and operating leverage.",
-        "source": "IR",
-        "importance": "Tier 1 — Core",
-        "tier": 1,
-        "status": "positive",
-        "description": "Company-specific operating performance measure.",
-        "why_it_matters": "Provides company-specific operating context.",
-        "directionality": "context",
-        "formula": "Company-reported operating KPI; see cited source.",
-        "source_note": "IR — https://investors.figure.com/",
-        "scale": []
-      },
-      {
-        "key": "ai_enabled_onboarding_adoption",
-        "name": "AI-Enabled Onboarding Adoption",
-        "latest_value": "Scaling",
-        "latest_period": "Q2 2026",
-        "prior_value": "N/A",
-        "prior_period": "Q2 2025",
-        "display_value": "Scaling",
-        "comparison": "Q2 2025: N/A",
-        "analyst_view": "Investments in AI-enabled onboarding processes proving scalability of model and value for partners.",
-        "source": "IR",
-        "importance": "Tier 2 — High",
-        "tier": 2,
-        "status": "neutral",
-        "description": "Company-specific operating performance measure.",
-        "why_it_matters": "Provides company-specific operating context.",
-        "directionality": "context",
-        "formula": "Company-reported operating KPI; see cited source.",
-        "source_note": "IR — https://investors.figure.com/",
-        "scale": []
-      },
-      {
-        "key": "loan_book_quality",
-        "name": "Loan Book Quality",
-        "latest_value": "Strong post-delinquency recovery",
-        "latest_period": "Q2 2026",
-        "prior_value": "N/A",
-        "prior_period": "Q2 2025",
-        "display_value": "Strong post-delinquency recovery",
-        "comparison": "Q2 2025: N/A",
-        "analyst_view": "Disciplined underwriting combined with strong post-delinquency recovery gives management confidence in book as it scales.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High",
-        "tier": 2,
-        "status": "neutral",
-        "description": "Company-specific operating performance measure.",
-        "why_it_matters": "Provides company-specific operating context.",
-        "directionality": "context",
-        "formula": "Company-reported operating KPI; see cited source.",
-        "source_note": "IR/SEC — https://investors.figure.com/",
-        "scale": []
-      },
-      {
-        "key": "partner_network_expansion",
-        "name": "Partner Network Expansion",
-        "latest_value": "Rapid expansion",
-        "latest_period": "Q2 2026",
-        "prior_value": "N/A",
-        "prior_period": "Q2 2025",
-        "display_value": "Rapid expansion",
-        "comparison": "Q2 2025: N/A",
-        "analyst_view": "Rapid expansion of Figure Connect and partner network driving record marketplace volume and revenue growth.",
-        "source": "IR",
-        "importance": "Tier 2 — High",
-        "tier": 2,
-        "status": "positive",
-        "description": "Company-specific operating performance measure.",
-        "why_it_matters": "Provides company-specific operating context.",
-        "directionality": "context",
-        "formula": "Company-reported operating KPI; see cited source.",
-        "source_note": "IR — https://investors.figure.com/",
-        "scale": []
-      },
-      {
-        "key": "capital_marketplace_pricing_advantage",
-        "name": "Capital Marketplace Pricing Advantage",
-        "latest_value": "Competitive",
-        "latest_period": "Q2 2026",
-        "prior_value": "N/A",
-        "prior_period": "Q2 2025",
-        "display_value": "Competitive",
-        "comparison": "Q2 2025: N/A",
-        "analyst_view": "Capital availability and pricing advantage spreading across existing partner base, expected to drive continued volume growth.",
-        "source": "IR",
-        "importance": "Tier 3 — Supporting",
-        "tier": 3,
-        "status": "positive",
-        "description": "Company-specific operating performance measure.",
-        "why_it_matters": "Provides company-specific operating context.",
-        "directionality": "context",
-        "formula": "Company-reported operating KPI; see cited source.",
-        "source_note": "IR — https://investors.figure.com/",
-        "scale": []
-      }
-    ],
+    "business_kpis": [],
     "key_ratios": [
       {
         "key": "gross_margin",
         "name": "Gross Margin",
-        "raw_value": null,
-        "display_value": "N/A",
-        "comparison": "YoY unavailable, QoQ unavailable",
-        "status": "neutral",
-        "tier": 1,
-        "assessment": "YoY unavailable, QoQ unavailable",
+        "raw_value": 0.7687701759866709,
+        "display_value": "76.9%",
+        "comparison": "+0.8 pp YoY, +1.1 pp QoQ",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+0.8 pp YoY, +1.1 pp QoQ",
         "description": "Share of revenue remaining after direct costs.",
         "why_it_matters": "Shows product economics and pricing/cost performance.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Gross profit ÷ revenue",
         "scale": [],
-        "source_note": "Verified report data",
+        "source_note": "SEC XBRL",
         "source_date": null
       },
       {
         "key": "operating_margin",
         "name": "Operating Margin",
-        "raw_value": 0.34459723034913203,
-        "display_value": "34.5%",
-        "comparison": "+8.3 pp YoY, +9.3 pp QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+8.3 pp YoY, +9.3 pp QoQ",
+        "raw_value": 0.2225866916588566,
+        "display_value": "22.3%",
+        "comparison": "+6.2 pp YoY, -2.6 pp QoQ",
+        "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+6.2 pp YoY, -2.6 pp QoQ",
         "description": "Share of revenue retained as operating profit.",
         "why_it_matters": "Measures operating efficiency and pricing power.",
         "directionality": "Higher and durable is generally better.",
@@ -357,12 +209,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_margin",
         "name": "Net Margin",
-        "raw_value": 0.3876358671560544,
-        "display_value": "38.8%",
-        "comparison": "+10.5 pp YoY, +11.8 pp QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+10.5 pp YoY, +11.8 pp QoQ",
+        "raw_value": 0.1790065604498594,
+        "display_value": "17.9%",
+        "comparison": "+5.1 pp YoY, +4.6 pp QoQ",
+        "status": "positive",
+        "tier": "positive",
+        "assessment": "+5.1 pp YoY, +4.6 pp QoQ",
         "description": "Share of revenue retained as net income.",
         "why_it_matters": "Summarizes bottom-line profitability.",
         "directionality": "Higher and durable is generally better.",
@@ -374,12 +226,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "sbc_revenue",
         "name": "SBC / Revenue",
-        "raw_value": 0.1156887777718673,
-        "display_value": "11.6%",
-        "comparison": "+6.5 pp YoY, -3.9 pp QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+6.5 pp YoY, -3.9 pp QoQ",
+        "raw_value": 0.014526710402999063,
+        "display_value": "1.5%",
+        "comparison": "-0.1 pp YoY, +0.2 pp QoQ",
+        "status": "negative",
+        "tier": "negative",
+        "assessment": "-0.1 pp YoY, +0.2 pp QoQ",
         "description": "Stock-based compensation expense relative to revenue.",
         "why_it_matters": "Highlights equity-compensation intensity and potential dilution pressure.",
         "directionality": "Lower is generally better.",
@@ -393,12 +245,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "ps_annualized",
         "name": "P/S (Annualized)",
-        "raw_value": 8.715047696443763,
-        "display_value": "8.7x",
-        "comparison": "Expensive",
-        "status": "caution",
+        "raw_value": 3.384156260885939,
+        "display_value": "3.4x",
+        "comparison": "Moderate",
+        "status": "neutral",
         "tier": 1,
-        "assessment": "Expensive",
+        "assessment": "Moderate",
         "description": "Market capitalization / annualized revenue.",
         "why_it_matters": "Shows how much equity investors are paying for each dollar of annualized sales. Useful when earnings are negative or too small for P/E to be meaningful.",
         "directionality": "Lower is better",
@@ -431,12 +283,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "ev_revenue",
         "name": "EV / Revenue",
-        "raw_value": 7.475411771478357,
-        "display_value": "7.5x",
-        "comparison": "Expensive",
-        "status": "negative",
+        "raw_value": 3.248309015661487,
+        "display_value": "3.2x",
+        "comparison": "Typical",
+        "status": "neutral",
         "tier": 1,
-        "assessment": "Expensive",
+        "assessment": "Typical",
         "description": "Enterprise value / total annualized revenue.",
         "why_it_matters": "Tells you how much you are paying for one dollar of total sales, adjusting for debt and cash.",
         "directionality": "Lower is better",
@@ -462,10 +314,27 @@ window.EARNINGS_REPORT = {
         "source_date": null
       },
       {
+        "key": "ev_gross_profit",
+        "name": "EV / Gross Profit",
+        "raw_value": 4.225331727381952,
+        "display_value": "4.2x",
+        "comparison": "Context Only",
+        "status": "neutral",
+        "tier": 2,
+        "assessment": "Context Only",
+        "description": "Enterprise value / annualized gross profit.",
+        "why_it_matters": "Shows whether the core product is profitable to make before corporate overhead and management costs.",
+        "directionality": "Lower is better",
+        "formula": "Enterprise value ÷ annualized gross profit",
+        "scale": [],
+        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
         "key": "ev_revenue_growth",
         "name": "EV / Revenue / Growth",
-        "raw_value": 0.06635115215194498,
-        "display_value": "0.1x",
+        "raw_value": 0.15319257339932119,
+        "display_value": "0.2x",
         "comparison": "Context Only",
         "status": "neutral",
         "tier": 2,
@@ -479,26 +348,26 @@ window.EARNINGS_REPORT = {
         "source_date": null
       },
       {
-        "key": "price_to_book",
-        "name": "Price to Book (P/B)",
-        "raw_value": 5.5802411418363205,
-        "display_value": "5.6x",
-        "comparison": "Expensive",
-        "status": "negative",
-        "tier": 2,
-        "assessment": "Expensive",
-        "description": "Market cap / total equity (or tangible book value).",
-        "why_it_matters": "Shows the price paid relative to the accounting value of assets after liabilities.",
+        "key": "forward_pe",
+        "name": "Forward P/E (NTM)",
+        "raw_value": 16.32,
+        "display_value": "16.3x",
+        "comparison": "Typical",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Typical",
+        "description": "Current share price / consensus next-twelve-month diluted EPS.",
+        "why_it_matters": "Shows the price paid today for expected next-twelve-month earnings.",
         "directionality": "Lower is better",
-        "formula": "Market cap ÷ total equity",
+        "formula": "Share price ÷ consensus NTM diluted EPS",
         "scale": [
           {
-            "max": 1,
-            "label": "Below Book",
+            "max": 15,
+            "label": "Attractive",
             "signal": "positive"
           },
           {
-            "max": 3,
+            "max": 25,
             "label": "Typical",
             "signal": "neutral"
           },
@@ -510,188 +379,312 @@ window.EARNINGS_REPORT = {
         ],
         "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
         "source_date": null
+      },
+      {
+        "key": "trailing_pe",
+        "name": "Trailing P/E",
+        "raw_value": 17.746773,
+        "display_value": "17.7x",
+        "comparison": "Typical",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Typical",
+        "description": "Market cap / trailing net income, or share price / trailing diluted EPS.",
+        "why_it_matters": "Shows the price paid for profits generated over the trailing twelve months.",
+        "directionality": "Lower is better",
+        "formula": "Market cap ÷ trailing net income",
+        "scale": [
+          {
+            "max": 15,
+            "label": "Attractive",
+            "signal": "positive"
+          },
+          {
+            "max": 25,
+            "label": "Typical",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Expensive",
+            "signal": "negative"
+          }
+        ],
+        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "ev_ebitda",
+        "name": "EV / EBITDA",
+        "raw_value": 13.38681559719502,
+        "display_value": "13.4x",
+        "comparison": "Typical",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Typical",
+        "description": "Enterprise value / EBITDA.",
+        "why_it_matters": "Compares the total business value with operating earning power before interest, taxes, depreciation, and amortization.",
+        "directionality": "Lower is better",
+        "formula": "Enterprise value ÷ EBITDA",
+        "scale": [
+          {
+            "max": 8,
+            "label": "Attractive",
+            "signal": "positive"
+          },
+          {
+            "max": 15,
+            "label": "Typical",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Expensive",
+            "signal": "negative"
+          }
+        ],
+        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "levered_fcf_yield",
+        "name": "Levered FCF Yield",
+        "raw_value": 7.307104514375007,
+        "display_value": "7.3%",
+        "comparison": "Typical",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "Typical",
+        "description": "FCF available to common equity / market cap.",
+        "why_it_matters": "Shows the cash return generated for common shareholders relative to the stock's market value.",
+        "directionality": "Higher is better",
+        "formula": "Levered FCF ÷ market cap",
+        "scale": [
+          {
+            "max": 5,
+            "label": "Expensive",
+            "signal": "negative"
+          },
+          {
+            "max": 10,
+            "label": "Typical",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Attractive",
+            "signal": "positive"
+          }
+        ],
+        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_date": null
       }
     ],
-    "valuation_regime": "Negative Earnings / FCF",
+    "valuation_regime": "Positive Earnings / FCF",
     "short_interest_sbc": [
       {
         "name": "Short Interest % of Float",
-        "detail": "10.8% — High",
-        "signal": "caution",
-        "tier": 1
-      },
-      {
-        "name": "Short Ratio / Days to Cover",
-        "detail": "4.7d — Moderate",
-        "signal": "neutral",
-        "tier": 1
-      },
-      {
-        "name": "SBC / Revenue",
-        "detail": "11.6% — High",
-        "signal": "caution",
-        "tier": 1
-      },
-      {
-        "name": "SBC-Adjusted FCF Yield",
         "detail": "N/A — Unavailable",
         "signal": "neutral",
         "tier": 1
       },
       {
+        "name": "Short Ratio / Days to Cover",
+        "detail": "N/A — Unavailable",
+        "signal": "neutral",
+        "tier": 1
+      },
+      {
+        "name": "SBC / Revenue",
+        "detail": "1.5% — Low",
+        "signal": "positive",
+        "tier": 1
+      },
+      {
+        "name": "SBC / Free Cash Flow",
+        "detail": "5.9% — Strong",
+        "signal": "positive",
+        "tier": 2
+      },
+      {
+        "name": "SBC-Adjusted FCF Yield",
+        "detail": "6.9% — Reasonable",
+        "signal": "neutral",
+        "tier": 1
+      },
+      {
         "name": "Net Share Dilution",
-        "detail": "181.4% — Very High",
-        "signal": "worst",
+        "detail": "-2.6% — Shrinking",
+        "signal": "positive",
         "tier": 1
       }
     ],
     "capital_liquidity": [
       {
-        "name": "Total Assets",
-        "value": "$3.02B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Assets",
-          "taxonomy": "http://fasb.org/us-gaap/2026",
-          "context": "c-5",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": null,
-          "period_end": "2026-06-30"
-        }
-      },
-      {
-        "name": "Total Liabilities",
-        "value": "$1.60B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Liabilities",
-          "taxonomy": "http://fasb.org/us-gaap/2026",
-          "context": "c-5",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": null,
-          "period_end": "2026-06-30"
-        }
-      },
-      {
-        "name": "Operating Cash Flow",
-        "value": "-$73.0M",
+        "name": "Total Equity",
+        "value": "$682.4M",
         "signal": "worst",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
           "start": null,
           "end": null,
-          "concept": "NetCashProvidedByUsedInOperatingActivities",
-          "taxonomy": "http://fasb.org/us-gaap/2026",
-          "context": "c-1",
+          "concept": "StockholdersEquity",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-3",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-3",
-          "period_start": "2026-01-01",
-          "period_end": "2026-06-30"
-        }
-      },
-      {
-        "name": "Cash",
-        "value": "$1.44B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "CashAndCashEquivalentsAtCarryingValue",
-          "taxonomy": "http://fasb.org/us-gaap/2026",
-          "context": "c-5",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
+          "decimals": "-5",
           "period_start": null,
-          "period_end": "2026-06-30"
+          "period_end": "2026-03-28"
         }
       },
       {
         "name": "Long-term Debt",
-        "value": "$315.9M",
+        "value": "$0",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
           "start": null,
           "end": null,
-          "concept": "LongTermDebtNoncurrent",
-          "taxonomy": "http://fasb.org/us-gaap/2026",
-          "context": "c-5",
+          "concept": "LongTermDebtCurrent",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-3",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-3",
+          "decimals": "-5",
           "period_start": null,
-          "period_end": "2026-06-30"
+          "period_end": "2026-03-28"
         }
       },
       {
-        "name": "Total Equity",
-        "value": "$1.41B",
+        "name": "Capital Expenditures",
+        "value": "$31.5M",
+        "signal": "positive",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "CapitalExpendituresIncurredButNotYetPaid",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-1",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-5",
+          "period_start": "2025-06-29",
+          "period_end": "2026-03-28"
+        }
+      },
+      {
+        "name": "Total Assets",
+        "value": "$6.47B",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "Assets",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-3",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-5",
+          "period_start": null,
+          "period_end": "2026-03-28"
+        }
+      },
+      {
+        "name": "Operating Cash Flow",
+        "value": "$1.46B",
         "signal": "best",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
           "start": null,
           "end": null,
-          "concept": "StockholdersEquity",
-          "taxonomy": "http://fasb.org/us-gaap/2026",
-          "context": "c-5",
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-1",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-3",
+          "decimals": "-5",
+          "period_start": "2025-06-29",
+          "period_end": "2026-03-28"
+        }
+      },
+      {
+        "name": "Total Liabilities",
+        "value": "$5.78B",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "Liabilities",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-3",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-5",
           "period_start": null,
-          "period_end": "2026-06-30"
+          "period_end": "2026-03-28"
+        }
+      },
+      {
+        "name": "Cash",
+        "value": "$1.05B",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "CashAndCashEquivalentsAtCarryingValue",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-3",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-5",
+          "period_start": null,
+          "period_end": "2026-03-28"
         }
       },
       {
         "name": "Net cash / (debt)",
-        "value": "$1.12B",
+        "value": "$1.05B",
         "signal": "positive",
         "citation": [
           {
             "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
+            "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
             "start": null,
             "end": null,
             "concept": "CashAndCashEquivalentsAtCarryingValue",
-            "taxonomy": "http://fasb.org/us-gaap/2026",
-            "context": "c-5",
+            "taxonomy": "http://fasb.org/us-gaap/2025",
+            "context": "c-3",
             "dimensions": [],
             "unit": "usd",
-            "decimals": "-3",
+            "decimals": "-5",
             "period_start": null,
-            "period_end": "2026-06-30"
+            "period_end": "2026-03-28"
           },
           {
             "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
+            "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
             "start": null,
             "end": null,
-            "concept": "LongTermDebtNoncurrent",
-            "taxonomy": "http://fasb.org/us-gaap/2026",
-            "context": "c-5",
+            "concept": "LongTermDebtCurrent",
+            "taxonomy": "http://fasb.org/us-gaap/2025",
+            "context": "c-3",
             "dimensions": [],
             "unit": "usd",
-            "decimals": "-3",
+            "decimals": "-5",
             "period_start": null,
-            "period_end": "2026-06-30"
+            "period_end": "2026-03-28"
           }
         ]
       }
@@ -699,46 +692,68 @@ window.EARNINGS_REPORT = {
     "guidance": [
       {
         "name": "Forward outlook",
-        "detail": "As previewed in July, Figure generated $4.3 billion of consumer loan marketplace volume, beating the top end of our guidance by 4%, with 132% year-over-year growth.",
+        "detail": "To this end, we expect marketing as a percentage of sales to now increase around 190 basis points versus last year, an increase of 60 basis points from our prior guidance and now approaching 13% of revenue.",
         "signal": "strong_positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 3491,
-          "end": 3655
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 25973,
+          "end": 26179
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "Consumer loan marketplace volume was $4.3 billion, up 132% year-over-year from $1.8 billion and 4% above the top end of our guidance.",
-        "signal": "neutral",
+        "detail": "Turning to operating margin, we expect expansion of approximately 60 basis points, driven by a gross margin increase in the area of 130 basis points, partially offset by higher SG&A, which reflects strategic investment in brand building with an increase of over 300 basis points in marketing to drive long-term growth.",
+        "signal": "best",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 18648,
-          "end": 18781
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 27942,
+          "end": 28260
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "Looking ahead, we are establishing our Q3 consumer loan marketplace volume guidance in the range of $4.8 billion-$5.2 billion.",
-        "signal": "neutral",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 25235,
-          "end": 25361
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "We now have our largest partners going direct to Figure Connect, which is a favorable dynamic to our business, although at the trade-off of take rate, and was not a dynamic we anticipated to accelerate this quickly when we gave the initial take rate range.",
+        "detail": "Taken together, we now expect EPS to be in the area of $6.95, representing growth over 35% compared to last year and ahead of our prior outlook of $6.40-$6.45.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 8277,
-          "end": 8533
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 26842,
+          "end": 27001
+        }
+      },
+      {
+        "name": "Forward outlook",
+        "detail": "Delivered double-digit revenue, margin, and EPS growth in Q3, driven by strong global demand, especially among Gen Z, and raised full-year guidance.",
+        "signal": "best",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 416,
+          "end": 564
+        }
+      },
+      {
+        "name": "Forward outlook",
+        "detail": "In addition, our outlook now assumes an operating margin of approximately 23%, which is up approximately 300 basis points compared to last year and 120 basis points above our prior outlook.",
+        "signal": "neutral",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 24964,
+          "end": 25153
+        }
+      },
+      {
+        "name": "Forward outlook",
+        "detail": "This includes over $300 million in dividend payments for an annual rate of $1.60 per share, as well as $1.3 billion in share repurchases, which is an increase from our prior outlook of $1.2 billion.",
+        "signal": "positive",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 21500,
+          "end": 21698
         }
       }
     ],
@@ -746,276 +761,297 @@ window.EARNINGS_REPORT = {
       {
         "topic": "Management Tone",
         "category": "outlook",
-        "detail": "Confident → Assured, That combination of disciplined underwriting and strong post-delinquency recovery is what gives us confidence in the book as it scales.",
+        "detail": "Confident → Assured, We see confident or we have confidence in Coach, and that's what gave us the confidence to increase the guide even on what was an exceptional Q3 performance.",
         "signal": "best",
         "tier": "best",
-        "reasoning": "The cited prepared remarks evidence is supportive for management tone.",
-        "section": "Prepared Remarks",
+        "reasoning": "The cited analyst q&a evidence is supportive for management tone.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 24184,
-          "end": 24319
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 51298,
+          "end": 51455
         },
         "confidence_category": "Confident",
         "confidence_subcategory": "Assured",
         "confidence_rank": 4,
-        "confidence_reasoning": "Aggregate management-language scores were Confident 88, Vague 9, and Not Confident 9; the leading assured cues were we expect (3), confident (2), confidence (4)."
+        "confidence_reasoning": "Aggregate management-language scores were Confident 192, Vague 18, and Not Confident 18; the leading assured cues were we expect (7), we anticipate (3), we believe (2)."
       },
       {
         "topic": "Revenue & Demand",
         "category": "revenue",
-        "detail": "Record marketplace volume and revenue growth driven by rapid expansion of Figure Connect and partner network, with strong profitability and margin improvement.",
+        "detail": "Delivered double-digit revenue, margin, and EPS growth in Q3, driven by strong global demand, especially among Gen Z, and raised full-year guidance.",
         "signal": "best",
         "tier": "best",
         "reasoning": "The cited prepared remarks evidence is supportive for revenue & demand.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 442,
-          "end": 601
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 416,
+          "end": 564
         }
       },
       {
         "topic": "Margins & Profitability",
         "category": "margin",
-        "detail": "We are continuing to make progress towards our medium-term goal of 60% margins through the growth of Connect and the operating leverage inherent in our business model.",
-        "signal": "positive",
-        "tier": "positive",
+        "detail": "At the same time, gross margin and profitability exceeded plan, even with continued strategic brand investments to support a return to profitable growth.",
+        "signal": "strong_positive",
+        "tier": "strong_positive",
         "reasoning": "The cited prepared remarks evidence is supportive for margins & profitability.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 5541,
-          "end": 5708
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 12184,
+          "end": 12337
         }
       },
       {
         "topic": "Guidance",
         "category": "guidance",
-        "detail": "As previewed in July, Figure generated $4.3 billion of consumer loan marketplace volume, beating the top end of our guidance by 4%, with 132% year-over-year growth.",
+        "detail": "To this end, we expect marketing as a percentage of sales to now increase around 190 basis points versus last year, an increase of 60 basis points from our prior guidance and now approaching 13% of revenue.",
         "signal": "strong_positive",
         "tier": "strong_positive",
         "reasoning": "The cited prepared remarks evidence is supportive for guidance.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 3491,
-          "end": 3655
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 25973,
+          "end": 26179
         }
       },
       {
         "topic": "Products & Innovation",
         "category": "product",
-        "detail": "We are building the modern capital marketplace, and we continue to use cutting-edge technology to modernize our products.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for products & innovation.",
+        "detail": "Next, we delivered fashion innovation and product excellence led by Coach, where the brand is strong and resonating globally.",
+        "signal": "positive",
+        "tier": "positive",
+        "reasoning": "The cited prepared remarks evidence is supportive for products & innovation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 17906,
-          "end": 18027
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 4756,
+          "end": 4881
         }
       },
       {
         "topic": "Customers & Engagement",
         "category": "customer",
-        "detail": "40% of our Figure Connect volume growth was attributed to customers that have been with us for longer than one year.",
-        "signal": "positive",
-        "tier": "positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for customers & engagement.",
+        "detail": "We enhanced both our in-store and digital experiences, simplifying the customer journey and elevating engagement.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for customers & engagement.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 12990,
-          "end": 13107
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 14794,
+          "end": 14907
         }
       },
       {
         "topic": "Capital Allocation",
         "category": "capital",
-        "detail": "Aided by our investments in AI-enabled onboarding processes, thereby proving the scalability of our model and the value we drive for partners.",
+        "detail": "In fiscal 2026, we now expect to return approximately $1.6 billion or approximately 100% of our expected adjusted free cash flow to shareholders through dividends and share repurchases.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for capital allocation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 4188,
-          "end": 4330
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 21314,
+          "end": 21499
         }
       },
       {
         "topic": "Competition & Market",
         "category": "competition",
-        "detail": "We expect this to keep building as we bring more partners onto the platform and as awareness of the capital availability and pricing advantage spreads across our existing partner base.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for competition & market.",
+        "detail": "We powered global growth through compelling experiences, delivering double-digit gains in North America, Greater China, and Europe, significantly outpacing the industry and growing market share in each of these regions.",
+        "signal": "positive",
+        "tier": "positive",
+        "reasoning": "The cited prepared remarks evidence is supportive for competition & market.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 20581,
-          "end": 20765
-        }
-      },
-      {
-        "topic": "Analyst Q&A",
-        "category": "qa",
-        "detail": "Volume, revenue, and marginânone of it came at the expense of credit discipline.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "This is a substantive management response from the analyst Q&A section.",
-        "section": "Analyst Q&A",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 26338,
-          "end": 26420
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 5227,
+          "end": 5446
         }
       }
     ],
     "channels": [
       {
         "name": "Products & platforms",
-        "desc": "We now have 489 partners on our platform, up 102 from last quarter, with growth across all segments, including independent mortgage banks, servicers, depositories, and fintech SMB.",
+        "desc": "A normal cadence for us is we have a new seasonal product launch, like the pink signature that he referred to earlier, and it launches in Q3, and then it sells through Q3 and Q4.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 3923,
-          "end": 4103
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 50835,
+          "end": 51013
         },
-        "signal": "positive"
+        "signal": "neutral"
       },
       {
         "name": "Customers & engagement",
-        "desc": "40% of our Figure Connect volume growth was attributed to customers that have been with us for longer than one year.",
+        "desc": "We enhanced both our in-store and digital experiences, simplifying the customer journey and elevating engagement.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 12990,
-          "end": 13107
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 14794,
+          "end": 14907
         },
-        "signal": "positive"
+        "signal": "neutral"
       },
       {
         "name": "Markets & distribution",
-        "desc": "As previewed in July, Figure generated $4.3 billion of consumer loan marketplace volume, beating the top end of our guidance by 4%, with 132% year-over-year growth.",
+        "desc": "By region, North American sales rose 20% compared to the prior year, fueled by a 27% increase at Coach, with growth, market share gains and operating margin expansion ahead of plan.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 3491,
-          "end": 3655
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 17144,
+          "end": 17326
         },
         "signal": "positive"
       },
       {
         "name": "Business lines",
-        "desc": "We are continuing to make progress towards our medium-term goal of 60% margins through the growth of Connect and the operating leverage inherent in our business model.",
+        "desc": "The combination of craftsmanship, creativity, and value we offer to consumers at scale continues to be a clear competitive advantage and a structural strength of our business.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 5541,
-          "end": 5708
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 5051,
+          "end": 5226
         },
-        "signal": "positive"
+        "signal": "neutral"
       }
     ],
     "strategic_pillars": [
       {
         "name": "Innovation Roadmap",
-        "detail": "That is why we are so excited about our acquisition because we can use their market-leading technology to develop liquidity and standardization for the space.",
-        "signal": "neutral",
+        "detail": "We are focused on bringing more innovation and distinctiveness to our assortment to drive stronger results at scale as we continue to build for durable growth.",
+        "signal": "best",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 12284,
-          "end": 12442
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 14528,
+          "end": 14687
         }
       },
       {
         "name": "Growth Expansion",
-        "detail": "By putting the marketplace first, we expand access to the advantage that made Kiavi the market leader, which is their post-renovation home loan valuation technology.",
+        "detail": "Now, turning to the strategic actions from the quarter, which are driving our results today and continuing to expand our competitive advantages into the future.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 12443,
-          "end": 12608
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 3849,
+          "end": 4009
+        }
+      },
+      {
+        "name": "Customer Value",
+        "detail": "Importantly, our Gen Z consumers have higher retention rates than the balance of cohorts, highlighting the opportunity to build lasting relationships and meaningful value creation into the future.",
+        "signal": "neutral",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 4295,
+          "end": 4491
         }
       },
       {
         "name": "Operational Excellence",
-        "detail": "As continued proof of operating leverage, operations and processing costs were at approximately 67 basis points of volume, down from roughly 79 basis points a year ago, even as we processed more than double the volume.",
+        "detail": "Again, early days, we always see more productivity when we redo the stores.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 22096,
-          "end": 22314
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 55346,
+          "end": 55421
+        }
+      },
+      {
+        "name": "Capital Discipline",
+        "detail": "The tax rate is expected to be approximately 17.5%, and our weighted average diluted share count for the year is forecasted to be approximately 210 million shares, which includes the expectation for $1.3 billion in share repurchases.",
+        "signal": "neutral",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 26608,
+          "end": 26841
         }
       },
       {
         "name": "Long-Term Strategy",
-        "detail": "We want to preserve balance sheet flexibility, avoid unnecessary equity dilution, and fund strategic opportunities in a way that supports long-term growth.",
+        "detail": "Touching on marketing, our strategic investments continued to generate compounding benefits this quarter, reflecting a disciplined long-term approach to brand building at scale.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
-          "start": 24912,
-          "end": 25067
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 8988,
+          "end": 9165
         }
       }
     ],
     "risks": [
       {
         "risk": "Regulatory / legal exposure",
-        "evidence": "The Company was in compliance with all of its debt covenants at June 30, 2026.",
+        "evidence": "As of March 28, 2026, we were in compliance with these restrictions and covenants, have met such financial ratios and have met all debt payment obligations.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630.htm",
-          "start": 146565,
-          "end": 146644
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
+          "start": 108971,
+          "end": 109128
         }
       },
       {
         "risk": "Demand / macro exposure",
-        "evidence": "While the Company’s obligation to fund reserve amounts is not limited, and the Company cannot reliably estimate the long-term macroeconomic environment that may impact its maximum exposure for such obligations over the contractual life of the securitization, the Company does not expect to fund material amounts to its securitizations in excess of current balances of the reserve accounts at June 30, 2026.",
+        "evidence": "Consumer preferences, macroeconomic conditions, foreign currency fluctuations and geopolitical events continue to impact overall levels of consumer travel and spending on discretionary items, with inconsistent patterns across business channels and geographies.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630.htm",
-          "start": 186193,
-          "end": 186600
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
+          "start": 131323,
+          "end": 131584
         }
       },
       {
         "risk": "Capital intensity / cash-flow pressure",
-        "evidence": "The CODM does not review assets, liabilities, or capital expenditures at a more granular level; accordingly, no such disclosures are presented.",
+        "evidence": "They include, without limitation, statements regarding future anticipated capital expenditures.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630.htm",
-          "start": 105699,
-          "end": 105843
+          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
+          "start": 35768,
+          "end": 35864
+        }
+      },
+      {
+        "risk": "Supply / execution exposure",
+        "evidence": "Before moving on, I wanna touch on the disruption in the Middle East.",
+        "probability": null,
+        "eps_impact": null,
+        "quantification": "Not company-disclosed; no probability or EPS impact invented",
+        "signal": "caution",
+        "citation": {
+          "source": "SEC filing / earnings transcript",
+          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+          "start": 214992,
+          "end": 215061
         }
       }
     ],
@@ -1030,65 +1066,65 @@ window.EARNINGS_REPORT = {
       "method": "Five-year EPS scenarios use broker-derived TTM EPS, bounded reported growth, and transparent scenario weights/multiples.",
       "base_case": {
         "eps_cagr": 0.2,
-        "exit_multiple": 30.0,
-        "exit_eps": 2.4681765458507567,
-        "exit_price": 74.0452963755227,
-        "irr": 0.15669802255841359,
+        "exit_multiple": 17.746773,
+        "exit_eps": 18.091623170026455,
+        "exit_price": 321.0679295999999,
+        "irr": 0.19999999999999996,
         "probability": 0.5,
-        "summary": "TTM EPS $0.99 -> $2.47; EPS CAGR 20.0%; exit P/E 30.0x = $74.05; IRR 15.7%",
-        "detail": "TTM EPS $0.99 -> $2.47; EPS CAGR 20.0%; exit P/E 30.0x = $74.05; IRR 15.7%"
+        "summary": "TTM EPS $7.27 -> $18.09; EPS CAGR 20.0%; exit P/E 17.7x = $321.07; IRR 20.0%",
+        "detail": "TTM EPS $7.27 -> $18.09; EPS CAGR 20.0%; exit P/E 17.7x = $321.07; IRR 20.0%"
       },
       "bull_case": {
         "eps_cagr": 0.28,
-        "exit_multiple": 33.0,
-        "exit_eps": 3.4081589329935857,
-        "exit_price": 112.46924478878833,
-        "irr": 0.25755576868316,
+        "exit_multiple": 20.746773,
+        "exit_eps": 24.98165182832417,
+        "exit_price": 518.2886596472766,
+        "irr": 0.32061492701099215,
         "probability": 0.3,
-        "summary": "TTM EPS $0.99 -> $3.41; EPS CAGR 28.0%; exit P/E 33.0x = $112.47; IRR 25.8%",
-        "detail": "TTM EPS $0.99 -> $3.41; EPS CAGR 28.0%; exit P/E 33.0x = $112.47; IRR 25.8%"
+        "summary": "TTM EPS $7.27 -> $24.98; EPS CAGR 28.0%; exit P/E 20.7x = $518.29; IRR 32.1%",
+        "detail": "TTM EPS $7.27 -> $24.98; EPS CAGR 28.0%; exit P/E 20.7x = $518.29; IRR 32.1%"
       },
       "bear_case": {
         "eps_cagr": 0.08000000000000002,
-        "exit_multiple": 25.0,
-        "exit_eps": 1.4574335685594142,
-        "exit_price": 36.43583921398535,
-        "irr": 0.0037516064709357533,
+        "exit_multiple": 12.746773000000001,
+        "exit_eps": 10.682922565668928,
+        "exit_price": 136.17278892115942,
+        "irr": 0.01083419957642029,
         "probability": 0.2,
-        "summary": "TTM EPS $0.99 -> $1.46; EPS CAGR 8.0%; exit P/E 25.0x = $36.44; IRR 0.4%",
-        "detail": "TTM EPS $0.99 -> $1.46; EPS CAGR 8.0%; exit P/E 25.0x = $36.44; IRR 0.4%"
+        "summary": "TTM EPS $7.27 -> $10.68; EPS CAGR 8.0%; exit P/E 12.7x = $136.17; IRR 1.1%",
+        "detail": "TTM EPS $7.27 -> $10.68; EPS CAGR 8.0%; exit P/E 12.7x = $136.17; IRR 1.1%"
       },
       "base_cagr": 0.2,
-      "irr": 0.15669802255841359,
+      "irr": 0.19999999999999996,
       "key_risks_summary": "Regulatory / legal exposure, Demand / macro exposure, Capital intensity / cash-flow pressure"
     }
   },
   "sources": {
-    "filing_url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630.htm",
-    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/2064124/000162828026057061/figr-20260630_htm.xml",
-    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/2064124/000206412426000031/ex991-pressrelease2q26.htm",
-    "investor_relations_url": "https://investors.figure.com/",
-    "transcript_url": "https://stockanalysis.com/stocks/figr/transcripts/666681-q2-2026/",
+    "filing_url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
+    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1116132/000114036126019428/ef20072115_ex99-1.htm",
+    "investor_relations_url": null,
+    "transcript_url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
     "transcript_provider": "stockanalysis.com",
-    "transcript_call_date": "2026-08-13",
-    "transcript_retrieved_at": "2026-08-17T20:59:53.647910+00:00",
-    "transcript_content_sha256": "bcad8bdd6375e8057e9cda1a3c6d5cf04ec955aa4413830000cf8a35bacbb37a",
-    "short_interest_url": "https://www.nasdaq.com/market-activity/stocks/figr/short-interest"
+    "transcript_call_date": "2026-05-07",
+    "transcript_retrieved_at": "2026-08-18T00:44:07.647901+00:00",
+    "transcript_content_sha256": "652e77f88c4c7f8639b0856f5c3295d510466244bb55b542198842a97b41ad1f"
   },
   "warnings": [
     "Source-derived KPI reference is missing or incomplete for the current ticker and fiscal period",
     "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable",
-    "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 24.18x"
+    "Official Nasdaq short-interest data unavailable: RuntimeError",
+    "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 16.32x"
   ],
   "grade_breakdown": {
     "financial_metrics": {
-      "grade": "A-",
-      "reason": "Solid growth in key metrics, minor softness in one area",
+      "grade": "A+",
+      "reason": "Exceptional growth across revenue, profit, and cash flow with expanding margins",
       "weight": 0.3
     },
     "valuation": {
       "grade": "B",
-      "reason": "Speculative valuation but not extreme",
+      "reason": "Full valuation but supported by profitability",
       "weight": 0.3
     },
     "earnings_call": {
@@ -1097,8 +1133,8 @@ window.EARNINGS_REPORT = {
       "weight": 0.1
     },
     "management_execution": {
-      "grade": "B",
-      "reason": "Adequate execution, one clear positive signal",
+      "grade": "A",
+      "reason": "Strong execution on multiple fronts: buybacks, quality earnings, margin improvement",
       "weight": 0.1
     },
     "future_growth": {
@@ -1106,13 +1142,13 @@ window.EARNINGS_REPORT = {
       "reason": "Explosive growth trajectory: backlog expanding, >20% revenue growth, strong pipeline, clear secular tailwinds",
       "weight": 0.2
     },
-    "final_grade": "A-",
-    "final_score": 10.8,
+    "final_grade": "A",
+    "final_score": 11.7,
     "all_scores": {
-      "financial_metrics": 11,
+      "financial_metrics": 13,
       "valuation": 9,
       "earnings_call": 13,
-      "management_execution": 9,
+      "management_execution": 12,
       "future_growth": 13
     }
   }
