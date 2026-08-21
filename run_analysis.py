@@ -15,7 +15,6 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
 from create_interactive_dashboard import create_interactive_dashboard
-from render_interactive_dashboard_pdf import render_dashboard_pdf
 from robinhood_mcp_get_quote import get_quote
 from nasdaq_short_interest import fetch_short_interest
 from valuation_metrics import build_valuation_sections
@@ -24,12 +23,15 @@ from sec_edgar_search import search_filings
 from telegram_notify import deliver_reports, generate_call_message, generate_dashboard_message
 from web_search import find_transcript, fetch_forward_pe_ntm
 from xbrl_parser import parse_xbrl_financials
+from sixk_parser import parse_sixk_financials
 from analysis_enrichment import (
     build_capital_liquidity,
     classify_financial_signal,
     classify_valuation_signal,
     extract_risks,
     extract_transcript_sections,
+    _capex_color_score,
+    _percentile_rank,
 )
 from kpi_metrics import build_business_kpis
 
@@ -386,32 +388,146 @@ class EarningsAnalyzer:
         self.data: dict[str, Any] = {"ticker": self.ticker, "warnings": [], "test_run": allow_stale_quote_for_test}
         self.filing: dict[str, Any] = {}; self.release: dict[str, Any] | None = None; self.transcript: dict[str, Any] = {}
         self.release_candidates: list[dict[str, Any]] = []
+        
+        # Execution logging
+        self.execution_log: list[dict] = []
+        self._log("TASK_START", {"ticker": self.ticker, "test_mode": allow_stale_quote_for_test})
+
+    def _log(self, event: str, details: dict):
+        """Log an execution event with timestamp."""
+        import time
+        entry = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "event": event,
+            "details": details
+        }
+        self.execution_log.append(entry)
+        print(f"[{entry['timestamp']}] {event}: {details}")
 
     def identify(self):
-        filings = search_filings(self.ticker, ["10-Q", "10-Q/A"], limit=20)
-        if not filings: raise RuntimeError("NO_FILINGS: no quarterly SEC filing was found")
-        filings = [row for row in filings if row.get("report_date") and row["report_date"] <= _now().date().isoformat()]
-        if not filings: raise RuntimeError("NO_FILINGS: no completed non-future quarterly filing was found")
-        self.filing = max(filings, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
+        self._log("IDENTIFY_START", {})
+        # Try 10-Q first (US issuers), then 6-K (foreign issuers)
+        filings_10q = search_filings(self.ticker, ["10-Q", "10-Q/A"], limit=20)
+        filings_6k = search_filings(self.ticker, ["6-K"], limit=20)
+        
+        # Filter for completed filings with report_date
+        filings_10q = [row for row in filings_10q if row.get("report_date") and row["report_date"] <= _now().date().isoformat()]
+        filings_6k = [row for row in filings_6k if row.get("report_date") and row["report_date"] <= _now().date().isoformat()]
+        
+        # Prefer 10-Q if available (US GAAP with XBRL), otherwise use 6-K (foreign issuer, IFRS)
+        if filings_10q:
+            self.filing = max(filings_10q, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
+            self.is_foreign_issuer = False
+        elif filings_6k:
+            # For foreign issuers, find the quarterly earnings 6-K
+            # Quarterly earnings 6-Ks are typically filed ~6 weeks after quarter end
+            # and have report_date matching quarter end dates (Mar 31, Jun 30, Sep 30)
+            quarterly_ends = {"03-31", "06-30", "09-30"}
+            earnings_6k = [row for row in filings_6k if row["report_date"][-5:] in quarterly_ends]
+            if earnings_6k:
+                self.filing = max(earnings_6k, key=lambda row: (row["report_date"], row["filing_date"]))
+            else:
+                # Fallback: use the most recent 6-K
+                self.filing = max(filings_6k, key=lambda row: (row["report_date"], row["filing_date"]))
+            self.is_foreign_issuer = True
+        else:
+            raise RuntimeError("NO_FILINGS: no quarterly SEC filing was found")
+        
+        self._log("IDENTIFY_FILING_SELECTED", {
+            "filing_type": self.filing.get("form_type"),
+            "report_date": self.filing.get("report_date"),
+            "filing_date": self.filing.get("filing_date"),
+            "is_foreign_issuer": self.is_foreign_issuer
+        })
+        
         earnings_8k = search_filings(self.ticker, ["8-K"], query="earnings", limit=8)
         self.release_candidates = earnings_8k
         nearest = min(earnings_8k, key=lambda row: abs((datetime.fromisoformat(row["filing_date"]) - datetime.fromisoformat(self.filing["filing_date"])).days), default=None)
         freshest = min(_days_old(self.filing["filing_date"]), _days_old(nearest["filing_date"]) if nearest else 10**6)
         if freshest > self.max_age: raise RuntimeError(f"STALE_DATA: newest verified earnings evidence is {freshest} days old")
+        
+        # For foreign issuers, also find the financial statements exhibit document
+        if self.is_foreign_issuer:
+            # Check the index for the financial statements exhibit (typically 99.4 or similar)
+            import requests
+            accession = self.filing["accession_number"].replace("-", "")
+            cik = self.filing["cik"]
+            root = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession}"
+            HEADERS = {"User-Agent": "Hermes earnings research contact@example.com", "Accept-Encoding": "gzip, deflate"}
+            try:
+                response = requests.get(f"{root}/index.json", headers=HEADERS, timeout=30)
+                index = response.json()
+                files = index.get("directory", {}).get("item", [])
+                # Look for the exhibit with financial statements (h126exno994..., exhibitno994..., etc.)
+                for f in files:
+                    name = f.get("name", "")
+                    if name.endswith(".htm") and any(kw in name.lower() for kw in ["exno99", "exhibitno99", "h126exno"]):
+                        self.filing["financial_exhibit_document"] = name
+                        break
+            except Exception as e:
+                self.data["warnings"].append(f"Could not find financial exhibit document: {e}")
+        
+        self._log("IDENTIFY_COMPLETE", {"freshest_days": freshest})
 
     def retrieve(self):
-        filing_doc = fetch_filing(self.filing["accession_number"], self.filing["cik"], self.filing["primary_document"], include_exhibits=False)
-        if not filing_doc.get("xbrl_content"): raise RuntimeError("XBRL_UNAVAILABLE: quarterly structured financial data was not found")
-        xbrl = parse_xbrl_financials(filing_doc["xbrl_content"], self.filing.get("report_date"))
+        self._log("RETRIEVE_START", {})
+        # For foreign issuers, fetch the financial statements exhibit if available
+        if self.is_foreign_issuer and self.filing.get("financial_exhibit_document"):
+            filing_doc = fetch_filing(self.filing["accession_number"], self.filing["cik"], self.filing["financial_exhibit_document"], include_exhibits=False)
+        else:
+            filing_doc = fetch_filing(self.filing["accession_number"], self.filing["cik"], self.filing["primary_document"], include_exhibits=self.is_foreign_issuer)
+        
+        if self.is_foreign_issuer:
+            # Foreign issuer (6-K): parse HTML tables from exhibit
+            # The financial exhibit document contains the financial statements in its main content
+            # Try to get the financial statements from the main content first
+            exhibit_text = filing_doc.get("content", "")
+            
+            # If no content, try exhibit_content (for primary document fetch)
+            if not exhibit_text and filing_doc.get("exhibit_content"):
+                for exhibit_num, content in filing_doc.get("exhibit_content", {}).items():
+                    # Look for financial statement keywords
+                    if any(kw in content.lower() for kw in ["interim condensed consolidated", "statement of profit", "statement of financial position", "statement of cash flows"]):
+                        exhibit_text = content
+                        break
+                
+                if not exhibit_text:
+                    # Fallback: use the largest exhibit content
+                    exhibit_text = max(filing_doc["exhibit_content"].values(), key=len)
+            
+            if not exhibit_text:
+                raise RuntimeError("FINANCIAL_STATEMENTS_NOT_FOUND: no financial statement exhibit found in 6-K")
+            
+            # Parse using 6-K parser
+            xbrl = parse_sixk_financials(exhibit_text, self.filing.get("report_date"))
+        else:
+            # US issuer (10-Q): parse XBRL
+            if not filing_doc.get("xbrl_content"): raise RuntimeError("XBRL_UNAVAILABLE: quarterly structured financial data was not found")
+            xbrl = parse_xbrl_financials(filing_doc["xbrl_content"], self.filing.get("report_date"))
+        
         period = (xbrl.get("fiscal_period") or "").upper(); year_text = xbrl.get("fiscal_year")
         if period not in {"Q1", "Q2", "Q3"}: raise RuntimeError(f"FISCAL_PERIOD_UNVERIFIED: SEC XBRL reported {period or 'no period'}")
         if not year_text: raise RuntimeError("FISCAL_YEAR_UNVERIFIED: SEC XBRL did not provide DocumentFiscalYearFocus")
         report_date = xbrl.get("report_date") or self.filing.get("report_date")
         if not report_date: raise RuntimeError("REPORT_DATE_UNVERIFIED")
+        
+        self._log("RETRIEVE_XBRL_PARSED", {
+            "fiscal_period": period,
+            "fiscal_year": year_text,
+            "report_date": report_date,
+            "metrics_count": len(xbrl.get("metrics", {}))
+        })
+        
         self.transcript = find_transcript(self.ticker, period, int(year_text))
         transcript_call_date, call_date_warning = _validate_transcript_call_date(self.transcript.get("call_date"), report_date)
         if call_date_warning:
             self.data["warnings"].append(call_date_warning)
+        
+        self._log("RETRIEVE_TRANSCRIPT_FOUND", {
+            "transcript_url": self.transcript.get("url"),
+            "call_date": transcript_call_date
+        })
+        
         release_doc = None; scored_releases = []
         for candidate in self.release_candidates:
             if abs((datetime.fromisoformat(candidate["filing_date"]) - datetime.fromisoformat(self.filing["filing_date"])).days) > 60: continue
@@ -438,7 +554,7 @@ class EarningsAnalyzer:
         investor_relations_url = _extract_investor_relations_url(release_text) if release_doc else None
         self.data.update({"fiscal_period": period, "fiscal_year": int(year_text), "report_date": report_date,
                           "filing_date": self.filing["filing_date"], "accession_number": self.filing["accession_number"],
-                          "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc["xbrl_url"],
+                          "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc.get("xbrl_url"),
                                       "earnings_release_url": release_url,
                                       "investor_relations_url": investor_relations_url,
                                       "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
@@ -447,6 +563,8 @@ class EarningsAnalyzer:
                                       "transcript_content_sha256": self.transcript["content_sha256"]},
                           "_xbrl": xbrl, "_filing_text": filing_doc["content"],
                           "_release_text": release_text if release_doc else ""})
+        
+        self._log("RETRIEVE_COMPLETE", {"has_release": release_doc is not None})
 
     def business_kpis(self):
         """Build source-backed, company-specific operating KPIs.
@@ -493,6 +611,7 @@ class EarningsAnalyzer:
             )
 
     def financials(self):
+        self._log("FINANCIALS_START", {})
         rows = []; metrics = self.data["_xbrl"]["metrics"]
         tier1_metrics = {"revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "capex", "stock_based_compensation", "depreciation_amortization", "eps_diluted", "backlog", "cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt", "shares_diluted"}
         for name, fact in metrics.items():
@@ -505,7 +624,9 @@ class EarningsAnalyzer:
             if change_qoq is not None:
                 comparison_parts.append(f"{change_qoq:+.1%} QoQ")
             comparison = ", ".join(comparison_parts) if comparison_parts else "prior-year comparison unavailable"
-            signal = classify_financial_signal(name, change)
+            # Pass value, revenue, and prior_value for CapEx color scoring
+            revenue_value = metrics.get("revenue", {}).get("value")
+            signal = classify_financial_signal(name, change, value=value, revenue=revenue_value, prior_value=prior)
             row_data = {"key": name, "label": LABELS.get(name, name), "value": value, "display": _display(value, name),
                          "prior_value": prior, "comparison": comparison, "signal": signal, "tier": signal,
                          "citation": _citation("SEC XBRL", self.data["sources"]["xbrl_url"], concept=fact["concept"],
@@ -585,99 +706,77 @@ class EarningsAnalyzer:
             rows.append(fcf_row_data)
             by_key["free_cash_flow"] = fcf_row_data
 
+        self._log("FINANCIALS_COMPLETE", {
+            "rows_count": len(rows),
+            "key_ratios_count": len(key_ratios)
+        })
+
         self.data["financials"] = {"rows": rows, "key_ratios": key_ratios}
 
     def quote_and_valuation(self):
-        quote = get_quote(self.ticker, self.expected_account)
-        timestamp = quote.get("updated_at")
-        quote_age_seconds = None
-        if timestamp:
-            parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-            quote_age_seconds = max(0, (_now() - parsed.astimezone(timezone.utc)).total_seconds())
-            if quote_age_seconds > 900:
-                if not self.allow_stale_quote_for_test:
-                    raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")
-                self.data["warnings"].append(
-                    "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
-                )
-        else:
-            self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
-
-        metrics = self.data["_xbrl"]["metrics"]
-
-        def annualize(fact):
-            if not fact or fact.get("value") is None:
-                return None
-            return fact["value"] * 365 / max(fact.get("duration_days") or 91, 1)
-
-        revenue = metrics["revenue"]
-        annual_revenue = annualize(revenue)
-        annual_gross_profit = annualize(metrics.get("gross_profit"))
-        annual_net_income = annualize(metrics.get("net_income"))
-        annual_ebit = annualize(metrics.get("operating_income"))
-        annual_da = annualize(metrics.get("depreciation_amortization"))
-        annual_ebitda = (annual_ebit + annual_da
-                         if annual_ebit is not None and annual_da is not None else None)
-        annual_sbc = annualize(metrics.get("stock_based_compensation"))
-        ocf, capex = metrics.get("operating_cash_flow"), metrics.get("capex")
-        annual_fcf = None
-        if ocf and capex and abs((ocf.get("duration_days") or 0) - (capex.get("duration_days") or 0)) <= 7:
-            annual_fcf = (ocf["value"] - abs(capex["value"])) * 365 / max(ocf["duration_days"], 1)
-
-        market_cap = quote.get("market_cap") or (
-            quote["price"] * quote.get("shares_outstanding") if quote.get("shares_outstanding") else None
-        )
-        cash = metrics.get("cash", {}).get("value")
-        debt = metrics.get("long_term_debt", {}).get("value") or 0
-        enterprise_value = quote.get("enterprise_value")
-        if enterprise_value is None and market_cap is not None and cash is not None:
-            enterprise_value = market_cap + debt - cash
-        prior_revenue = revenue.get("prior_value")
-        revenue_growth_pct = ((revenue["value"] - prior_revenue) / abs(prior_revenue) * 100
-                              if prior_revenue not in (None, 0) else None)
-
-        short_data = {}
-        try:
-            short_data = fetch_short_interest(self.ticker)
-            self.data["sources"]["short_interest_url"] = short_data["source_url"]
-        except Exception as exc:
-            self.data["warnings"].append(f"Official Nasdaq short-interest data unavailable: {type(exc).__name__}")
-
-        sections = build_valuation_sections(
-            market_cap=market_cap, enterprise_value=enterprise_value,
-            annual_revenue=annual_revenue, annual_gross_profit=annual_gross_profit,
-            revenue_growth_pct=revenue_growth_pct,
-            total_equity=metrics.get("total_equity", {}).get("value"),
-            backlog=metrics.get("backlog", {}).get("value"),
-            annual_net_income=annual_net_income, annual_fcf=annual_fcf,
-            annual_ebit=annual_ebit, annual_ebitda=annual_ebitda,
-            trailing_pe=quote.get("pe_ratio"), forward_pe=quote.get("forward_pe_ratio"),
-            peg_ratio=quote.get("peg_ratio"),
-            short_interest=short_data.get("short_interest"), public_float=quote.get("public_float"),
-            days_to_cover=short_data.get("days_to_cover"),
-            short_interest_date=short_data.get("settlement_date"),
-            stock_compensation=annual_sbc, period_revenue=annual_revenue, period_fcf=annual_fcf,
-            diluted_shares=metrics.get("shares_diluted", {}).get("value"),
-            prior_diluted_shares=metrics.get("shares_diluted", {}).get("prior_value"),
-            market_source=quote["source"], filing_source="SEC filing/XBRL",
-            short_source=short_data.get("source", "Nasdaq official short-interest report"),
-        )
-        
-        # Fallback: fetch Forward P/E from StockAnalysis.com if Robinhood doesn't provide it
-        forward_pe = quote.get("forward_pe_ratio")
-        if forward_pe is None:
-            try:
-                forward_pe_sa, sa_url = fetch_forward_pe_ntm(self.ticker)
-                if forward_pe_sa:
-                    forward_pe = forward_pe_sa
+            self._log("QUOTE_VALUATION_START", {})
+            quote = get_quote(self.ticker, self.expected_account)
+            timestamp = quote.get("updated_at")
+            quote_age_seconds = None
+            if timestamp:
+                parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+                quote_age_seconds = max(0, (_now() - parsed.astimezone(timezone.utc)).total_seconds())
+                if quote_age_seconds > 900:
+                    if not self.allow_stale_quote_for_test:
+                        raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")
                     self.data["warnings"].append(
-                        f"Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): {forward_pe}x"
+                        "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
                     )
+            else:
+                self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
+
+            self._log("QUOTE_RECEIVED", {
+                "price": quote.get("price"),
+                "market_cap": quote.get("market_cap"),
+                "quote_age_seconds": quote_age_seconds,
+                "source": quote.get("source")
+            })
+
+            metrics = self.data["_xbrl"]["metrics"]
+
+            def annualize(fact):
+                if not fact or fact.get("value") is None:
+                    return None
+                return fact["value"] * 365 / max(fact.get("duration_days") or 91, 1)
+
+            revenue = metrics["revenue"]
+            annual_revenue = annualize(revenue)
+            annual_gross_profit = annualize(metrics.get("gross_profit"))
+            annual_net_income = annualize(metrics.get("net_income"))
+            annual_ebit = annualize(metrics.get("operating_income"))
+            annual_da = annualize(metrics.get("depreciation_amortization"))
+            annual_ebitda = (annual_ebit + annual_da
+                             if annual_ebit is not None and annual_da is not None else None)
+            annual_sbc = annualize(metrics.get("stock_based_compensation"))
+            ocf, capex = metrics.get("operating_cash_flow"), metrics.get("capex")
+            annual_fcf = None
+            if ocf and capex and abs((ocf.get("duration_days") or 0) - (capex.get("duration_days") or 0)) <= 7:
+                annual_fcf = (ocf["value"] - abs(capex["value"])) * 365 / max(ocf["duration_days"], 1)
+
+            market_cap = quote.get("market_cap") or (
+                quote["price"] * quote.get("shares_outstanding") if quote.get("shares_outstanding") else None
+            )
+            cash = metrics.get("cash", {}).get("value")
+            debt = metrics.get("long_term_debt", {}).get("value") or 0
+            enterprise_value = quote.get("enterprise_value")
+            if enterprise_value is None and market_cap is not None and cash is not None:
+                enterprise_value = market_cap + debt - cash
+            prior_revenue = revenue.get("prior_value")
+            revenue_growth_pct = ((revenue["value"] - prior_revenue) / abs(prior_revenue) * 100
+                                  if prior_revenue not in (None, 0) else None)
+
+            short_data = {}
+            try:
+                short_data = fetch_short_interest(self.ticker)
+                self.data["sources"]["short_interest_url"] = short_data["source_url"]
             except Exception as exc:
-                self.data["warnings"].append(f"Forward P/E fallback failed: {type(exc).__name__}")
-        
-        # Rebuild valuation with the (possibly updated) forward_pe
-        if forward_pe is not None and forward_pe != quote.get("forward_pe_ratio"):
+                self.data["warnings"].append(f"Official Nasdaq short-interest data unavailable: {type(exc).__name__}")
+
             sections = build_valuation_sections(
                 market_cap=market_cap, enterprise_value=enterprise_value,
                 annual_revenue=annual_revenue, annual_gross_profit=annual_gross_profit,
@@ -686,7 +785,7 @@ class EarningsAnalyzer:
                 backlog=metrics.get("backlog", {}).get("value"),
                 annual_net_income=annual_net_income, annual_fcf=annual_fcf,
                 annual_ebit=annual_ebit, annual_ebitda=annual_ebitda,
-                trailing_pe=quote.get("pe_ratio"), forward_pe=forward_pe,
+                trailing_pe=quote.get("pe_ratio"), forward_pe=quote.get("forward_pe_ratio"),
                 peg_ratio=quote.get("peg_ratio"),
                 short_interest=short_data.get("short_interest"), public_float=quote.get("public_float"),
                 days_to_cover=short_data.get("days_to_cover"),
@@ -697,24 +796,67 @@ class EarningsAnalyzer:
                 market_source=quote["source"], filing_source="SEC filing/XBRL",
                 short_source=short_data.get("source", "Nasdaq official short-interest report"),
             )
-        valuation = {
-            "current_price": quote["price"], "market_cap": market_cap,
-            "shares_outstanding": quote.get("shares_outstanding"), "public_float": quote.get("public_float"),
-            "pe_ttm": quote.get("pe_ratio"), "high_52": quote.get("high_52"), "low_52": quote.get("low_52"),
-            "quote_timestamp": timestamp, "quote_source": quote["source"],
-            "quote_age_seconds": quote_age_seconds,
-            "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900),
-            "enterprise_value": enterprise_value, "annualized_revenue": annual_revenue,
-            "annualized_gross_profit": annual_gross_profit, "annualized_fcf": annual_fcf,
-            "ps_annualized": market_cap / annual_revenue if market_cap and annual_revenue and annual_revenue > 0 else None,
-            "fcf_yield_annualized": annual_fcf / market_cap * 100 if market_cap and annual_fcf is not None else None,
-            "regime": sections["regime"], "regime_label": sections["regime_label"],
-            "rows": sections["rows"], "risk_rows": sections["risk_rows"],
-            "short_interest": short_data,
-        }
-        self.data["valuation"] = valuation
+
+            self._log("QUOTE_VALUATION_COMPLETE", {
+                "market_cap": market_cap,
+                "enterprise_value": enterprise_value,
+                "regime": sections.get("regime"),
+                "valuation_rows": len(sections.get("rows", []))
+            })
+
+            # Fallback: fetch Forward P/E from StockAnalysis.com if Robinhood doesn't provide it
+            forward_pe = quote.get("forward_pe_ratio")
+            if forward_pe is None:
+                try:
+                    forward_pe_sa, sa_url = fetch_forward_pe_ntm(self.ticker)
+                    if forward_pe_sa:
+                        forward_pe = forward_pe_sa
+                        self.data["warnings"].append(
+                            f"Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): {forward_pe}x"
+                        )
+                except Exception as exc:
+                    self.data["warnings"].append(f"Forward P/E fallback failed: {type(exc).__name__}")
+
+            # Rebuild valuation with the (possibly updated) forward_pe
+            if forward_pe is not None and forward_pe != quote.get("forward_pe_ratio"):
+                sections = build_valuation_sections(
+                    market_cap=market_cap, enterprise_value=enterprise_value,
+                    annual_revenue=annual_revenue, annual_gross_profit=annual_gross_profit,
+                    revenue_growth_pct=revenue_growth_pct,
+                    total_equity=metrics.get("total_equity", {}).get("value"),
+                    backlog=metrics.get("backlog", {}).get("value"),
+                    annual_net_income=annual_net_income, annual_fcf=annual_fcf,
+                    annual_ebit=annual_ebit, annual_ebitda=annual_ebitda,
+                    trailing_pe=quote.get("pe_ratio"), forward_pe=forward_pe,
+                    peg_ratio=quote.get("peg_ratio"),
+                    short_interest=short_data.get("short_interest"), public_float=quote.get("public_float"),
+                    days_to_cover=short_data.get("days_to_cover"),
+                    short_interest_date=short_data.get("settlement_date"),
+                    stock_compensation=annual_sbc, period_revenue=annual_revenue, period_fcf=annual_fcf,
+                    diluted_shares=metrics.get("shares_diluted", {}).get("value"),
+                    prior_diluted_shares=metrics.get("shares_diluted", {}).get("prior_value"),
+                    market_source=quote["source"], filing_source="SEC filing/XBRL",
+                    short_source=short_data.get("source", "Nasdaq official short-interest report"),
+                )
+            valuation = {
+                "current_price": quote["price"], "market_cap": market_cap,
+                "shares_outstanding": quote.get("shares_outstanding"), "public_float": quote.get("public_float"),
+                "pe_ttm": quote.get("pe_ratio"), "high_52": quote.get("high_52"), "low_52": quote.get("low_52"),
+                "quote_timestamp": timestamp, "quote_source": quote["source"],
+                "quote_age_seconds": quote_age_seconds,
+                "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900),
+                "enterprise_value": enterprise_value, "annualized_revenue": annual_revenue,
+                "annualized_gross_profit": annual_gross_profit, "annualized_fcf": annual_fcf,
+                "ps_annualized": market_cap / annual_revenue if market_cap and annual_revenue and annual_revenue > 0 else None,
+                "fcf_yield_annualized": annual_fcf / market_cap * 100 if market_cap and annual_fcf is not None else None,
+                "regime": sections["regime"], "regime_label": sections["regime_label"],
+                "rows": sections["rows"], "risk_rows": sections["risk_rows"],
+                "short_interest": short_data,
+            }
+            self.data["valuation"] = valuation
 
     def qualitative(self):
+        self._log("QUALITATIVE_START", {})
         transcript = self.transcript["content"]
         url = self.transcript["url"]
         sections = extract_transcript_sections(transcript, url)
@@ -743,7 +885,14 @@ class EarningsAnalyzer:
             "items": build_capital_liquidity(self.data["financials"]["rows"])
         }
 
+        self._log("QUALITATIVE_COMPLETE", {
+            "insights_count": len(sections["insights"]),
+            "guidance_count": len(sections["guidance"]),
+            "risks_count": len(self.data["risks"])
+        })
+
     def grade_and_thesis(self):
+        self._log("GRADE_THESIS_START", {})
         changes = {row["key"]: _change(row["value"], row.get("prior_value")) for row in self.data["financials"]["rows"]}
         score = 0
         for key in ("revenue", "operating_income", "net_income", "operating_cash_flow"):
@@ -798,6 +947,16 @@ class EarningsAnalyzer:
             "all_scores": grade_scores,
         }
         
+        self._log("GRADES_COMPUTED", {
+            "financial_grade": financial_grade,
+            "valuation_grade": valuation_grade,
+            "earnings_call_grade": earnings_call_grade,
+            "management_grade": management_grade,
+            "growth_grade": growth_grade,
+            "final_grade": final_letter,
+            "final_score": round(final_score, 2)
+        })
+        
         self.data["grade"] = {"letter": final_letter, "confidence": confidence,
                               "score": score,
                               "justification": f"Evidence score {score}: reported growth, profitability/cash flow, transcript tone, and source completeness; no ticker-specific grading override."}
@@ -836,22 +995,105 @@ class EarningsAnalyzer:
         risk_names = [row["risk"] for row in self.data.get("risks", [])[:3]]
         thesis["key_risks_summary"] = ", ".join(risk_names) if risk_names else "No quantified risk estimate available"
         self.data["thesis"] = thesis
+        
+        self._log("GRADE_THESIS_COMPLETE", {
+            "final_grade": final_letter,
+            "recommendation": thesis.get("recommendation"),
+            "base_irr": base_irr if 'base_irr' in locals() else None
+        })
 
     def save(self, output_dir: str, deliver: bool = True, telegram_target: str = "telegram", dry_run: bool = False):
-        safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"; directory = Path(output_dir); directory.mkdir(parents=True, exist_ok=True)
+        self._log("SAVE_START", {"output_dir": output_dir, "deliver": deliver, "dry_run": dry_run})
+        safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"
+        ticker_period = f"{self.ticker}_{safe_period}"
+
+        is_test = self.data.get("test_run", False)
+
+        if is_test:
+            base_output = Path("/home/s777data/outputs/company-earnings-analysis/test")
+        else:
+            base_output = Path("/home/s777data/outputs/company-earnings-analysis")
+
+        # Check if this ticker/quarter already has a run
+        ticker_dir = base_output / ticker_period
+        existing_run = ticker_dir.exists() and any(ticker_dir.iterdir())
+
+        ticker_output_dir = ticker_dir
+        ticker_output_dir.mkdir(parents=True, exist_ok=True)
+
         public = {key: value for key, value in self.data.items() if not key.startswith("_")}
+        # Add model name for dashboard footer
+        import os
+        public["model_name"] = os.environ.get("HERMES_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
+
+        # If existing run and not test mode, just return existing paths
+        if existing_run and not self.data.get("test_run", False):
+            print(f"Found existing run for {self.ticker} {safe_period}, returning existing outputs")
+            paths = {
+                "json": str(ticker_output_dir / f"{self.ticker}_{safe_period}_analysis.json"),
+                "html": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard" / "index.html"),
+                "zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
+            }
+            self._log("SAVE_COMPLETE_EXISTING", {"paths": paths})
+            return paths
+
         paths = {}
         if self.output_format in {"json", "both"}:
-            path = directory / f"{self.ticker}_{safe_period}_analysis.json"; path.write_text(json.dumps(public, indent=2)); paths["json"] = str(path)
-        if self.output_format in {"markdown", "both"}:
-            path = directory / f"{self.ticker}_{safe_period}_analysis.md"; path.write_text(self.markdown(public)); paths["markdown"] = str(path)
-        dashboard_dir = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
+            path = ticker_output_dir / f"{self.ticker}_{safe_period}_analysis.json"
+            path.write_text(json.dumps(public, indent=2))
+            paths["json"] = str(path)
+            # Also write to original output dir for backwards compatibility
+            Path(output_dir).mkdir(parents=True, exist_ok=True)
+            (Path(output_dir) / f"{self.ticker}_{safe_period}_analysis.json").write_text(json.dumps(public, indent=2))
+
+        # Removed markdown output per requirements
+        dashboard_dir = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
         paths["html"] = create_interactive_dashboard(public, str(dashboard_dir), publish_template_data=True)
-        interactive_pdf = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
-        source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "earnings_release_url", "transcript_url")]
-        paths["interactive_pdf"] = render_dashboard_pdf(paths["html"], str(interactive_pdf), source_urls)
-        if deliver: paths["delivery"] = deliver_reports(public, paths["interactive_pdf"], telegram_target, dry_run)
+
+        # Create HTML zip
+        import zipfile
+        zip_path = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"
+        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for file_path in Path(dashboard_dir).rglob("*"):
+                if file_path.is_file():
+                    arcname = file_path.relative_to(dashboard_dir.parent)
+                    zipf.write(file_path, arcname)
+        paths["zip"] = str(zip_path)
+
+        # Removed PDF generation per requirements
+        # No PDF delivery - just HTML zip
+        if deliver: 
+            paths["delivery"] = deliver_reports(public, str(dashboard_dir), telegram_target, dry_run)
+
+        # Save telegram messages as markdown files
+        self._save_telegram_messages(ticker_output_dir, safe_period, public)
+        
+        # Save execution log
+        log_path = ticker_output_dir / f"{self.ticker}_{safe_period}_execution.log"
+        log_data = {
+            "ticker": self.ticker,
+            "period": safe_period,
+            "start_time": self.execution_log[0]["timestamp"] if self.execution_log else None,
+            "end_time": datetime.now(timezone.utc).isoformat(),
+            "log_entries": self.execution_log
+        }
+        log_path.write_text(json.dumps(log_data, indent=2))
+        paths["execution_log"] = str(log_path)
+
+        self._log("SAVE_COMPLETE", {"paths": paths})
+
         return paths
+
+    def _save_telegram_messages(self, ticker_output_dir: Path, safe_period: str, public: dict):
+        """Save the two telegram messages as separate markdown files."""
+        dashboard_msg = generate_dashboard_message(public)
+        call_msg = generate_call_message(public)
+
+        msg1_path = ticker_output_dir / f"{self.ticker}_{safe_period}_telegram_message1_dashboard.md"
+        msg2_path = ticker_output_dir / f"{self.ticker}_{safe_period}_telegram_message2_call.md"
+
+        msg1_path.write_text(dashboard_msg)
+        msg2_path.write_text(call_msg)
 
     def markdown(self, data: dict[str, Any]) -> str:
         evidence = ["", "---", "", "## Evidence Register",

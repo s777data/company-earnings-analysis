@@ -334,12 +334,13 @@
     result.append(value, assessment, direction);
 
     const facts = document.createElement("span");
-    facts.className = "gauge-facts";
-    const formula = document.createElement("span");
-    formula.textContent = `▣ ${compact(metric.formula, 62)}`;
-    const impact = document.createElement("span");
-    impact.textContent = `↗ ${compact(metric.why_it_matters, 66)}`;
-    facts.append(formula, impact);
+      facts.className = "gauge-facts";
+      const formula = document.createElement("span");
+      formula.textContent = `▣ ${compact(metric.formula, 62)}`;
+      const impact = document.createElement("span");
+      // Don't truncate why_it_matters - let CSS handle word wrapping
+      impact.textContent = `↗ ${text(metric.why_it_matters, "Not available")}`;
+      facts.append(formula, impact);
 
     button.append(header, svg, result, facts);
     button.addEventListener("click", () => openMetric(metric, button));
@@ -544,6 +545,14 @@
     ].filter(Boolean);
     $("period-line").textContent = market.join(" | ") || text(company.period);
     $("test-banner").hidden = !company.test_run;
+
+    // Add model info to footer
+    const modelInfo = $("model-info");
+    if (modelInfo && company.model_name) {
+        modelInfo.textContent = `AI:${company.model_name}`;
+    } else if (modelInfo) {
+        modelInfo.textContent = `AI:Unknown`;
+    }
 
     renderMetrics("income-cards", sections.income_statement, "income");
     renderKpis(sections.business_kpis);

@@ -15,6 +15,23 @@ SIGNAL_EMOJIS = {
     "caution": "🟠", "negative": "🔴", "worst": "🟥",
 }
 
+# CapEx Color Scoring - 80% CapEx/Revenue intensity, 20% YoY growth
+# Percentile-based scoring for historical/peer comparison
+CAPEX_COLOR_THRESHOLDS = [
+    (20, "best", "Very low financial burden"),
+    (40, "strong_positive", "Low / manageable"),
+    (60, "positive", "Moderate"),
+    (80, "caution", "High"),
+    (101, "negative", "Very high financial burden"),
+]
+
+# Historical CapEx/Revenue and CapEx YoY data for percentile ranking
+# This can be populated from historical data or peer companies
+CAPEX_HISTORICAL_DATA = {
+    "capex_revenue_pct": [],  # List of historical CapEx/Revenue percentages
+    "capex_yoy": [],          # List of historical CapEx YoY growth rates
+}
+
 # Methodology-level rules; these apply uniformly to every company.
 TOPICS: list[tuple[str, str, tuple[str, ...]]] = [
     ("Management Tone", "outlook", ("confident", "optimistic", "cautious", "uncertain", "outlook")),
@@ -341,7 +358,10 @@ def _signal(text: str) -> str:
     return "neutral"
 
 
-def classify_financial_signal(metric: str, change: float | None) -> str:
+def classify_financial_signal(metric: str, change: float | None, 
+                              value: float | None = None,
+                              revenue: float | None = None,
+                              prior_value: float | None = None) -> str:
     if change is None: return "neutral"
     name = metric.lower()
     # A falling diluted weighted-average share count is anti-dilutive and usually
@@ -355,6 +375,12 @@ def classify_financial_signal(metric: str, change: float | None) -> str:
         if change < 0.05: return "caution"
         if change < 0.10: return "negative"
         return "worst"
+    # CapEx - use new CapEx color scoring based on CapEx/Revenue percentile
+    if "capex" in name or "capital expenditure" in name:
+        if value is not None and revenue is not None and revenue > 0:
+            # Calculate CapEx intensity score
+            signal, _ = _capex_color_score(value, revenue, change)
+            return signal
     # Expense/capex/debt growth is not automatically good.
     inverse = any(word in name for word in ("capex", "capital expenditure", "debt", "liabilit", "expense", "cost"))
     if inverse:
@@ -595,6 +621,51 @@ def build_capital_liquidity(financial_rows: Iterable[dict[str, Any]]) -> list[di
         items.append({"name": "Net cash / (debt)", "value": _money(net), "signal": "positive" if net >= 0 else "caution",
                       "citation": [cash.get("citation"), debt.get("citation")]})
     return items
+
+
+def _percentile_rank(value: float, historical_data: list[float]) -> float:
+    """Calculate percentile rank (0-100) of a value against historical data."""
+    if not historical_data or len(historical_data) < 2:
+        return 50.0  # Default to middle if insufficient data
+    sorted_data = sorted(historical_data)
+    n = len(sorted_data)
+    # Count values less than or equal to the value
+    count = sum(1 for x in sorted_data if x <= value)
+    # Percentile rank formula: (count / n) * 100
+    return min(100.0, max(0.0, (count / n) * 100))
+
+
+def _capex_color_score(capex_value: float, revenue_value: float, capex_yoy: float | None,
+                       historical_capex_revenue: list[float] | None = None,
+                       historical_capex_yoy: list[float] | None = None) -> tuple[str, str]:
+    """
+    Calculate CapEx color score based on 80% CapEx/Revenue intensity + 20% YoY growth.
+    
+    Returns (signal, label) tuple.
+    """
+    # Calculate CapEx intensity as % of revenue
+    if revenue_value is None or revenue_value <= 0:
+        return "neutral", "Revenue unavailable for CapEx intensity calculation"
+    
+    capex_intensity = (capex_value / revenue_value) * 100  # As percentage
+    
+    # Get historical data (use defaults if not provided)
+    hist_revenue = historical_capex_revenue or CAPEX_HISTORICAL_DATA.get("capex_revenue_pct", [])
+    hist_yoy = historical_capex_yoy or CAPEX_HISTORICAL_DATA.get("capex_yoy", [])
+    
+    # Calculate percentile scores
+    intensity_score = _percentile_rank(capex_intensity, hist_revenue)
+    yoy_score = _percentile_rank(capex_yoy, hist_yoy) if capex_yoy is not None else 50.0
+    
+    # Composite score: 80% intensity, 20% YoY
+    composite_score = 0.80 * intensity_score + 0.20 * yoy_score
+    
+    # Map to signal based on thresholds
+    for threshold, signal, label in CAPEX_COLOR_THRESHOLDS:
+        if composite_score <= threshold:
+            return signal, label
+    
+    return "negative", "Very high financial burden"
 
 
 def _money(value: float) -> str:

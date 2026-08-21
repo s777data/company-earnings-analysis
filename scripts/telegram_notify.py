@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from render_interactive_dashboard_pdf import validate_pdf
+import zipfile
 
 SIGNAL_EMOJIS = {
     "best": "🟦", "strong_positive": "🔷", "positive": "🔵", "neutral": "🟡",
@@ -292,7 +293,7 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     else:
         lines.append("\n📝 **Metrics Note:** All Tier 1 metrics displayed.")
 
-    lines.extend(["", "📎 PDF: Interactive A4 dashboard attached",
+    lines.extend(["", "📎 HTML Dashboard: Interactive dashboard attached as ZIP",
                   f"🔗 SEC: {data['sources']['filing_url']}"])
     if data["sources"].get("investor_relations_url"):
         lines.append(f"🔗 IR: {data['sources']['investor_relations_url']}")
@@ -328,14 +329,35 @@ def generate_call_message(data: dict[str, Any]) -> str:
             lines.append(f"   Evidence: {insight.get('section', 'Transcript')} chars {insight.get('citation', {}).get('start', 'N/A')}–{insight.get('citation', {}).get('end', 'N/A')}")
             lines.append("")
     lines.extend([f"Source: Earnings call transcript (prepared remarks + analyst Q&A) — {data['sources']['transcript_url']}",
-                  "📎 PDF: Interactive A4 dashboard attached"])
+                  "📎 HTML Dashboard: Interactive dashboard attached as ZIP"])
     return "\n".join(lines)
 
 
-def _send(message: str, pdf_path: str, target: str) -> dict[str, Any]:
-    path = Path(pdf_path).resolve()
-    if not path.is_file() or path.stat().st_size == 0: raise RuntimeError("PDF attachment is missing or empty")
-    validate_pdf(str(path), [])
+def _create_html_zip(html_dir: str) -> str:
+    """Create a zip file from the interactive dashboard HTML directory."""
+    html_path = Path(html_dir).resolve()
+    if not html_path.is_dir():
+        raise RuntimeError(f"Interactive dashboard HTML directory not found: {html_dir}")
+    
+    zip_path = html_path.with_suffix(".zip")
+    if zip_path.exists():
+        zip_path.unlink()
+    
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for file_path in html_path.rglob("*"):
+            if file_path.is_file():
+                arcname = file_path.relative_to(html_path.parent)
+                zipf.write(file_path, arcname)
+    
+    return str(zip_path)
+
+
+def _send(message: str, html_dir: str, target: str) -> dict[str, Any]:
+    zip_path = _create_html_zip(html_dir)
+    path = Path(zip_path).resolve()
+    if not path.is_file() or path.stat().st_size == 0: 
+        raise RuntimeError("HTML zip file is missing or empty")
+    
     body = f"{message}\n\nMEDIA:{path}"
     result = subprocess.run(["hermes", "send", "--to", target, "--json", body], capture_output=True, text=True, timeout=60)
     if result.returncode != 0:
@@ -351,8 +373,9 @@ def _send(message: str, pdf_path: str, target: str) -> dict[str, Any]:
             "timestamp": datetime.now(timezone.utc).isoformat(), "return_code": result.returncode}
 
 
-def deliver_reports(data: dict[str, Any], pdf_path: str, target: str = "telegram", dry_run: bool = False) -> list[dict[str, Any]]:
+def deliver_reports(data: dict[str, Any], html_dir: str, target: str = "telegram", dry_run: bool = False) -> list[dict[str, Any]]:
     messages = [generate_dashboard_message(data), generate_call_message(data)]
     if dry_run:
-        return [{"success": False, "dry_run": True, "message": message, "media_path": str(Path(pdf_path).resolve())} for message in messages]
-    return [_send(message, pdf_path, target) for message in messages]
+        zip_path = _create_html_zip(html_dir)
+        return [{"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())} for message in messages]
+    return [_send(message, html_dir, target) for message in messages]

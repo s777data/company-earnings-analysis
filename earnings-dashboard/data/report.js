@@ -1,31 +1,32 @@
 window.EARNINGS_REPORT = {
   "schema_version": 2,
   "company": {
-    "ticker": "TPR",
-    "period": "Q3 FY2026",
-    "report_date": "2026-03-28",
-    "call_date": "2026-05-07",
-    "grade": "A",
-    "confidence": 0.9500000000000001,
+    "ticker": "RDDT",
+    "period": "Q2 FY2026",
+    "report_date": "2026-06-30",
+    "call_date": "2026-07-30",
+    "grade": "A-",
+    "confidence": 0.8700000000000001,
     "recommendation": "BUY",
-    "price": 129.03,
-    "market_cap": 26069866350.0,
-    "pe_ttm": 17.746773,
-    "high_52": 164.8,
-    "low_52": 93.0,
-    "test_run": true
+    "price": 151.71,
+    "market_cap": 28921043459.395405,
+    "pe_ttm": 35.274012,
+    "high_52": 282.95,
+    "low_52": 119.27,
+    "test_run": true,
+    "model_name": "nvidia/nemotron-3-ultra-550b-a55b"
   },
   "sections": {
     "income_statement": [
       {
         "key": "revenue",
         "name": "Revenue",
-        "raw_value": 1920600000.0,
-        "display_value": "$1.92B",
-        "comparison": "+21.2% YoY, -54.3% QoQ",
-        "status": "strong_positive",
-        "tier": "strong_positive",
-        "assessment": "+21.2% YoY, -54.3% QoQ",
+        "raw_value": 804905000.0,
+        "display_value": "$804.9M",
+        "comparison": "+61.1% YoY, +21.3% QoQ",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+61.1% YoY, +21.3% QoQ",
         "description": "Revenue recognized during the reported period.",
         "why_it_matters": "Shows the scale and growth of the core business.",
         "directionality": "Higher is generally better when growth is profitable.",
@@ -53,29 +54,29 @@ window.EARNINGS_REPORT = {
       {
         "key": "gross_profit",
         "name": "Gross Profit",
-        "raw_value": 1476500000.0,
-        "display_value": "$1.48B",
-        "comparison": "+22.4% YoY, -53.7% QoQ",
-        "status": "positive",
-        "tier": "positive",
-        "assessment": "+22.4% YoY, -53.7% QoQ",
+        "raw_value": null,
+        "display_value": "N/A",
+        "comparison": "YoY unavailable, QoQ unavailable",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "YoY unavailable, QoQ unavailable",
         "description": "Revenue remaining after direct costs.",
         "why_it_matters": "Funds operating expenses, investment, and profit.",
         "directionality": "Higher and expanding is generally better.",
         "formula": "Revenue − cost of revenue",
         "scale": [],
-        "source_note": "SEC XBRL",
+        "source_note": "Verified report data",
         "source_date": null
       },
       {
         "key": "operating_income",
         "name": "Operating Income",
-        "raw_value": 427500000.0,
-        "display_value": "$427.5M",
-        "comparison": "+68.5% YoY, -59.1% QoQ",
+        "raw_value": 231716000.0,
+        "display_value": "$231.7M",
+        "comparison": "+242.2% YoY, +26.7% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+68.5% YoY, -59.1% QoQ",
+        "assessment": "+242.2% YoY, +26.7% QoQ",
         "description": "Profit from core operations before interest and taxes.",
         "why_it_matters": "Measures operating execution and cost discipline.",
         "directionality": "Higher is generally better.",
@@ -87,12 +88,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_income",
         "name": "Net Income",
-        "raw_value": 343800000.0,
-        "display_value": "$343.8M",
-        "comparison": "+69.1% YoY, -38.7% QoQ",
+        "raw_value": 252848000.0,
+        "display_value": "$252.8M",
+        "comparison": "+183.2% YoY, +24.0% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+69.1% YoY, -38.7% QoQ",
+        "assessment": "+183.2% YoY, +24.0% QoQ",
         "description": "Profit attributable after all recognized expenses.",
         "why_it_matters": "Captures the period's bottom-line result.",
         "directionality": "Higher and durable is generally better.",
@@ -104,12 +105,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "free_cash_flow",
         "name": "Free Cash Flow",
-        "raw_value": 1424800000.0,
-        "display_value": "$1.42B",
-        "comparison": "+108.8% YoY, QoQ unavailable",
+        "raw_value": 260742000.0,
+        "display_value": "$260.7M",
+        "comparison": "+135.3% YoY, -16.2% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+108.8% YoY, QoQ unavailable",
+        "assessment": "+135.3% YoY, -16.2% QoQ",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
@@ -121,12 +122,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "operating_cash_flow",
         "name": "Operating Cash Flow",
-        "raw_value": 1456300000.0,
-        "display_value": "$1.46B",
-        "comparison": "+89.2% YoY, QoQ unavailable",
+        "raw_value": 261876000.0,
+        "display_value": "$261.9M",
+        "comparison": "+135.2% YoY, -16.1% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+89.2% YoY, QoQ unavailable",
+        "assessment": "+135.2% YoY, -16.1% QoQ",
         "description": "Cash generated by operating activities.",
         "why_it_matters": "Tests whether accounting earnings convert into cash.",
         "directionality": "Higher and consistent is generally better.",
@@ -138,12 +139,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "capex",
         "name": "Capital Expenditures",
-        "raw_value": 31500000.0,
-        "display_value": "$31.5M",
-        "comparison": "-64.0% YoY, QoQ unavailable",
+        "raw_value": 1134000.0,
+        "display_value": "$1.1M",
+        "comparison": "+124.6% YoY, +4.0% QoQ",
         "status": "positive",
         "tier": "positive",
-        "assessment": "-64.0% YoY, QoQ unavailable",
+        "assessment": "+124.6% YoY, +4.0% QoQ",
         "description": "Cash or obligations used for long-lived productive assets.",
         "why_it_matters": "Indicates reinvestment needs and pressure on free cash flow.",
         "directionality": "Context dependent; efficiency matters more than simply lower or higher.",
@@ -155,12 +156,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "eps_diluted",
         "name": "Diluted EPS",
-        "raw_value": 1.65,
-        "display_value": "$1.65",
-        "comparison": "+73.7% YoY, -58.0% QoQ",
+        "raw_value": 1.25,
+        "display_value": "$1.25",
+        "comparison": "+177.8% YoY, +23.8% QoQ",
         "status": "best",
         "tier": "best",
-        "assessment": "+73.7% YoY, -58.0% QoQ",
+        "assessment": "+177.8% YoY, +23.8% QoQ",
         "description": "Earnings allocated to each diluted weighted-average share.",
         "why_it_matters": "Connects company profit to shareholder economics.",
         "directionality": "Higher sustainable EPS is generally better.",
@@ -170,34 +171,291 @@ window.EARNINGS_REPORT = {
         "source_date": null
       }
     ],
-    "business_kpis": [],
+    "business_kpis": {
+      "rows": [
+        {
+          "key": "ad_revenue",
+          "name": "Ad Revenue",
+          "latest_value": "$762M",
+          "latest_period": "Q2 2026",
+          "prior_value": "$464M",
+          "prior_period": "Q2 2025",
+          "display_value": "$762M",
+          "comparison": "Q2 2025: $464M",
+          "analyst_view": "Ad revenue grew 64% YoY to $762M, driven by ad load improvements, auction density, and international expansion.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "adjusted_ebitda",
+          "name": "Adjusted EBITDA",
+          "latest_value": "$346M",
+          "latest_period": "Q2 2026",
+          "prior_value": "$212M",
+          "prior_period": "Q2 2025",
+          "display_value": "$346M",
+          "comparison": "Q2 2025: $212M",
+          "analyst_view": "Adjusted EBITDA grew 63% YoY with 43% margin; Q3 guidance of $385-395M implies 63-67% YoY growth.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "adjusted_ebitda_margin",
+          "name": "Adjusted EBITDA Margin",
+          "latest_value": "43%",
+          "latest_period": "Q2 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q2 2025",
+          "display_value": "43%",
+          "comparison": "Q2 2025: N/A",
+          "analyst_view": "Adjusted EBITDA margin of 43% in Q2; Q3 guidance of 45% at midpoint showing continued margin expansion.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "average_revenue_per_unique_user_arpu",
+          "name": "Average Revenue Per Unique User (ARPU)",
+          "latest_value": "$6.18",
+          "latest_period": "Q2 2026",
+          "prior_value": "$4.54",
+          "prior_period": "Q2 2025",
+          "display_value": "$6.18",
+          "comparison": "Q2 2025: $4.54",
+          "analyst_view": "ARPU grew 36% YoY to $6.18, driven by ad load improvements, auction density, and international monetization.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "daily_active_users_dau",
+          "name": "Daily Active Users (DAU)",
+          "latest_value": "130M+",
+          "latest_period": "Q2 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q2 2025",
+          "display_value": "130M+",
+          "comparison": "Q2 2025: N/A",
+          "analyst_view": "DAU grew, driven by product improvements and marketing; new app user retention up 50% YoY.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "international_revenue",
+          "name": "International Revenue",
+          "latest_value": "$318M",
+          "latest_period": "Q2 2026",
+          "prior_value": "$173M",
+          "prior_period": "Q2 2025",
+          "display_value": "$318M",
+          "comparison": "Q2 2025: $173M",
+          "analyst_view": "International revenue grew 84% YoY, outpacing US growth; monetization expanding in ex-US markets.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "new_app_user_retention",
+          "name": "New App User Retention",
+          "latest_value": "Up 50% YoY",
+          "latest_period": "Q2 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q2 2025",
+          "display_value": "Up 50% YoY",
+          "comparison": "Q2 2025: N/A",
+          "analyst_view": "New app user retention improved 50% YoY on relative basis, a key priority for converting weekly users to daily active users.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "share_repurchase",
+          "name": "Share Repurchase",
+          "latest_value": "$235M (1.5M shares)",
+          "latest_period": "Q2 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q2 2025",
+          "display_value": "$235M (1.5M shares)",
+          "comparison": "Q2 2025: N/A",
+          "analyst_view": "Repurchased $235M worth of stock (~1.5M shares at ~$157 avg); $760M remaining on authorization; dilution at lower end of 1-3% targeted range.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "us_revenue",
+          "name": "US Revenue",
+          "latest_value": "$487M",
+          "latest_period": "Q2 2026",
+          "prior_value": "$312M",
+          "prior_period": "Q2 2025",
+          "display_value": "$487M",
+          "comparison": "Q2 2025: $312M",
+          "analyst_view": "US revenue grew 56% YoY; ARPU in US approached $50 for the full year with significant headroom.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "weekly_active_users_wau",
+          "name": "Weekly Active Users (WAU)",
+          "latest_value": "200M+",
+          "latest_period": "Q2 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q2 2025",
+          "display_value": "200M+",
+          "comparison": "Q2 2025: N/A",
+          "analyst_view": "Over 200M weekly active users; WAU to DAU conversion improving through feed improvements.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "free_cash_flow",
+          "name": "Free Cash Flow",
+          "latest_value": "Strong positive",
+          "latest_period": "Q2 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q2 2025",
+          "display_value": "Strong positive",
+          "comparison": "Q2 2025: N/A",
+          "analyst_view": "Strong free cash flow generation; operating cash flow of $262M in Q2; $1B+ LTM operating cash flow milestone achieved.",
+          "source": "IR/SEC",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        },
+        {
+          "key": "operating_cash_flow_ltm",
+          "name": "Operating Cash Flow (LTM)",
+          "latest_value": ">$1B LTM",
+          "latest_period": "Q2 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q2 2025",
+          "display_value": ">$1B LTM",
+          "comparison": "Q2 2025: N/A",
+          "analyst_view": "Crossed $1B operating cash flow on LTM basis for first time, demonstrating strong cash conversion.",
+          "source": "IR",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "scale": []
+        }
+      ],
+      "selection_status": "COMPLETE",
+      "note": "Top source-derived metrics selected by importance from KPI_derived_reference.txt."
+    },
     "key_ratios": [
       {
         "key": "gross_margin",
         "name": "Gross Margin",
-        "raw_value": 0.7687701759866709,
-        "display_value": "76.9%",
-        "comparison": "+0.8 pp YoY, +1.1 pp QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+0.8 pp YoY, +1.1 pp QoQ",
+        "raw_value": null,
+        "display_value": "N/A",
+        "comparison": "YoY unavailable, QoQ unavailable",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "YoY unavailable, QoQ unavailable",
         "description": "Share of revenue remaining after direct costs.",
         "why_it_matters": "Shows product economics and pricing/cost performance.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Gross profit ÷ revenue",
         "scale": [],
-        "source_note": "SEC XBRL",
+        "source_note": "Verified report data",
         "source_date": null
       },
       {
         "key": "operating_margin",
         "name": "Operating Margin",
-        "raw_value": 0.2225866916588566,
-        "display_value": "22.3%",
-        "comparison": "+6.2 pp YoY, -2.6 pp QoQ",
+        "raw_value": 0.28787993614153223,
+        "display_value": "28.8%",
+        "comparison": "+15.2 pp YoY, +1.2 pp QoQ",
         "status": "strong_positive",
         "tier": "strong_positive",
-        "assessment": "+6.2 pp YoY, -2.6 pp QoQ",
+        "assessment": "+15.2 pp YoY, +1.2 pp QoQ",
         "description": "Share of revenue retained as operating profit.",
         "why_it_matters": "Measures operating efficiency and pricing power.",
         "directionality": "Higher and durable is generally better.",
@@ -209,12 +467,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_margin",
         "name": "Net Margin",
-        "raw_value": 0.1790065604498594,
-        "display_value": "17.9%",
-        "comparison": "+5.1 pp YoY, +4.6 pp QoQ",
-        "status": "positive",
-        "tier": "positive",
-        "assessment": "+5.1 pp YoY, +4.6 pp QoQ",
+        "raw_value": 0.31413396612022537,
+        "display_value": "31.4%",
+        "comparison": "+13.5 pp YoY, +0.7 pp QoQ",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+13.5 pp YoY, +0.7 pp QoQ",
         "description": "Share of revenue retained as net income.",
         "why_it_matters": "Summarizes bottom-line profitability.",
         "directionality": "Higher and durable is generally better.",
@@ -226,12 +484,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "sbc_revenue",
         "name": "SBC / Revenue",
-        "raw_value": 0.014526710402999063,
-        "display_value": "1.5%",
-        "comparison": "-0.1 pp YoY, +0.2 pp QoQ",
-        "status": "negative",
-        "tier": "negative",
-        "assessment": "-0.1 pp YoY, +0.2 pp QoQ",
+        "raw_value": 0.1254210124176145,
+        "display_value": "12.5%",
+        "comparison": "-5.3 pp YoY, +2.2 pp QoQ",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "-5.3 pp YoY, +2.2 pp QoQ",
         "description": "Stock-based compensation expense relative to revenue.",
         "why_it_matters": "Highlights equity-compensation intensity and potential dilution pressure.",
         "directionality": "Lower is generally better.",
@@ -245,12 +503,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "ps_annualized",
         "name": "P/S (Annualized)",
-        "raw_value": 3.384156260885939,
-        "display_value": "3.4x",
-        "comparison": "Moderate",
-        "status": "neutral",
+        "raw_value": 8.958140315903806,
+        "display_value": "9.0x",
+        "comparison": "Expensive",
+        "status": "caution",
         "tier": 1,
-        "assessment": "Moderate",
+        "assessment": "Expensive",
         "description": "Market capitalization / annualized revenue.",
         "why_it_matters": "Shows how much equity investors are paying for each dollar of annualized sales. Useful when earnings are negative or too small for P/E to be meaningful.",
         "directionality": "Lower is better",
@@ -277,18 +535,18 @@ window.EARNINGS_REPORT = {
             "signal": "worst"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "ev_revenue",
         "name": "EV / Revenue",
-        "raw_value": 3.248309015661487,
-        "display_value": "3.2x",
-        "comparison": "Typical",
-        "status": "neutral",
+        "raw_value": 8.49760010580669,
+        "display_value": "8.5x",
+        "comparison": "Expensive",
+        "status": "negative",
         "tier": 1,
-        "assessment": "Typical",
+        "assessment": "Expensive",
         "description": "Enterprise value / total annualized revenue.",
         "why_it_matters": "Tells you how much you are paying for one dollar of total sales, adjusting for debt and cash.",
         "directionality": "Lower is better",
@@ -310,31 +568,14 @@ window.EARNINGS_REPORT = {
             "signal": "negative"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
-        "source_date": null
-      },
-      {
-        "key": "ev_gross_profit",
-        "name": "EV / Gross Profit",
-        "raw_value": 4.225331727381952,
-        "display_value": "4.2x",
-        "comparison": "Context Only",
-        "status": "neutral",
-        "tier": 2,
-        "assessment": "Context Only",
-        "description": "Enterprise value / annualized gross profit.",
-        "why_it_matters": "Shows whether the core product is profitable to make before corporate overhead and management costs.",
-        "directionality": "Lower is better",
-        "formula": "Enterprise value ÷ annualized gross profit",
-        "scale": [],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "ev_revenue_growth",
         "name": "EV / Revenue / Growth",
-        "raw_value": 0.15319257339932119,
-        "display_value": "0.2x",
+        "raw_value": 0.13907423555132958,
+        "display_value": "0.1x",
         "comparison": "Context Only",
         "status": "neutral",
         "tier": 2,
@@ -344,14 +585,47 @@ window.EARNINGS_REPORT = {
         "directionality": "Lower is better",
         "formula": "EV/Revenue ÷ YoY revenue growth %",
         "scale": [],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "price_to_book",
+        "name": "Price to Book (P/B)",
+        "raw_value": 8.802094975011537,
+        "display_value": "8.8x",
+        "comparison": "Expensive",
+        "status": "negative",
+        "tier": 2,
+        "assessment": "Expensive",
+        "description": "Market cap / total equity (or tangible book value).",
+        "why_it_matters": "Shows the price paid relative to the accounting value of assets after liabilities.",
+        "directionality": "Lower is better",
+        "formula": "Market cap ÷ total equity",
+        "scale": [
+          {
+            "max": 1,
+            "label": "Below Book",
+            "signal": "positive"
+          },
+          {
+            "max": 3,
+            "label": "Typical",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Expensive",
+            "signal": "negative"
+          }
+        ],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "forward_pe",
         "name": "Forward P/E (NTM)",
-        "raw_value": 16.32,
-        "display_value": "16.3x",
+        "raw_value": 24.87,
+        "display_value": "24.9x",
         "comparison": "Typical",
         "status": "neutral",
         "tier": 1,
@@ -377,18 +651,18 @@ window.EARNINGS_REPORT = {
             "signal": "negative"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "trailing_pe",
         "name": "Trailing P/E",
-        "raw_value": 17.746773,
-        "display_value": "17.7x",
-        "comparison": "Typical",
-        "status": "neutral",
+        "raw_value": 35.274012,
+        "display_value": "35.3x",
+        "comparison": "Expensive",
+        "status": "negative",
         "tier": 1,
-        "assessment": "Typical",
+        "assessment": "Expensive",
         "description": "Market cap / trailing net income, or share price / trailing diluted EPS.",
         "why_it_matters": "Shows the price paid for profits generated over the trailing twelve months.",
         "directionality": "Lower is better",
@@ -410,18 +684,18 @@ window.EARNINGS_REPORT = {
             "signal": "negative"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "ev_ebitda",
         "name": "EV / EBITDA",
-        "raw_value": 13.38681559719502,
-        "display_value": "13.4x",
-        "comparison": "Typical",
-        "status": "neutral",
+        "raw_value": 28.985230632037144,
+        "display_value": "29.0x",
+        "comparison": "Expensive",
+        "status": "negative",
         "tier": 1,
-        "assessment": "Typical",
+        "assessment": "Expensive",
         "description": "Enterprise value / EBITDA.",
         "why_it_matters": "Compares the total business value with operating earning power before interest, taxes, depreciation, and amortization.",
         "directionality": "Lower is better",
@@ -443,18 +717,18 @@ window.EARNINGS_REPORT = {
             "signal": "negative"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "levered_fcf_yield",
         "name": "Levered FCF Yield",
-        "raw_value": 7.307104514375007,
-        "display_value": "7.3%",
-        "comparison": "Typical",
-        "status": "neutral",
+        "raw_value": 3.6161672319037406,
+        "display_value": "3.6%",
+        "comparison": "Expensive",
+        "status": "negative",
         "tier": 1,
-        "assessment": "Typical",
+        "assessment": "Expensive",
         "description": "FCF available to common equity / market cap.",
         "why_it_matters": "Shows the cash return generated for common shareholders relative to the stock's market value.",
         "directionality": "Higher is better",
@@ -476,7 +750,7 @@ window.EARNINGS_REPORT = {
             "signal": "positive"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       }
     ],
@@ -496,264 +770,155 @@ window.EARNINGS_REPORT = {
       },
       {
         "name": "SBC / Revenue",
-        "detail": "1.5% — Low",
-        "signal": "positive",
+        "detail": "12.5% — High",
+        "signal": "caution",
         "tier": 1
       },
       {
         "name": "SBC / Free Cash Flow",
-        "detail": "5.9% — Strong",
-        "signal": "positive",
+        "detail": "38.7% — Moderate",
+        "signal": "neutral",
         "tier": 2
       },
       {
         "name": "SBC-Adjusted FCF Yield",
-        "detail": "6.9% — Reasonable",
-        "signal": "neutral",
+        "detail": "2.2% — Expensive",
+        "signal": "negative",
         "tier": 1
       },
       {
         "name": "Net Share Dilution",
-        "detail": "-2.6% — Shrinking",
-        "signal": "positive",
+        "detail": "1.3% — Moderate",
+        "signal": "neutral",
         "tier": 1
       }
     ],
     "capital_liquidity": [
       {
         "name": "Total Equity",
-        "value": "$682.4M",
-        "signal": "worst",
+        "value": "$3.29B",
+        "signal": "best",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630_htm.xml",
           "start": null,
           "end": null,
           "concept": "StockholdersEquity",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-8",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
+          "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-03-28"
-        }
-      },
-      {
-        "name": "Long-term Debt",
-        "value": "$0",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "LongTermDebtCurrent",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-5",
-          "period_start": null,
-          "period_end": "2026-03-28"
+          "period_end": "2026-06-30"
         }
       },
       {
         "name": "Capital Expenditures",
-        "value": "$31.5M",
+        "value": "$1.1M",
         "signal": "positive",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630_htm.xml",
           "start": null,
           "end": null,
-          "concept": "CapitalExpendituresIncurredButNotYetPaid",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-1",
+          "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-5",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
-          "period_start": "2025-06-29",
-          "period_end": "2026-03-28"
-        }
-      },
-      {
-        "name": "Total Assets",
-        "value": "$6.47B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Assets",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-5",
-          "period_start": null,
-          "period_end": "2026-03-28"
-        }
-      },
-      {
-        "name": "Operating Cash Flow",
-        "value": "$1.46B",
-        "signal": "best",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "NetCashProvidedByUsedInOperatingActivities",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-1",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-5",
-          "period_start": "2025-06-29",
-          "period_end": "2026-03-28"
+          "decimals": "-3",
+          "period_start": "2026-04-01",
+          "period_end": "2026-06-30"
         }
       },
       {
         "name": "Total Liabilities",
-        "value": "$5.78B",
+        "value": "$350.9M",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630_htm.xml",
           "start": null,
           "end": null,
           "concept": "Liabilities",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-8",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
+          "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-03-28"
+          "period_end": "2026-06-30"
+        }
+      },
+      {
+        "name": "Total Assets",
+        "value": "$3.64B",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "Assets",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-8",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": null,
+          "period_end": "2026-06-30"
+        }
+      },
+      {
+        "name": "Operating Cash Flow",
+        "value": "$261.9M",
+        "signal": "best",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-5",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": "2026-04-01",
+          "period_end": "2026-06-30"
         }
       },
       {
         "name": "Cash",
-        "value": "$1.05B",
+        "value": "$1.49B",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630_htm.xml",
           "start": null,
           "end": null,
           "concept": "CashAndCashEquivalentsAtCarryingValue",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-8",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
+          "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-03-28"
+          "period_end": "2026-06-30"
         }
-      },
-      {
-        "name": "Net cash / (debt)",
-        "value": "$1.05B",
-        "signal": "positive",
-        "citation": [
-          {
-            "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-            "start": null,
-            "end": null,
-            "concept": "CashAndCashEquivalentsAtCarryingValue",
-            "taxonomy": "http://fasb.org/us-gaap/2025",
-            "context": "c-3",
-            "dimensions": [],
-            "unit": "usd",
-            "decimals": "-5",
-            "period_start": null,
-            "period_end": "2026-03-28"
-          },
-          {
-            "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-            "start": null,
-            "end": null,
-            "concept": "LongTermDebtCurrent",
-            "taxonomy": "http://fasb.org/us-gaap/2025",
-            "context": "c-3",
-            "dimensions": [],
-            "unit": "usd",
-            "decimals": "-5",
-            "period_start": null,
-            "period_end": "2026-03-28"
-          }
-        ]
       }
     ],
     "guidance": [
       {
         "name": "Forward outlook",
-        "detail": "To this end, we expect marketing as a percentage of sales to now increase around 190 basis points versus last year, an increase of 60 basis points from our prior guidance and now approaching 13% of revenue.",
-        "signal": "strong_positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 25973,
-          "end": 26179
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Turning to operating margin, we expect expansion of approximately 60 basis points, driven by a gross margin increase in the area of 130 basis points, partially offset by higher SG&A, which reflects strategic investment in brand building with an increase of over 300 basis points in marketing to drive long-term growth.",
-        "signal": "best",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 27942,
-          "end": 28260
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Taken together, we now expect EPS to be in the area of $6.95, representing growth over 35% compared to last year and ahead of our prior outlook of $6.40-$6.45.",
+        "detail": "Guidance for Q3 projects continued high growth.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 26842,
-          "end": 27001
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Delivered double-digit revenue, margin, and EPS growth in Q3, driven by strong global demand, especially among Gen Z, and raised full-year guidance.",
-        "signal": "best",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 416,
-          "end": 564
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "In addition, our outlook now assumes an operating margin of approximately 23%, which is up approximately 300 basis points compared to last year and 120 basis points above our prior outlook.",
-        "signal": "neutral",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 24964,
-          "end": 25153
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "This includes over $300 million in dividend payments for an annual rate of $1.60 per share, as well as $1.3 billion in share repurchases, which is an increase from our prior outlook of $1.2 billion.",
-        "signal": "positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 21500,
-          "end": 21698
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 655,
+          "end": 703
         }
       }
     ],
@@ -761,170 +926,185 @@ window.EARNINGS_REPORT = {
       {
         "topic": "Management Tone",
         "category": "outlook",
-        "detail": "Confident → Assured, We see confident or we have confidence in Coach, and that's what gave us the confidence to increase the guide even on what was an exceptional Q3 performance.",
-        "signal": "best",
-        "tier": "best",
-        "reasoning": "The cited analyst q&a evidence is supportive for management tone.",
-        "section": "Analyst Q&A",
+        "detail": "Confident → Assured, That's why I'm so confident in where we're going.",
+        "signal": "positive",
+        "tier": "positive",
+        "reasoning": "The cited prepared remarks evidence is supportive for management tone.",
+        "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 51298,
-          "end": 51455
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 6797,
+          "end": 6846
         },
         "confidence_category": "Confident",
         "confidence_subcategory": "Assured",
         "confidence_rank": 4,
-        "confidence_reasoning": "Aggregate management-language scores were Confident 192, Vague 18, and Not Confident 18; the leading assured cues were we expect (7), we anticipate (3), we believe (2)."
+        "confidence_reasoning": "Aggregate management-language scores were Confident 60, Vague 10, and Not Confident 6; the leading assured cues were we expect (1), we believe (1), confident (3)."
       },
       {
         "topic": "Revenue & Demand",
         "category": "revenue",
-        "detail": "Delivered double-digit revenue, margin, and EPS growth in Q3, driven by strong global demand, especially among Gen Z, and raised full-year guidance.",
-        "signal": "best",
-        "tier": "best",
-        "reasoning": "The cited prepared remarks evidence is supportive for revenue & demand.",
+        "detail": "To date, we've seen good leverage on this expense, and it's less than 13% of revenue to date, down more than 1,000 basis points versus the first half of last year.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for revenue & demand.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 416,
-          "end": 564
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 20475,
+          "end": 20638
         }
       },
       {
         "topic": "Margins & Profitability",
         "category": "margin",
-        "detail": "At the same time, gross margin and profitability exceeded plan, even with continued strategic brand investments to support a return to profitable growth.",
-        "signal": "strong_positive",
-        "tier": "strong_positive",
+        "detail": "Adjusted EBITDA in the range of $385 million-$395 million, representing 63%-67% year-over-year growth, and an adjusted EBITDA margin of 45% at the midpoint.",
+        "signal": "positive",
+        "tier": "positive",
         "reasoning": "The cited prepared remarks evidence is supportive for margins & profitability.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 12184,
-          "end": 12337
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 20009,
+          "end": 20165
         }
       },
       {
         "topic": "Guidance",
         "category": "guidance",
-        "detail": "To this end, we expect marketing as a percentage of sales to now increase around 190 basis points versus last year, an increase of 60 basis points from our prior guidance and now approaching 13% of revenue.",
-        "signal": "strong_positive",
-        "tier": "strong_positive",
+        "detail": "Guidance for Q3 projects continued high growth.",
+        "signal": "positive",
+        "tier": "positive",
         "reasoning": "The cited prepared remarks evidence is supportive for guidance.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 25973,
-          "end": 26179
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 655,
+          "end": 703
         }
       },
       {
         "topic": "Products & Innovation",
         "category": "product",
-        "detail": "Next, we delivered fashion innovation and product excellence led by Coach, where the brand is strong and resonating globally.",
-        "signal": "positive",
-        "tier": "positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for products & innovation.",
+        "detail": "Research from Attain and Circana found that Reddit delivered 1.5x higher return on ad spend for CPG advertisers than other social platforms on average across the U.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for products & innovation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 4756,
-          "end": 4881
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 13404,
+          "end": 13568
         }
       },
       {
         "topic": "Customers & Engagement",
         "category": "customer",
-        "detail": "We enhanced both our in-store and digital experiences, simplifying the customer journey and elevating engagement.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for customers & engagement.",
+        "detail": "User retention and direct engagement improved, while ad business and international growth remained strong.",
+        "signal": "best",
+        "tier": "best",
+        "reasoning": "The cited prepared remarks evidence is supportive for customers & engagement.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 14794,
-          "end": 14907
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 548,
+          "end": 655
         }
       },
       {
         "topic": "Capital Allocation",
         "category": "capital",
-        "detail": "In fiscal 2026, we now expect to return approximately $1.6 billion or approximately 100% of our expected adjusted free cash flow to shareholders through dividends and share repurchases.",
+        "detail": "Operating cash flow doubled from $111 million last year to $262 million this year, while CapEx was $1 million and less than 0.2% of revenue, so still very light.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for capital allocation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 21314,
-          "end": 21499
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 19254,
+          "end": 19415
         }
       },
       {
         "topic": "Competition & Market",
         "category": "competition",
-        "detail": "We powered global growth through compelling experiences, delivering double-digit gains in North America, Greater China, and Europe, significantly outpacing the industry and growing market share in each of these regions.",
-        "signal": "positive",
-        "tier": "positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for competition & market.",
+        "detail": "We also saw strength across industry verticals, particularly retail and travel, while active advertisers grew over 70% year-over-year.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for competition & market.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 5227,
-          "end": 5446
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 9043,
+          "end": 9177
+        }
+      },
+      {
+        "topic": "Analyst Q&A",
+        "category": "qa",
+        "detail": "I think increasingly they realize that their customers are putting an increasing value on human advice, and Reddit is the place for that, so they realize how important our environment is.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "This is a substantive management response from the analyst Q&A section.",
+        "section": "Analyst Q&A",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 24248,
+          "end": 24435
         }
       }
     ],
     "channels": [
       {
         "name": "Products & platforms",
-        "desc": "A normal cadence for us is we have a new seasonal product launch, like the pink signature that he referred to earlier, and it launches in Q3, and then it sells through Q3 and Q4.",
+        "desc": "Research from Attain and Circana found that Reddit delivered 1.5x higher return on ad spend for CPG advertisers than other social platforms on average across the U.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 50835,
-          "end": 51013
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 13404,
+          "end": 13568
         },
         "signal": "neutral"
       },
       {
         "name": "Customers & engagement",
-        "desc": "We enhanced both our in-store and digital experiences, simplifying the customer journey and elevating engagement.",
+        "desc": "For example, Lenovo achieved 40% higher purchase value with Max than with standard campaigns, demonstrating how AI-driven optimization can turn high-intent users into high-value customers.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 14794,
-          "end": 14907
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 10274,
+          "end": 10462
         },
         "signal": "neutral"
       },
       {
         "name": "Markets & distribution",
-        "desc": "By region, North American sales rose 20% compared to the prior year, fueled by a 27% increase at Coach, with growth, market share gains and operating margin expansion ahead of plan.",
+        "desc": "Overall, in Q2, total marketing spend was slightly higher sequentially on a percentage of revenue basis across both paid and brand marketing.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 17144,
-          "end": 17326
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 18050,
+          "end": 18191
         },
-        "signal": "positive"
+        "signal": "neutral"
       },
       {
         "name": "Business lines",
-        "desc": "The combination of craftsmanship, creativity, and value we offer to consumers at scale continues to be a clear competitive advantage and a structural strength of our business.",
+        "desc": "Q2 was another strong quarter for Reddit, reflecting the momentum of our advertising business and the differentiation of our platform.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 5051,
-          "end": 5226
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 6985,
+          "end": 7119
         },
         "signal": "neutral"
       }
@@ -932,126 +1112,140 @@ window.EARNINGS_REPORT = {
     "strategic_pillars": [
       {
         "name": "Innovation Roadmap",
-        "detail": "We are focused on bringing more innovation and distinctiveness to our assortment to drive stronger results at scale as we continue to build for durable growth.",
-        "signal": "best",
+        "detail": "We saw margin tailwinds from incremental revenues and hosting efficiency programs offsetting the increased use of compute, including higher AI and ML usage.",
+        "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 14528,
-          "end": 14687
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 16531,
+          "end": 16687
         }
       },
       {
         "name": "Growth Expansion",
-        "detail": "Now, turning to the strategic actions from the quarter, which are driving our results today and continuing to expand our competitive advantages into the future.",
+        "detail": "The format expands our performance offering beyond single advertiser catalog ads, it's designed around the way people compare products and make purchase decisions on Reddit.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 3849,
-          "end": 4009
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 12533,
+          "end": 12706
         }
       },
       {
         "name": "Customer Value",
-        "detail": "Importantly, our Gen Z consumers have higher retention rates than the balance of cohorts, highlighting the opportunity to build lasting relationships and meaningful value creation into the future.",
-        "signal": "neutral",
+        "detail": "That work takes time to gain traction, but is what will deepen engagement, strengthen our monetization flywheel, and drive more durable growth.",
+        "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 4295,
-          "end": 4491
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 6195,
+          "end": 6338
         }
       },
       {
         "name": "Operational Excellence",
-        "detail": "Again, early days, we always see more productivity when we redo the stores.",
+        "detail": "We ended Q2 with $2.8 billion in cash equivalents in marketable securities, up over $700 million from a year ago and slightly higher sequentially as cash generated from operations was mostly offset by cash used for repurchases.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 55346,
-          "end": 55421
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 19416,
+          "end": 19643
         }
       },
       {
         "name": "Capital Discipline",
-        "detail": "The tax rate is expected to be approximately 17.5%, and our weighted average diluted share count for the year is forecasted to be approximately 210 million shares, which includes the expectation for $1.3 billion in share repurchases.",
+        "detail": "Sequential dilution was up 0.3% on a net basis and 1% on a gross basis, excluding the impact of share repurchases.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 26608,
-          "end": 26841
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 18837,
+          "end": 18951
         }
       },
       {
         "name": "Long-Term Strategy",
-        "detail": "Touching on marketing, our strategic investments continued to generate compounding benefits this quarter, reflecting a disciplined long-term approach to brand building at scale.",
-        "signal": "positive",
+        "detail": "Helping people access human perspective is central to our mission and strategy to reach one billion daily users and to help advertisers connect with more audiences.",
+        "signal": "caution",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 8988,
-          "end": 9165
+          "url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
+          "start": 7914,
+          "end": 8078
         }
       }
     ],
     "risks": [
       {
-        "risk": "Regulatory / legal exposure",
-        "evidence": "As of March 28, 2026, we were in compliance with these restrictions and covenants, have met such financial ratios and have met all debt payment obligations.",
+        "risk": "Competitive pressure",
+        "evidence": "Our business is subject to increasingly complex and evolving laws, rules, regulations, industry standards, and other legal obligations regarding content, consumer protection, competition, privacy, AI, online safety, and other matters.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-          "start": 108971,
-          "end": 109128
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "start": 124933,
+          "end": 125167
+        }
+      },
+      {
+        "risk": "Regulatory / legal exposure",
+        "evidence": "We were in compliance with all covenants as of June 30, 2026.",
+        "probability": null,
+        "eps_impact": null,
+        "quantification": "Not company-disclosed; no probability or EPS impact invented",
+        "signal": "caution",
+        "citation": {
+          "source": "SEC filing / earnings transcript",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "start": 56953,
+          "end": 57015
         }
       },
       {
         "risk": "Demand / macro exposure",
-        "evidence": "Consumer preferences, macroeconomic conditions, foreign currency fluctuations and geopolitical events continue to impact overall levels of consumer travel and spending on discretionary items, with inconsistent patterns across business channels and geographies.",
+        "evidence": "Our judgment regarding the timing and amount of the valuation allowance release is subject to change based on a number of factors, including but not limited to, the level of profitability (income before income taxes adjusted for permanent differences) that we are able to accurately forecast, as well as the amount of our tax deductible stock-based compensation, which is dependent upon our publicly traded share price, and macroeconomic conditions, among other factors.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-          "start": 131323,
-          "end": 131584
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "start": 42720,
+          "end": 43191
         }
       },
       {
         "risk": "Capital intensity / cash-flow pressure",
-        "evidence": "They include, without limitation, statements regarding future anticipated capital expenditures.",
+        "evidence": "Additionally, we believe that Free Cash Flow is an important measure since we use third-party infrastructure partners to host our services and therefore we do not incur significant capital expenditures to support revenue generating activities.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-          "start": 35768,
-          "end": 35864
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "start": 86735,
+          "end": 86979
         }
       },
       {
         "risk": "Supply / execution exposure",
-        "evidence": "Before moving on, I wanna touch on the disruption in the Middle East.",
+        "evidence": "Moreover, moderators within a community may disagree on the vision for, or direction of, the community, or may simply decide not to work together, resulting in a degraded community experience and subreddit disruption, instability, stagnation, or even dissolution.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 214992,
-          "end": 215061
+          "url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+          "start": 167936,
+          "end": 168199
         }
       }
     ],
@@ -1066,55 +1260,55 @@ window.EARNINGS_REPORT = {
       "method": "Five-year EPS scenarios use broker-derived TTM EPS, bounded reported growth, and transparent scenario weights/multiples.",
       "base_case": {
         "eps_cagr": 0.2,
-        "exit_multiple": 17.746773,
-        "exit_eps": 18.091623170026455,
-        "exit_price": 321.0679295999999,
-        "irr": 0.19999999999999996,
+        "exit_multiple": 30.0,
+        "exit_eps": 10.70201561421479,
+        "exit_price": 321.0604684264437,
+        "irr": 0.16175493323666523,
         "probability": 0.5,
-        "summary": "TTM EPS $7.27 -> $18.09; EPS CAGR 20.0%; exit P/E 17.7x = $321.07; IRR 20.0%",
-        "detail": "TTM EPS $7.27 -> $18.09; EPS CAGR 20.0%; exit P/E 17.7x = $321.07; IRR 20.0%"
+        "summary": "TTM EPS $4.30 -> $10.70; EPS CAGR 20.0%; exit P/E 30.0x = $321.06; IRR 16.2%",
+        "detail": "TTM EPS $4.30 -> $10.70; EPS CAGR 20.0%; exit P/E 30.0x = $321.06; IRR 16.2%"
       },
       "bull_case": {
         "eps_cagr": 0.28,
-        "exit_multiple": 20.746773,
-        "exit_eps": 24.98165182832417,
-        "exit_price": 518.2886596472766,
-        "irr": 0.32061492701099215,
+        "exit_multiple": 33.0,
+        "exit_eps": 14.77778004897566,
+        "exit_price": 487.6667416161968,
+        "irr": 0.26305361433615504,
         "probability": 0.3,
-        "summary": "TTM EPS $7.27 -> $24.98; EPS CAGR 28.0%; exit P/E 20.7x = $518.29; IRR 32.1%",
-        "detail": "TTM EPS $7.27 -> $24.98; EPS CAGR 28.0%; exit P/E 20.7x = $518.29; IRR 32.1%"
+        "summary": "TTM EPS $4.30 -> $14.78; EPS CAGR 28.0%; exit P/E 33.0x = $487.67; IRR 26.3%",
+        "detail": "TTM EPS $4.30 -> $14.78; EPS CAGR 28.0%; exit P/E 33.0x = $487.67; IRR 26.3%"
       },
       "bear_case": {
         "eps_cagr": 0.08000000000000002,
-        "exit_multiple": 12.746773000000001,
-        "exit_eps": 10.682922565668928,
-        "exit_price": 136.17278892115942,
-        "irr": 0.01083419957642029,
+        "exit_multiple": 25.0,
+        "exit_eps": 6.319433200037696,
+        "exit_price": 157.9858300009424,
+        "irr": 0.00813985830337871,
         "probability": 0.2,
-        "summary": "TTM EPS $7.27 -> $10.68; EPS CAGR 8.0%; exit P/E 12.7x = $136.17; IRR 1.1%",
-        "detail": "TTM EPS $7.27 -> $10.68; EPS CAGR 8.0%; exit P/E 12.7x = $136.17; IRR 1.1%"
+        "summary": "TTM EPS $4.30 -> $6.32; EPS CAGR 8.0%; exit P/E 25.0x = $157.99; IRR 0.8%",
+        "detail": "TTM EPS $4.30 -> $6.32; EPS CAGR 8.0%; exit P/E 25.0x = $157.99; IRR 0.8%"
       },
       "base_cagr": 0.2,
-      "irr": 0.19999999999999996,
-      "key_risks_summary": "Regulatory / legal exposure, Demand / macro exposure, Capital intensity / cash-flow pressure"
+      "irr": 0.16175493323666523,
+      "key_risks_summary": "Competitive pressure, Regulatory / legal exposure, Demand / macro exposure"
     }
   },
   "sources": {
-    "filing_url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1116132/000114036126019428/ef20072115_ex99-1.htm",
+    "filing_url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630.htm",
+    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1713445/000171344526000100/rddt-20260630_htm.xml",
+    "earnings_release_url": null,
     "investor_relations_url": null,
-    "transcript_url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+    "transcript_url": "https://stockanalysis.com/stocks/rddt/transcripts/658548-q2-2026/",
     "transcript_provider": "stockanalysis.com",
-    "transcript_call_date": "2026-05-07",
-    "transcript_retrieved_at": "2026-08-18T00:44:07.647901+00:00",
-    "transcript_content_sha256": "652e77f88c4c7f8639b0856f5c3295d510466244bb55b542198842a97b41ad1f"
+    "transcript_call_date": "2026-07-30",
+    "transcript_retrieved_at": "2026-08-21T05:29:38.946163+00:00",
+    "transcript_content_sha256": "ed0e62a3eb9ee9b139541baf381a6858f7c998f60844d21931e1c841b425de97"
   },
   "warnings": [
-    "Source-derived KPI reference is missing or incomplete for the current ticker and fiscal period",
+    "No quarter-matched earnings 8-K exhibit was verified",
     "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable",
     "Official Nasdaq short-interest data unavailable: RuntimeError",
-    "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 16.32x"
+    "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 24.87x"
   ],
   "grade_breakdown": {
     "financial_metrics": {
@@ -1123,8 +1317,8 @@ window.EARNINGS_REPORT = {
       "weight": 0.3
     },
     "valuation": {
-      "grade": "B",
-      "reason": "Full valuation but supported by profitability",
+      "grade": "B-",
+      "reason": "Rich valuation on multiple metrics",
       "weight": 0.3
     },
     "earnings_call": {
@@ -1133,23 +1327,23 @@ window.EARNINGS_REPORT = {
       "weight": 0.1
     },
     "management_execution": {
-      "grade": "A",
-      "reason": "Strong execution on multiple fronts: buybacks, quality earnings, margin improvement",
+      "grade": "B",
+      "reason": "Adequate execution, one clear positive signal",
       "weight": 0.1
     },
     "future_growth": {
-      "grade": "A+",
-      "reason": "Explosive growth trajectory: backlog expanding, >20% revenue growth, strong pipeline, clear secular tailwinds",
+      "grade": "A",
+      "reason": "Strong growth outlook: high revenue growth, backlog building, positive guidance",
       "weight": 0.2
     },
-    "final_grade": "A",
-    "final_score": 11.7,
+    "final_grade": "A-",
+    "final_score": 10.9,
     "all_scores": {
       "financial_metrics": 13,
-      "valuation": 9,
+      "valuation": 8,
       "earnings_call": 13,
-      "management_execution": 12,
-      "future_growth": 13
+      "management_execution": 9,
+      "future_growth": 12
     }
   }
 };
