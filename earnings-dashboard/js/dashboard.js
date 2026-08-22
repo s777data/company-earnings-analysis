@@ -22,6 +22,11 @@
     if (absolute >= 1e6) return `${sign}$${(absolute / 1e6).toFixed(1)}M`;
     return `${sign}$${absolute.toLocaleString()}`;
   };
+  const formatSigned = (value, digits = 1) => {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return "N/A";
+    return `${number >= 0 ? "+" : ""}${number.toFixed(digits)}`;
+  };
 
   let lastTrigger = null;
   const dialog = $("metric-dialog");
@@ -510,7 +515,7 @@
       
         rows.push({ 
           name: "🎯 Final Valuation Score", 
-          detail: `${fvs}/100 (${grade}) — ${classification}. Regime ${regime} (${regimeLabel}). Core: ${coreScore}/100 from ${validMetrics.join(", ") || "none"}. Adj: net cash/debt ${finalScore.capital_liquidity_adjustment:+.1f}, dilution ${finalScore.dilution_adjustment:+.1f}, ROIC ${finalScore.roic_adjustment:+.1f} (total ${totalMod:+.1f}, capped ±10).`,
+          detail: `${fvs}/100 (${grade}) — ${classification}. Regime ${regime} (${regimeLabel}). Core: ${coreScore}/100 from ${validMetrics.join(", ") || "none"}. Adj: net cash/debt ${formatSigned(finalScore.capital_liquidity_adjustment)}, dilution ${formatSigned(finalScore.dilution_adjustment)}, ROIC ${formatSigned(finalScore.roic_adjustment)} (total ${formatSigned(totalMod)}, capped ±10).`,
           signal 
         });
       }
