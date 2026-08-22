@@ -102,7 +102,42 @@ def _generate_grade_reasoning(data: dict[str, Any]) -> str:
     if not grade_breakdown:
         return ""
     
+    # Check for new valuation engine data
+    valuation = data.get("valuation", {})
+    ps_relative = valuation.get("ps_relative_valuation")
+    final_score = valuation.get("final_valuation_score")
+    
     lines = ["", "📋 **GRADE REASONING**", ""]
+    
+    # Add P/S Relative Valuation if available
+    if ps_relative and ps_relative.get("relative_valuation_ratio") is not None:
+        vr = ps_relative["relative_valuation_ratio"]
+        score = ps_relative["valuation_score"]
+        classification = ps_relative["classification"]
+        color = ps_relative["color"]
+        inputs = ps_relative.get("inputs", {})
+        
+        lines.append(f"📊 **P/S Relative Valuation**: VR {vr:.2f}x (Score: {score}/100) — {classification} [{color}]")
+        lines.append(f"   Base: {inputs.get('company_ps', 'N/A')}x vs peer {inputs.get('peer_median_ps', 'N/A')}x | Growth adj: {ps_relative.get('growth_adjustment', 0):.3f} | Profit adj: {ps_relative.get('profitability_adjustment', 0):.3f}")
+        lines.append(f"   Peer: {inputs.get('peer_group_name', 'N/A')} ({inputs.get('peer_group_level', 'N/A')}, n={inputs.get('peer_count', 'N/A')})")
+        lines.append("")
+    
+    # Add Final Valuation Score if available
+    if final_score and final_score.get("final_valuation_score") is not None:
+        fvs = final_score["final_valuation_score"]
+        grade = final_score["letter_grade"]
+        classification = final_score["classification"]
+        regime = final_score["regime"]
+        core_score = final_score["core_valuation_score"]
+        total_mod = final_score["total_modifier"]
+        valid_metrics = final_score.get("valid_metrics", [])
+        
+        regime_label = "Profitable+FCF" if regime == "A" else "Profitable-FCF" if regime == "B" else "Unprofitable"
+        
+        lines.append(f"🎯 **Final Valuation Score**: {fvs}/100 ({grade}) — {classification}")
+        lines.append(f"   Regime {regime} ({regime_label}) | Core: {core_score}/100 from {', '.join(valid_metrics) if valid_metrics else 'none'}")
+        lines.append(f"   Adj: cash/debt {final_score.get('capital_liquidity_adjustment', 0):+.1f}, dilution {final_score.get('dilution_adjustment', 0):+.1f}, ROIC {final_score.get('roic_adjustment', 0):+.1f} (total {total_mod:+.1f}, capped ±10)")
+        lines.append("")
     
     # Order: Financial Metrics, Valuation, Earnings Call, Management Execution, Future Growth
     categories = [
@@ -131,7 +166,7 @@ def _generate_grade_reasoning(data: dict[str, Any]) -> str:
     
     # Final grade
     final_grade = grade_breakdown.get("final_grade", "N/A")
-    final_score = grade_breakdown.get("final_score", 0)
+    final_score_val = grade_breakdown.get("final_score", 0)
     final_emoji = {
         "A+": "🟦", "A": "🟦", "A-": "🔷",
         "B+": "🔷", "B": "🔵", "B-": "🔵",
@@ -139,7 +174,7 @@ def _generate_grade_reasoning(data: dict[str, Any]) -> str:
         "D+": "🟠", "D": "🔴", "D-": "🔴", "F": "🟥",
     }.get(final_grade, "🟡")
     
-    lines.extend(["", f"🏁 **Final Grade (weighted): {final_emoji} {final_grade}** (score: {final_score:.2f})"])
+    lines.extend(["", f"🏁 **Final Grade (weighted): {final_emoji} {final_grade}** (score: {final_score_val:.2f})"])
     
     return "\n".join(lines)
 

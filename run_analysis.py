@@ -34,6 +34,12 @@ from analysis_enrichment import (
     _percentile_rank,
 )
 from kpi_metrics import build_business_kpis
+from valuation_engine import (
+    build_valuation_analysis,
+    determine_valuation_regime,
+    calculate_ps_relative_valuation,
+    calculate_final_valuation_score,
+)
 
 
 def _signal(item: dict[str, Any]) -> str:
@@ -177,25 +183,57 @@ def _grade_financial_metrics(data: dict[str, Any]) -> tuple[str, str]:
 
 
 def _grade_valuation(data: dict[str, Any]) -> tuple[str, str]:
-    """Grade valuation: P/E, EV/EBITDA, FCF yield vs. growth and quality."""
+    """Grade valuation using the new Final Valuation Score Engine."""
+    valuation = data.get("valuation", {})
+    final_score_data = valuation.get("final_valuation_score", {})
+    
+    if not final_score_data or final_score_data.get("final_valuation_score") is None:
+        # Fallback to old method if new engine data not available
+        return _grade_valuation_legacy(data)
+    
+    letter_grade = final_score_data.get("letter_grade", "N/A")
+    classification = final_score_data.get("classification", "Unavailable")
+    final_score = final_score_data.get("final_valuation_score", 0)
+    regime = final_score_data.get("regime", "C")
+    
+    # Build detailed reasoning
+    core_score = final_score_data.get("core_valuation_score", 0)
+    total_modifier = final_score_data.get("total_modifier", 0)
+    valid_metrics = final_score_data.get("valid_metrics", [])
+    
+    reason = (
+        f"Final Valuation Score: {final_score}/100 ({letter_grade}) — {classification}. "
+        f"Regime {regime} ({'Profitable+FCF' if regime=='A' else 'Profitable-FCF' if regime=='B' else 'Unprofitable'}). "
+        f"Core score: {core_score}/100 from {', '.join(valid_metrics) if valid_metrics else 'no metrics'}. "
+        f"Adjustments: net cash/debt {final_score_data.get('capital_liquidity_adjustment', 0):+.1f}, "
+        f"dilution {final_score_data.get('dilution_adjustment', 0):+.1f}, "
+        f"ROIC quality {final_score_data.get('roic_adjustment', 0):+.1f} "
+        f"(total modifier {total_modifier:+.1f}, capped at ±10)."
+    )
+    
+    return letter_grade, reason
+
+
+def _grade_valuation_legacy(data: dict[str, Any]) -> tuple[str, str]:
+    """Legacy valuation grading for backward compatibility."""
     valuation = data.get("valuation", {})
     regime = valuation.get("regime", "")
     rows = valuation.get("rows", [])
-    
+
     # Find key valuation metrics
     pe_row = next((r for r in rows if "P/E" in r.get("label", "") or "pe_ttm" in r.get("key", "")), None)
     fcf_row = next((r for r in rows if "FCF" in r.get("label", "")), None)
     ev_ebitda_row = next((r for r in rows if "EBITDA" in r.get("label", "")), None)
     ps_row = next((r for r in rows if "P/S" in r.get("label", "")), None)
-    
+
     pe_signal = _signal(pe_row) if pe_row else "neutral"
     fcf_signal = _signal(fcf_row) if fcf_row else "neutral"
     ev_signal = _signal(ev_ebitda_row) if ev_ebitda_row else "neutral"
     ps_signal = _signal(ps_row) if ps_row else "neutral"
-    
+
     positive_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("best", "strong_positive", "positive"))
     negative_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("negative", "worst"))
-    
+
     if regime == "positive_earnings_and_fcf":
         if positive_signals >= 3:
             return "A+", "Attractive valuation across P/E, FCF yield, and EV/EBITDA for quality growth"
@@ -767,7 +805,7 @@ class EarningsAnalyzer:
             if enterprise_value is None and market_cap is not None and cash is not None:
                 enterprise_value = market_cap + debt - cash
             prior_revenue = revenue.get("prior_value")
-            revenue_growth_pct = ((revenue["value"] - prior_revenue) / abs(prior_revenue) * 100
+            revenue_growth_yoy = ((revenue["value"] - prior_revenue) / abs(prior_revenue)
                                   if prior_revenue not in (None, 0) else None)
 
             short_data = {}
@@ -777,15 +815,106 @@ class EarningsAnalyzer:
             except Exception as exc:
                 self.data["warnings"].append(f"Official Nasdaq short-interest data unavailable: {type(exc).__name__}")
 
+            # Fallback: fetch Forward P/E from StockAnalysis.com if Robinhood doesn't provide it
+            forward_pe = quote.get("forward_pe_ratio")
+            if forward_pe is None:
+                try:
+                    forward_pe_sa, sa_url = fetch_forward_pe_ntm(self.ticker)
+                    if forward_pe_sa:
+                        forward_pe = forward_pe_sa
+                        self.data["warnings"].append(
+                            f"Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): {forward_pe}x"
+                        )
+                except Exception as exc:
+                    self.data["warnings"].append(f"Forward P/E fallback failed: {type(exc).__name__}")
+
+            # Calculate growth rates as decimals
+            revenue_growth_decimal = revenue_growth_yoy / 100 if revenue_growth_yoy is not None else None
+            
+            # Gross margin and adjusted EBITDA margin
+            gross_margin = None
+            if annual_revenue and annual_gross_profit:
+                gross_margin = annual_gross_profit / annual_revenue
+            
+            adjusted_ebitda_margin = None
+            if annual_revenue and annual_ebitda:
+                adjusted_ebitda_margin = annual_ebitda / annual_revenue
+
+            # Net share dilution
+            diluted_shares = metrics.get("shares_diluted", {}).get("value")
+            prior_diluted_shares = metrics.get("shares_diluted", {}).get("prior_value")
+            net_share_dilution_pct = None
+            if diluted_shares and prior_diluted_shares and prior_diluted_shares > 0:
+                net_share_dilution_pct = ((diluted_shares / prior_diluted_shares) - 1) * 100
+
+            # Peer data - for now we use placeholder peer data
+            # In production, this would come from a peer database or API
+            # We'll use sector medians as proxies for demonstration
+            peer_median_ps = None
+            peer_median_forward_pe = None
+            peer_median_ev_ebitda = None
+            peer_median_ev_revenue = None
+            peer_median_ev_gross_profit = None
+            peer_median_fcf_yield = None
+            peer_revenue_growth = None
+            peer_gross_margin = None
+            peer_adjusted_ebitda_margin = None
+            peer_expected_eps_growth = None
+            peer_group_name = "Sector/Industry Median"
+            peer_group_level = "Sector"
+            peer_count = 0
+            peer_ps_source = "Estimated"
+            peer_ps_date = "N/A"
+
+            # Use the new valuation engine
+            valuation_analysis = build_valuation_analysis(
+                market_cap=market_cap,
+                enterprise_value=enterprise_value,
+                annual_revenue=annual_revenue,
+                annual_gross_profit=annual_gross_profit,
+                annual_net_income=annual_net_income,
+                annual_ebit=annual_ebit,
+                annual_ebitda=annual_ebitda,
+                annual_fcf=annual_fcf,
+                total_equity=metrics.get("total_equity", {}).get("value"),
+                cash=cash,
+                total_debt=debt,
+                revenue_growth_yoy=revenue_growth_decimal,
+                gross_margin=gross_margin,
+                adjusted_ebitda_margin=adjusted_ebitda_margin,
+                current_price=quote.get("price"),
+                trailing_pe=quote.get("pe_ratio"),
+                forward_pe=forward_pe,
+                peg_ratio=quote.get("peg_ratio"),
+                peer_median_ps=peer_median_ps,
+                peer_median_forward_pe=peer_median_forward_pe,
+                peer_median_ev_ebitda=peer_median_ev_ebitda,
+                peer_median_ev_revenue=peer_median_ev_revenue,
+                peer_median_ev_gross_profit=peer_median_ev_gross_profit,
+                peer_median_fcf_yield=peer_median_fcf_yield,
+                peer_revenue_growth=peer_revenue_growth,
+                peer_gross_margin=peer_gross_margin,
+                peer_adjusted_ebitda_margin=peer_adjusted_ebitda_margin,
+                peer_expected_eps_growth=peer_expected_eps_growth,
+                peer_group_name=peer_group_name,
+                peer_group_level=peer_group_level,
+                peer_count=peer_count,
+                peer_ps_source=peer_ps_source,
+                peer_ps_date=peer_ps_date,
+                net_share_dilution_pct=net_share_dilution_pct,
+                roic_minus_wacc=None,  # Would need ROIC/WACC calculation
+            )
+
+            # Also keep the old valuation sections for backward compatibility with dashboard
             sections = build_valuation_sections(
                 market_cap=market_cap, enterprise_value=enterprise_value,
                 annual_revenue=annual_revenue, annual_gross_profit=annual_gross_profit,
-                revenue_growth_pct=revenue_growth_pct,
+                revenue_growth_pct=revenue_growth_yoy,
                 total_equity=metrics.get("total_equity", {}).get("value"),
                 backlog=metrics.get("backlog", {}).get("value"),
                 annual_net_income=annual_net_income, annual_fcf=annual_fcf,
                 annual_ebit=annual_ebit, annual_ebitda=annual_ebitda,
-                trailing_pe=quote.get("pe_ratio"), forward_pe=quote.get("forward_pe_ratio"),
+                trailing_pe=quote.get("pe_ratio"), forward_pe=forward_pe,
                 peg_ratio=quote.get("peg_ratio"),
                 short_interest=short_data.get("short_interest"), public_float=quote.get("public_float"),
                 days_to_cover=short_data.get("days_to_cover"),
@@ -801,43 +930,11 @@ class EarningsAnalyzer:
                 "market_cap": market_cap,
                 "enterprise_value": enterprise_value,
                 "regime": sections.get("regime"),
-                "valuation_rows": len(sections.get("rows", []))
+                "valuation_rows": len(sections.get("rows", [])),
+                "ps_relative_valuation": valuation_analysis.get("ps_relative_valuation"),
+                "final_valuation_score": valuation_analysis.get("final_valuation_score"),
             })
 
-            # Fallback: fetch Forward P/E from StockAnalysis.com if Robinhood doesn't provide it
-            forward_pe = quote.get("forward_pe_ratio")
-            if forward_pe is None:
-                try:
-                    forward_pe_sa, sa_url = fetch_forward_pe_ntm(self.ticker)
-                    if forward_pe_sa:
-                        forward_pe = forward_pe_sa
-                        self.data["warnings"].append(
-                            f"Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): {forward_pe}x"
-                        )
-                except Exception as exc:
-                    self.data["warnings"].append(f"Forward P/E fallback failed: {type(exc).__name__}")
-
-            # Rebuild valuation with the (possibly updated) forward_pe
-            if forward_pe is not None and forward_pe != quote.get("forward_pe_ratio"):
-                sections = build_valuation_sections(
-                    market_cap=market_cap, enterprise_value=enterprise_value,
-                    annual_revenue=annual_revenue, annual_gross_profit=annual_gross_profit,
-                    revenue_growth_pct=revenue_growth_pct,
-                    total_equity=metrics.get("total_equity", {}).get("value"),
-                    backlog=metrics.get("backlog", {}).get("value"),
-                    annual_net_income=annual_net_income, annual_fcf=annual_fcf,
-                    annual_ebit=annual_ebit, annual_ebitda=annual_ebitda,
-                    trailing_pe=quote.get("pe_ratio"), forward_pe=forward_pe,
-                    peg_ratio=quote.get("peg_ratio"),
-                    short_interest=short_data.get("short_interest"), public_float=quote.get("public_float"),
-                    days_to_cover=short_data.get("days_to_cover"),
-                    short_interest_date=short_data.get("settlement_date"),
-                    stock_compensation=annual_sbc, period_revenue=annual_revenue, period_fcf=annual_fcf,
-                    diluted_shares=metrics.get("shares_diluted", {}).get("value"),
-                    prior_diluted_shares=metrics.get("shares_diluted", {}).get("prior_value"),
-                    market_source=quote["source"], filing_source="SEC filing/XBRL",
-                    short_source=short_data.get("source", "Nasdaq official short-interest report"),
-                )
             valuation = {
                 "current_price": quote["price"], "market_cap": market_cap,
                 "shares_outstanding": quote.get("shares_outstanding"), "public_float": quote.get("public_float"),
@@ -852,6 +949,9 @@ class EarningsAnalyzer:
                 "regime": sections["regime"], "regime_label": sections["regime_label"],
                 "rows": sections["rows"], "risk_rows": sections["risk_rows"],
                 "short_interest": short_data,
+                # New valuation engine outputs
+                "ps_relative_valuation": valuation_analysis.get("ps_relative_valuation"),
+                "final_valuation_score": valuation_analysis.get("final_valuation_score"),
             }
             self.data["valuation"] = valuation
 
