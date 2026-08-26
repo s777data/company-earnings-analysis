@@ -557,6 +557,28 @@ class SafetyTests(unittest.TestCase):
         self.assertTrue(test.data["valuation"]["quote_is_stale"])
         self.assertIn("not actionable", test.data["warnings"][0])
 
+    @patch("run_analysis.fetch_short_interest", side_effect=RuntimeError("not needed"))
+    @patch("run_analysis.get_quote")
+    @patch("run_analysis._now")
+    def test_latest_completed_close_is_valid_production_data(self, now, quote, _short):
+        from datetime import datetime, timezone
+        now.return_value = datetime(2026, 8, 26, 20, 52, tzinfo=timezone.utc)
+        quote.return_value = {
+            "price": 345.73,
+            "market_cap": 96_000_000_000,
+            "updated_at": "2026-08-26T19:59:59+00:00",
+            "source": "robinhood-trading MCP regular-session last trade",
+        }
+        analyzer = EarningsAnalyzer("TEST")
+        analyzer.data["_xbrl"] = {
+            "metrics": {"revenue": {"value": 100, "duration_days": 91}}
+        }
+        analyzer.quote_and_valuation()
+        self.assertFalse(analyzer.data["test_run"])
+        self.assertFalse(analyzer.data["valuation"]["quote_is_stale"])
+        self.assertTrue(analyzer.data["valuation"]["quote_is_completed_close"])
+        self.assertIn("latest completed", analyzer.data["warnings"][0])
+
     @patch("robinhood_mcp_get_quote._expected_account", return_value=None)
     @patch("robinhood_mcp_get_quote._call")
     def test_quote_requires_expected_account(self, call, expected):

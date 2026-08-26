@@ -1,31 +1,31 @@
 window.EARNINGS_REPORT = {
   "schema_version": 2,
   "company": {
-    "ticker": "TPR",
+    "ticker": "INTU",
     "period": "Q3 FY2026",
-    "report_date": "2026-03-28",
-    "call_date": "2026-05-07",
+    "report_date": "2026-04-30",
+    "call_date": "2026-05-20",
     "grade": "A",
     "confidence": 0.9500000000000001,
-    "recommendation": "BUY",
-    "price": 129.03,
-    "market_cap": 26069866350.0,
-    "pe_ttm": 17.746773,
-    "high_52": 164.8,
-    "low_52": 93.0,
-    "test_run": true
+    "recommendation": "HOLD",
+    "price": 345.73,
+    "market_cap": 94569947010.0,
+    "pe_ttm": 21.716889,
+    "high_52": 705.08,
+    "low_52": 252.84,
+    "test_run": false
   },
   "sections": {
     "income_statement": [
       {
         "key": "revenue",
         "name": "Revenue",
-        "raw_value": 1920600000.0,
-        "display_value": "$1.92B",
-        "comparison": "+21.2% YoY, -54.3% QoQ",
-        "status": "strong_positive",
-        "tier": "strong_positive",
-        "assessment": "+21.2% YoY, -54.3% QoQ",
+        "raw_value": 8558000000.0,
+        "display_value": "$8.56B",
+        "comparison": "+10.4% YoY, +0.3% QoQ",
+        "status": "positive",
+        "tier": "positive",
+        "assessment": "+10.4% YoY, +0.3% QoQ",
         "description": "Revenue recognized during the reported period.",
         "why_it_matters": "Shows the scale and growth of the core business.",
         "directionality": "Higher is generally better when growth is profitable.",
@@ -53,29 +53,29 @@ window.EARNINGS_REPORT = {
       {
         "key": "gross_profit",
         "name": "Gross Profit",
-        "raw_value": 1476500000.0,
-        "display_value": "$1.48B",
-        "comparison": "+22.4% YoY, -53.7% QoQ",
-        "status": "positive",
-        "tier": "positive",
-        "assessment": "+22.4% YoY, -53.7% QoQ",
+        "raw_value": null,
+        "display_value": "N/A",
+        "comparison": "YoY unavailable, QoQ unavailable",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "YoY unavailable, QoQ unavailable",
         "description": "Revenue remaining after direct costs.",
         "why_it_matters": "Funds operating expenses, investment, and profit.",
         "directionality": "Higher and expanding is generally better.",
         "formula": "Revenue − cost of revenue",
         "scale": [],
-        "source_note": "SEC XBRL",
+        "source_note": "Verified report data",
         "source_date": null
       },
       {
         "key": "operating_income",
         "name": "Operating Income",
-        "raw_value": 427500000.0,
-        "display_value": "$427.5M",
-        "comparison": "+68.5% YoY, -59.1% QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+68.5% YoY, -59.1% QoQ",
+        "raw_value": 4020000000.0,
+        "display_value": "$4.02B",
+        "comparison": "+8.1% YoY, +189.4% QoQ",
+        "status": "neutral",
+        "tier": "neutral",
+        "assessment": "+8.1% YoY, +189.4% QoQ",
         "description": "Profit from core operations before interest and taxes.",
         "why_it_matters": "Measures operating execution and cost discipline.",
         "directionality": "Higher is generally better.",
@@ -87,12 +87,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_income",
         "name": "Net Income",
-        "raw_value": 343800000.0,
-        "display_value": "$343.8M",
-        "comparison": "+69.1% YoY, -38.7% QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+69.1% YoY, -38.7% QoQ",
+        "raw_value": 3064000000.0,
+        "display_value": "$3.06B",
+        "comparison": "+8.7% YoY, +169.0% QoQ",
+        "status": "neutral",
+        "tier": "neutral",
+        "assessment": "+8.7% YoY, +169.0% QoQ",
         "description": "Profit attributable after all recognized expenses.",
         "why_it_matters": "Captures the period's bottom-line result.",
         "directionality": "Higher and durable is generally better.",
@@ -104,12 +104,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "free_cash_flow",
         "name": "Free Cash Flow",
-        "raw_value": 1424800000.0,
-        "display_value": "$1.42B",
-        "comparison": "+108.8% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+108.8% YoY, QoQ unavailable",
+        "raw_value": 7359000000.0,
+        "display_value": "$7.36B",
+        "comparison": "+28.5% YoY, QoQ unavailable",
+        "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+28.5% YoY, QoQ unavailable",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
@@ -121,12 +121,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "operating_cash_flow",
         "name": "Operating Cash Flow",
-        "raw_value": 1456300000.0,
-        "display_value": "$1.46B",
-        "comparison": "+89.2% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+89.2% YoY, QoQ unavailable",
+        "raw_value": 7507000000.0,
+        "display_value": "$7.51B",
+        "comparison": "+28.9% YoY, QoQ unavailable",
+        "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+28.9% YoY, QoQ unavailable",
         "description": "Cash generated by operating activities.",
         "why_it_matters": "Tests whether accounting earnings convert into cash.",
         "directionality": "Higher and consistent is generally better.",
@@ -138,12 +138,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "capex",
         "name": "Capital Expenditures",
-        "raw_value": 31500000.0,
-        "display_value": "$31.5M",
-        "comparison": "-64.0% YoY, QoQ unavailable",
-        "status": "positive",
-        "tier": "positive",
-        "assessment": "-64.0% YoY, QoQ unavailable",
+        "raw_value": 148000000.0,
+        "display_value": "$148.0M",
+        "comparison": "+49.5% YoY, QoQ unavailable",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "+49.5% YoY, QoQ unavailable",
         "description": "Cash or obligations used for long-lived productive assets.",
         "why_it_matters": "Indicates reinvestment needs and pressure on free cash flow.",
         "directionality": "Context dependent; efficiency matters more than simply lower or higher.",
@@ -155,12 +155,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "eps_diluted",
         "name": "Diluted EPS",
-        "raw_value": 1.65,
-        "display_value": "$1.65",
-        "comparison": "+73.7% YoY, -58.0% QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+73.7% YoY, -58.0% QoQ",
+        "raw_value": 11.09,
+        "display_value": "$11.09",
+        "comparison": "+10.7% YoY, +180.1% QoQ",
+        "status": "positive",
+        "tier": "positive",
+        "assessment": "+10.7% YoY, +180.1% QoQ",
         "description": "Earnings allocated to each diluted weighted-average share.",
         "why_it_matters": "Connects company profit to shareholder economics.",
         "directionality": "Higher sustainable EPS is generally better.",
@@ -170,34 +170,291 @@ window.EARNINGS_REPORT = {
         "source_date": null
       }
     ],
-    "business_kpis": [],
+    "business_kpis": {
+      "rows": [
+        {
+          "key": "credit_karma_revenue_growth",
+          "name": "Credit Karma Revenue Growth",
+          "latest_value": "15% YoY",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "15% YoY",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "Credit Karma revenue grew 15% in Q3 FY26 to $631M, driven by personal loans (9 pts), auto insurance (5 pts), and home loans (1 pt). FY26 guidance raised to ~19% growth.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "full_year_fy2026_revenue_guidance",
+          "name": "Full Year FY2026 Revenue Guidance",
+          "latest_value": "$21.341-21.374B (13-14% growth)",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "$21.341-21.374B (13-14% growth)",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "Raised full-year revenue guidance to $21.341-21.374B (13-14% growth). GBSG raised to ~16% growth; Consumer raised to ~10% (TurboTax ~7%, Credit Karma ~19%, ProTax ~4%).",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "mid_market_online_ecosystem_revenue_growth",
+          "name": "Mid-Market Online Ecosystem Revenue Growth",
+          "latest_value": "38% YoY",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "38% YoY",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "QBO Advanced and Intuit Enterprise Suite online ecosystem revenue grew 38% YoY. Direct sales team scaled ~30% with improving seller productivity; Intuit Enterprise Suite contracts grew 37% QoQ.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "non_gaap_diluted_eps_growth",
+          "name": "Non-GAAP Diluted EPS Growth",
+          "latest_value": "10% YoY ($12.80 vs $11.65)",
+          "latest_period": "Q3 2026",
+          "prior_value": "$11.65",
+          "prior_period": "Q3 2025",
+          "display_value": "10% YoY ($12.80 vs $11.65)",
+          "comparison": "Q3 2025: $11.65",
+          "analyst_view": "Q3 non-GAAP diluted EPS of $12.80 grew 10% YoY. Full-year FY26 guidance raised to $23.80-23.85 (~18% growth). Company committed to annual EPS growth of at least mid-teens over coming years.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "online_ecosystem_revenue_growth",
+          "name": "Online Ecosystem Revenue Growth",
+          "latest_value": "19% YoY (22% ex-Mailchimp)",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "19% YoY (22% ex-Mailchimp)",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "Global Business Solutions Online Ecosystem revenue grew 19% YoY to $2.5B. Excluding Mailchimp, growth accelerated to 22%, reflecting strong mid-market and small business momentum.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "total_online_payment_volume_growth",
+          "name": "Total Online Payment Volume Growth",
+          "latest_value": "30% YoY",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "30% YoY",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "Total online payment volume including Bill Pay grew 30% YoY. Excluding Bill Pay, online payment volume grew 18%, reflecting continued momentum in payments and Bill Pay adoption.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "turbotax_live_customer_growth",
+          "name": "TurboTax Live Customer Growth",
+          "latest_value": "38% YoY",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "38% YoY",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "TurboTax Live customers expected to grow 38% in FY26, with new customers up 29% excluding one-time offers. Local expert strategy drove 36% of acquired customers as new to TurboTax.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "turbotax_live_revenue_growth",
+          "name": "TurboTax Live Revenue Growth",
+          "latest_value": "36% YoY (FY26 guidance: $2.8B)",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "36% YoY (FY26 guidance: $2.8B)",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "TurboTax Live revenue expected to grow 36% in FY26, representing 53% of total TurboTax revenue (up 11 points YoY), well above long-term 15-20% expectation.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "turbotax_live_revenue_share_of_turbotax",
+          "name": "TurboTax Live Revenue Share of TurboTax",
+          "latest_value": "53%",
+          "latest_period": "Q3 2026",
+          "prior_value": "42%",
+          "prior_period": "Q3 2025",
+          "display_value": "53%",
+          "comparison": "Q3 2025: 42%",
+          "analyst_view": "TurboTax Live represents 53% of total TurboTax revenue, up 11 percentage points YoY, marking a significant milestone in disrupting the $37B assisted tax TAM (88% of total).",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "ai_agent_transaction_volume",
+          "name": "AI Agent Transaction Volume",
+          "latest_value": "50M+ transactions/week",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "50M+ transactions/week",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "Accounting AI agents powering recommendations across 50+ million transactions weekly. Business tax AI agents identifying millions of dollars in deductions. AI capabilities scaling across platform.",
+          "source": "IR",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "consumer_money_portfolio_revenue_growth",
+          "name": "Consumer Money Portfolio Revenue Growth",
+          "latest_value": "26% YoY (FY guidance)",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "26% YoY (FY guidance)",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "Consumer money portfolio expected to deliver 26% revenue growth in FY26. Over 35% of TurboTax customers adopted Fast Money offerings; average revenue per user ~30% higher for TurboTax + Credit Karma users vs TurboTax alone.",
+          "source": "IR",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        },
+        {
+          "key": "intuit_enterprise_suite_contract_growth",
+          "name": "Intuit Enterprise Suite Contract Growth",
+          "latest_value": "37% QoQ",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": "37% QoQ",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "Intuit Enterprise Suite contracts grew 37% quarter-over-quarter as sales capacity expanded and platform traction accelerated in mid-market.",
+          "source": "IR",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
+          "scale": []
+        }
+      ],
+      "selection_status": "COMPLETE",
+      "note": "Top source-derived metrics selected by importance from KPI_derived_reference.txt."
+    },
     "key_ratios": [
       {
         "key": "gross_margin",
         "name": "Gross Margin",
-        "raw_value": 0.7687701759866709,
-        "display_value": "76.9%",
-        "comparison": "+0.8 pp YoY, +1.1 pp QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+0.8 pp YoY, +1.1 pp QoQ",
+        "raw_value": null,
+        "display_value": "N/A",
+        "comparison": "YoY unavailable, QoQ unavailable",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "YoY unavailable, QoQ unavailable",
         "description": "Share of revenue remaining after direct costs.",
         "why_it_matters": "Shows product economics and pricing/cost performance.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Gross profit ÷ revenue",
         "scale": [],
-        "source_note": "SEC XBRL",
+        "source_note": "Verified report data",
         "source_date": null
       },
       {
         "key": "operating_margin",
         "name": "Operating Margin",
-        "raw_value": 0.2225866916588566,
-        "display_value": "22.3%",
-        "comparison": "+6.2 pp YoY, -2.6 pp QoQ",
-        "status": "strong_positive",
-        "tier": "strong_positive",
-        "assessment": "+6.2 pp YoY, -2.6 pp QoQ",
+        "raw_value": 0.4697359196073849,
+        "display_value": "47.0%",
+        "comparison": "-1.0 pp YoY, +30.7 pp QoQ",
+        "status": "best",
+        "tier": "best",
+        "assessment": "-1.0 pp YoY, +30.7 pp QoQ",
         "description": "Share of revenue retained as operating profit.",
         "why_it_matters": "Measures operating efficiency and pricing power.",
         "directionality": "Higher and durable is generally better.",
@@ -209,12 +466,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_margin",
         "name": "Net Margin",
-        "raw_value": 0.1790065604498594,
-        "display_value": "17.9%",
-        "comparison": "+5.1 pp YoY, +4.6 pp QoQ",
-        "status": "positive",
-        "tier": "positive",
-        "assessment": "+5.1 pp YoY, +4.6 pp QoQ",
+        "raw_value": 0.35802757653657397,
+        "display_value": "35.8%",
+        "comparison": "-0.6 pp YoY, +22.5 pp QoQ",
+        "status": "best",
+        "tier": "best",
+        "assessment": "-0.6 pp YoY, +22.5 pp QoQ",
         "description": "Share of revenue retained as net income.",
         "why_it_matters": "Summarizes bottom-line profitability.",
         "directionality": "Higher and durable is generally better.",
@@ -226,12 +483,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "sbc_revenue",
         "name": "SBC / Revenue",
-        "raw_value": 0.014526710402999063,
-        "display_value": "1.5%",
-        "comparison": "-0.1 pp YoY, +0.2 pp QoQ",
+        "raw_value": 0.056672119654124796,
+        "display_value": "5.7%",
+        "comparison": "-0.4 pp YoY, -6.8 pp QoQ",
         "status": "negative",
         "tier": "negative",
-        "assessment": "-0.1 pp YoY, +0.2 pp QoQ",
+        "assessment": "-0.4 pp YoY, -6.8 pp QoQ",
         "description": "Stock-based compensation expense relative to revenue.",
         "why_it_matters": "Highlights equity-compensation intensity and potential dilution pressure.",
         "directionality": "Lower is generally better.",
@@ -245,8 +502,8 @@ window.EARNINGS_REPORT = {
       {
         "key": "ps_annualized",
         "name": "P/S (Annualized)",
-        "raw_value": 3.384156260885939,
-        "display_value": "3.4x",
+        "raw_value": 2.6944988695636862,
+        "display_value": "2.7x",
         "comparison": "Moderate",
         "status": "neutral",
         "tier": 1,
@@ -283,8 +540,8 @@ window.EARNINGS_REPORT = {
       {
         "key": "ev_revenue",
         "name": "EV / Revenue",
-        "raw_value": 3.248309015661487,
-        "display_value": "3.2x",
+        "raw_value": 2.582496321279136,
+        "display_value": "2.6x",
         "comparison": "Typical",
         "status": "neutral",
         "tier": 1,
@@ -314,26 +571,9 @@ window.EARNINGS_REPORT = {
         "source_date": null
       },
       {
-        "key": "ev_gross_profit",
-        "name": "EV / Gross Profit",
-        "raw_value": 4.225331727381952,
-        "display_value": "4.2x",
-        "comparison": "Context Only",
-        "status": "neutral",
-        "tier": 2,
-        "assessment": "Context Only",
-        "description": "Enterprise value / annualized gross profit.",
-        "why_it_matters": "Shows whether the core product is profitable to make before corporate overhead and management costs.",
-        "directionality": "Lower is better",
-        "formula": "Enterprise value ÷ annualized gross profit",
-        "scale": [],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
-        "source_date": null
-      },
-      {
         "key": "ev_revenue_growth",
         "name": "EV / Revenue / Growth",
-        "raw_value": 0.15319257339932119,
+        "raw_value": 0.24906314023878634,
         "display_value": "0.2x",
         "comparison": "Context Only",
         "status": "neutral",
@@ -348,14 +588,47 @@ window.EARNINGS_REPORT = {
         "source_date": null
       },
       {
+        "key": "price_to_book",
+        "name": "Price to Book (P/B)",
+        "raw_value": 4.584320471666101,
+        "display_value": "4.6x",
+        "comparison": "Expensive",
+        "status": "negative",
+        "tier": 2,
+        "assessment": "Expensive",
+        "description": "Market cap / total equity (or tangible book value).",
+        "why_it_matters": "Shows the price paid relative to the accounting value of assets after liabilities.",
+        "directionality": "Lower is better",
+        "formula": "Market cap ÷ total equity",
+        "scale": [
+          {
+            "max": 1,
+            "label": "Below Book",
+            "signal": "positive"
+          },
+          {
+            "max": 3,
+            "label": "Typical",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Expensive",
+            "signal": "negative"
+          }
+        ],
+        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
         "key": "forward_pe",
         "name": "Forward P/E (NTM)",
-        "raw_value": 16.32,
-        "display_value": "16.3x",
-        "comparison": "Typical",
-        "status": "neutral",
+        "raw_value": 13.73,
+        "display_value": "13.7x",
+        "comparison": "Attractive",
+        "status": "positive",
         "tier": 1,
-        "assessment": "Typical",
+        "assessment": "Attractive",
         "description": "Current share price / consensus next-twelve-month diluted EPS.",
         "why_it_matters": "Shows the price paid today for expected next-twelve-month earnings.",
         "directionality": "Lower is better",
@@ -383,8 +656,8 @@ window.EARNINGS_REPORT = {
       {
         "key": "trailing_pe",
         "name": "Trailing P/E",
-        "raw_value": 17.746773,
-        "display_value": "17.7x",
+        "raw_value": 21.716889,
+        "display_value": "21.7x",
         "comparison": "Typical",
         "status": "neutral",
         "tier": 1,
@@ -414,47 +687,14 @@ window.EARNINGS_REPORT = {
         "source_date": null
       },
       {
-        "key": "ev_ebitda",
-        "name": "EV / EBITDA",
-        "raw_value": 13.38681559719502,
-        "display_value": "13.4x",
-        "comparison": "Typical",
-        "status": "neutral",
-        "tier": 1,
-        "assessment": "Typical",
-        "description": "Enterprise value / EBITDA.",
-        "why_it_matters": "Compares the total business value with operating earning power before interest, taxes, depreciation, and amortization.",
-        "directionality": "Lower is better",
-        "formula": "Enterprise value ÷ EBITDA",
-        "scale": [
-          {
-            "max": 8,
-            "label": "Attractive",
-            "signal": "positive"
-          },
-          {
-            "max": 15,
-            "label": "Typical",
-            "signal": "neutral"
-          },
-          {
-            "max": null,
-            "label": "Expensive",
-            "signal": "negative"
-          }
-        ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
-        "source_date": null
-      },
-      {
         "key": "levered_fcf_yield",
         "name": "Levered FCF Yield",
-        "raw_value": 7.307104514375007,
-        "display_value": "7.3%",
-        "comparison": "Typical",
-        "status": "neutral",
+        "raw_value": 10.403892943828819,
+        "display_value": "10.4%",
+        "comparison": "Attractive",
+        "status": "positive",
         "tier": 1,
-        "assessment": "Typical",
+        "assessment": "Attractive",
         "description": "FCF available to common equity / market cap.",
         "why_it_matters": "Shows the cash return generated for common shareholders relative to the stock's market value.",
         "directionality": "Higher is better",
@@ -478,131 +718,91 @@ window.EARNINGS_REPORT = {
         ],
         "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
         "source_date": null
+      },
+      {
+        "key": "ev_ebit",
+        "name": "EV / EBIT",
+        "raw_value": 5.4977620690315545,
+        "display_value": "5.5x",
+        "comparison": "Context Only",
+        "status": "neutral",
+        "tier": 2,
+        "assessment": "Context Only",
+        "description": "Enterprise value / operating income.",
+        "why_it_matters": "Compares total business value with core operating profit after depreciation and amortization.",
+        "directionality": "Lower is better",
+        "formula": "Enterprise value ÷ operating income",
+        "scale": [],
+        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_date": null
       }
     ],
     "valuation_regime": "Positive Earnings / FCF",
     "short_interest_sbc": [
       {
         "name": "Short Interest % of Float",
-        "detail": "N/A — Unavailable",
-        "signal": "neutral",
+        "detail": "3.4% — Low",
+        "signal": "positive",
         "tier": 1
       },
       {
         "name": "Short Ratio / Days to Cover",
-        "detail": "N/A — Unavailable",
+        "detail": "2.8d — Moderate",
         "signal": "neutral",
         "tier": 1
       },
       {
         "name": "SBC / Revenue",
-        "detail": "1.5% — Low",
-        "signal": "positive",
-        "tier": 1
-      },
-      {
-        "name": "SBC / Free Cash Flow",
-        "detail": "5.9% — Strong",
-        "signal": "positive",
-        "tier": 2
-      },
-      {
-        "name": "SBC-Adjusted FCF Yield",
-        "detail": "6.9% — Reasonable",
+        "detail": "5.7% — Moderate",
         "signal": "neutral",
         "tier": 1
       },
       {
+        "name": "SBC / Free Cash Flow",
+        "detail": "20.2% — Moderate",
+        "signal": "neutral",
+        "tier": 2
+      },
+      {
+        "name": "SBC-Adjusted FCF Yield",
+        "detail": "8.3% — Attractive",
+        "signal": "positive",
+        "tier": 1
+      },
+      {
         "name": "Net Share Dilution",
-        "detail": "-2.6% — Shrinking",
+        "detail": "-2.1% — Shrinking",
         "signal": "positive",
         "tier": 1
       }
     ],
     "capital_liquidity": [
       {
-        "name": "Total Equity",
-        "value": "$682.4M",
+        "name": "Cash",
+        "value": "$4.68B",
         "signal": "worst",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
           "start": null,
           "end": null,
-          "concept": "StockholdersEquity",
+          "concept": "CashAndCashEquivalentsAtCarryingValue",
           "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "context": "c-14",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
+          "decimals": "-6",
           "period_start": null,
-          "period_end": "2026-03-28"
-        }
-      },
-      {
-        "name": "Long-term Debt",
-        "value": "$0",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "LongTermDebtCurrent",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-5",
-          "period_start": null,
-          "period_end": "2026-03-28"
-        }
-      },
-      {
-        "name": "Capital Expenditures",
-        "value": "$31.5M",
-        "signal": "positive",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "CapitalExpendituresIncurredButNotYetPaid",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-1",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-5",
-          "period_start": "2025-06-29",
-          "period_end": "2026-03-28"
-        }
-      },
-      {
-        "name": "Total Assets",
-        "value": "$6.47B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Assets",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-5",
-          "period_start": null,
-          "period_end": "2026-03-28"
+          "period_end": "2026-04-30"
         }
       },
       {
         "name": "Operating Cash Flow",
-        "value": "$1.46B",
-        "signal": "best",
+        "value": "$7.51B",
+        "signal": "strong_positive",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
           "start": null,
           "end": null,
           "concept": "NetCashProvidedByUsedInOperatingActivities",
@@ -610,81 +810,138 @@ window.EARNINGS_REPORT = {
           "context": "c-1",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
-          "period_start": "2025-06-29",
-          "period_end": "2026-03-28"
+          "decimals": "-6",
+          "period_start": "2025-08-01",
+          "period_end": "2026-04-30"
+        }
+      },
+      {
+        "name": "Total Assets",
+        "value": "$39.33B",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "Assets",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-14",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-6",
+          "period_start": null,
+          "period_end": "2026-04-30"
         }
       },
       {
         "name": "Total Liabilities",
-        "value": "$5.78B",
+        "value": "$18.70B",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
           "start": null,
           "end": null,
           "concept": "Liabilities",
           "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "context": "c-14",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
+          "decimals": "-6",
           "period_start": null,
-          "period_end": "2026-03-28"
+          "period_end": "2026-04-30"
         }
       },
       {
-        "name": "Cash",
-        "value": "$1.05B",
+        "name": "Long-term Debt",
+        "value": "$750.0M",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
           "start": null,
           "end": null,
-          "concept": "CashAndCashEquivalentsAtCarryingValue",
+          "concept": "LongTermDebtCurrent",
           "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "context": "c-14",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-5",
+          "decimals": "-6",
           "period_start": null,
-          "period_end": "2026-03-28"
+          "period_end": "2026-04-30"
+        }
+      },
+      {
+        "name": "Total Equity",
+        "value": "$20.63B",
+        "signal": "caution",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "StockholdersEquity",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-14",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-6",
+          "period_start": null,
+          "period_end": "2026-04-30"
+        }
+      },
+      {
+        "name": "Capital Expenditures",
+        "value": "$148.0M",
+        "signal": "worst",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-1",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-6",
+          "period_start": "2025-08-01",
+          "period_end": "2026-04-30"
         }
       },
       {
         "name": "Net cash / (debt)",
-        "value": "$1.05B",
+        "value": "$3.93B",
         "signal": "positive",
         "citation": [
           {
             "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+            "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
             "start": null,
             "end": null,
             "concept": "CashAndCashEquivalentsAtCarryingValue",
             "taxonomy": "http://fasb.org/us-gaap/2025",
-            "context": "c-3",
+            "context": "c-14",
             "dimensions": [],
             "unit": "usd",
-            "decimals": "-5",
+            "decimals": "-6",
             "period_start": null,
-            "period_end": "2026-03-28"
+            "period_end": "2026-04-30"
           },
           {
             "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
+            "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
             "start": null,
             "end": null,
             "concept": "LongTermDebtCurrent",
             "taxonomy": "http://fasb.org/us-gaap/2025",
-            "context": "c-3",
+            "context": "c-14",
             "dimensions": [],
             "unit": "usd",
-            "decimals": "-5",
+            "decimals": "-6",
             "period_start": null,
-            "period_end": "2026-03-28"
+            "period_end": "2026-04-30"
           }
         ]
       }
@@ -692,68 +949,68 @@ window.EARNINGS_REPORT = {
     "guidance": [
       {
         "name": "Forward outlook",
-        "detail": "To this end, we expect marketing as a percentage of sales to now increase around 190 basis points versus last year, an increase of 60 basis points from our prior guidance and now approaching 13% of revenue.",
+        "detail": "Our guidance for the fourth quarter of fiscal 2026 includes total company revenue growth of 11%-12%, GAAP earnings per share growth of $0.73-$0.79, and non-GAAP earnings per share of $3.56-$3.62.",
         "signal": "strong_positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 25973,
-          "end": 26179
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 20520,
+          "end": 20715
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "Turning to operating margin, we expect expansion of approximately 60 basis points, driven by a gross margin increase in the area of 130 basis points, partially offset by higher SG&A, which reflects strategic investment in brand building with an increase of over 300 basis points in marketing to drive long-term growth.",
-        "signal": "best",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 27942,
-          "end": 28260
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Taken together, we now expect EPS to be in the area of $6.95, representing growth over 35% compared to last year and ahead of our prior outlook of $6.40-$6.45.",
+        "detail": "Guidance includes total company revenue of $21.341 billion-$21.374 billion, growth of 13%-14%.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 26842,
-          "end": 27001
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 19828,
+          "end": 19922
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "Delivered double-digit revenue, margin, and EPS growth in Q3, driven by strong global demand, especially among Gen Z, and raised full-year guidance.",
+        "detail": "As Sasan shared, we expect TurboTax Live customers to grow 38% this year and revenue to grow 36%, well ahead of our stated long-term growth expectations of 15%-20%.",
+        "signal": "positive",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 13657,
+          "end": 13821
+        }
+      },
+      {
+        "name": "Forward outlook",
+        "detail": "The Consumer Group outlook is supported by TurboTax growth of approximately 7%, Credit Karma growth of approximately 19%, and Pro Tax growth of approximately 4%.",
         "signal": "best",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 416,
-          "end": 564
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 20129,
+          "end": 20290
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "In addition, our outlook now assumes an operating margin of approximately 23%, which is up approximately 300 basis points compared to last year and 120 basis points above our prior outlook.",
+        "detail": "To summarize, in a $37 billion assisted TAM, we expect to grow TurboTax Live customers 38% and revenue 36%, representing over half of our TurboTax franchise.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 24964,
-          "end": 25153
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 7362,
+          "end": 7519
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "This includes over $300 million in dividend payments for an annual rate of $1.60 per share, as well as $1.3 billion in share repurchases, which is an increase from our prior outlook of $1.2 billion.",
-        "signal": "positive",
+        "detail": "Our guidance includes Global Business Solutions Group revenue growth of approximately 16%, with Desktop revenue growth in the mid-single digits.",
+        "signal": "strong_positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 21500,
-          "end": 21698
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 19923,
+          "end": 20067
         }
       }
     ],
@@ -761,302 +1018,302 @@ window.EARNINGS_REPORT = {
       {
         "topic": "Management Tone",
         "category": "outlook",
-        "detail": "Confident → Assured, We see confident or we have confidence in Coach, and that's what gave us the confidence to increase the guide even on what was an exceptional Q3 performance.",
+        "detail": "Confident → Assured, If I were to put a bow around it, what gives us confidence and what should give you and investors confidence is, one, we are actually looking to scale our growth engines even further and taking things like Assisted Tax, Money, and mid-market, that are already growing north of 30%, and scaling them faster.",
         "signal": "best",
         "tier": "best",
         "reasoning": "The cited analyst q&a evidence is supportive for management tone.",
         "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 51298,
-          "end": 51455
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 29539,
+          "end": 29845
         },
         "confidence_category": "Confident",
         "confidence_subcategory": "Assured",
         "confidence_rank": 4,
-        "confidence_reasoning": "Aggregate management-language scores were Confident 192, Vague 18, and Not Confident 18; the leading assured cues were we expect (7), we anticipate (3), we believe (2)."
+        "confidence_reasoning": "Aggregate management-language scores were Confident 192, Vague 8, and Not Confident 7; the leading assured cues were we expect (13), we believe (1), confident (4)."
       },
       {
         "topic": "Revenue & Demand",
         "category": "revenue",
-        "detail": "Delivered double-digit revenue, margin, and EPS growth in Q3, driven by strong global demand, especially among Gen Z, and raised full-year guidance.",
+        "detail": "Within Money, revenue growth in the quarter was driven by payments revenue growth, fueled by customer growth, an increase in total payment volume per customer, and higher revenue yield.",
         "signal": "best",
         "tier": "best",
-        "reasoning": "The cited prepared remarks evidence is supportive for revenue & demand.",
-        "section": "Prepared Remarks",
+        "reasoning": "The cited analyst q&a evidence is supportive for revenue & demand.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 416,
-          "end": 564
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 16509,
+          "end": 16694
         }
       },
       {
         "topic": "Margins & Profitability",
         "category": "margin",
-        "detail": "At the same time, gross margin and profitability exceeded plan, even with continued strategic brand investments to support a return to profitable growth.",
-        "signal": "strong_positive",
-        "tier": "strong_positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for margins & profitability.",
-        "section": "Prepared Remarks",
+        "detail": "We delivered solid third quarter company-wide results for fiscal 2026, exceeding the top end of our guidance across revenue, operating income, and earnings per share.",
+        "signal": "positive",
+        "tier": "positive",
+        "reasoning": "The cited analyst q&a evidence is supportive for margins & profitability.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 12184,
-          "end": 12337
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 12663,
+          "end": 12829
         }
       },
       {
         "topic": "Guidance",
         "category": "guidance",
-        "detail": "To this end, we expect marketing as a percentage of sales to now increase around 190 basis points versus last year, an increase of 60 basis points from our prior guidance and now approaching 13% of revenue.",
-        "signal": "strong_positive",
-        "tier": "strong_positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for guidance.",
-        "section": "Prepared Remarks",
+        "detail": "As Sasan shared, we expect TurboTax Live customers to grow 38% this year and revenue to grow 36%, well ahead of our stated long-term growth expectations of 15%-20%.",
+        "signal": "positive",
+        "tier": "positive",
+        "reasoning": "The cited analyst q&a evidence is supportive for guidance.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 25973,
-          "end": 26179
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 13657,
+          "end": 13821
         }
       },
       {
         "topic": "Products & Innovation",
         "category": "product",
-        "detail": "Next, we delivered fashion innovation and product excellence led by Coach, where the brand is strong and resonating globally.",
-        "signal": "positive",
-        "tier": "positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for products & innovation.",
-        "section": "Prepared Remarks",
+        "detail": "We have a platform where it's all in one, that has both technology and people on one platform to help customers get their taxes done right.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited analyst q&a evidence is mixed or monitoring for products & innovation.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 4756,
-          "end": 4881
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 29256,
+          "end": 29395
         }
       },
       {
         "topic": "Customers & Engagement",
         "category": "customer",
-        "detail": "We enhanced both our in-store and digital experiences, simplifying the customer journey and elevating engagement.",
+        "detail": "Average revenue per user is approximately 30% higher for customers using both TurboTax and Credit Karma compared to customers using TurboTax alone.",
         "signal": "neutral",
         "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for customers & engagement.",
-        "section": "Prepared Remarks",
+        "reasoning": "The cited analyst q&a evidence is mixed or monitoring for customers & engagement.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 14794,
-          "end": 14907
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 6554,
+          "end": 6701
         }
       },
       {
         "topic": "Capital Allocation",
         "category": "capital",
-        "detail": "In fiscal 2026, we now expect to return approximately $1.6 billion or approximately 100% of our expected adjusted free cash flow to shareholders through dividends and share repurchases.",
+        "detail": "We finished the quarter with approximately $6.8 billion in cash and investments and $6.2 billion in debt on our balance sheet.",
         "signal": "neutral",
         "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for capital allocation.",
-        "section": "Prepared Remarks",
+        "reasoning": "The cited analyst q&a evidence is mixed or monitoring for capital allocation.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 21314,
-          "end": 21499
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 18118,
+          "end": 18244
         }
       },
       {
         "topic": "Competition & Market",
         "category": "competition",
-        "detail": "We powered global growth through compelling experiences, delivering double-digit gains in North America, Greater China, and Europe, significantly outpacing the industry and growing market share in each of these regions.",
-        "signal": "positive",
-        "tier": "positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for competition & market.",
-        "section": "Prepared Remarks",
+        "detail": "With a base of approximately 10 million business customers and 1 million accountants, this breadth of data, customers, and an ecosystem of industry-specific domain expertise fuels a powerful network effect and durable competitive advantage.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited analyst q&a evidence is mixed or monitoring for competition & market.",
+        "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 5227,
-          "end": 5446
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 10373,
+          "end": 10613
         }
       }
     ],
     "channels": [
       {
         "name": "Products & platforms",
-        "desc": "A normal cadence for us is we have a new seasonal product launch, like the pink signature that he referred to earlier, and it launches in Q3, and then it sells through Q3 and Q4.",
+        "desc": "We delivered strong overall results this quarter with Q3 revenue growing 10% as we made significant progress executing on our AI-driven expert platform strategy.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 50835,
-          "end": 51013
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 2544,
+          "end": 2705
         },
         "signal": "neutral"
       },
       {
         "name": "Customers & engagement",
-        "desc": "We enhanced both our in-store and digital experiences, simplifying the customer journey and elevating engagement.",
+        "desc": "Average revenue per user is approximately 30% higher for customers using both TurboTax and Credit Karma compared to customers using TurboTax alone.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 14794,
-          "end": 14907
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 6554,
+          "end": 6701
         },
         "signal": "neutral"
       },
       {
         "name": "Markets & distribution",
-        "desc": "By region, North American sales rose 20% compared to the prior year, fueled by a 27% increase at Coach, with growth, market share gains and operating margin expansion ahead of plan.",
+        "desc": "This growth is underpinned by continued momentum in mid-market, with online ecosystem revenue for QBO Advanced and Intuit Enterprise Suite growing 38%.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 17144,
-          "end": 17326
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 15912,
+          "end": 16063
         },
         "signal": "positive"
       },
       {
         "name": "Business lines",
-        "desc": "The combination of craftsmanship, creativity, and value we offer to consumers at scale continues to be a clear competitive advantage and a structural strength of our business.",
+        "desc": "The reason we are really bullish about just our Consumer platform trajectory and growth moving forward is, I think the biggest highlights from this tax season was really around, 1, Assisted segment performance.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 5051,
-          "end": 5226
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 31607,
+          "end": 31817
         },
-        "signal": "neutral"
+        "signal": "positive"
       }
     ],
     "strategic_pillars": [
       {
         "name": "Innovation Roadmap",
-        "detail": "We are focused on bringing more innovation and distinctiveness to our assortment to drive stronger results at scale as we continue to build for durable growth.",
-        "signal": "best",
+        "detail": "We continue to make progress serving businesses with our all-in-one business platform and delivering done-for-you experiences powered by AI and human expertise.",
+        "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 14528,
-          "end": 14687
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 15579,
+          "end": 15739
         }
       },
       {
         "name": "Growth Expansion",
-        "detail": "Now, turning to the strategic actions from the quarter, which are driving our results today and continuing to expand our competitive advantages into the future.",
-        "signal": "positive",
+        "detail": "As we evolve our lineup with expanded functionality, we expect to take pricing actions at the higher end of our portfolio, reflecting the increased value we are delivering to customers.",
+        "signal": "strong_positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 3849,
-          "end": 4009
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 10905,
+          "end": 11090
         }
       },
       {
         "name": "Customer Value",
-        "detail": "Importantly, our Gen Z consumers have higher retention rates than the balance of cohorts, highlighting the opportunity to build lasting relationships and meaningful value creation into the future.",
+        "detail": "This progress underscores our ability to drive ARPU expansion by deepening engagement, delivering more value across the Consumer platform, and monetizing beyond tax.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 4295,
-          "end": 4491
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 7196,
+          "end": 7361
         }
       },
       {
         "name": "Operational Excellence",
-        "detail": "Again, early days, we always see more productivity when we redo the stores.",
+        "detail": "Where this is different than the actions we took in 2024 is, as Hasan mentioned, majority of the cost reductions we do expect to flow to the bottom line.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 55346,
-          "end": 55421
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 38843,
+          "end": 38996
         }
       },
       {
         "name": "Capital Discipline",
-        "detail": "The tax rate is expected to be approximately 17.5%, and our weighted average diluted share count for the year is forecasted to be approximately 210 million shares, which includes the expectation for $1.3 billion in share repurchases.",
+        "detail": "In the first three quarters of fiscal 2026, share repurchases are up over 60% versus last year.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 26608,
-          "end": 26841
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 18414,
+          "end": 18509
         }
       },
       {
         "name": "Long-Term Strategy",
-        "detail": "Touching on marketing, our strategic investments continued to generate compounding benefits this quarter, reflecting a disciplined long-term approach to brand building at scale.",
+        "detail": "We saw significant strength in an area that's critical to our strategy and long-term growth formula, disrupting the $37 billion assisted tax category, 88% of the total TurboTax TAM.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 8988,
-          "end": 9165
+          "url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
+          "start": 5064,
+          "end": 5245
         }
       }
     ],
     "risks": [
       {
-        "risk": "Regulatory / legal exposure",
-        "evidence": "As of March 28, 2026, we were in compliance with these restrictions and covenants, have met such financial ratios and have met all debt payment obligations.",
+        "risk": "Competitive pressure",
+        "evidence": "We face intense competitive pressures that may harm our operating results.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-          "start": 108971,
-          "end": 109128
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430.htm",
+          "start": 205573,
+          "end": 205647
+        }
+      },
+      {
+        "risk": "Regulatory / legal exposure",
+        "evidence": "This encompasses financial management, which includes payments and capital, compliance, human capital management, and marketing products and services.",
+        "probability": null,
+        "eps_impact": null,
+        "quantification": "Not company-disclosed; no probability or EPS impact invented",
+        "signal": "caution",
+        "citation": {
+          "source": "SEC filing / earnings transcript",
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430.htm",
+          "start": 49669,
+          "end": 49820
         }
       },
       {
         "risk": "Demand / macro exposure",
-        "evidence": "Consumer preferences, macroeconomic conditions, foreign currency fluctuations and geopolitical events continue to impact overall levels of consumer travel and spending on discretionary items, with inconsistent patterns across business channels and geographies.",
+        "evidence": "These risks may be amplified by the effects of global developments and conditions or events, including macroeconomic and geopolitical conditions, which have caused significant global economic instability and uncertainty.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
-        "signal": "caution",
+        "signal": "negative",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-          "start": 131323,
-          "end": 131584
-        }
-      },
-      {
-        "risk": "Capital intensity / cash-flow pressure",
-        "evidence": "They include, without limitation, statements regarding future anticipated capital expenditures.",
-        "probability": null,
-        "eps_impact": null,
-        "quantification": "Not company-disclosed; no probability or EPS impact invented",
-        "signal": "caution",
-        "citation": {
-          "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-          "start": 35768,
-          "end": 35864
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430.htm",
+          "start": 205195,
+          "end": 205416
         }
       },
       {
         "risk": "Supply / execution exposure",
-        "evidence": "Before moving on, I wanna touch on the disruption in the Middle East.",
+        "evidence": "The occurrence of any of the foregoing may result in disclosure of confidential information, loss of customer confidence in our products, possible litigation, material harm to our reputation and financial condition, disruption of our or our customers’ business operations, and a decline in our stock price.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
-          "start": 214992,
-          "end": 215061
+          "url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430.htm",
+          "start": 229049,
+          "end": 229356
         }
       }
     ],
     "thesis": {
-      "recommendation": "BUY",
+      "recommendation": "HOLD",
       "hurdle_rate": 0.12,
       "scenario_weights": {
         "base_case": 0.5,
@@ -1065,66 +1322,65 @@ window.EARNINGS_REPORT = {
       },
       "method": "Five-year EPS scenarios use broker-derived TTM EPS, bounded reported growth, and transparent scenario weights/multiples.",
       "base_case": {
-        "eps_cagr": 0.2,
-        "exit_multiple": 17.746773,
-        "exit_eps": 18.091623170026455,
-        "exit_price": 321.0679295999999,
-        "irr": 0.19999999999999996,
+        "eps_cagr": 0.10368841888057777,
+        "exit_multiple": 21.716889,
+        "exit_eps": 26.071851990697574,
+        "exit_price": 566.1995157064082,
+        "irr": 0.10368841888057778,
         "probability": 0.5,
-        "summary": "TTM EPS $7.27 -> $18.09; EPS CAGR 20.0%; exit P/E 17.7x = $321.07; IRR 20.0%",
-        "detail": "TTM EPS $7.27 -> $18.09; EPS CAGR 20.0%; exit P/E 17.7x = $321.07; IRR 20.0%"
+        "summary": "TTM EPS $15.92 -> $26.07; EPS CAGR 10.4%; exit P/E 21.7x = $566.20; IRR 10.4%",
+        "detail": "TTM EPS $15.92 -> $26.07; EPS CAGR 10.4%; exit P/E 21.7x = $566.20; IRR 10.4%"
       },
       "bull_case": {
-        "eps_cagr": 0.28,
-        "exit_multiple": 20.746773,
-        "exit_eps": 24.98165182832417,
-        "exit_price": 518.2886596472766,
-        "irr": 0.32061492701099215,
+        "eps_cagr": 0.18368841888057777,
+        "exit_multiple": 24.716889,
+        "exit_eps": 36.99358729770107,
+        "exit_price": 914.3663909490872,
+        "irr": 0.2147212742651874,
         "probability": 0.3,
-        "summary": "TTM EPS $7.27 -> $24.98; EPS CAGR 28.0%; exit P/E 20.7x = $518.29; IRR 32.1%",
-        "detail": "TTM EPS $7.27 -> $24.98; EPS CAGR 28.0%; exit P/E 20.7x = $518.29; IRR 32.1%"
+        "summary": "TTM EPS $15.92 -> $36.99; EPS CAGR 18.4%; exit P/E 24.7x = $914.37; IRR 21.5%",
+        "detail": "TTM EPS $15.92 -> $36.99; EPS CAGR 18.4%; exit P/E 24.7x = $914.37; IRR 21.5%"
       },
       "bear_case": {
-        "eps_cagr": 0.08000000000000002,
-        "exit_multiple": 12.746773000000001,
-        "exit_eps": 10.682922565668928,
-        "exit_price": 136.17278892115942,
-        "irr": 0.01083419957642029,
+        "eps_cagr": -0.016311581119422228,
+        "exit_multiple": 16.716889,
+        "exit_eps": 14.663148963467076,
+        "exit_price": 245.12223361274414,
+        "irr": -0.06646817546643358,
         "probability": 0.2,
-        "summary": "TTM EPS $7.27 -> $10.68; EPS CAGR 8.0%; exit P/E 12.7x = $136.17; IRR 1.1%",
-        "detail": "TTM EPS $7.27 -> $10.68; EPS CAGR 8.0%; exit P/E 12.7x = $136.17; IRR 1.1%"
+        "summary": "TTM EPS $15.92 -> $14.66; EPS CAGR -1.6%; exit P/E 16.7x = $245.12; IRR -6.6%",
+        "detail": "TTM EPS $15.92 -> $14.66; EPS CAGR -1.6%; exit P/E 16.7x = $245.12; IRR -6.6%"
       },
-      "base_cagr": 0.2,
-      "irr": 0.19999999999999996,
-      "key_risks_summary": "Regulatory / legal exposure, Demand / macro exposure, Capital intensity / cash-flow pressure"
+      "base_cagr": 0.10368841888057777,
+      "irr": 0.10368841888057778,
+      "key_risks_summary": "Competitive pressure, Regulatory / legal exposure, Demand / macro exposure"
     }
   },
   "sources": {
-    "filing_url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328.htm",
-    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1116132/000111613226000011/tpr-20260328_htm.xml",
-    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1116132/000114036126019428/ef20072115_ex99-1.htm",
+    "filing_url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430.htm",
+    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430_htm.xml",
+    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000024/fy26q3-ex9902.htm",
     "investor_relations_url": null,
-    "transcript_url": "https://stockanalysis.com/stocks/tpr/transcripts/552472-q3-2026/",
+    "transcript_url": "https://stockanalysis.com/stocks/intu/transcripts/572261-q3-2026/",
     "transcript_provider": "stockanalysis.com",
-    "transcript_call_date": "2026-05-07",
-    "transcript_retrieved_at": "2026-08-18T00:44:07.647901+00:00",
-    "transcript_content_sha256": "652e77f88c4c7f8639b0856f5c3295d510466244bb55b542198842a97b41ad1f"
+    "transcript_call_date": "2026-05-20",
+    "transcript_retrieved_at": "2026-08-26T20:55:01.530441+00:00",
+    "transcript_content_sha256": "950df9707d806817b576c94d47d0b2acab12286b90aaa16d3aa55ce3fc0cf343",
+    "short_interest_url": "https://www.nasdaq.com/market-activity/stocks/intu/short-interest"
   },
   "warnings": [
-    "Source-derived KPI reference is missing or incomplete for the current ticker and fiscal period",
-    "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable",
-    "Official Nasdaq short-interest data unavailable: RuntimeError",
-    "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 16.32x"
+    "Market closed — valuation uses the latest completed Robinhood regular-session close",
+    "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 13.73x"
   ],
   "grade_breakdown": {
     "financial_metrics": {
-      "grade": "A+",
-      "reason": "Exceptional growth across revenue, profit, and cash flow with expanding margins",
+      "grade": "A",
+      "reason": "Strong growth in most core metrics with healthy profitability",
       "weight": 0.3
     },
     "valuation": {
-      "grade": "B",
-      "reason": "Full valuation but supported by profitability",
+      "grade": "A",
+      "reason": "Reasonable valuation with strong cash generation",
       "weight": 0.3
     },
     "earnings_call": {
@@ -1138,18 +1394,18 @@ window.EARNINGS_REPORT = {
       "weight": 0.1
     },
     "future_growth": {
-      "grade": "A+",
-      "reason": "Explosive growth trajectory: backlog expanding, >20% revenue growth, strong pipeline, clear secular tailwinds",
+      "grade": "A",
+      "reason": "Strong growth outlook: high revenue growth, backlog building, positive guidance",
       "weight": 0.2
     },
     "final_grade": "A",
-    "final_score": 11.7,
+    "final_score": 12.1,
     "all_scores": {
-      "financial_metrics": 13,
-      "valuation": 9,
+      "financial_metrics": 12,
+      "valuation": 12,
       "earnings_call": 13,
       "management_execution": 12,
-      "future_growth": 13
+      "future_growth": 12
     }
   }
 };

@@ -144,7 +144,7 @@ def _qa_boundary_start(text: str) -> int:
         is_heading = normalized in QA_SECTION_HEADINGS
         is_first_question = (
             "first question" in normalized
-            and any(phrase in normalized for phrase in ("comes from", "take", "go to"))
+            and any(phrase in normalized for phrase in ("comes from", "take", "go to", "is from"))
         )
         is_operator_handoff = any(phrase in normalized for phrase in (
             "open the call for questions",
@@ -156,6 +156,10 @@ def _qa_boundary_start(text: str) -> int:
             "go to questions",
             "turn to questions",
             "open up the call",
+            "turn the call back over to the operator",
+            "turn the call over to",
+            "get our q a started",
+            "get our q&a started",
         ))
         # A heading may include decorative words, but it must still consist only
         # of Q&A/session vocabulary after punctuation normalization.
@@ -164,7 +168,9 @@ def _qa_boundary_start(text: str) -> int:
             and bool({"answer", "answers"} & words)
             and words <= {"question", "questions", "and", "answer", "answers", "session"}
         )
-        if is_heading or is_heading_variant or is_first_question or is_operator_handoff:
+        # Also detect "Q&A" or "Q A" in a short line as a heading variant
+        is_qa_heading = normalized in {"q a", "q&a", "q a started", "q&a started", "begin q a", "begin q&a"}
+        if is_heading or is_heading_variant or is_first_question or is_operator_handoff or is_qa_heading:
             return offset
         offset += len(raw_line)
     return len(text)

@@ -397,6 +397,471 @@
     }
   },
   {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Credit Karma Revenue Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 15% YoY",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Credit Karma revenue grew 15% in Q3 FY26 to $631M, driven by personal loans (9 pts), auto insurance (5 pts), and home loans (1 pt). FY26 guidance raised to ~19% growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Full Year FY2026 Revenue Guidance",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: $21.341-21.374B (13-14% growth)",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Raised full-year revenue guidance to $21.341-21.374B (13-14% growth). GBSG raised to ~16% growth; Consumer raised to ~10% (TurboTax ~7%, Credit Karma ~19%, ProTax ~4%).",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Mid-Market Online Ecosystem Revenue Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 38% YoY",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "QBO Advanced and Intuit Enterprise Suite online ecosystem revenue grew 38% YoY. Direct sales team scaled ~30% with improving seller productivity; Intuit Enterprise Suite contracts grew 37% QoQ.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Non-GAAP Diluted EPS Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 10% YoY ($12.80 vs $11.65)",
+        "last_year_quarter_value": "Q3 2025: $11.65",
+        "analyst_view": "Q3 non-GAAP diluted EPS of $12.80 grew 10% YoY. Full-year FY26 guidance raised to $23.80-23.85 (~18% growth). Company committed to annual EPS growth of at least mid-teens over coming years.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Online Ecosystem Revenue Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 19% YoY (22% ex-Mailchimp)",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Global Business Solutions Online Ecosystem revenue grew 19% YoY to $2.5B. Excluding Mailchimp, growth accelerated to 22%, reflecting strong mid-market and small business momentum.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Total Online Payment Volume Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 30% YoY",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Total online payment volume including Bill Pay grew 30% YoY. Excluding Bill Pay, online payment volume grew 18%, reflecting continued momentum in payments and Bill Pay adoption.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "TurboTax Live Customer Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 38% YoY",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "TurboTax Live customers expected to grow 38% in FY26, with new customers up 29% excluding one-time offers. Local expert strategy drove 36% of acquired customers as new to TurboTax.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "TurboTax Live Revenue Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 36% YoY (FY26 guidance: $2.8B)",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "TurboTax Live revenue expected to grow 36% in FY26, representing 53% of total TurboTax revenue (up 11 points YoY), well above long-term 15-20% expectation.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "TurboTax Live Revenue Share of TurboTax",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 53%",
+        "last_year_quarter_value": "Q3 2025: 42%",
+        "analyst_view": "TurboTax Live represents 53% of total TurboTax revenue, up 11 percentage points YoY, marking a significant milestone in disrupting the $37B assisted tax TAM (88% of total).",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "AI Agent Transaction Volume",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 50M+ transactions/week",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Accounting AI agents powering recommendations across 50+ million transactions weekly. Business tax AI agents identifying millions of dollars in deductions. AI capabilities scaling across platform.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Consumer Money Portfolio Revenue Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 26% YoY (FY guidance)",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Consumer money portfolio expected to deliver 26% revenue growth in FY26. Over 35% of TurboTax customers adopted Fast Money offerings; average revenue per user ~30% higher for TurboTax + Credit Karma users vs TurboTax alone.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Intuit Enterprise Suite Contract Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 37% QoQ",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Intuit Enterprise Suite contracts grew 37% quarter-over-quarter as sales capacity expanded and platform traction accelerated in mid-market.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "QuickBooks Online Accounting Revenue Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 22% YoY",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "QBO Accounting revenue grew 22% driven by higher effective prices, customer growth, and mix shift toward higher-tier offerings.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Share Repurchase Activity",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: $1.6B",
+        "last_year_quarter_value": "Q3 2025: ~$700M (est.)",
+        "analyst_view": "Repurchased $1.6B of stock in Q3 FY26, more than double same period last year. First three quarters of FY26 repurchases up over 60% YoY. New $8B authorization approved.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "TurboTax Filers Starting in Credit Karma Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 54% YoY (up 25 points)",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "54% increase in tax filers starting their filing experience in Credit Karma, up 25 percentage points YoY. Credit Karma members with simple tax situations had up to 80% of taxes pre-done before TurboTax.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "TurboTax Online ARPU Growth",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: ~11% YoY (FY guidance)",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "TurboTax ARPU expected to increase ~11% in FY26 as more customers choose assisted offerings and faster access to refunds via Fast Money products.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Workforce Reduction",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: 17% reduction announced",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Announced 17% full-time workforce reduction to simplify organizational structure, reduce management layers, eliminate coordination-heavy roles, and right-size Mailchimp. Estimated $300-340M restructuring charges in Q4 FY26. Majority of savings expected to flow to margin expansion and EPS growth.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Intuit Inc.",
+    "TICKER": "INTU",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "TurboTax Live Retention",
+    "details_map": {
+      "2026-08-26": {
+        "latest_quarter_value": "Q3 2026: Up 2 pts YoY",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "TurboTax Live retention increased 2 percentage points YoY as new customers added at healthy rate, indicating strong product-market fit and customer satisfaction in assisted tax segment.",
+        "source": "IR",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Adjusted Diluted EPS",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $5.80",
+        "last_year_quarter_value": "Q2 2025: $2.69",
+        "analyst_view": "Adjusted EPS grew 116% YoY, significantly outpacing revenue growth due to margin expansion and share count stability.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Adjusted EBITDA",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $256.7M",
+        "last_year_quarter_value": "Q2 2025: $126.0M",
+        "analyst_view": "Adjusted EBITDA grew 104% YoY to $256.7M, with margins expanding to 22.0% from 20.5%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Adjusted EBITDA Margin",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 22.0%",
+        "last_year_quarter_value": "Q2 2025: 20.5%",
+        "analyst_view": "Adjusted EBITDA margin expanded 150 bps YoY despite integration costs, showing operating leverage in E-infrastructure.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Backlog (Contractual)",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $4.33B",
+        "last_year_quarter_value": "Q2 2025: $2.00B",
+        "analyst_view": "Contractual backlog grew 116% YoY (50% organic), driven by data center and E-infrastructure demand surge.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Combined Backlog",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $5.62B",
+        "last_year_quarter_value": "Q2 2025: $2.25B",
+        "analyst_view": "Combined backlog grew 150% YoY to $5.62B (36% organic), providing exceptional revenue visibility for E-infrastructure and data center projects.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "E-Infrastructure Revenue",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $934M",
+        "last_year_quarter_value": "Q2 2025: $353M",
+        "analyst_view": "E-infrastructure revenue grew 165% YoY, driven by data center construction demand and Stone Ridge acquisition.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Full Year 2026 Revenue Guidance",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "FY2026: $4.0-$4.15B",
+        "last_year_quarter_value": "FY2025: N/A",
+        "analyst_view": "Management raised FY2026 revenue guidance to $4.0-$4.15B (up from prior), implying continued strong growth trajectory.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Operating Cash Flow (6M)",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "H1 2026: $328.0M",
+        "last_year_quarter_value": "H1 2025: $170.3M",
+        "analyst_view": "Operating cash flow nearly doubled YoY to $328M for H1, demonstrating strong cash conversion from E-infrastructure growth.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Organic Revenue Growth",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: ~50%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Organic revenue grew approximately 50% YoY excluding acquisitions, demonstrating exceptional underlying demand.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Book-to-Burn Ratio (Backlog)",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 1.4x",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Book-to-burn ratio of 1.4x indicates new awards exceed revenue recognized, supporting continued backlog growth.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Book-to-Burn Ratio (Combined Backlog)",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 1.3x",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Combined backlog book-to-burn of 1.3x confirms strong award momentum including verbal commitments.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Building Solutions Revenue",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $75M",
+        "last_year_quarter_value": "Q2 2025: $77M",
+        "analyst_view": "Building solutions revenue was flat YoY, reflecting stable residential and commercial construction activity.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Transportation Revenue",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $159M",
+        "last_year_quarter_value": "Q2 2025: $184M",
+        "analyst_view": "Transportation revenue declined 14% YoY as the segment normalizes after elevated stimulus-driven levels.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
     "COMPANY": "Tapestry, Inc.",
     "TICKER": "TPR",
     "SECTOR": "Consumer Discretionary",
@@ -588,6 +1053,186 @@
         "analyst_view": "Opened 15 net new stores, primarily in Greater China and North America.",
         "source": "IR",
         "importance": "Tier 4 — Context"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Adjusted EBITDA",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $221M",
+        "last_year_quarter_value": "Q2 2025: $161M",
+        "analyst_view": "Adjusted EBITDA grew 37% YoY to $221M (inclusive of ~$10M tariff refund benefit), showing strong profitability improvement.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Annualized Recurring Revenue (ARR)",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $2.4B",
+        "last_year_quarter_value": "Q2 2025: $1.92B",
+        "analyst_view": "ARR grew 25% YoY to $2.4B, demonstrating strong recurring revenue momentum from subscription and financial technology solutions.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Gross Payment Volume (GPV)",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $60.7B",
+        "last_year_quarter_value": "Q2 2025: $49.8B",
+        "analyst_view": "GPV grew 22% YoY to $60.7B, reflecting expanding payment processing volume across the restaurant platform.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Net New Locations Added",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 9,500",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Record 9,500 net new locations added in Q2 2026, signaling strong customer acquisition and market expansion.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Non-GAAP Subscription Services & FinTech Gross Profit",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $595M",
+        "last_year_quarter_value": "Q2 2025: $465M",
+        "analyst_view": "Non-GAAP subscription and FinTech gross profit grew 28% YoY, excluding SBC and D&A for clearer operational view.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Recurring Gross Profit Growth",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: +28% YoY",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Recurring gross profit streams grew 28% YoY, driven by subscription services and FinTech solutions expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Subscription Services & FinTech Gross Profit",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $585M",
+        "last_year_quarter_value": "Q2 2025: $447M",
+        "analyst_view": "Subscription and financial technology solutions gross profit grew 31% YoY, outpacing revenue growth and showing operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Total Locations",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: ~180,000",
+        "last_year_quarter_value": "Q2 2025: ~147,500",
+        "analyst_view": "Total locations grew 22% YoY to approximately 180,000, driven by record net new location additions.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Free Cash Flow",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $130M",
+        "last_year_quarter_value": "Q2 2025: $208M",
+        "analyst_view": "FCF declined to $130M from $208M YoY, primarily due to lower operating cash flow ($144M vs $223M) despite similar capex.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Operating Cash Flow",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $144M",
+        "last_year_quarter_value": "Q2 2025: $223M",
+        "analyst_view": "Operating cash flow decreased 35% YoY to $144M, reflecting working capital dynamics and investment in growth.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Share Repurchase Program",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026 YTD: 19M shares / $486M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Repurchased 19M shares for $486M year-to-date through June 30, 2026, demonstrating commitment to returning capital.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Toast IQ Grow Adoption",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: Fastest-growing new offering",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Toast IQ Grow identified as fastest-growing new offering ever launched, signaling strong AI product traction.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
       }
     }
   }

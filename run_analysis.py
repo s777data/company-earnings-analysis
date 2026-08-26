@@ -8,10 +8,13 @@ import json
 import math
 import os
 import re
+import shutil
 import sys
+import zipfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
 from create_interactive_dashboard import create_interactive_dashboard
@@ -50,6 +53,101 @@ HURDLE_RATE = 0.12
 
 
 def _now() -> datetime: return datetime.now(timezone.utc)
+
+
+def _is_latest_completed_regular_session_close(
+    timestamp: str,
+    source: str,
+    now: datetime | None = None,
+) -> bool:
+    """Return True for a recent completed U.S. regular-session close.
+
+    Robinhood's daily candle can lag the venue-stamped 15:59–16:00 ET last
+    trade immediately after the close.  That trade is valid production close
+    data even though it is more than the intraday 15-minute freshness limit.
+    """
+    try:
+        parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).astimezone(timezone.utc)
+    except (TypeError, ValueError):
+        return False
+    current = (now or _now()).astimezone(timezone.utc)
+    age_seconds = (current - parsed).total_seconds()
+    if age_seconds < 0 or age_seconds > 4 * 24 * 60 * 60:
+        return False
+    if "completed daily regular-session close" in source.casefold():
+        return True
+    eastern = ZoneInfo("America/New_York")
+    trade_local = parsed.astimezone(eastern)
+    now_local = current.astimezone(eastern)
+    if trade_local.weekday() >= 5:
+        return False
+    minutes = trade_local.hour * 60 + trade_local.minute
+    near_close = 15 * 60 + 55 <= minutes <= 16 * 60 + 5
+    session_completed = (
+        now_local.date() > trade_local.date()
+        or (now_local.date() == trade_local.date() and now_local.hour >= 16)
+    )
+    return near_close and session_completed
+
+class RunLogger:
+    """Structured run logger that writes to a detailed log file."""
+
+    def __init__(self, log_path: Path):
+        self.log_path = log_path
+        self.log_path.parent.mkdir(parents=True, exist_ok=True)
+        self.start_time = _now()
+        self.step_count = 0
+        self._write(f"=== EARNINGS ANALYSIS RUN STARTED ===")
+        self._write(f"Start time (UTC): {self.start_time.isoformat()}")
+        self._write(f"Log file: {log_path}")
+        self._write("")
+
+    def _write(self, message: str):
+        with open(self.log_path, "a", encoding="utf-8") as f:
+            f.write(f"{message}\n")
+
+    def log_step(self, step_name: str, status: str = "STARTED", details: str = ""):
+        self.step_count += 1
+        timestamp = _now().isoformat()
+        elapsed = _now() - self.start_time
+        prefix = f"[STEP {self.step_count:02d}] [{timestamp}] [{status}] {step_name}"
+        if details:
+            self._write(f"{prefix} - {details}")
+        else:
+            self._write(prefix)
+
+    def log_info(self, message: str):
+        timestamp = _now().isoformat()
+        self._write(f"[INFO]  [{timestamp}] {message}")
+
+    def log_warning(self, message: str):
+        timestamp = _now().isoformat()
+        self._write(f"[WARN]  [{timestamp}] {message}")
+
+    def log_error(self, message: str):
+        timestamp = _now().isoformat()
+        self._write(f"[ERROR] [{timestamp}] {message}")
+
+    def log_debug(self, message: str):
+        timestamp = _now().isoformat()
+        self._write(f"[DEBUG] [{timestamp}] {message}")
+
+    def finalize(self, success: bool, output_dir: Path | None = None):
+        end_time = _now()
+        elapsed = end_time - self.start_time
+        self._write("")
+        self._write(f"=== EARNINGS ANALYSIS RUN {'COMPLETED' if success else 'FAILED'} ===")
+        self._write(f"End time (UTC): {end_time.isoformat()}")
+        self._write(f"Total duration: {elapsed}")
+        self._write(f"Total steps logged: {self.step_count}")
+        if output_dir:
+            self._write(f"Output directory: {output_dir}")
+            self._write(f"Contents:")
+            for item in sorted(output_dir.rglob("*")):
+                if item.is_file():
+                    size = item.stat().st_size
+                    rel = item.relative_to(output_dir)
+                    self._write(f"  {rel} ({size:,} bytes)")
 
 def _validate_transcript_call_date(call_date: str | None, report_date: str) -> tuple[str | None, str | None]:
     if not call_date: return None, None
@@ -140,17 +238,17 @@ def _grade_financial_metrics(data: dict[str, Any]) -> tuple[str, str]:
     financials = data.get("financials", {})
     rows = financials.get("rows", [])
     changes = {row["key"]: _change(row["value"], row.get("prior_value")) for row in rows}
-    
+
     # Count positive/negative changes in core metrics
     core_keys = ("revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "eps_diluted")
     positive = sum(1 for k in core_keys if changes.get(k) is not None and changes[k] > 0.10)
     negative = sum(1 for k in core_keys if changes.get(k) is not None and changes[k] < 0)
     neutral = sum(1 for k in core_keys if changes.get(k) is not None and 0 <= changes[k] <= 0.10)
-    
+
     # Key ratios: margins
     margins = financials.get("key_ratios", [])
     margin_improving = sum(1 for m in margins if m.get("key") in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0.15)
-    
+
     if positive >= 4 and negative == 0 and margin_improving >= 2:
         return "A+", "Exceptional growth across revenue, profit, and cash flow with expanding margins"
     if positive >= 3 and negative == 0:
@@ -179,21 +277,21 @@ def _grade_valuation(data: dict[str, Any]) -> tuple[str, str]:
     valuation = data.get("valuation", {})
     regime = valuation.get("regime", "")
     rows = valuation.get("rows", [])
-    
+
     # Find key valuation metrics
     pe_row = next((r for r in rows if "P/E" in r.get("label", "") or "pe_ttm" in r.get("key", "")), None)
     fcf_row = next((r for r in rows if "FCF" in r.get("label", "")), None)
     ev_ebitda_row = next((r for r in rows if "EBITDA" in r.get("label", "")), None)
     ps_row = next((r for r in rows if "P/S" in r.get("label", "")), None)
-    
+
     pe_signal = _signal(pe_row) if pe_row else "neutral"
     fcf_signal = _signal(fcf_row) if fcf_row else "neutral"
     ev_signal = _signal(ev_ebitda_row) if ev_ebitda_row else "neutral"
     ps_signal = _signal(ps_row) if ps_row else "neutral"
-    
+
     positive_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("best", "strong_positive", "positive"))
     negative_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("negative", "worst"))
-    
+
     if regime == "positive_earnings_and_fcf":
         if positive_signals >= 3:
             return "A+", "Attractive valuation across P/E, FCF yield, and EV/EBITDA for quality growth"
@@ -226,21 +324,21 @@ def _grade_earnings_call(data: dict[str, Any]) -> tuple[str, str]:
     insights = data.get("transcript_insights", [])
     if not insights:
         return "C", "No transcript insights available"
-    
+
     # Count positive/negative insights from management (not analysts)
     mgmt_insights = [i for i in insights if i.get("section") in ("Prepared Remarks", "Analyst Q&A")]
     positive = sum(1 for i in mgmt_insights if _signal(i) in ("best", "strong_positive", "positive"))
     negative = sum(1 for i in mgmt_insights if _signal(i) in ("negative", "worst"))
     neutral = sum(1 for i in mgmt_insights if _signal(i) in ("neutral", "medium"))
-    
+
     # Check for guidance
     guidance = data.get("guidance", {}).get("rows", [])
     has_guidance = len(guidance) > 0
-    
+
     # Check management tone
     tone_insight = next((i for i in insights if i.get("topic") == "Management Tone"), None)
     tone_positive = tone_insight and _signal(tone_insight) in ("best", "strong_positive", "positive")
-    
+
     if positive >= 4 and negative == 0 and tone_positive and has_guidance:
         return "A+", "Highly confident tone, clear guidance, substantive positive Q&A"
     if positive >= 3 and negative <= 1 and tone_positive:
@@ -265,12 +363,12 @@ def _grade_management_execution(data: dict[str, Any]) -> tuple[str, str]:
     financials = data.get("financials", {})
     rows = financials.get("rows", [])
     by_key = {row["key"]: row for row in rows}
-    
+
     # Share count trend (buybacks)
     shares = by_key.get("shares_diluted", {})
     shares_change = _change(shares.get("value"), shares.get("prior_value"))
     buyback_positive = shares_change is not None and shares_change < -0.01
-    
+
     # Operating cash flow vs net income (earnings quality)
     ocf = by_key.get("operating_cash_flow", {})
     ni = by_key.get("net_income", {})
@@ -278,22 +376,22 @@ def _grade_management_execution(data: dict[str, Any]) -> tuple[str, str]:
     if ocf.get("value") and ni.get("value") and ni["value"] != 0:
         ocf_vs_ni = ocf["value"] / ni["value"]
     high_quality = ocf_vs_ni is not None and ocf_vs_ni > 1.1
-    
+
     # Margin trends
     margins = financials.get("key_ratios", [])
     margin_improving = sum(1 for m in margins if m.get("key") in ("gross_margin", "operating_margin", "net_margin") and m.get("value", 0) > 0)
-    
+
     # Debt management
     debt = by_key.get("long_term_debt", {})
     debt_change = _change(debt.get("value"), debt.get("prior_value"))
     debt_decreasing = debt_change is not None and debt_change < -0.05
-    
+
     # Capital allocation signals from call
     cap_alloc_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Capital Allocation"), None)
     cap_alloc_positive = bool(cap_alloc_insight and _signal(cap_alloc_insight) in ("best", "strong_positive", "positive"))
-    
+
     positives = sum([buyback_positive, high_quality, margin_improving >= 2, debt_decreasing, cap_alloc_positive])
-    
+
     if positives >= 4:
         return "A+", "Buybacks, high earnings quality, expanding margins, debt reduction, disciplined capital allocation"
     if positives >= 3:
@@ -318,36 +416,36 @@ def _grade_future_growth(data: dict[str, Any]) -> tuple[str, str]:
     financials = data.get("financials", {})
     rows = financials.get("rows", [])
     by_key = {row["key"]: row for row in rows}
-    
+
     # Backlog growth
     backlog = by_key.get("backlog", {})
     backlog_change = _change(backlog.get("value"), backlog.get("prior_value"))
     backlog_growing = backlog_change is not None and backlog_change > 0.10
-    
+
     # Revenue growth rate
     revenue = by_key.get("revenue", {})
     rev_change = _change(revenue.get("value"), revenue.get("prior_value"))
     high_growth = rev_change is not None and rev_change > 0.20
     mid_growth = rev_change is not None and rev_change > 0.10
-    
+
     # Guidance from call
     guidance = data.get("guidance", {}).get("rows", [])
     guidance_positive = len(guidance) > 0
-    
+
     # Revenue & Demand insight
     demand_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Revenue & Demand"), None)
     demand_positive = bool(demand_insight and _signal(demand_insight) in ("best", "strong_positive", "positive"))
-    
+
     # Products & Innovation
     product_insight = next((i for i in data.get("transcript_insights", []) if i.get("topic") == "Products & Innovation"), None)
     product_positive = bool(product_insight and _signal(product_insight) in ("best", "strong_positive", "positive"))
-    
+
     # Strategic pillars (durable themes)
     pillars = data.get("strategic_pillars", [])
     strong_pillars = len(pillars) >= 3
-    
+
     positives = sum([backlog_growing, high_growth, mid_growth, guidance_positive, demand_positive, product_positive, strong_pillars])
-    
+
     if positives >= 5:
         return "A+", "Explosive growth trajectory: backlog expanding, >20% revenue growth, strong pipeline, clear secular tailwinds"
     if positives >= 4:
@@ -385,6 +483,9 @@ class EarningsAnalyzer:
         self.expected_account = expected_account; self.allow_stale_quote_for_test = allow_stale_quote_for_test
         self.data: dict[str, Any] = {"ticker": self.ticker, "warnings": [], "test_run": allow_stale_quote_for_test}
         self.filing: dict[str, Any] = {}; self.release: dict[str, Any] | None = None; self.transcript: dict[str, Any] = {}
+        # Logger will be initialized in run()
+        self.logger: RunLogger | None = None
+        self.run_dir: Path | None = None
         self.release_candidates: list[dict[str, Any]] = []
 
     def identify(self):
@@ -450,7 +551,7 @@ class EarningsAnalyzer:
 
     def business_kpis(self):
         """Build source-backed, company-specific operating KPIs.
-        
+
         MANDATORY: KPI_derived_reference.json must have current-period rows for this ticker.
         Derivation per references/BUSINESS_KPI_METRICS_REFERENCE.md must be completed first.
         """
@@ -462,7 +563,7 @@ class EarningsAnalyzer:
                 f"{self.ticker} {self.data.get('fiscal_period', 'Q?')} FY{self.data.get('fiscal_year', '????')} "
                 "and populate the reference using upsert_derived_kpis()."
             )
-        
+
         self.data["business_kpis"] = build_business_kpis(
             company=self.filing.get("company_name") or self.ticker,
             ticker=self.ticker,
@@ -475,7 +576,7 @@ class EarningsAnalyzer:
             fiscal_period=self.data["fiscal_period"],
             fiscal_year=self.data["fiscal_year"],
         )
-        
+
         if self.data["business_kpis"]["selection_status"] == "DERIVED_REFERENCE_REQUIRED":
             raise RuntimeError(
                 f"KPI_DERIVATION_REQUIRED: No current-period source-derived KPI rows exist for "
@@ -484,7 +585,7 @@ class EarningsAnalyzer:
                 "official IR materials and SEC 10-Q/8-K earnings evidence. Then populate "
                 "KPI_derived_reference.json using upsert_derived_kpis()."
             )
-        
+
         if self.data["business_kpis"]["selection_status"] == "INCOMPLETE":
             self.data["warnings"].append(
                 f"Source-derived KPI reference has only {self.data['business_kpis']['available_reference_rows']} "
@@ -558,20 +659,20 @@ class EarningsAnalyzer:
             if ocf_row.get("prior_value") is not None and capex_row.get("prior_value") is not None:
                 fcf_prior = ocf_row["prior_value"] - abs(capex_row["prior_value"])
             fcf_change = _change(fcf_value, fcf_prior)
-            
+
             # Get QoQ if available
             fcf_prior_q = None
             if ocf_row.get("prior_q_value") is not None and capex_row.get("prior_q_value") is not None:
                 fcf_prior_q = ocf_row["prior_q_value"] - abs(capex_row["prior_q_value"])
             fcf_change_qoq = _change_qoq(fcf_value, fcf_prior_q)
-            
+
             comparison_parts = []
             if fcf_change is not None:
                 comparison_parts.append(f"{fcf_change:+.1%} YoY")
             if fcf_change_qoq is not None:
                 comparison_parts.append(f"{fcf_change_qoq:+.1%} QoQ")
             comparison = ", ".join(comparison_parts) if comparison_parts else "prior-year comparison unavailable"
-            
+
             signal = classify_financial_signal("free_cash_flow", fcf_change)
             fcf_row_data = {"key": "free_cash_flow", "label": "Free Cash Flow", "value": fcf_value,
                            "display": _display(fcf_value, "free_cash_flow"), "prior_value": fcf_prior,
@@ -591,15 +692,24 @@ class EarningsAnalyzer:
         quote = get_quote(self.ticker, self.expected_account)
         timestamp = quote.get("updated_at")
         quote_age_seconds = None
+        quote_is_completed_close = False
         if timestamp:
             parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
             quote_age_seconds = max(0, (_now() - parsed.astimezone(timezone.utc)).total_seconds())
+            quote_is_completed_close = _is_latest_completed_regular_session_close(
+                timestamp, quote.get("source", ""), _now()
+            )
             if quote_age_seconds > 900:
-                if not self.allow_stale_quote_for_test:
+                if quote_is_completed_close:
+                    self.data["warnings"].append(
+                        "Market closed — valuation uses the latest completed Robinhood regular-session close"
+                    )
+                elif not self.allow_stale_quote_for_test:
                     raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")
-                self.data["warnings"].append(
+                else:
+                    self.data["warnings"].append(
                     "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
-                )
+                    )
         else:
             self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
 
@@ -662,7 +772,7 @@ class EarningsAnalyzer:
             market_source=quote["source"], filing_source="SEC filing/XBRL",
             short_source=short_data.get("source", "Nasdaq official short-interest report"),
         )
-        
+
         # Fallback: fetch Forward P/E from StockAnalysis.com if Robinhood doesn't provide it
         forward_pe = quote.get("forward_pe_ratio")
         if forward_pe is None:
@@ -675,7 +785,7 @@ class EarningsAnalyzer:
                     )
             except Exception as exc:
                 self.data["warnings"].append(f"Forward P/E fallback failed: {type(exc).__name__}")
-        
+
         # Rebuild valuation with the (possibly updated) forward_pe
         if forward_pe is not None and forward_pe != quote.get("forward_pe_ratio"):
             sections = build_valuation_sections(
@@ -703,7 +813,10 @@ class EarningsAnalyzer:
             "pe_ttm": quote.get("pe_ratio"), "high_52": quote.get("high_52"), "low_52": quote.get("low_52"),
             "quote_timestamp": timestamp, "quote_source": quote["source"],
             "quote_age_seconds": quote_age_seconds,
-            "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900),
+            "quote_is_stale": bool(
+                quote_age_seconds and quote_age_seconds > 900 and not quote_is_completed_close
+            ),
+            "quote_is_completed_close": quote_is_completed_close,
             "enterprise_value": enterprise_value, "annualized_revenue": annual_revenue,
             "annualized_gross_profit": annual_gross_profit, "annualized_fcf": annual_fcf,
             "ps_annualized": market_cap / annual_revenue if market_cap and annual_revenue and annual_revenue > 0 else None,
@@ -760,14 +873,14 @@ class EarningsAnalyzer:
                             bool(self.data["transcript_insights"])]) / 5
         confidence = min(1.0, 0.55 + 0.4 * completeness)
         letter = "A" if score >= 4 else "B" if score >= 2 else "C" if score >= 0 else "D" if score >= -2 else "F"
-        
+
         # NEW: Compute granular grades for 5 categories
         financial_grade, financial_reason = _grade_financial_metrics(self.data)
         valuation_grade, valuation_reason = _grade_valuation(self.data)
         earnings_call_grade, earnings_call_reason = _grade_earnings_call(self.data)
         management_grade, management_reason = _grade_management_execution(self.data)
         growth_grade, growth_reason = _grade_future_growth(self.data)
-        
+
         # Calculate weighted final grade
         # Final Grade = (Financial Metrics × 0.30) + (Valuation × 0.30) + (Earnings Call × 0.10) + (Management Execution × 0.10) + (Future Growth × 0.20)
         grade_scores = {
@@ -785,7 +898,7 @@ class EarningsAnalyzer:
             grade_scores["future_growth"] * 0.20
         )
         final_letter = _score_to_letter(round(final_score))
-        
+
         # Store granular grades and reasoning
         self.data["grade_breakdown"] = {
             "financial_metrics": {"grade": financial_grade, "reason": financial_reason, "weight": 0.30},
@@ -797,7 +910,7 @@ class EarningsAnalyzer:
             "final_score": round(final_score, 2),
             "all_scores": grade_scores,
         }
-        
+
         self.data["grade"] = {"letter": final_letter, "confidence": confidence,
                               "score": score,
                               "justification": f"Evidence score {score}: reported growth, profitability/cash flow, transcript tone, and source completeness; no ticker-specific grading override."}
@@ -837,20 +950,92 @@ class EarningsAnalyzer:
         thesis["key_risks_summary"] = ", ".join(risk_names) if risk_names else "No quantified risk estimate available"
         self.data["thesis"] = thesis
 
-    def save(self, output_dir: str, deliver: bool = True, telegram_target: str = "telegram", dry_run: bool = False):
-        safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"; directory = Path(output_dir); directory.mkdir(parents=True, exist_ok=True)
+    def save(self, output_dir: str | None = None, deliver: bool = True, telegram_target: str = "telegram", dry_run: bool = False):
+        # Handle both calling patterns:
+        # 1. Called from run() - self.run_dir and self.logger are initialized, output_dir is None
+        # 2. Called directly for testing - output_dir is provided, self.run_dir/logger may not exist
+        if self.run_dir is not None and self.logger is not None:
+            # Called from run() - use existing run_dir and logger
+            run_dir = self.run_dir
+            logger = self.logger
+        else:
+            # Called directly (e.g., in tests) - create temporary run_dir and logger
+            safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"
+            run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            base_output_dir = Path(output_dir) if output_dir else Path.home() / "outputs"
+            run_dir = base_output_dir / f"{self.ticker}_{safe_period}_{run_timestamp}"
+            run_dir.mkdir(parents=True, exist_ok=True)
+            log_file = run_dir / f"{self.ticker}_{safe_period}_{run_timestamp}.log"
+            logger = RunLogger(log_file)
+
+        safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"
         public = {key: value for key, value in self.data.items() if not key.startswith("_")}
         paths = {}
+
+        # Save JSON
         if self.output_format in {"json", "both"}:
-            path = directory / f"{self.ticker}_{safe_period}_analysis.json"; path.write_text(json.dumps(public, indent=2)); paths["json"] = str(path)
+            path = run_dir / f"{self.ticker}_{safe_period}_analysis.json"
+            path.write_text(json.dumps(public, indent=2))
+            paths["json"] = str(path)
+            logger.log_info(f"Saved JSON: {path.name}")
+
+        # Save Markdown
         if self.output_format in {"markdown", "both"}:
-            path = directory / f"{self.ticker}_{safe_period}_analysis.md"; path.write_text(self.markdown(public)); paths["markdown"] = str(path)
-        dashboard_dir = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
-        paths["html"] = create_interactive_dashboard(public, str(dashboard_dir), publish_template_data=True)
-        interactive_pdf = directory / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
+            path = run_dir / f"{self.ticker}_{safe_period}_analysis.md"
+            path.write_text(self.markdown(public))
+            paths["markdown"] = str(path)
+            logger.log_info(f"Saved Markdown: {path.name}")
+
+        # Create interactive dashboard
+        dashboard_dir = run_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard"
+        html_path = create_interactive_dashboard(public, str(dashboard_dir), publish_template_data=True)
+        paths["html"] = html_path
+        logger.log_info(f"Created dashboard: {dashboard_dir.name}")
+
+        # Render dashboard PDF
+        interactive_pdf = run_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
         source_urls = [public.get("sources", {}).get(key) for key in ("filing_url", "earnings_release_url", "transcript_url")]
-        paths["interactive_pdf"] = render_dashboard_pdf(paths["html"], str(interactive_pdf), source_urls)
-        if deliver: paths["delivery"] = deliver_reports(public, paths["interactive_pdf"], telegram_target, dry_run)
+        pdf_path = render_dashboard_pdf(html_path, str(interactive_pdf), source_urls)
+        paths["interactive_pdf"] = pdf_path
+        logger.log_info(f"Rendered PDF: {interactive_pdf.name}")
+
+        # Create dashboard zip (only if dashboard directory exists)
+        zip_path = run_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"
+        if dashboard_dir.exists():
+            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+                for file_path in dashboard_dir.rglob("*"):
+                    if file_path.is_file():
+                        arcname = file_path.relative_to(dashboard_dir.parent)
+                        zf.write(file_path, arcname)
+            logger.log_info(f"Created dashboard zip: {zip_path.name}")
+        else:
+            # Create an empty zip with a placeholder
+            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+                pass
+            logger.log_warning(f"Dashboard directory not found, created empty zip: {zip_path.name}")
+        paths["dashboard_zip"] = str(zip_path)
+
+        # Create Telegram message 1 (Dashboard) as markdown
+        telegram_msg1 = run_dir / f"{self.ticker}_{safe_period}_Telegram_Message1_Dashboard.md"
+        telegram_msg1.write_text("# Message 1 — Enhanced Dashboard\n\n" + generate_dashboard_message(public))
+        paths["telegram_msg1"] = str(telegram_msg1)
+        logger.log_info(f"Created Telegram Message 1: {telegram_msg1.name}")
+
+        # Create Telegram message 2 (Earnings Call Summary) as markdown
+        telegram_msg2 = run_dir / f"{self.ticker}_{safe_period}_Telegram_Message2_CallSummary.md"
+        telegram_msg2.write_text("# Message 2 — Earnings Call Summary\n\n" + generate_call_message(public))
+        paths["telegram_msg2"] = str(telegram_msg2)
+        logger.log_info(f"Created Telegram Message 2: {telegram_msg2.name}")
+
+        # Deliver if requested
+        if deliver:
+            delivery_result = deliver_reports(public, pdf_path, telegram_target, dry_run)
+            paths["delivery"] = delivery_result
+            logger.log_step("DELIVERY", "COMPLETED", f"Target: {telegram_target}, Dry-run: {dry_run}")
+
+        # Finalize logger
+        logger.finalize(success=True, output_dir=run_dir)
+
         return paths
 
     def markdown(self, data: dict[str, Any]) -> str:
@@ -865,8 +1050,59 @@ class EarningsAnalyzer:
                 "\n" + "\n".join(evidence + warnings) + "\n")
 
     def run(self, output_dir: str, deliver: bool = True, telegram_target: str = "telegram", dry_run: bool = False):
-        self.identify(); self.retrieve(); self.business_kpis(); self.financials(); self.quote_and_valuation(); self.qualitative(); self.grade_and_thesis()
-        return self.save(output_dir, deliver, telegram_target, dry_run)
+        # Initialize structured output directory and logger
+        run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_output_dir = Path(output_dir) / "company-earnings-analysis"
+        base_output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Create a temp run directory (will be renamed after we know fiscal period)
+        temp_run_dir = base_output_dir / f"{self.ticker}_temp_{run_timestamp}"
+        temp_run_dir.mkdir(parents=True, exist_ok=True)
+
+        # Initialize logger
+        log_file = temp_run_dir / f"{self.ticker}_temp_{run_timestamp}.log"
+        self.logger = RunLogger(log_file)
+        self.logger.log_step("INITIALIZE", "COMPLETED", f"Temporary run directory: {temp_run_dir}")
+        self.logger.log_info(f"Ticker: {self.ticker}")
+        self.logger.log_info(f"Output format: {self.output_format}")
+
+        # Run identify first to get filing info
+        self.identify()
+        self.logger.log_step("IDENTIFY", "COMPLETED", f"Selected filing: {self.filing.get('accession_number')}")
+
+        # Retrieve filing and parse XBRL to get fiscal period
+        self.retrieve()
+        self.logger.log_step("RETRIEVE_FILING", "COMPLETED", f"Filing: {self.data['sources'].get('filing_url')}, Period: {self.data['fiscal_period']} FY{self.data['fiscal_year']}")
+
+        # Now create the properly named run directory
+        safe_period = f"{self.data['fiscal_period']}_FY{self.data['fiscal_year']}"
+        self.run_dir = base_output_dir / f"{self.ticker}_{safe_period}_{run_timestamp}"
+        if temp_run_dir != self.run_dir:
+            # Move log file and rename directory
+            shutil.move(str(temp_run_dir), str(self.run_dir))
+        log_file = self.run_dir / f"{self.ticker}_{safe_period}_{run_timestamp}.log"
+        self.logger = RunLogger(log_file)
+        self.logger.log_info(f"Run directory renamed to: {self.run_dir}")
+        self.logger.log_info(f"Fiscal period: {safe_period}")
+
+        # Continue with the rest of the pipeline
+        self.business_kpis()
+        self.logger.log_step("BUSINESS_KPIS", "COMPLETED", f"KPIs loaded for {self.ticker}")
+        self.financials()
+        self.logger.log_step("FINANCIALS", "COMPLETED", f"Extracted {len(self.data['financials']['rows'])} financial rows")
+        self.quote_and_valuation()
+        self.logger.log_step("QUOTE_AND_VALUATION", "COMPLETED", f"Quote: {self.data['valuation'].get('current_price')}")
+        self.qualitative()
+        self.logger.log_step("QUALITATIVE", "COMPLETED", f"Extracted {len(self.data['transcript_insights'])} transcript insights")
+        self.grade_and_thesis()
+        self.logger.log_step("GRADE_AND_THESIS", "COMPLETED", f"Grade: {self.data['grade']['letter']}, Confidence: {self.data['grade']['confidence']:.2f}")
+
+        return self.save(
+            output_dir=None,
+            deliver=deliver,
+            telegram_target=telegram_target,
+            dry_run=dry_run,
+        )
 
 
 def main():
