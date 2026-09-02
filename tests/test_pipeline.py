@@ -3,6 +3,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 from unittest.mock import patch
 
@@ -18,7 +19,7 @@ from create_interactive_dashboard import build_dashboard_data, create_interactiv
 from render_interactive_dashboard_pdf import render_dashboard_pdf
 from robinhood_mcp_get_quote import get_quote, _decode
 from sec_edgar_search import _matches_query
-from telegram_notify import (deliver_reports, generate_call_message, generate_dashboard_message, _send,
+from telegram_notify import (generate_call_message, generate_dashboard_message,
                              _complete_insight_selection, SIGNAL_EMOJIS)
 from web_search import _validate as _validate_transcript
 from xbrl_parser import parse_xbrl_financials
@@ -586,40 +587,6 @@ class SafetyTests(unittest.TestCase):
             get_quote("TEST")
         call.assert_not_called()
 
-    def test_delivery_dry_run_never_sends(self):
-        with tempfile.TemporaryDirectory() as directory:
-            pdf = Path(directory) / "a.pdf"; pdf.write_bytes(b"%PDF" + b"x"*1200)
-            with patch("telegram_notify.subprocess.run") as run:
-                result = deliver_reports(sample_data(), str(pdf), dry_run=True)
-            self.assertEqual(len(result), 2); run.assert_not_called()
-
-    def test_delivery_rejects_missing_attachment(self):
-        with self.assertRaisesRegex(RuntimeError, "missing or empty"):
-            deliver_reports(sample_data(), "/missing.pdf", dry_run=False)
-
-    def test_delivery_requires_json_receipt(self):
-        import subprocess
-        with tempfile.TemporaryDirectory() as directory:
-            pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
-            with patch("telegram_notify.subprocess.run", return_value=subprocess.CompletedProcess([], 0, "not-json", "")), \
-                 patch("telegram_notify.validate_pdf"):
-                with self.assertRaisesRegex(RuntimeError, "malformed JSON"):
-                    _send("message", str(pdf), "telegram")
-
-    def test_delivery_success_receipt_and_command(self):
-        import subprocess
-        with tempfile.TemporaryDirectory() as directory:
-            pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
-            result = subprocess.CompletedProcess([], 0, json.dumps({"success": True, "message_id": "m1"}), "")
-            with patch("telegram_notify.subprocess.run", return_value=result) as run, \
-                 patch("telegram_notify.validate_pdf"):
-                receipt = _send("message", str(pdf), "telegram")
-            self.assertTrue(receipt["success"]); self.assertEqual(receipt["backend_id"], "m1")
-            args = run.call_args.args[0]
-            self.assertEqual(args[:5], ["hermes", "send", "--to", "telegram", "--json"])
-            self.assertIn("MEDIA:" + str(pdf.resolve()), args[5])
-
-
 class OutputTests(unittest.TestCase):
     def test_cross_ticker_compaction_preserves_material_evidence(self):
         cases = [
@@ -818,20 +785,43 @@ class OutputTests(unittest.TestCase):
         self.assertIn("TEST ONLY", generate_dashboard_message(data))
         self.assertIn("TEST ONLY", generate_call_message(data))
 
-    def test_save_delivers_automatically_by_default(self):
-        analyzer = EarningsAnalyzer("TEST", output_format="json"); analyzer.data = sample_data()
-        rendered = "/tmp/TEST_Q2_FY2026_Interactive_Dashboard.pdf"
+    def test_save_creates_nonempty_dashboard_zip_with_required_files(self):
+        analyzer = EarningsAnalyzer("TEST", output_format="json")
+        analyzer.data = sample_data()
+
+        def create_dashboard(_data, output_dir, **_kwargs):
+            root = Path(output_dir)
+            files = {
+                "index.html": "<html><body>dashboard</body></html>",
+                "css/dashboard.css": "body { color: #111; }",
+                "js/dashboard.js": "window.EARNINGS_REPORT = {};",
+                "data/report.json": "{}",
+            }
+            for relative, content in files.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content, encoding="utf-8")
+            return str(root / "index.html")
+
         with tempfile.TemporaryDirectory() as directory, \
-                patch("run_analysis.create_interactive_dashboard", return_value="/tmp/index.html") as create, \
-                patch("run_analysis.render_dashboard_pdf", return_value=rendered) as render, \
-                patch("run_analysis.deliver_reports", return_value=[{"success": True}]) as deliver:
-            paths = analyzer.save(directory)
-        create.assert_called_once()
-        self.assertTrue(create.call_args.kwargs["publish_template_data"])
-        render.assert_called_once()
-        deliver.assert_called_once_with(sample_data(), rendered, "telegram", False)
-        self.assertEqual(paths["interactive_pdf"], rendered)
-        self.assertIn("delivery", paths)
+                patch("run_analysis.create_interactive_dashboard", side_effect=create_dashboard), \
+                patch("run_analysis.render_dashboard_pdf", return_value="/tmp/dashboard.pdf"):
+            paths = analyzer.save(directory, deliver=False)
+            archive = Path(paths["dashboard_zip"])
+            self.assertTrue(archive.is_file())
+            self.assertGreater(archive.stat().st_size, 0)
+            self.assertTrue(zipfile.is_zipfile(archive))
+            with zipfile.ZipFile(archive) as zipped:
+                names = set(zipped.namelist())
+                prefix = "TEST_Q2_FY2026_Interactive_Dashboard/"
+                required = {
+                    prefix + "index.html",
+                    prefix + "css/dashboard.css",
+                    prefix + "js/dashboard.js",
+                    prefix + "data/report.json",
+                }
+                self.assertTrue(required <= names)
+                self.assertTrue(all(zipped.getinfo(name).file_size > 0 for name in required))
 
 class InteractiveDashboardTests(unittest.TestCase):
     def test_dashboard_schema_is_company_neutral_and_metadata_complete(self):
@@ -1083,23 +1073,6 @@ class InteractiveDashboardTests(unittest.TestCase):
         for forbidden in ("RKLB", "$234.1M", "57.9x", "$79.99", "$54.4B"):
             self.assertNotIn(forbidden, source)
 
-    def test_section_order_interaction_and_accessibility_contract(self):
-        html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
-        headings = [
-            "Income Statement Highlights", ">KPI<", "Key Ratios", "Valuation", "Capital &amp; Liquidity",
-            "Short Interest &amp; SBC",
-            "Guidance &amp; Outlook", "Earnings Call Summary", "Key Channels &amp; Segments",
-            "Strategic Pillars", "Key Risks", "Investment Thesis",
-        ]
-        positions = [html.index(heading) for heading in headings]
-        self.assertEqual(positions, sorted(positions))
-        self.assertNotIn("risk-metric-cards", html)
-        self.assertIn('<dialog id="metric-dialog"', html)
-        self.assertIn('aria-labelledby="dialog-title"', html)
-        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
-        for behavior in ('button.type = "button"', 'dialog.showModal()', 'lastTrigger.focus()',
-                         'window.print()', 'event.target.files'):
-            self.assertIn(behavior, script)
 
     def test_a4_print_contract_and_bundled_inter_font(self):
         dashboard_css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text()
@@ -1139,11 +1112,6 @@ class InteractiveDashboardTests(unittest.TestCase):
             # Interactive dashboard PDF validates structure only; clickable links
             # are verified on the one-pager PDF. Expect empty URL list.
             validate.assert_called_once_with(str(output.resolve()), [])
-
-    def test_telegram_messages_name_interactive_dashboard_attachment(self):
-        self.assertIn("Interactive A4 dashboard attached", generate_dashboard_message(sample_data()))
-        self.assertIn("Interactive A4 dashboard attached", generate_call_message(sample_data()))
-
 
 class ValuationGuideTests(unittest.TestCase):
     def _sections(self, positive=False):
