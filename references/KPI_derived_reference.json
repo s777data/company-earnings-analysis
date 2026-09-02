@@ -967,92 +967,437 @@
     }
   },
   {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Operating Margin Expansion",
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "GMV",
     "details_map": {
       "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: 22.3%",
-        "last_year_quarter_value": "Q3 2025: 16.1%",
-        "analyst_view": "Operating margin expanded 620 bps YoY on scale and pricing power.",
-        "source": "SEC",
+        "latest_quarter_value": "Q2 2026: $36.6B",
+        "last_year_quarter_value": "Q2 2025: $31.0B",
+        "analyst_view": "GMV grew 18% YoY (15% like-for-like), driven by Fair Financing and US growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Total Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $1,042M",
+        "last_year_quarter_value": "Q2 2025: $823M",
+        "analyst_view": "Revenue grew 27% YoY, driven by transaction and service revenue growth and Fair Financing expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Transaction Margin Dollars",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $446M",
+        "last_year_quarter_value": "Q2 2025: $315M",
+        "analyst_view": "Transaction margin dollars surged 42% YoY, reflecting improved unit economics and product mix shift toward higher-margin products.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Net Profit (Loss)",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $9M",
+        "last_year_quarter_value": "Q2 2025: -$53M",
+        "analyst_view": "First quarterly profit as a public company, reflecting operating leverage with volume, revenue, and margin all growing.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Fair Financing GMV",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $4.7B",
+        "last_year_quarter_value": "Q2 2025: $2.6B",
+        "analyst_view": "Fastest growing product, up 82% YoY, now offered by 256,000 merchants (up from 151,000 in Nov 2025).",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Fair Financing Merchant Count",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 256,000",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Merchant base expanded significantly from 151,000 in Nov 2025, supporting volume growth.",
+        "source": "IR",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Stuart Weitzman Brand Revenue",
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Klarna Card Active Users",
     "details_map": {
       "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: $0.12B",
-        "last_year_quarter_value": "Q3 2025: $0.11B",
-        "analyst_view": "Stuart Weitzman grew 9% YoY with improved profitability.",
+        "latest_quarter_value": "Q2 2026: 6.5M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Card reached 6.5M active users across 16 countries, driving higher engagement and transaction margin.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Klarna Membership Subscribers",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 2.0M",
+        "last_year_quarter_value": "Q2 2025: 0.25M",
+        "analyst_view": "Subscription revenue grew 600%+ YoY, providing high-margin recurring revenue with almost no GMV attachment.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "US GMV",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $7.8B",
+        "last_year_quarter_value": "Q2 2025: $6.2B",
+        "analyst_view": "US GMV grew 27% YoY, now largest market by volume share, with transaction margin improving from 14% to 23% of revenue.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "US Transaction Margin % of Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 23%",
+        "last_year_quarter_value": "Q2 2025: 14%",
+        "analyst_view": "US margin improved 9pp YoY, reflecting scale benefits and product mix shift toward Fair Financing and Card.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Provisions for Credit Losses as % of GMV",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 0.52%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Provisions declined as share of GMV for consecutive quarters, reflecting underwriting improvements and forward flow arrangements.",
         "source": "IR/SEC",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Dividend Per Share",
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Consumer Receivables at Amortized Cost",
     "details_map": {
       "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: $0.35",
-        "last_year_quarter_value": "Q3 2025: $0.35",
-        "analyst_view": "Maintained quarterly dividend of $0.35, yielding ~2.8% at current price.",
-        "source": "IR/SEC",
-        "importance": "Tier 3 — Supporting"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Inventory Turnover",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: 3.2x",
-        "last_year_quarter_value": "Q3 2025: 2.8x",
-        "analyst_view": "Inventory turnover improved to 3.2x, reflecting disciplined inventory management.",
+        "latest_quarter_value": "Q2 2026: $8,831M",
+        "last_year_quarter_value": "Q4 2025: $10,459M",
+        "analyst_view": "Receivables declined from year-end due to forward flow sales and seasonal patterns; Fair Financing and Pay Later mix shifting.",
         "source": "SEC",
-        "importance": "Tier 3 — Supporting"
+        "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Share Repurchase Amount",
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Total Equity",
     "details_map": {
       "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: $300M",
-        "last_year_quarter_value": "Q3 2025: $150M",
-        "analyst_view": "Repurchased $300M in shares, double prior year, reflecting confidence in valuation.",
-        "source": "IR",
-        "importance": "Tier 3 — Supporting"
+        "latest_quarter_value": "Q2 2026: $2,666M",
+        "last_year_quarter_value": "Q4 2025: $2,684M",
+        "analyst_view": "Equity stable, includes non-controlling interests from AT1 securities issued by subsidiary.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "New Store Openings",
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Consumer Deposits",
     "details_map": {
       "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: 15 net",
-        "last_year_quarter_value": "Q3 2025: 8 net",
-        "analyst_view": "Opened 15 net new stores, primarily in Greater China and North America.",
+        "latest_quarter_value": "Q2 2026: $11,673M",
+        "last_year_quarter_value": "Q4 2025: $13,003M",
+        "analyst_view": "Deposits declined from year-end, partially reflecting balance sheet optimization and asset sales.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Daily Active Users (DAU)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: 130M+",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "DAU grew, driven by product improvements and marketing; new app user retention up 50% YoY.",
         "source": "IR",
-        "importance": "Tier 4 — Context"
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Weekly Active Users (WAU)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: 200M+",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Over 200M weekly active users; WAU to DAU conversion improving through feed improvements.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Average Revenue Per Unique User (ARPU)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $6.18",
+        "last_year_quarter_value": "Q2 2025: $4.54",
+        "analyst_view": "ARPU grew 36% YoY to $6.18, driven by ad load improvements, auction density, and international monetization.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Ad Revenue",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $762M",
+        "last_year_quarter_value": "Q2 2025: $464M",
+        "analyst_view": "Ad revenue grew 64% YoY to $762M, driven by ad load improvements, auction density, and international expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Other Revenue (Data Licensing)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $43M",
+        "last_year_quarter_value": "Q2 2025: $35M",
+        "analyst_view": "Other revenue (primarily data licensing) grew 24% YoY to $43M; content licensing partnerships remain strong with no strategy change.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "US Revenue",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $487M",
+        "last_year_quarter_value": "Q2 2025: $312M",
+        "analyst_view": "US revenue grew 56% YoY; ARPU in US approached $50 for the full year with significant headroom.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "International Revenue",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $318M",
+        "last_year_quarter_value": "Q2 2025: $173M",
+        "analyst_view": "International revenue grew 84% YoY, outpacing US growth; monetization expanding in ex-US markets.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Adjusted EBITDA",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $346M",
+        "last_year_quarter_value": "Q2 2025: $212M",
+        "analyst_view": "Adjusted EBITDA grew 63% YoY with 43% margin; Q3 guidance of $385-395M implies 63-67% YoY growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Adjusted EBITDA Margin",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: 43%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Adjusted EBITDA margin of 43% in Q2; Q3 guidance of 45% at midpoint showing continued margin expansion.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "New App User Retention",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: Up 50% YoY",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "New app user retention improved 50% YoY on relative basis, a key priority for converting weekly users to daily active users.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Share Repurchase",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $235M (1.5M shares)",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Repurchased $235M worth of stock (~1.5M shares at ~$157 avg); $760M remaining on authorization; dilution at lower end of 1-3% targeted range.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Operating Cash Flow (LTM)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: >$1B LTM",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Crossed $1B operating cash flow on LTM basis for first time, demonstrating strong cash conversion.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Revenue Per Employee",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: >$1M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Crossed $1M revenue per employee milestone, demonstrating operational leverage and monetization efficiency.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "SBC Expense Outlook",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "FY2026: Low to mid-teens % of revenue",
+        "last_year_quarter_value": "FY2025: High teens % of revenue",
+        "analyst_view": "Lowered full-year SBC expense guide from high teens to low-to-mid teens % of revenue; Q2 SBC was $101M.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Free Cash Flow",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: Strong positive",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Strong free cash flow generation; operating cash flow of $262M in Q2; $1B+ LTM operating cash flow milestone achieved.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
       }
     }
   },

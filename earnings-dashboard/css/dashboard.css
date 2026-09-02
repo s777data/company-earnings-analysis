@@ -411,8 +411,8 @@ h2 {
 .gauge-card:hover { border-color: #7f9bb7; }
 .gauge-card:focus-visible { outline: 1.5px solid #0a67b2; outline-offset: 1px; }
 .gauge-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: .35mm; min-width: 0; }
-.gauge-card-name { overflow: hidden; color: #101827; font-size: 4.25px; font-weight: 780; line-height: 1.04; text-overflow: ellipsis; white-space: nowrap; }
-.gauge-tier { flex: none; padding: .35mm .55mm; border-radius: 1.5mm; background: #eef3f7; color: var(--navy); font-size: 3.25px; font-weight: 760; line-height: 1; }
+.gauge-card-name { overflow: hidden; color: #101827; font-size: 5.31px; font-weight: 780; line-height: 1.3; text-overflow: ellipsis; white-space: normal; word-wrap: break-word; overflow-wrap: anywhere; } /* 4.25px * 1.25 */
+.gauge-tier { flex: none; padding: .35mm .55mm; border-radius: 1.5mm; background: #eef3f7; color: var(--navy); font-size: 4.06px; font-weight: 760; line-height: 1; } /* 3.25px * 1.25 */
 .mini-gauge { grid-row: 2; width: 100%; height: 8.3mm; overflow: visible; }
 .gauge-track, .gauge-arc { fill: none; stroke-linecap: butt; stroke-width: 8; }
 .gauge-track { stroke: #e5e9ed; }
@@ -432,9 +432,9 @@ h2 {
   line-height: 1;
   text-align: center;
 }
-.gauge-result strong { color: currentColor; font-size: 6.8px; font-weight: 830; letter-spacing: -.03em; }
-.gauge-result span { margin-top: .25mm; color: currentColor; font-size: 3.45px; font-weight: 760; }
-.gauge-result small { margin-top: .25mm; color: var(--muted); font-size: 2.9px; }
+.gauge-result strong { color: currentColor; font-size: 8.5px; font-weight: 830; letter-spacing: -.03em; } /* 6.8px * 1.25 */
+.gauge-result span { margin-top: .25mm; color: currentColor; font-size: 4.31px; font-weight: 760; } /* 3.45px * 1.25 */
+.gauge-result small { margin-top: .25mm; color: var(--muted); font-size: 3.63px; } /* 2.9px * 1.25 */
 .gauge-facts {
   grid-row: 3;
   display: grid;
@@ -443,10 +443,14 @@ h2 {
   padding-top: .45mm;
   border-top: .2mm solid #e3e8ed;
   color: #30465d;
-  font-size: 2.75px;
-  line-height: 1.05;
+  font-size: 3.44px; /* 2.75px * 1.25 */
+  line-height: 1.15;
 }
-.gauge-facts span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gauge-facts span { 
+  overflow-wrap: anywhere; 
+  word-wrap: break-word; 
+  white-space: normal; 
+}
 .analysis-grid { display: grid; grid-template-columns: .85fr 1fr 1.45fr; gap: 1.2mm; margin-top: .2mm; }
 .analysis-grid section { height: 63mm; overflow: hidden; }
 .analysis-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 1.2mm; height: 63mm; }

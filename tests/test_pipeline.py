@@ -973,6 +973,8 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertIn('container.style.setProperty("--ratio-columns", String(Math.max(items.length, 1)))', script)
         self.assertIn("renderKpis(sections.business_kpis)", script)
         self.assertIn('renderMetrics("ratio-cards", sections.key_ratios, "ratio")', script)
+        self.assertIn("const formatSigned =", script)
+        self.assertNotIn(":+.1f", script)
 
     def test_short_interest_sbc_keeps_tier_one_placeholders_and_selected_tier_two(self):
         data = sample_data()
