@@ -295,7 +295,7 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     else:
         lines.append("\n📝 **Metrics Note:** All Tier 1 metrics displayed.")
 
-    lines.extend(["", "📎 HTML Dashboard: Interactive dashboard attached as ZIP",
+    lines.extend(["", "📎 Dashboard artifacts: ZIP + PDF + 4K PNG generated",
                   f"🔗 SEC: {data['sources']['filing_url']}"])
     if data["sources"].get("investor_relations_url"):
         lines.append(f"🔗 IR: {data['sources']['investor_relations_url']}")
@@ -331,7 +331,7 @@ def generate_call_message(data: dict[str, Any]) -> str:
             lines.append(f"   Evidence: {insight.get('section', 'Transcript')} chars {insight.get('citation', {}).get('start', 'N/A')}–{insight.get('citation', {}).get('end', 'N/A')}")
             lines.append("")
     lines.extend([f"Source: Earnings call transcript (prepared remarks + analyst Q&A) — {data['sources']['transcript_url']}",
-                  "📎 HTML Dashboard: Interactive dashboard attached as ZIP"])
+                  "📎 Dashboard artifacts: ZIP + PDF + 4K PNG generated"])
     return "\n".join(lines)
 
 

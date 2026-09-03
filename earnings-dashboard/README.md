@@ -37,7 +37,7 @@ All company values, labels, explanations, formulas, scales, evidence, and source
 
 ## Generate with the earnings pipeline
 
-`run_analysis.py` now creates an interactive dashboard and a browser-rendered PDF alongside JSON, Markdown, and the original PDF output. After the final JavaScript cards render, headless Chromium prints the HTML to A4 PDF, validates the PDF, and uses that rendered PDF as the attachment for both Telegram messages. A successful run adds:
+`run_analysis.py` now creates an interactive dashboard, a browser-rendered PDF, and a 4K PNG alongside JSON, Markdown, and the original PDF output. After the final JavaScript cards render, headless Chromium prints the HTML to A4 PDF, validates the PDF, rasterizes that PDF to a 4K PNG, and uses the dashboard ZIP as the attachment for both Telegram messages. A successful run adds:
 
 ```text
 <TICKER>_Qn_FYyyyy_Interactive_Dashboard/
@@ -50,6 +50,7 @@ All company values, labels, explanations, formulas, scales, evidence, and source
     ├── report.json
     └── report.js
 <TICKER>_Qn_FYyyyy_Interactive_Dashboard.pdf
+<TICKER>_Qn_FYyyyy_Interactive_Dashboard_4K.png
 ```
 
 The static dashboard has no runtime dependencies. Pipeline PDF rendering requires the Playwright CLI and Chromium:

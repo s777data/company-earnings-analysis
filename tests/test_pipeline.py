@@ -17,7 +17,7 @@ from pdf_utils import (_compact_summary, _compact_items,
                                   COMPACT_LABELS, SEMANTIC_SYMBOL_COLORS, COLORS,
                                   validate_pdf)
 from create_interactive_dashboard import build_dashboard_data, create_interactive_dashboard
-from render_interactive_dashboard_pdf import render_dashboard_pdf
+from render_interactive_dashboard_pdf import render_dashboard_pdf, render_dashboard_png
 from robinhood_mcp_get_quote import get_quote, _decode
 from sec_edgar_search import _matches_query
 from telegram_notify import (generate_call_message, generate_dashboard_message,
@@ -892,7 +892,8 @@ class OutputTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory, \
                 patch("run_analysis.create_interactive_dashboard", side_effect=create_dashboard), \
-                patch("run_analysis.render_dashboard_pdf", return_value="/tmp/dashboard.pdf"):
+                patch("run_analysis.render_dashboard_pdf", return_value="/tmp/dashboard.pdf") as render_pdf, \
+                patch("run_analysis.render_dashboard_png", return_value="/tmp/dashboard_4k.png") as render_png:
             paths = analyzer.save(directory, deliver=False)
             archive = Path(paths["dashboard_zip"])
             self.assertTrue(archive.is_file())
@@ -909,6 +910,8 @@ class OutputTests(unittest.TestCase):
                 }
                 self.assertTrue(required <= names)
                 self.assertTrue(all(zipped.getinfo(name).file_size > 0 for name in required))
+            self.assertTrue(paths["dashboard_pdf"].endswith("TEST_Q2_FY2026_Interactive_Dashboard.pdf"))
+            self.assertTrue(paths["dashboard_png"].endswith("TEST_Q2_FY2026_Interactive_Dashboard_4K.png"))
 
 class InteractiveDashboardTests(unittest.TestCase):
     def test_dashboard_schema_is_company_neutral_and_metadata_complete(self):
@@ -1201,6 +1204,31 @@ class InteractiveDashboardTests(unittest.TestCase):
             # Interactive dashboard PDF validates structure only; clickable links
             # are verified on the one-pager PDF. Expect empty URL list.
             validate.assert_called_once_with(str(output.resolve()), [])
+
+    def test_browser_png_renderer_rasterizes_a4_pdf_to_4k_png(self):
+        import fitz
+        import struct
+
+        with tempfile.TemporaryDirectory() as directory:
+            pdf = Path(directory) / "dashboard.pdf"
+            png = Path(directory) / "dashboard.png"
+            document = fitz.open()
+            page = document.new_page(width=595.28, height=841.89)
+            page.insert_text((72, 72), "Dashboard")
+            document.save(pdf)
+            document.close()
+
+            result = render_dashboard_png(str(pdf), str(png))
+            self.assertEqual(result, str(png.resolve()))
+            self.assertTrue(png.is_file())
+            self.assertGreater(png.stat().st_size, 0)
+            with png.open("rb") as handle:
+                self.assertEqual(handle.read(8), b"\x89PNG\r\n\x1a\n")
+                self.assertEqual(struct.unpack(">I", handle.read(4))[0], 13)
+                self.assertEqual(handle.read(4), b"IHDR")
+                width = struct.unpack(">I", handle.read(4))[0]
+                height = struct.unpack(">I", handle.read(4))[0]
+            self.assertEqual((width, height), (2716, 3840))
 
 class ValuationGuideTests(unittest.TestCase):
     def _sections(self, positive=False):

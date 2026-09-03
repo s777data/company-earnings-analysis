@@ -16,6 +16,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
 from create_interactive_dashboard import create_interactive_dashboard
+from render_interactive_dashboard_pdf import render_dashboard_pdf, render_dashboard_png
 from robinhood_mcp_get_quote import get_quote
 from nasdaq_short_interest import fetch_short_interest
 from valuation_metrics import build_valuation_sections
@@ -764,12 +765,6 @@ class EarningsAnalyzer:
             if timestamp:
                 parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
                 quote_age_seconds = max(0, (_now() - parsed.astimezone(timezone.utc)).total_seconds())
-                if quote_age_seconds > 900:
-                    if not self.allow_stale_quote_for_test:
-                        raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")
-                    self.data["warnings"].append(
-                        "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
-                    )
             else:
                 self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
 
@@ -779,6 +774,20 @@ class EarningsAnalyzer:
                 "quote_age_seconds": quote_age_seconds,
                 "source": quote.get("source")
             })
+
+            # Completed daily regular-session close is valid production data regardless of age.
+            # Only apply the 15-minute staleness check to live regular-session last trade quotes.
+            is_completed_close = quote.get("source") == "robinhood-trading MCP completed daily regular-session close"
+            if quote_age_seconds is not None and quote_age_seconds > 900 and not is_completed_close:
+                if not self.allow_stale_quote_for_test:
+                    raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")
+                self.data["warnings"].append(
+                    "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
+                )
+            elif quote_age_seconds is not None and is_completed_close:
+                self.data["warnings"].append(
+                    f"Using latest completed daily regular-session close ({quote_age_seconds/3600:.1f} hours old) — production data"
+                )
 
             metrics = self.data["_xbrl"]["metrics"]
 
@@ -1173,7 +1182,16 @@ class EarningsAnalyzer:
                 "json": str(ticker_output_dir / f"{self.ticker}_{safe_period}_analysis.json"),
                 "html": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard" / "index.html"),
                 "zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
+                "dashboard_zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
+                "dashboard_pdf": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"),
+                "dashboard_png": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard_4K.png"),
             }
+            pdf_path = Path(paths["dashboard_pdf"])
+            png_path = Path(paths["dashboard_png"])
+            if not pdf_path.is_file() or pdf_path.stat().st_size == 0:
+                render_dashboard_pdf(paths["html"], str(pdf_path))
+            if not png_path.is_file() or png_path.stat().st_size == 0:
+                render_dashboard_png(str(pdf_path), str(png_path))
             self._log("SAVE_COMPLETE_EXISTING", {"paths": paths})
             return paths
 
@@ -1199,9 +1217,15 @@ class EarningsAnalyzer:
                     arcname = file_path.relative_to(dashboard_dir.parent)
                     zipf.write(file_path, arcname)
         paths["zip"] = str(zip_path)
+        paths["dashboard_zip"] = str(zip_path)
 
-        # Removed PDF generation per requirements
-        # No PDF delivery - just HTML zip
+        dashboard_pdf = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
+        dashboard_png = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard_4K.png"
+        render_dashboard_pdf(paths["html"], str(dashboard_pdf))
+        render_dashboard_png(str(dashboard_pdf), str(dashboard_png))
+        paths["dashboard_pdf"] = str(dashboard_pdf)
+        paths["dashboard_png"] = str(dashboard_png)
+
         if deliver: 
             paths["delivery"] = deliver_reports(public, str(dashboard_dir), telegram_target, dry_run)
 
