@@ -27,7 +27,6 @@
     if (!Number.isFinite(number)) return "N/A";
     return `${number >= 0 ? "+" : ""}${number.toFixed(digits)}`;
   };
-
   let lastTrigger = null;
   const dialog = $("metric-dialog");
 
@@ -440,7 +439,7 @@
   }
 
   function fitNarrativeSections() {
-    ["capital-content", "short-interest-content", "guidance-content", "call-content"].forEach((id) => fitText($(id), 3.65));
+    ["capital-content", "short-interest-content", "guidance-content", "call-content", "grade-reasoning-content"].forEach((id) => fitText($(id), 3.65));
     document.querySelectorAll(".channel-card, .pillar-card").forEach((card) => fitText(card, 3.55));
     document.body.dataset.layoutReady = "true";
   }
@@ -462,66 +461,11 @@
         return;
       }
     
-      // Check for new valuation engine data
-      const valuation = window.EARNINGS_REPORT?.valuation;
-      const psRelative = valuation?.ps_relative_valuation;
-      const finalScore = valuation?.final_valuation_score;
-    
       const rows = [];
-    
-      // Add P/S Relative Valuation if available
-      if (psRelative && psRelative.relative_valuation_ratio !== null) {
-        const vr = psRelative.relative_valuation_ratio;
-        const score = psRelative.valuation_score;
-        const classification = psRelative.classification;
-        const color = psRelative.color;
-      
-        let signal = "neutral";
-        if (vr < 0.55) signal = "best";
-        else if (vr < 0.75) signal = "strong_positive";
-        else if (vr < 0.90) signal = "positive";
-        else if (vr <= 1.10) signal = "neutral";
-        else if (vr <= 1.30) signal = "caution";
-        else if (vr <= 1.60) signal = "negative";
-        else signal = "worst";
-      
-        const inputs = psRelative.inputs || {};
-        rows.push({ 
-          name: "📊 P/S Relative Valuation", 
-          detail: `VR: ${vr.toFixed(2)}x (Score: ${score}/100) — ${classification} [${color}]. Base: ${inputs.company_ps?.toFixed(1)}x vs peer ${inputs.peer_median_ps?.toFixed(1)}x. Growth adj: ${psRelative.growth_adjustment?.toFixed(3) || 'N/A'}, Profit adj: ${psRelative.profitability_adjustment?.toFixed(3) || 'N/A'}. Peer: ${inputs.peer_group_name} (${inputs.peer_group_level}, n=${inputs.peer_count}).`,
-          signal 
-        });
-      }
-    
-      // Add Final Valuation Score if available
-      if (finalScore && finalScore.final_valuation_score !== null) {
-        const fvs = finalScore.final_valuation_score;
-        const grade = finalScore.letter_grade;
-        const classification = finalScore.classification;
-        const regime = finalScore.regime;
-        const coreScore = finalScore.core_valuation_score;
-        const totalMod = finalScore.total_modifier;
-        const validMetrics = finalScore.valid_metrics || [];
-      
-        let signal = "neutral";
-        if (grade.startsWith("A")) signal = "positive";
-        else if (grade.startsWith("B")) signal = "positive";
-        else if (grade === "C+") signal = "neutral";
-        else if (grade.startsWith("C")) signal = "caution";
-        else if (grade.startsWith("D")) signal = "negative";
-        else if (grade === "F") signal = "worst";
-      
-        const regimeLabel = regime === "A" ? "Profitable + FCF" : regime === "B" ? "Profitable – FCF" : "Unprofitable";
-      
-        rows.push({ 
-          name: "🎯 Final Valuation Score", 
-          detail: `${fvs}/100 (${grade}) — ${classification}. Regime ${regime} (${regimeLabel}). Core: ${coreScore}/100 from ${validMetrics.join(", ") || "none"}. Adj: net cash/debt ${formatSigned(finalScore.capital_liquidity_adjustment)}, dilution ${formatSigned(finalScore.dilution_adjustment)}, ROIC ${formatSigned(finalScore.roic_adjustment)} (total ${formatSigned(totalMod)}, capped ±10).`,
-          signal 
-        });
-      }
 
       const categories = [
         { key: "financial_metrics", label: "Financial Metrics", icon: "📊" },
+        { key: "business_quality", label: "Business Quality", icon: "🏢" },
         { key: "valuation", label: "Valuation", icon: "💰" },
         { key: "earnings_call", label: "Earnings Call", icon: "📞" },
         { key: "management_execution", label: "Management Execution", icon: "👔" },
@@ -569,7 +513,7 @@
         signal: finalSignal 
       });
 
-      renderList("grade-reasoning-content", rows, 6, 200);
+      renderList("grade-reasoning-content", rows, 7, 200);
     }
 
   function sourceLinks(sources) {

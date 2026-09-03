@@ -89,9 +89,10 @@ def _generate_grade_reasoning(data: dict[str, Any]) -> str:
     
     lines = ["", "📋 **GRADE REASONING**", ""]
     
-    # Order: Financial Metrics, Valuation, Earnings Call, Management Execution, Future Growth
+    # Order: Financial Metrics, Business Quality, Valuation, Earnings Call, Management Execution, Future Growth
     categories = [
         ("financial_metrics", "📊 Financial Metrics"),
+        ("business_quality", "🏢 Business Quality"),
         ("valuation", "💰 Valuation"),
         ("earnings_call", "📞 Earnings Call"),
         ("management_execution", "👔 Management Execution"),

@@ -10,6 +10,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "scripts"))
 from run_analysis import (EarningsAnalyzer, _change, _display, _extract_investor_relations_url,
+                          _parse_company_valuation_score_output,
                           _validate_transcript_call_date)
 from pdf_utils import (_compact_summary, _compact_items,
                                   _direction_marker, _select_call_summary_insights,
@@ -52,7 +53,92 @@ def sample_data():
             "valuation":{"current_price":10.0,"pe_ttm":20.0,"ps_annualized":2.0,"fcf_yield_annualized":3.0},
             "transcript_insights":[{"topic":"Q&A","detail":"Analyst questions were answered.","tier":"medium"}],
             "growth_drivers":[{"driver":"Revenue increased.","tier":"best"}],"risks":[{"risk":"Competition disclosed"}],
+            "company_valuation_score": {
+                "run_id": "test-run",
+                "valuation": {"status": "ok", "score": 72.0, "grade": "B", "classification": "Fair Value", "confidence": "high"},
+                "business_quality": {"status": "ok", "score": 92.0, "grade": "A+", "classification": "Exceptional Business Quality", "confidence": "high"},
+            },
             "sources":{"filing_url":"https://www.sec.gov/Archives/edgar/data/1/filing.htm","transcript_url":"https://stockanalysis.com/stocks/test/transcripts/1-q2-2026/"}}
+
+
+class GradeReasoningIntegrationTests(unittest.TestCase):
+    def test_parser_normalizes_fresh_and_cached_valuation_skill_outputs(self):
+        fresh = {
+            "ticker": "TEST", "status": "ok", "score": 67.5, "grade": "B-",
+            "classification": "Fair / Premium", "confidence": "high", "run_id": "fresh-run",
+            "business_quality": {
+                "status": "ok", "score": 91.25, "grade": "A+",
+                "classification": "Exceptional Business Quality", "confidence": "high",
+            },
+        }
+        cached = {
+            "ticker": "TEST", "run_id": "cached-run", "valuation": {
+                "grade": {"status": "ok", "score": 67.5, "grade": "B-", "classification": "Fair / Premium"},
+                "business_quality": {"status": "ok", "score": 91.25, "grade": "A+", "classification": "Exceptional Business Quality"},
+            },
+        }
+        for payload, run_id in ((fresh, "fresh-run"), (cached, "cached-run")):
+            stdout = "header\nMACHINE-READABLE JSON OUTPUT\n" + json.dumps(payload)
+            normalized = _parse_company_valuation_score_output(stdout, "TEST")
+            self.assertEqual(normalized["run_id"], run_id)
+            self.assertEqual(normalized["valuation"]["score"], 67.5)
+            self.assertEqual(normalized["valuation"]["grade"], "B-")
+            self.assertEqual(normalized["business_quality"]["score"], 91.25)
+            self.assertEqual(normalized["business_quality"]["grade"], "A+")
+
+    def test_grade_breakdown_uses_skill_grades_and_requested_weights(self):
+        analyzer = EarningsAnalyzer("TEST")
+        analyzer.data = sample_data() | {
+            "financials": {"rows": [
+                {"key": "revenue", "value": 120, "prior_value": 100},
+                {"key": "operating_income", "value": 20, "prior_value": 10},
+                {"key": "net_income", "value": 15, "prior_value": 10},
+                {"key": "operating_cash_flow", "value": 30, "prior_value": 20},
+            ], "key_ratios": []},
+            "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": None},
+            "sources": {"earnings_release_url": "x", "transcript_url": "y"},
+        }
+        analyzer.grade_and_thesis()
+        breakdown = analyzer.data["grade_breakdown"]
+        self.assertEqual(breakdown["business_quality"]["grade"], "A+")
+        self.assertEqual(breakdown["business_quality"]["score"], 92.0)
+        self.assertEqual(breakdown["valuation"]["grade"], "B")
+        self.assertEqual(breakdown["valuation"]["score"], 72.0)
+        expected_weights = {
+            "financial_metrics": 0.10, "business_quality": 0.40, "valuation": 0.40,
+            "earnings_call": 0.02, "management_execution": 0.03, "future_growth": 0.05,
+        }
+        self.assertEqual({key: breakdown[key]["weight"] for key in expected_weights}, expected_weights)
+        expected_score = sum(
+            breakdown["all_scores"][key] * weight for key, weight in expected_weights.items()
+        )
+        self.assertAlmostEqual(breakdown["final_score"], round(expected_score, 2))
+
+    def test_telegram_and_html_keep_structure_with_business_quality_line(self):
+        analyzer = EarningsAnalyzer("TEST")
+        analyzer.data = sample_data() | {
+            "financials": {"rows": [], "key_ratios": []},
+            "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": None},
+            "sources": sample_data()["sources"] | {"earnings_release_url": None},
+        }
+        analyzer.grade_and_thesis()
+        message = generate_dashboard_message(analyzer.data)
+        self.assertIn("🏢 Business Quality (40%): A+", message)
+        self.assertIn("92.0/100 — Exceptional Business Quality", message)
+        self.assertIn("💰 Valuation (40%): B", message)
+        self.assertIn("72.0/100 — Fair Value", message)
+        self.assertIn("📊 Financial Metrics (10%)", message)
+        self.assertIn("📞 Earnings Call (2%)", message)
+        self.assertIn("👔 Management Execution (3%)", message)
+        self.assertIn("🚀 Future Growth (5%)", message)
+        self.assertNotIn("P/S Relative Valuation", message)
+        self.assertNotIn("Final Valuation Score", message)
+
+        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        self.assertIn('{ key: "business_quality", label: "Business Quality", icon: "🏢" }', script)
+        self.assertIn('renderList("grade-reasoning-content", rows, 7, 200)', script)
+        self.assertNotIn("P/S Relative Valuation", script)
+        self.assertNotIn("Final Valuation Score", script)
 
 
 class BusinessKpiTests(unittest.TestCase):
@@ -312,10 +398,11 @@ class ExtractionTests(unittest.TestCase):
             "transcript_insights": [],
             "sources": {"earnings_release_url": None, "transcript_url": "https://example.com/t"},
             "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": None},
+            "company_valuation_score": sample_data()["company_valuation_score"],
             "risks": [],
         }
         analyzer.grade_and_thesis()
-        self.assertIn(analyzer.data["grade"]["letter"], {"A", "B", "C", "D", "F"})
+        self.assertRegex(analyzer.data["grade"]["letter"], r"^(?:A|B|C|D)[+-]?$|^F$")
         self.assertEqual(analyzer.data["thesis"]["recommendation"], "INSUFFICIENT DATA")
 
     def test_financial_format_keeps_number(self):

@@ -8,6 +8,7 @@ import json
 import math
 import os
 import re
+import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -121,6 +122,89 @@ GRADE_SCALE = {
 }
 GRADE_SCALE_REV = {v: k for k, v in GRADE_SCALE.items()}
 
+VALUATION_SKILL_DIR = Path(
+    "/home/s777data/.hermes/profiles/options-wheel-agent/skills/company_valuation_score"
+)
+
+
+def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str, Any]:
+    """Normalize fresh and cached company-valuation-score CLI output."""
+    marker = "MACHINE-READABLE JSON OUTPUT"
+    if marker not in stdout:
+        raise RuntimeError("company_valuation_score did not emit machine-readable JSON")
+    payload_text = stdout.rsplit(marker, 1)[1]
+    start = payload_text.find("{")
+    if start < 0:
+        raise RuntimeError("company_valuation_score JSON payload was missing")
+    try:
+        payload, _ = json.JSONDecoder().raw_decode(payload_text[start:])
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"company_valuation_score emitted invalid JSON: {exc}") from exc
+
+    if str(payload.get("ticker", "")).upper() != ticker.upper():
+        raise RuntimeError("company_valuation_score returned a different ticker")
+
+    # A recent cached run uses the flat history shape; a fresh run uses the
+    # engine result shape. Normalize both into one report-neutral contract.
+    if isinstance(payload.get("valuation"), dict):
+        valuation_block = payload["valuation"]
+        valuation_grade = valuation_block.get("grade", {})
+        business_quality = valuation_block.get("business_quality", {})
+    else:
+        valuation_grade = {
+            "status": payload.get("status", "ok"),
+            "score": payload.get("score", payload.get("final_score")),
+            "grade": payload.get("grade"),
+            "classification": payload.get("classification"),
+            "confidence": payload.get("confidence"),
+        }
+        business_quality = payload.get("business_quality", {})
+
+    for label, result in (("valuation", valuation_grade), ("business quality", business_quality)):
+        if result.get("status") != "ok":
+            raise RuntimeError(f"company_valuation_score {label} status was not ok")
+        if not isinstance(result.get("score"), (int, float)) or result.get("grade") not in GRADE_SCALE:
+            raise RuntimeError(f"company_valuation_score {label} score or grade was unavailable")
+
+    return {
+        "run_id": payload.get("run_id"),
+        "valuation": {
+            "status": "ok",
+            "score": float(valuation_grade["score"]),
+            "grade": valuation_grade["grade"],
+            "classification": valuation_grade.get("classification", "Classification unavailable"),
+            "confidence": valuation_grade.get("confidence"),
+        },
+        "business_quality": {
+            "status": "ok",
+            "score": float(business_quality["score"]),
+            "grade": business_quality["grade"],
+            "classification": business_quality.get("classification", "Classification unavailable"),
+            "confidence": business_quality.get("confidence"),
+        },
+    }
+
+
+def _run_company_valuation_score(ticker: str) -> dict[str, Any]:
+    """Run the canonical options-wheel valuation skill and return its two grades."""
+    if not VALUATION_SKILL_DIR.is_dir():
+        raise RuntimeError(f"company_valuation_score skill not found: {VALUATION_SKILL_DIR}")
+    env = os.environ.copy()
+    skills_parent = str(VALUATION_SKILL_DIR.parent)
+    env["PYTHONPATH"] = skills_parent + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+    result = subprocess.run(
+        [sys.executable, "-m", "company_valuation_score", ticker.upper()],
+        cwd=VALUATION_SKILL_DIR,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=600,
+    )
+    if result.returncode != 0:
+        detail = (result.stderr or result.stdout).strip()
+        raise RuntimeError(f"company_valuation_score failed: {detail[-1000:]}")
+    return _parse_company_valuation_score_output(result.stdout, ticker)
+
 
 def _letter_to_score(letter: str) -> int:
     """Convert letter grade to numeric score for percentile calculation."""
@@ -180,85 +264,6 @@ def _grade_financial_metrics(data: dict[str, Any]) -> tuple[str, str]:
     if negative >= 4:
         return "D", "Broad-based deterioration in financial metrics"
     return "D-", "Severe financial weakness across the board"
-
-
-def _grade_valuation(data: dict[str, Any]) -> tuple[str, str]:
-    """Grade valuation using the new Final Valuation Score Engine."""
-    valuation = data.get("valuation", {})
-    final_score_data = valuation.get("final_valuation_score", {})
-    
-    if not final_score_data or final_score_data.get("final_valuation_score") is None:
-        # Fallback to old method if new engine data not available
-        return _grade_valuation_legacy(data)
-    
-    letter_grade = final_score_data.get("letter_grade", "N/A")
-    classification = final_score_data.get("classification", "Unavailable")
-    final_score = final_score_data.get("final_valuation_score", 0)
-    regime = final_score_data.get("regime", "C")
-    
-    # Build detailed reasoning
-    core_score = final_score_data.get("core_valuation_score", 0)
-    total_modifier = final_score_data.get("total_modifier", 0)
-    valid_metrics = final_score_data.get("valid_metrics", [])
-    
-    reason = (
-        f"Final Valuation Score: {final_score}/100 ({letter_grade}) — {classification}. "
-        f"Regime {regime} ({'Profitable+FCF' if regime=='A' else 'Profitable-FCF' if regime=='B' else 'Unprofitable'}). "
-        f"Core score: {core_score}/100 from {', '.join(valid_metrics) if valid_metrics else 'no metrics'}. "
-        f"Adjustments: net cash/debt {final_score_data.get('capital_liquidity_adjustment', 0):+.1f}, "
-        f"dilution {final_score_data.get('dilution_adjustment', 0):+.1f}, "
-        f"ROIC quality {final_score_data.get('roic_adjustment', 0):+.1f} "
-        f"(total modifier {total_modifier:+.1f}, capped at ±10)."
-    )
-    
-    return letter_grade, reason
-
-
-def _grade_valuation_legacy(data: dict[str, Any]) -> tuple[str, str]:
-    """Legacy valuation grading for backward compatibility."""
-    valuation = data.get("valuation", {})
-    regime = valuation.get("regime", "")
-    rows = valuation.get("rows", [])
-
-    # Find key valuation metrics
-    pe_row = next((r for r in rows if "P/E" in r.get("label", "") or "pe_ttm" in r.get("key", "")), None)
-    fcf_row = next((r for r in rows if "FCF" in r.get("label", "")), None)
-    ev_ebitda_row = next((r for r in rows if "EBITDA" in r.get("label", "")), None)
-    ps_row = next((r for r in rows if "P/S" in r.get("label", "")), None)
-
-    pe_signal = _signal(pe_row) if pe_row else "neutral"
-    fcf_signal = _signal(fcf_row) if fcf_row else "neutral"
-    ev_signal = _signal(ev_ebitda_row) if ev_ebitda_row else "neutral"
-    ps_signal = _signal(ps_row) if ps_row else "neutral"
-
-    positive_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("best", "strong_positive", "positive"))
-    negative_signals = sum(1 for s in (pe_signal, fcf_signal, ev_signal, ps_signal) if s in ("negative", "worst"))
-
-    if regime == "positive_earnings_and_fcf":
-        if positive_signals >= 3:
-            return "A+", "Attractive valuation across P/E, FCF yield, and EV/EBITDA for quality growth"
-        if positive_signals >= 2:
-            return "A", "Reasonable valuation with strong cash generation"
-        if positive_signals >= 1 and negative_signals == 0:
-            return "A-", "Fair valuation, one metric slightly rich"
-        if positive_signals == 1 and negative_signals <= 1:
-            return "B+", "Moderate valuation, mixed signals"
-        if positive_signals == 0 and negative_signals <= 1:
-            return "B", "Full valuation but supported by profitability"
-        if negative_signals >= 2:
-            return "B-", "Rich valuation on multiple metrics"
-        if negative_signals >= 3:
-            return "C", "Expensive across P/E, EV/EBITDA, and FCF yield"
-        return "C-", "Very expensive for the growth profile"
-    else:
-        # Negative earnings/FCF regime
-        if negative_signals <= 1:
-            return "B", "Speculative valuation but not extreme"
-        if negative_signals == 2:
-            return "B-", "Elevated price/sales for pre-profit company"
-        if negative_signals == 3:
-            return "C", "High multiples without earnings support"
-        return "C-", "Very high speculative valuation"
 
 
 def _grade_earnings_call(data: dict[str, Any]) -> tuple[str, str]:
@@ -1010,38 +1015,70 @@ class EarningsAnalyzer:
         confidence = min(1.0, 0.55 + 0.4 * completeness)
         letter = "A" if score >= 4 else "B" if score >= 2 else "C" if score >= 0 else "D" if score >= -2 else "F"
         
-        # NEW: Compute granular grades for 5 categories
+        valuation_skill = self.data.get("company_valuation_score")
+        if not valuation_skill:
+            valuation_skill = _run_company_valuation_score(self.ticker)
+            self.data["company_valuation_score"] = valuation_skill
+        business_quality_result = valuation_skill["business_quality"]
+        valuation_result = valuation_skill["valuation"]
+
+        # Compute granular grades. Business Quality and Valuation come directly
+        # from the canonical company_valuation_score skill; the other four
+        # category methodologies remain unchanged.
         financial_grade, financial_reason = _grade_financial_metrics(self.data)
-        valuation_grade, valuation_reason = _grade_valuation(self.data)
+        business_quality_grade = business_quality_result["grade"]
+        business_quality_reason = (
+            f"{business_quality_result['score']:.1f}/100 — "
+            f"{business_quality_result['classification']}"
+        )
+        valuation_grade = valuation_result["grade"]
+        valuation_reason = (
+            f"{valuation_result['score']:.1f}/100 — "
+            f"{valuation_result['classification']}"
+        )
         earnings_call_grade, earnings_call_reason = _grade_earnings_call(self.data)
         management_grade, management_reason = _grade_management_execution(self.data)
         growth_grade, growth_reason = _grade_future_growth(self.data)
         
         # Calculate weighted final grade
-        # Final Grade = (Financial Metrics × 0.30) + (Valuation × 0.30) + (Earnings Call × 0.10) + (Management Execution × 0.10) + (Future Growth × 0.20)
+        # Final Grade = Financial Metrics 10% + Business Quality 40% + Valuation 40%
+        #             + Earnings Call 2% + Management Execution 3% + Future Growth 5%.
         grade_scores = {
             "financial_metrics": _letter_to_score(financial_grade),
+            "business_quality": _letter_to_score(business_quality_grade),
             "valuation": _letter_to_score(valuation_grade),
             "earnings_call": _letter_to_score(earnings_call_grade),
             "management_execution": _letter_to_score(management_grade),
             "future_growth": _letter_to_score(growth_grade),
         }
         final_score = (
-            grade_scores["financial_metrics"] * 0.30 +
-            grade_scores["valuation"] * 0.30 +
-            grade_scores["earnings_call"] * 0.10 +
-            grade_scores["management_execution"] * 0.10 +
-            grade_scores["future_growth"] * 0.20
+            grade_scores["financial_metrics"] * 0.10 +
+            grade_scores["business_quality"] * 0.40 +
+            grade_scores["valuation"] * 0.40 +
+            grade_scores["earnings_call"] * 0.02 +
+            grade_scores["management_execution"] * 0.03 +
+            grade_scores["future_growth"] * 0.05
         )
         final_letter = _score_to_letter(round(final_score))
         
         # Store granular grades and reasoning
         self.data["grade_breakdown"] = {
-            "financial_metrics": {"grade": financial_grade, "reason": financial_reason, "weight": 0.30},
-            "valuation": {"grade": valuation_grade, "reason": valuation_reason, "weight": 0.30},
-            "earnings_call": {"grade": earnings_call_grade, "reason": earnings_call_reason, "weight": 0.10},
-            "management_execution": {"grade": management_grade, "reason": management_reason, "weight": 0.10},
-            "future_growth": {"grade": growth_grade, "reason": growth_reason, "weight": 0.20},
+            "financial_metrics": {"grade": financial_grade, "reason": financial_reason, "weight": 0.10},
+            "business_quality": {
+                "grade": business_quality_grade,
+                "score": business_quality_result["score"],
+                "reason": business_quality_reason,
+                "weight": 0.40,
+            },
+            "valuation": {
+                "grade": valuation_grade,
+                "score": valuation_result["score"],
+                "reason": valuation_reason,
+                "weight": 0.40,
+            },
+            "earnings_call": {"grade": earnings_call_grade, "reason": earnings_call_reason, "weight": 0.02},
+            "management_execution": {"grade": management_grade, "reason": management_reason, "weight": 0.03},
+            "future_growth": {"grade": growth_grade, "reason": growth_reason, "weight": 0.05},
             "final_grade": final_letter,
             "final_score": round(final_score, 2),
             "all_scores": grade_scores,
@@ -1049,7 +1086,10 @@ class EarningsAnalyzer:
         
         self._log("GRADES_COMPUTED", {
             "financial_grade": financial_grade,
+            "business_quality_grade": business_quality_grade,
+            "business_quality_score": business_quality_result["score"],
             "valuation_grade": valuation_grade,
+            "valuation_score": valuation_result["score"],
             "earnings_call_grade": earnings_call_grade,
             "management_grade": management_grade,
             "growth_grade": growth_grade,
