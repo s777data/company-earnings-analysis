@@ -1178,31 +1178,81 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertTrue(font.is_file() and font.stat().st_size > 100_000)
 
     def test_browser_pdf_renderer_waits_for_final_cards_and_validates_output(self):
-        import subprocess
+        class FakePage:
+            def __init__(self):
+                self.calls = []
+
+            def goto(self, url, wait_until=None):
+                self.calls.append(("goto", url, wait_until))
+
+            def wait_for_selector(self, selector):
+                self.calls.append(("wait_for_selector", selector))
+
+            def emulate_media(self, media=None):
+                self.calls.append(("emulate_media", media))
+
+            def pdf(self, **kwargs):
+                self.calls.append(("pdf", kwargs))
+                Path(kwargs["path"]).write_bytes(b"%PDF-1.7\n" + b"x" * 1200)
+
+        class FakeBrowser:
+            def __init__(self, page):
+                self.page = page
+                self.closed = False
+
+            def new_page(self):
+                return self.page
+
+            def close(self):
+                self.closed = True
+
+        class FakeChromium:
+            def __init__(self, browser):
+                self.browser = browser
+                self.launched = []
+
+            def launch(self):
+                self.launched.append(True)
+                return self.browser
+
+        class FakePlaywright:
+            def __init__(self, chromium):
+                self.chromium = chromium
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
         with tempfile.TemporaryDirectory() as directory:
             html = Path(directory) / "index.html"
             output = Path(directory) / "rendered.pdf"
-            executable = Path(directory) / "playwright"
             html.write_text("<html></html>")
-            executable.write_text("#!/bin/sh\n")
-            executable.chmod(0o755)
+            page = FakePage()
+            browser = FakeBrowser(page)
+            chromium = FakeChromium(browser)
+            fake_playwright = FakePlaywright(chromium)
 
-            def completed(command, **_kwargs):
-                Path(command[-1]).write_bytes(b"%PDF-1.7\n" + b"x" * 1200)
-                return subprocess.CompletedProcess(command, 0, "rendered", "")
-
-            with patch("render_interactive_dashboard_pdf.subprocess.run", side_effect=completed) as run, \
+            with patch("render_interactive_dashboard_pdf.sync_playwright", return_value=fake_playwright) as sync_playwright, \
                     patch("render_interactive_dashboard_pdf.validate_pdf") as validate:
                 result = render_dashboard_pdf(
-                    str(html), str(output), ["https://www.sec.gov/filing"], str(executable)
+                    str(html), str(output), ["https://www.sec.gov/filing"], None
                 )
+
             self.assertEqual(result, str(output.resolve()))
-            command = run.call_args.args[0]
-            self.assertIn("--wait-for-selector", command)
-            self.assertIn("body[data-layout-ready='true'] #valuation-cards .gauge-card", command)
-            self.assertIn(html.resolve().as_uri(), command)
-            # Interactive dashboard PDF validates structure only; clickable links
-            # are verified on the one-pager PDF. Expect empty URL list.
+            sync_playwright.assert_called_once()
+            self.assertTrue(chromium.launched)
+            self.assertTrue(browser.closed)
+            self.assertIn(("goto", html.resolve().as_uri(), "networkidle"), page.calls)
+            self.assertIn(("wait_for_selector", "#income-cards .metric-card"), page.calls)
+            self.assertIn(("emulate_media", "print"), page.calls)
+            pdf_calls = [call for call in page.calls if call[0] == "pdf"]
+            self.assertEqual(len(pdf_calls), 1)
+            self.assertEqual(pdf_calls[0][1]["format"], "A4")
+            self.assertTrue(pdf_calls[0][1]["prefer_css_page_size"])
+            self.assertTrue(pdf_calls[0][1]["print_background"])
+            self.assertEqual(pdf_calls[0][1]["margin"], {"top": "0", "right": "0", "bottom": "0", "left": "0"})
             validate.assert_called_once_with(str(output.resolve()), [])
 
     def test_browser_png_renderer_rasterizes_a4_pdf_to_4k_png(self):

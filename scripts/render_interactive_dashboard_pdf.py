@@ -2,18 +2,16 @@
 """Render the completed interactive earnings dashboard to a validated A4 PDF."""
 from __future__ import annotations
 
-import os
-import shutil
-import subprocess
 from pathlib import Path
 from typing import Iterable
 
 import fitz  # PyMuPDF
 import pdfplumber
+from playwright.sync_api import sync_playwright
 from urllib.parse import urlparse
 
 
-SELECTOR = "body[data-layout-ready='true'] #valuation-cards .gauge-card"
+SELECTOR = "#income-cards .metric-card"
 
 
 def _valid_source_url(url: str) -> bool:
@@ -84,23 +82,6 @@ def render_dashboard_png(pdf_path: str, output_path: str, target_height_px: int 
     return str(destination)
 
 
-def _playwright_executable(explicit: str | None = None) -> str:
-    """Resolve the Playwright CLI without assuming a project-local Node setup."""
-    candidates = [
-        explicit,
-        os.environ.get("PLAYWRIGHT_CLI"),
-        shutil.which("playwright"),
-        str(Path.home() / ".local/pipx/venvs/hermes-agent/bin/playwright"),
-    ]
-    for candidate in candidates:
-        if candidate and Path(candidate).is_file() and os.access(candidate, os.X_OK):
-            return str(Path(candidate).resolve())
-    raise RuntimeError(
-        "Playwright CLI is required to render the interactive dashboard PDF. "
-        "Install it and Chromium with `playwright install chromium`, or set PLAYWRIGHT_CLI."
-    )
-
-
 def render_dashboard_pdf(
     html_path: str,
     output_path: str,
@@ -120,22 +101,27 @@ def render_dashboard_pdf(
     if destination.exists():
         destination.unlink()
 
-    command = [
-        _playwright_executable(playwright_cli),
-        "pdf",
-        "--paper-format",
-        "A4",
-        "--wait-for-selector",
-        SELECTOR,
-        "--timeout",
-        "120000",
-        source.as_uri(),
-        str(destination),
-    ]
-    result = subprocess.run(command, capture_output=True, text=True, timeout=150)
-    if result.returncode != 0:
-        detail = (result.stderr or result.stdout).strip()
-        raise RuntimeError(f"Interactive dashboard PDF rendering failed: {detail}")
+    # playwright_cli is retained for backward compatibility with existing call sites,
+    # but the renderer now uses the direct Playwright API as requested.
+    del playwright_cli
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        try:
+            page.goto(source.as_uri(), wait_until="networkidle")
+            page.wait_for_selector(SELECTOR)
+            page.emulate_media(media="print")
+            page.pdf(
+                path=str(destination),
+                format="A4",
+                prefer_css_page_size=True,
+                print_background=True,
+                margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
+            )
+        finally:
+            browser.close()
+
     if not destination.is_file() or destination.stat().st_size == 0:
         raise RuntimeError("Interactive dashboard PDF renderer produced no file")
 
