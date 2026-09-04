@@ -139,7 +139,7 @@ h2 {
 .valuation-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .valuation-gauge-grid {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--valuation-columns, 4), minmax(0, 1fr));
   gap: .55mm;
   padding: .55mm 0 .65mm;
 }
@@ -461,11 +461,11 @@ h2 {
 .dense-item strong { color: currentColor; font-weight: 760; }
 .dense-item > span:last-child { color: currentColor; }
 
-.channel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1mm; padding: 1mm 0 1.2mm; }
+.channel-grid { display: grid; grid-template-columns: repeat(var(--channel-columns, 4), 1fr); gap: 1mm; padding: 1mm 0 1.2mm; }
 .channel-card { height: 10mm; padding: .7mm; overflow: hidden; background: var(--card); font-size: 4.5px; line-height: 1.12; }
 .channel-card h3 { margin: 0 0 .35mm; color: currentColor; font-size: 5px; }
 .channel-card > div { color: currentColor; font-size: inherit; }
-.pillar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: .8mm; padding: 1mm 0 1.2mm; }
+.pillar-grid { display: grid; grid-template-columns: repeat(var(--pillar-columns, 5), 1fr); gap: .8mm; padding: 1mm 0 1.2mm; }
 .pillar-card { height: 9mm; padding: .6mm; overflow: hidden; border-left: 1mm solid currentColor; background: var(--card); font-size: 4.2px; line-height: 1.1; }
 .pillar-card h3 { margin: 0 0 .3mm; color: currentColor; font-size: 4.6px; }
 .pillar-card > div { color: currentColor; font-size: inherit; }

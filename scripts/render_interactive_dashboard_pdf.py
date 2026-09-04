@@ -2,13 +2,15 @@
 """Render the completed interactive earnings dashboard to a validated A4 PDF."""
 from __future__ import annotations
 
+import tempfile
+import zipfile
 from pathlib import Path
 from typing import Iterable
+from urllib.parse import urlparse
 
 import fitz  # PyMuPDF
 import pdfplumber
 from playwright.sync_api import sync_playwright
-from urllib.parse import urlparse
 
 
 SELECTOR = "#income-cards .metric-card"
@@ -82,6 +84,66 @@ def render_dashboard_png(pdf_path: str, output_path: str, target_height_px: int 
     return str(destination)
 
 
+def _resolve_source_html(path: Path) -> tuple[Path, tempfile.TemporaryDirectory[str] | None]:
+    source = path.resolve()
+    if source.suffix.lower() != ".zip":
+        if not source.is_file():
+            raise RuntimeError("Interactive dashboard HTML is missing")
+        return source, None
+
+    if not source.is_file():
+        raise RuntimeError("Interactive dashboard ZIP is missing")
+
+    tempdir = tempfile.TemporaryDirectory(prefix="dashboard-render-")
+    extracted_root = Path(tempdir.name)
+    with zipfile.ZipFile(source) as archive:
+        archive.extractall(extracted_root)
+    html_candidates = sorted(extracted_root.rglob("index.html"))
+    if not html_candidates:
+        tempdir.cleanup()
+        raise RuntimeError("Interactive dashboard ZIP does not contain an index.html entry")
+    return html_candidates[0], tempdir
+
+
+def _layout_issues(page) -> list[dict[str, object]]:
+    return page.evaluate(
+        """
+        () => {
+            const problems = [];
+            const report = document.querySelector('#report');
+            if (report && (report.scrollHeight > report.clientHeight + 1 || report.scrollWidth > report.clientWidth + 1)) {
+                problems.push({
+                    type: 'report-overflow',
+                    scrollHeight: report.scrollHeight,
+                    clientHeight: report.clientHeight,
+                    scrollWidth: report.scrollWidth,
+                    clientWidth: report.clientWidth,
+                });
+            }
+            document.querySelectorAll('[data-fitted="false"]').forEach((el) => {
+                problems.push({
+                    type: 'text-not-fitted',
+                    id: el.id || null,
+                    className: el.className || null,
+                });
+            });
+            document.querySelectorAll(
+                '.kpi-card,.metric-card,.gauge-card,.dense-list,.channel-card,.pillar-card'
+            ).forEach((el) => {
+                if (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) {
+                    problems.push({
+                        type: 'element-overflow',
+                        id: el.id || null,
+                        className: el.className || null,
+                    });
+                }
+            });
+            return problems;
+        }
+        """
+    )
+
+
 def render_dashboard_pdf(
     html_path: str,
     output_path: str,
@@ -90,12 +152,11 @@ def render_dashboard_pdf(
 ) -> str:
     """Print the fully rendered local dashboard to PDF and validate the result.
 
-    The selector wait guarantees that report.js has loaded and JavaScript has
-    rendered the metric cards before Chromium enters print mode.
+    The renderer accepts either the dashboard HTML entry point or the dashboard
+    ZIP archive. If a ZIP is provided, it is extracted to a temporary directory
+    and the contained index.html becomes the rendering source of truth.
     """
-    source = Path(html_path).resolve()
-    if not source.is_file():
-        raise RuntimeError("Interactive dashboard HTML is missing")
+    source, tempdir = _resolve_source_html(Path(html_path))
     destination = Path(output_path).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists():
@@ -105,22 +166,45 @@ def render_dashboard_pdf(
     # but the renderer now uses the direct Playwright API as requested.
     del playwright_cli
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page()
-        try:
-            page.goto(source.as_uri(), wait_until="networkidle")
-            page.wait_for_selector(SELECTOR)
-            page.emulate_media(media="print")
-            page.pdf(
-                path=str(destination),
-                format="A4",
-                prefer_css_page_size=True,
-                print_background=True,
-                margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
-            )
-        finally:
-            browser.close()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": 1440, "height": 2048}, device_scale_factor=1)
+            try:
+                page.emulate_media(media="print")
+                page.goto(source.as_uri(), wait_until="networkidle", timeout=120_000)
+                page.wait_for_function(
+                    """
+                    () => document.fonts && document.fonts.status === 'loaded' &&
+                          document.body && document.body.dataset.layoutReady === 'true'
+                    """,
+                    timeout=120_000,
+                )
+                page.wait_for_selector(SELECTOR, timeout=120_000)
+                page.evaluate(
+                    """
+                    () => new Promise((resolve) =>
+                        requestAnimationFrame(() =>
+                            requestAnimationFrame(resolve)
+                        )
+                    )
+                    """
+                )
+                issues = _layout_issues(page)
+                if issues:
+                    raise RuntimeError(f"Dashboard layout validation failed: {issues}")
+                page.pdf(
+                    path=str(destination),
+                    format="A4",
+                    prefer_css_page_size=True,
+                    print_background=True,
+                    margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
+                )
+            finally:
+                browser.close()
+    finally:
+        if tempdir is not None:
+            tempdir.cleanup()
 
     if not destination.is_file() or destination.stat().st_size == 0:
         raise RuntimeError("Interactive dashboard PDF renderer produced no file")

@@ -354,6 +354,7 @@
   function renderGaugeMetrics(id, metrics) {
     const container = $(id);
     const items = (metrics || []).slice(0, 8);
+    container.style.setProperty("--valuation-columns", String(Math.max(items.length, 1)));
     container.replaceChildren(...items.map(gaugeCard));
     if (items.length === 0) container.append(emptyState("No applicable verified metrics available."));
   }
@@ -414,6 +415,11 @@
   function renderCards(id, items, type) {
     const container = $(id);
     const selected = (items || []).slice(0, type === "channel" ? 4 : 5);
+    if (type === "channel") {
+      container.style.setProperty("--channel-columns", String(Math.max(selected.length, 1)));
+    } else if (type === "pillar") {
+      container.style.setProperty("--pillar-columns", String(Math.max(selected.length, 1)));
+    }
     container.replaceChildren(...selected.map((item) => {
       const status = item.signal || item.tier || "neutral";
       const card = document.createElement("article");
@@ -430,6 +436,8 @@
 
   function fitText(container, minimumPx, decrementPx = 0.15) {
     if (!container || container.clientHeight === 0) return;
+    container.style.removeProperty("font-size");
+    delete container.dataset.fitted;
     let size = Number.parseFloat(getComputedStyle(container).fontSize);
     while (container.scrollHeight > container.clientHeight + 1 && size > minimumPx) {
       size = Math.max(minimumPx, size - decrementPx);
@@ -441,7 +449,11 @@
   function fitNarrativeSections() {
     ["capital-content", "short-interest-content", "guidance-content", "call-content", "grade-reasoning-content"].forEach((id) => fitText($(id), 3.65));
     document.querySelectorAll(".channel-card, .pillar-card").forEach((card) => fitText(card, 3.55));
-    document.body.dataset.layoutReady = "true";
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.body.dataset.layoutReady = "true";
+      });
+    });
   }
 
   function renderThesis(thesis) {
@@ -533,6 +545,7 @@
 
   function render(report) {
     if (!report || !report.company || !report.sections) throw new Error("The report JSON does not match the dashboard schema.");
+    document.body.dataset.layoutReady = "false";
     const company = report.company;
     const sections = report.sections;
     $("grade").textContent = text(company.grade);

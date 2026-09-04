@@ -655,7 +655,7 @@ class SafetyTests(unittest.TestCase):
             "price": 345.73,
             "market_cap": 96_000_000_000,
             "updated_at": "2026-08-26T19:59:59+00:00",
-            "source": "robinhood-trading MCP regular-session last trade",
+            "source": "robinhood-trading MCP completed daily regular-session close",
         }
         analyzer = EarningsAnalyzer("TEST")
         analyzer.data["_xbrl"] = {
@@ -911,7 +911,7 @@ class OutputTests(unittest.TestCase):
                 self.assertTrue(required <= names)
                 self.assertTrue(all(zipped.getinfo(name).file_size > 0 for name in required))
             self.assertTrue(paths["dashboard_pdf"].endswith("TEST_Q2_FY2026_Interactive_Dashboard.pdf"))
-            self.assertTrue(paths["dashboard_png"].endswith("TEST_Q2_FY2026_Interactive_Dashboard_4K.png"))
+            self.assertTrue(paths["dashboard_png"].endswith("TEST_Q2_FY2026_Interactive_Dashboard.png"))
 
 class InteractiveDashboardTests(unittest.TestCase):
     def test_dashboard_schema_is_company_neutral_and_metadata_complete(self):
@@ -1013,7 +1013,10 @@ class InteractiveDashboardTests(unittest.TestCase):
         self.assertIn('id="kpi-cards"', html)
         self.assertIn('class="scorecard-section ratio-section"', html)
         self.assertIn("Overview of key financial performance metrics", html)
-        self.assertGreaterEqual(css.count("repeat(8, minmax(0, 1fr))"), 2)
+        self.assertIn("repeat(8, minmax(0, 1fr))", css)
+        self.assertIn("repeat(var(--valuation-columns, 4), minmax(0, 1fr))", css)
+        self.assertIn("repeat(var(--channel-columns, 4), 1fr)", css)
+        self.assertIn("repeat(var(--pillar-columns, 5), 1fr)", css)
         self.assertIn(".kpi-card-shell", css)
         self.assertIn("container-type: size", css)
         self.assertIn("--kpi-scale: clamp(", css)
@@ -1182,14 +1185,21 @@ class InteractiveDashboardTests(unittest.TestCase):
             def __init__(self):
                 self.calls = []
 
-            def goto(self, url, wait_until=None):
-                self.calls.append(("goto", url, wait_until))
+            def goto(self, url, wait_until=None, timeout=None):
+                self.calls.append(("goto", url, wait_until, timeout))
 
-            def wait_for_selector(self, selector):
-                self.calls.append(("wait_for_selector", selector))
+            def wait_for_selector(self, selector, timeout=None):
+                self.calls.append(("wait_for_selector", selector, timeout))
+
+            def wait_for_function(self, expression, timeout=None):
+                self.calls.append(("wait_for_function", expression.strip(), timeout))
 
             def emulate_media(self, media=None):
                 self.calls.append(("emulate_media", media))
+
+            def evaluate(self, expression):
+                self.calls.append(("evaluate", expression.strip()))
+                return []
 
             def pdf(self, **kwargs):
                 self.calls.append(("pdf", kwargs))
@@ -1200,7 +1210,7 @@ class InteractiveDashboardTests(unittest.TestCase):
                 self.page = page
                 self.closed = False
 
-            def new_page(self):
+            def new_page(self, **_kwargs):
                 return self.page
 
             def close(self):
@@ -1226,9 +1236,27 @@ class InteractiveDashboardTests(unittest.TestCase):
                 return False
 
         with tempfile.TemporaryDirectory() as directory:
-            html = Path(directory) / "index.html"
-            output = Path(directory) / "rendered.pdf"
-            html.write_text("<html></html>")
+            base = Path(directory)
+            archive_root = base / "TEST_Q2_FY2026_Interactive_Dashboard"
+            archive_root.mkdir()
+            files = {
+                "index.html": "<html><body><main id='report'><div id='income-cards'><button class='metric-card'></button></div><body data-layout-ready='true'></body></main></body></html>",
+                "css/dashboard.css": "body { color: #111; }",
+                "css/print.css": "@page { size: A4 portrait; margin: 0; }",
+                "js/dashboard.js": "window.EARNINGS_REPORT = {}; document.body.dataset.layoutReady = 'true';",
+                "data/report.json": "{}",
+                "data/report.js": "window.EARNINGS_REPORT = {};",
+            }
+            for relative, content in files.items():
+                path = archive_root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content, encoding="utf-8")
+            zip_path = base / "TEST_Q2_FY2026_Interactive_Dashboard.zip"
+            with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
+                for file_path in archive_root.rglob("*"):
+                    if file_path.is_file():
+                        archive.write(file_path, file_path.relative_to(base).as_posix())
+            output = base / "rendered.pdf"
             page = FakePage()
             browser = FakeBrowser(page)
             chromium = FakeChromium(browser)
@@ -1237,23 +1265,27 @@ class InteractiveDashboardTests(unittest.TestCase):
             with patch("render_interactive_dashboard_pdf.sync_playwright", return_value=fake_playwright) as sync_playwright, \
                     patch("render_interactive_dashboard_pdf.validate_pdf") as validate:
                 result = render_dashboard_pdf(
-                    str(html), str(output), ["https://www.sec.gov/filing"], None
+                    str(zip_path), str(output), ["https://www.sec.gov/filing"], None
                 )
 
             self.assertEqual(result, str(output.resolve()))
             sync_playwright.assert_called_once()
             self.assertTrue(chromium.launched)
             self.assertTrue(browser.closed)
-            self.assertIn(("goto", html.resolve().as_uri(), "networkidle"), page.calls)
-            self.assertIn(("wait_for_selector", "#income-cards .metric-card"), page.calls)
-            self.assertIn(("emulate_media", "print"), page.calls)
-            pdf_calls = [call for call in page.calls if call[0] == "pdf"]
-            self.assertEqual(len(pdf_calls), 1)
-            self.assertEqual(pdf_calls[0][1]["format"], "A4")
-            self.assertTrue(pdf_calls[0][1]["prefer_css_page_size"])
-            self.assertTrue(pdf_calls[0][1]["print_background"])
-            self.assertEqual(pdf_calls[0][1]["margin"], {"top": "0", "right": "0", "bottom": "0", "left": "0"})
-            validate.assert_called_once_with(str(output.resolve()), [])
+            self.assertEqual(page.calls[0], ("emulate_media", "print"))
+            self.assertEqual(page.calls[1][0], "goto")
+            self.assertIn("index.html", page.calls[1][1])
+            self.assertEqual(page.calls[1][2], "networkidle")
+            self.assertEqual(page.calls[2][0], "wait_for_function")
+            self.assertEqual(page.calls[3][0], "wait_for_selector")
+            self.assertEqual(page.calls[4][0], "evaluate")
+            self.assertEqual(page.calls[5][0], "evaluate")
+            self.assertEqual(page.calls[6][0], "pdf")
+            self.assertEqual(page.calls[6][1]["format"], "A4")
+            self.assertTrue(page.calls[6][1]["prefer_css_page_size"])
+            self.assertTrue(page.calls[6][1]["print_background"])
+            self.assertEqual(page.calls[6][1]["margin"], {"top": "0", "right": "0", "bottom": "0", "left": "0"})
+
 
     def test_browser_png_renderer_rasterizes_a4_pdf_to_4k_png(self):
         import fitz

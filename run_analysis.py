@@ -955,7 +955,8 @@ class EarningsAnalyzer:
                 "pe_ttm": quote.get("pe_ratio"), "high_52": quote.get("high_52"), "low_52": quote.get("low_52"),
                 "quote_timestamp": timestamp, "quote_source": quote["source"],
                 "quote_age_seconds": quote_age_seconds,
-                "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900),
+                "quote_is_completed_close": is_completed_close,
+                "quote_is_stale": bool(quote_age_seconds and quote_age_seconds > 900 and not is_completed_close),
                 "enterprise_value": enterprise_value, "annualized_revenue": annual_revenue,
                 "annualized_gross_profit": annual_gross_profit, "annualized_fcf": annual_fcf,
                 "ps_annualized": market_cap / annual_revenue if market_cap and annual_revenue and annual_revenue > 0 else None,
@@ -1184,12 +1185,12 @@ class EarningsAnalyzer:
                 "zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
                 "dashboard_zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
                 "dashboard_pdf": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"),
-                "dashboard_png": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard_4K.png"),
+                "dashboard_png": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.png"),
             }
             pdf_path = Path(paths["dashboard_pdf"])
             png_path = Path(paths["dashboard_png"])
             if not pdf_path.is_file() or pdf_path.stat().st_size == 0:
-                render_dashboard_pdf(paths["html"], str(pdf_path))
+                render_dashboard_pdf(paths["dashboard_zip"], str(pdf_path))
             if not png_path.is_file() or png_path.stat().st_size == 0:
                 render_dashboard_png(str(pdf_path), str(png_path))
             self._log("SAVE_COMPLETE_EXISTING", {"paths": paths})
@@ -1220,8 +1221,8 @@ class EarningsAnalyzer:
         paths["dashboard_zip"] = str(zip_path)
 
         dashboard_pdf = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
-        dashboard_png = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard_4K.png"
-        render_dashboard_pdf(paths["html"], str(dashboard_pdf))
+        dashboard_png = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.png"
+        render_dashboard_pdf(paths["dashboard_zip"], str(dashboard_pdf))
         render_dashboard_png(str(dashboard_pdf), str(dashboard_png))
         paths["dashboard_pdf"] = str(dashboard_pdf)
         paths["dashboard_png"] = str(dashboard_png)

@@ -50,7 +50,7 @@ All company values, labels, explanations, formulas, scales, evidence, and source
     ├── report.json
     └── report.js
 <TICKER>_Qn_FYyyyy_Interactive_Dashboard.pdf
-<TICKER>_Qn_FYyyyy_Interactive_Dashboard_4K.png
+<TICKER>_Qn_FYyyyy_Interactive_Dashboard.png
 ```
 
 The static dashboard has no runtime dependencies. Pipeline PDF rendering requires the Playwright CLI and Chromium:

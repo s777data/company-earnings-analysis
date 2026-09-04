@@ -24,11 +24,11 @@ html, body {
   break-after: avoid-page;
 }
 
-/* Ensure analysis-stack sections have explicit height in print layout */
+/* Let the grid calculate the print height; fixed heights can overflow the parent. */
 .analysis-stack section {
-  height: 31.5mm !important;
-  min-height: 31.5mm !important;
-  max-height: 31.5mm !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
 }
 
 .metric-card {
