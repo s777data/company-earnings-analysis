@@ -1115,23 +1115,71 @@ class EarningsAnalyzer:
         price = valuation["current_price"]
         revenue_growth = changes.get("revenue")
         eps = price / pe if pe and pe > 0 else None
+        thesis_method = (
+            "Five-year EPS scenarios use broker-derived TTM EPS when available, "
+            "bounded reported growth, and transparent scenario weights/multiples."
+        )
         thesis = {"recommendation": "INSUFFICIENT DATA", "hurdle_rate": HURDLE_RATE,
                   "scenario_weights": SCENARIO_WEIGHTS,
-                  "method": "Five-year EPS scenarios use broker-derived TTM EPS, bounded reported growth, and transparent scenario weights/multiples."}
+                  "method": thesis_method}
+
+        if eps is None and pe is not None and pe <= 0:
+            rows_by_key = {row.get("key"): row for row in self.data.get("financials", {}).get("rows", [])}
+            revenue_row = rows_by_key.get("revenue") or {}
+            gross_profit_row = rows_by_key.get("gross_profit") or {}
+            diluted_shares_row = rows_by_key.get("shares_diluted") or {}
+            revenue_value = revenue_row.get("value")
+            gross_profit_value = gross_profit_row.get("value")
+            diluted_shares_value = diluted_shares_row.get("value")
+            ebitda_margin_row = next(
+                (row for row in self.data.get("financials", {}).get("key_ratios", [])
+                 if "ebitda" in str(row.get("label", "")).lower()),
+                {},
+            )
+            ebitda_margin_proxy = ebitda_margin_row.get("value") or 0.0
+            if revenue_value and gross_profit_value and diluted_shares_value and diluted_shares_value > 0:
+                gross_margin_proxy = gross_profit_value / revenue_value
+                growth_proxy = max(0.0, revenue_growth or 0.0)
+                normalized_margin = max(
+                    0.03,
+                    min(
+                        0.20,
+                        (gross_margin_proxy * 0.35)
+                        + (growth_proxy * 0.10)
+                        + max(0.0, ebitda_margin_proxy) * 0.10,
+                    ),
+                )
+                eps = (revenue_value * 4 * normalized_margin) / diluted_shares_value
+                thesis_method = (
+                    "Five-year EPS scenarios use broker-derived TTM EPS when available; "
+                    "when trailing P/E is negative, the model falls back to a normalized "
+                    "earnings proxy built from revenue, gross margin, adjusted EBITDA margin, "
+                    "and diluted shares."
+                )
+                thesis["method"] = thesis_method
+
         if eps and revenue_growth is not None:
             base_growth = max(-0.05, min(0.20, revenue_growth))
-            base_multiple = max(10.0, min(30.0, pe))
-            cases = {"base_case": (base_growth, base_multiple),
-                     "bull_case": (min(0.30, base_growth + 0.08), min(35.0, base_multiple + 3)),
-                     "bear_case": (max(-0.10, base_growth - 0.12), max(8.0, base_multiple - 5))}
-            for name, (growth, multiple) in cases.items():
+            if pe and pe > 0:
+                base_multiple = max(10.0, min(30.0, pe))
+                multiple_growth_base = 0.0
+            else:
+                base_multiple = 15.0
+                multiple_growth_base = 0.05
+            cases = {
+                "base_case": (base_growth, base_multiple, multiple_growth_base),
+                "bull_case": (min(0.30, base_growth + 0.08), min(35.0, base_multiple + 3), multiple_growth_base + 0.03),
+                "bear_case": (max(-0.10, base_growth - 0.12), max(8.0, base_multiple - 5), max(0.0, multiple_growth_base - 0.02)),
+            }
+            for name, (growth, multiple, multiple_growth) in cases.items():
                 exit_eps = eps * (1 + growth) ** 5
-                exit_price = exit_eps * multiple
+                exit_multiple = multiple * (1 + multiple_growth) ** 5
+                exit_price = exit_eps * exit_multiple
                 irr = (exit_price / price) ** (1 / 5) - 1
                 probability = SCENARIO_WEIGHTS[name]
-                summary = (f"TTM EPS ${eps:.2f} -> ${exit_eps:.2f}; EPS CAGR {growth:.1%}; "
-                           f"exit P/E {multiple:.1f}x = ${exit_price:.2f}; IRR {irr:.1%}")
-                thesis[name] = {"eps_cagr": growth, "exit_multiple": multiple, "exit_eps": exit_eps,
+                summary = (f"EPS ${eps:.2f} -> ${exit_eps:.2f}; EPS CAGR {growth:.1%}; "
+                           f"exit P/E {exit_multiple:.1f}x = ${exit_price:.2f}; IRR {irr:.1%}")
+                thesis[name] = {"eps_cagr": growth, "exit_multiple": exit_multiple, "exit_eps": exit_eps,
                                 "exit_price": exit_price, "irr": irr, "probability": probability,
                                 "summary": summary, "detail": summary}
             base_irr = thesis["base_case"]["irr"]

@@ -405,6 +405,31 @@ class ExtractionTests(unittest.TestCase):
         self.assertRegex(analyzer.data["grade"]["letter"], r"^(?:A|B|C|D)[+-]?$|^F$")
         self.assertEqual(analyzer.data["thesis"]["recommendation"], "INSUFFICIENT DATA")
 
+    def test_negative_pe_uses_normalized_earnings_proxy_for_thesis(self):
+        analyzer = EarningsAnalyzer("TEST")
+        analyzer.data = sample_data() | {
+            "financials": {
+                "rows": [
+                    {"key": "revenue", "value": 408.0, "prior_value": 167.8},
+                    {"key": "gross_profit", "value": 98.8, "prior_value": 63.3},
+                    {"key": "net_income", "value": -243.8, "prior_value": -17.6},
+                    {"key": "operating_income", "value": -268.4, "prior_value": -3.1},
+                    {"key": "operating_cash_flow", "value": -173.9, "prior_value": -1.1},
+                    {"key": "shares_diluted", "value": 49.7, "prior_value": 28.0},
+                ],
+                "key_ratios": [
+                    {"label": "Gross Margin", "value": 0.242},
+                    {"label": "Operating Margin", "value": -0.658},
+                ],
+            },
+            "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": -27.1},
+            "sources": sample_data()["sources"] | {"earnings_release_url": "x"},
+        }
+        analyzer.grade_and_thesis()
+        self.assertNotEqual(analyzer.data["thesis"]["recommendation"], "INSUFFICIENT DATA")
+        self.assertIn("negative", analyzer.data["thesis"]["method"].lower())
+        self.assertIsNotNone(analyzer.data["thesis"]["base_case"]["irr"])
+
     def test_financial_format_keeps_number(self):
         self.assertEqual(_display(1_250_000_000,"revenue"), "$1.25B")
         self.assertEqual(_display(2.34,"eps_diluted"), "$2.34")
