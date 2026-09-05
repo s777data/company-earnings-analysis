@@ -11,8 +11,6 @@ from pathlib import Path
 from typing import Any
 import zipfile
 
-from render_interactive_dashboard_pdf import render_dashboard_png
-
 SIGNAL_EMOJIS = {
     "best": "🟦", "strong_positive": "🔷", "positive": "🔵", "neutral": "🟡",
     "medium": "🟡", "caution": "🟠", "negative": "🔴", "worst": "🟥",
@@ -37,7 +35,7 @@ def _clip(text: str, maximum: int = 190) -> str:
     text = " ".join(str(text).split())
     if len(text) <= maximum:
         return text
-    shortened = text[:maximum].rsplit(" ", 1)[0].rstrip(" ,;:-\-")
+    shortened = text[:maximum].rsplit(" ", 1)[0].rstrip(" ,;:--")
     return shortened + "…"
 
 
@@ -297,7 +295,7 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     else:
         lines.append("\n📝 **Metrics Note:** All Tier 1 metrics displayed.")
 
-    lines.extend(["", "📎 Dashboard artifacts: ZIP + PNG-in-ZIP generated",
+    lines.extend(["", "📎 Dashboard artifacts: ZIP generated",
                   f"🔗 SEC: {data['sources']['filing_url']}"])
     if data["sources"].get("investor_relations_url"):
         lines.append(f"🔗 IR: {data['sources']['investor_relations_url']}")
@@ -342,44 +340,18 @@ def _create_html_zip(html_dir: str) -> str:
     html_path = Path(html_dir).resolve()
     if not html_path.is_dir():
         raise RuntimeError(f"Interactive dashboard HTML directory not found: {html_dir}")
-    
+
     zip_path = html_path.with_suffix(".zip")
     if zip_path.exists():
         zip_path.unlink()
-    
+
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for file_path in html_path.rglob("*"):
             if file_path.is_file():
                 arcname = file_path.relative_to(html_path.parent)
                 zipf.write(file_path, arcname)
-    
+
     return str(zip_path)
-
-
-def _dashboard_png_path(html_dir: str) -> Path:
-    dashboard_dir = Path(html_dir).resolve()
-    if not dashboard_dir.is_dir():
-        raise RuntimeError(f"Interactive dashboard HTML directory not found: {html_dir}")
-    return dashboard_dir.parent / f"{dashboard_dir.name}.png"
-
-
-def _dashboard_png_zip_path(html_dir: str) -> Path:
-    dashboard_dir = Path(html_dir).resolve()
-    if not dashboard_dir.is_dir():
-        raise RuntimeError(f"Interactive dashboard HTML directory not found: {html_dir}")
-    return dashboard_dir.parent / f"{dashboard_dir.name}_4K.zip"
-
-
-def _create_png_zip(png_path: str, zip_path: str | None = None) -> str:
-    png_file = Path(png_path).resolve()
-    if not png_file.is_file():
-        raise RuntimeError(f"PNG file not found: {png_path}")
-    zip_file = Path(zip_path).resolve() if zip_path else png_file.with_name(f"{png_file.stem}_4K.zip")
-    if zip_file.exists():
-        zip_file.unlink()
-    with zipfile.ZipFile(zip_file, "w", compression=zipfile.ZIP_STORED) as zipf:
-        zipf.write(png_file, arcname=png_file.name)
-    return str(zip_file)
 
 
 def _send(message: str, media_path: str, target: str) -> dict[str, Any]:
@@ -407,26 +379,9 @@ def _send(message: str, media_path: str, target: str) -> dict[str, Any]:
 def deliver_reports(data: dict[str, Any], html_dir: str, target: str = "telegram", dry_run: bool = False) -> list[dict[str, Any]]:
     messages = [generate_dashboard_message(data), generate_call_message(data)]
     zip_path = _create_html_zip(html_dir)
-    png_path = _dashboard_png_path(html_dir)
-    png_zip_path = _dashboard_png_zip_path(html_dir)
-    try:
-        if not png_path.is_file() or png_path.stat().st_size == 0:
-            render_dashboard_png(zip_path, str(png_path))
-        if not png_zip_path.is_file() or png_zip_path.stat().st_size == 0:
-            _create_png_zip(str(png_path), str(png_zip_path))
-        if dry_run:
-            dry_results = [
-                {"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())}
-                for message in messages
-            ]
-            dry_results.append({"success": False, "dry_run": True, "message": "PNG-in-ZIP dashboard render", "media_path": str(png_zip_path.resolve())})
-            return dry_results
-        deliveries = [_send(message, zip_path, target) for message in messages]
-        deliveries.append(_send("PNG-in-ZIP dashboard render", str(png_zip_path), target))
-        return deliveries
-    finally:
-        if png_path.exists():
-            try:
-                png_path.unlink()
-            except OSError:
-                pass
+    if dry_run:
+        return [
+            {"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())}
+            for message in messages
+        ]
+    return [_send(message, zip_path, target) for message in messages]
