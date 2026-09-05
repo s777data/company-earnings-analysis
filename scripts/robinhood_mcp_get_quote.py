@@ -8,6 +8,7 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import yaml
 from mcp import ClientSession, StdioServerParameters
@@ -121,6 +122,17 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
     selected_timestamp = regular_close_timestamp if use_daily_close else live_regular_timestamp
     selected_source = ("robinhood-trading MCP completed daily regular-session close" if use_daily_close
                        else "robinhood-trading MCP regular-session last trade")
+    if not use_daily_close and live_regular_timestamp:
+        try:
+            trade_time = datetime.fromisoformat(live_regular_timestamp.replace("Z", "+00:00")).astimezone(
+                ZoneInfo("America/New_York")
+            )
+            now_et = datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York"))
+            minutes = trade_time.hour * 60 + trade_time.minute
+            if 15 * 60 + 55 <= minutes <= 16 * 60 + 5 and now_et >= trade_time and now_et.date() == trade_time.date():
+                selected_source = "robinhood-trading MCP completed regular-session closing trade"
+        except ValueError:
+            pass
     result = {
         "symbol": symbol.upper(), "price": selected_price,
         "market_cap": number("market_cap"), "enterprise_value": number("enterprise_value", "enterpriseValue"),

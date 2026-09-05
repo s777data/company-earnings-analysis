@@ -20,7 +20,22 @@ ALLOWED = ("stockanalysis.com", "seekingalpha.com", "fool.com", "marketbeat.com"
 
 def fetch_page_content(url: str) -> str | None:
     try:
-        response = requests.get(url, headers=HEADERS, timeout=30)
+        stockanalysis_match = re.match(
+            r"(https://stockanalysis\.com/stocks/[^/]+/transcripts/)(?:\d+-q[1-4]-\d{4}/)?$",
+            url,
+            re.I,
+        )
+        if stockanalysis_match:
+            # StockAnalysis rejects direct transcript-detail downloads unless the
+            # transcript index has first established its session cookies.
+            session = requests.Session()
+            index_url = stockanalysis_match.group(1)
+            index_response = session.get(index_url, headers=HEADERS, timeout=30)
+            index_response.raise_for_status()
+            detail_headers = {**HEADERS, "Referer": index_url}
+            response = session.get(url, headers=detail_headers, timeout=30)
+        else:
+            response = requests.get(url, headers=HEADERS, timeout=30)
         if response.status_code != 200: return None
         soup = BeautifulSoup(response.text, "html.parser")
         for tag in soup(["script", "style", "nav", "footer", "header", "aside"]): tag.decompose()
@@ -82,9 +97,9 @@ def find_transcript(ticker: str, fiscal_period: str, fiscal_year: int) -> dict[s
     if not match: raise RuntimeError(f"A quarterly fiscal period is required, received {fiscal_period!r}")
     quarter_number = int(match.group(1))
     candidates = _stockanalysis(ticker, quarter_number, fiscal_year)
-    for domain in ALLOWED:
-        candidates.extend(_duckduckgo(f"site:{domain} {ticker} Q{quarter_number} {fiscal_year} earnings call transcript"))
     attempts = []
+    # Try the structured provider index first. Do not block a verified direct
+    # candidate behind serial search-engine requests to every fallback domain.
     for url in dict.fromkeys(candidates):
         content = fetch_page_content(url)
         if not content:
@@ -92,25 +107,45 @@ def find_transcript(ticker: str, fiscal_period: str, fiscal_year: int) -> dict[s
         valid, failures = _validate(content, ticker, f"Q{quarter_number}", fiscal_year)
         attempts.append({"url": url, "status": "accepted" if valid else "rejected", "reasons": failures})
         if valid:
-            call_date = None
-            call_heading_date = re.search(
-                rf"Earnings\s+Call\s*:\s*Q{quarter_number}\s+{fiscal_year}\s+"
-                r"([A-Z][a-z]{2,8})\s+([0-3]?\d),\s+(20\d{2})",
-                content[:5000], re.I,
-            )
-            if call_heading_date:
-                date_text = f"{call_heading_date.group(1)} {call_heading_date.group(2)}, {call_heading_date.group(3)}"
-                for date_format in ("%B %d, %Y", "%b %d, %Y"):
-                    try:
-                        call_date = datetime.strptime(date_text, date_format).date().isoformat()
-                        break
-                    except ValueError:
-                        pass
-            return {"content": content, "url": url, "source": next((d for d in ALLOWED if d in url), "web"),
-                    "fiscal_period": f"Q{quarter_number}", "fiscal_year": fiscal_year, "call_date": call_date,
-                    "retrieved_at": datetime.now(timezone.utc).isoformat(),
-                    "content_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(), "attempts": attempts}
+            return _transcript_result(content, url, ticker, quarter_number, fiscal_year, attempts)
+
+    candidates = []
+    for domain in ALLOWED:
+        candidates.extend(_duckduckgo(f"site:{domain} {ticker} Q{quarter_number} {fiscal_year} earnings call transcript"))
+    for url in dict.fromkeys(candidates):
+        content = fetch_page_content(url)
+        if not content:
+            attempts.append({"url": url, "status": "fetch_failed"}); continue
+        valid, failures = _validate(content, ticker, f"Q{quarter_number}", fiscal_year)
+        attempts.append({"url": url, "status": "accepted" if valid else "rejected", "reasons": failures})
+        if valid:
+            return _transcript_result(content, url, ticker, quarter_number, fiscal_year, attempts)
     raise RuntimeError("EARNINGS_CALL_TRANSCRIPT_UNAVAILABLE: no complete correct-quarter transcript with prepared remarks and analyst Q&A was verified")
+
+
+def _transcript_result(content: str, url: str, ticker: str, quarter_number: int,
+                       fiscal_year: int, attempts: list[dict[str, Any]]) -> dict[str, Any]:
+    call_date = None
+    call_heading_date = re.search(
+        rf"Earnings\s+Call(?:\s+Transcript)?\s*:?\s*Q{quarter_number}\s+{fiscal_year}\s+"
+        r"([A-Z][a-z]{2,8})\s+([0-3]?\d),\s+(20\d{2})",
+        content[:5000], re.I,
+    )
+    if call_heading_date:
+        date_text = f"{call_heading_date.group(1)} {call_heading_date.group(2)}, {call_heading_date.group(3)}"
+        for date_format in ("%B %d, %Y", "%b %d, %Y"):
+            try:
+                call_date = datetime.strptime(date_text, date_format).date().isoformat()
+                break
+            except ValueError:
+                pass
+    return {"content": content, "url": url,
+            "source": next((d for d in ALLOWED if d in url), "web"),
+            "fiscal_period": f"Q{quarter_number}", "fiscal_year": fiscal_year,
+            "call_date": call_date,
+            "retrieved_at": datetime.now(timezone.utc).isoformat(),
+            "content_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
+            "attempts": attempts}
 
 # Backward-compatible alias used by older callers.
 def web_search(query: str, max_results: int = 10, source_filter=None):

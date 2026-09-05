@@ -447,6 +447,62 @@ class EarningsAnalyzer:
         self.execution_log.append(entry)
         print(f"[{entry['timestamp']}] {event}: {details}")
 
+    def _get_latest_quarter_from_stockanalysis(self, ticker: str) -> tuple[str | None, str | None]:
+        """Fetch latest quarter end date from StockAnalysis.com quarterly financials page.
+
+        Returns (fiscal_period, quarter_end_date) like ('Q3', '2026-08-02') or (None, None) on failure.
+        """
+        import requests
+        from bs4 import BeautifulSoup
+        import re
+
+        url = f"https://stockanalysis.com/stocks/{ticker.lower()}/financials/?p=quarterly"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            if response.status_code != 200:
+                return None, None
+            soup = BeautifulSoup(response.text, "html.parser")
+
+            # Find the "Period Ending" row which has the actual dates.
+            # Example cell text: "Aug '26 Aug 2, 2026".
+            period_ending_dates: list[str] = []
+            for th in soup.find_all("th"):
+                text = th.get_text(strip=True)
+                match = re.search(r"([A-Z][a-z]{2})\s+(\d{1,2}),\s+(\d{4})$", text)
+                if not match:
+                    continue
+                month_str, day, year = match.groups()
+                month_map = {
+                    "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
+                    "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
+                    "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12",
+                }
+                month = month_map.get(month_str[:3])
+                if month:
+                    period_ending_dates.append(f"{year}-{month}-{int(day):02d}")
+
+            if not period_ending_dates:
+                return None, None
+
+            latest_date = period_ending_dates[0]
+
+            quarter_labels = []
+            for th in soup.find_all("th"):
+                text = th.get_text(strip=True)
+                match = re.match(r"Q([1-4])\s+(\d{4})", text)
+                if match:
+                    quarter_labels.append((int(match.group(2)), int(match.group(1)), f"Q{match.group(1)}"))
+
+            if not quarter_labels:
+                return None, None
+
+            latest_quarter_label = max(quarter_labels, key=lambda x: (x[0], x[1]))[2]
+            return latest_quarter_label, latest_date
+        except Exception as e:
+            self.data["warnings"].append(f"StockAnalysis quarter lookup failed: {e}")
+            return None, None
+
     def identify(self):
         self._log("IDENTIFY_START", {})
         # Try 10-Q first (US issuers), then 6-K (foreign issuers)
@@ -459,7 +515,32 @@ class EarningsAnalyzer:
         
         # Prefer 10-Q if available (US GAAP with XBRL), otherwise use 6-K (foreign issuer, IFRS)
         if filings_10q:
-            self.filing = max(filings_10q, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
+            # Cross-reference with StockAnalysis to get the expected latest quarter end date
+            sa_period, sa_quarter_end = self._get_latest_quarter_from_stockanalysis(self.ticker)
+            
+            if sa_quarter_end:
+                # Find the 10-Q that matches the StockAnalysis quarter end date
+                matching_filings = [f for f in filings_10q if f["report_date"] == sa_quarter_end]
+                if matching_filings:
+                    # Use the matching filing, preferring amendment
+                    self.filing = max(matching_filings, key=lambda row: (row["filing_date"], row["form_type"].endswith("/A")))
+                    self._log("IDENTIFY_STOCKANALYSIS_MATCH", {
+                        "stockanalysis_period": sa_period,
+                        "stockanalysis_quarter_end": sa_quarter_end,
+                        "selected_filing_report_date": self.filing["report_date"],
+                        "selected_filing_form": self.filing["form_type"]
+                    })
+                else:
+                    # Fallback: use latest report_date if no exact match
+                    self._log("IDENTIFY_STOCKANALYSIS_NO_MATCH", {
+                        "stockanalysis_period": sa_period,
+                        "stockanalysis_quarter_end": sa_quarter_end,
+                        "available_report_dates": [f["report_date"] for f in filings_10q]
+                    })
+                    self.filing = max(filings_10q, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
+            else:
+                # No StockAnalysis data, fallback to original logic
+                self.filing = max(filings_10q, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
             self.is_foreign_issuer = False
         elif filings_6k:
             # For foreign issuers, find the quarterly earnings 6-K
@@ -760,10 +841,17 @@ class EarningsAnalyzer:
             self._log("QUOTE_VALUATION_START", {})
             quote = get_quote(self.ticker, self.expected_account)
             timestamp = quote.get("updated_at")
+            completed_close = "completed" in str(quote.get("source") or "").casefold()
             quote_age_seconds = None
             if timestamp:
                 parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
                 quote_age_seconds = max(0, (_now() - parsed.astimezone(timezone.utc)).total_seconds())
+                if quote_age_seconds > 900 and not completed_close:
+                    if not self.allow_stale_quote_for_test:
+                        raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")
+                    self.data["warnings"].append(
+                        "TEST ONLY — stale Robinhood market data explicitly allowed; valuation and recommendation are not actionable"
+                    )
             else:
                 self.data["warnings"].append("Robinhood MCP did not provide a quote timestamp")
 

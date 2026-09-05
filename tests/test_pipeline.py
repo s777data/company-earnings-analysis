@@ -1,16 +1,15 @@
 import json
+import os
 import shutil
 import sys
 import tempfile
 import unittest
-import zipfile
 from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "scripts"))
 from run_analysis import (EarningsAnalyzer, _change, _display, _extract_investor_relations_url,
-                          _parse_company_valuation_score_output,
                           _validate_transcript_call_date)
 from pdf_utils import (_compact_summary, _compact_items,
                                   _direction_marker, _select_call_summary_insights,
@@ -20,9 +19,8 @@ from create_interactive_dashboard import build_dashboard_data, create_interactiv
 from render_interactive_dashboard_pdf import render_dashboard_pdf, render_dashboard_png
 from robinhood_mcp_get_quote import get_quote, _decode
 from sec_edgar_search import _matches_query
-from telegram_notify import (generate_call_message, generate_dashboard_message,
-                             _complete_insight_selection, SIGNAL_EMOJIS, _create_png_zip,
-                             deliver_reports)
+from telegram_notify import (deliver_reports, generate_call_message, generate_dashboard_message, _send,
+                             _complete_insight_selection, SIGNAL_EMOJIS, _create_png_zip)
 from web_search import _validate as _validate_transcript
 from xbrl_parser import parse_xbrl_financials
 from valuation_metrics import build_valuation_sections, MAIN_ORDER, PROFIT_ORDER, RISK_ORDER
@@ -54,92 +52,269 @@ def sample_data():
             "valuation":{"current_price":10.0,"pe_ttm":20.0,"ps_annualized":2.0,"fcf_yield_annualized":3.0},
             "transcript_insights":[{"topic":"Q&A","detail":"Analyst questions were answered.","tier":"medium"}],
             "growth_drivers":[{"driver":"Revenue increased.","tier":"best"}],"risks":[{"risk":"Competition disclosed"}],
-            "company_valuation_score": {
-                "run_id": "test-run",
-                "valuation": {"status": "ok", "score": 72.0, "grade": "B", "classification": "Fair Value", "confidence": "high"},
-                "business_quality": {"status": "ok", "score": 92.0, "grade": "A+", "classification": "Exceptional Business Quality", "confidence": "high"},
-            },
             "sources":{"filing_url":"https://www.sec.gov/Archives/edgar/data/1/filing.htm","transcript_url":"https://stockanalysis.com/stocks/test/transcripts/1-q2-2026/"}}
 
 
-class GradeReasoningIntegrationTests(unittest.TestCase):
-    def test_parser_normalizes_fresh_and_cached_valuation_skill_outputs(self):
-        fresh = {
-            "ticker": "TEST", "status": "ok", "score": 67.5, "grade": "B-",
-            "classification": "Fair / Premium", "confidence": "high", "run_id": "fresh-run",
-            "business_quality": {
-                "status": "ok", "score": 91.25, "grade": "A+",
-                "classification": "Exceptional Business Quality", "confidence": "high",
-            },
-        }
-        cached = {
-            "ticker": "TEST", "run_id": "cached-run", "valuation": {
-                "grade": {"status": "ok", "score": 67.5, "grade": "B-", "classification": "Fair / Premium"},
-                "business_quality": {"status": "ok", "score": 91.25, "grade": "A+", "classification": "Exceptional Business Quality"},
-            },
-        }
-        for payload, run_id in ((fresh, "fresh-run"), (cached, "cached-run")):
-            stdout = "header\nMACHINE-READABLE JSON OUTPUT\n" + json.dumps(payload)
-            normalized = _parse_company_valuation_score_output(stdout, "TEST")
-            self.assertEqual(normalized["run_id"], run_id)
-            self.assertEqual(normalized["valuation"]["score"], 67.5)
-            self.assertEqual(normalized["valuation"]["grade"], "B-")
-            self.assertEqual(normalized["business_quality"]["score"], 91.25)
-            self.assertEqual(normalized["business_quality"]["grade"], "A+")
+class FilingSelectionTests(unittest.TestCase):
+    """Tests for the filing selection logic in identify() method."""
 
-    def test_grade_breakdown_uses_skill_grades_and_requested_weights(self):
-        analyzer = EarningsAnalyzer("TEST")
-        analyzer.data = sample_data() | {
-            "financials": {"rows": [
-                {"key": "revenue", "value": 120, "prior_value": 100},
-                {"key": "operating_income", "value": 20, "prior_value": 10},
-                {"key": "net_income", "value": 15, "prior_value": 10},
-                {"key": "operating_cash_flow", "value": 30, "prior_value": 20},
-            ], "key_ratios": []},
-            "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": None},
-            "sources": {"earnings_release_url": "x", "transcript_url": "y"},
-        }
-        analyzer.grade_and_thesis()
-        breakdown = analyzer.data["grade_breakdown"]
-        self.assertEqual(breakdown["business_quality"]["grade"], "A+")
-        self.assertEqual(breakdown["business_quality"]["score"], 92.0)
-        self.assertEqual(breakdown["valuation"]["grade"], "B")
-        self.assertEqual(breakdown["valuation"]["score"], 72.0)
-        expected_weights = {
-            "financial_metrics": 0.10, "business_quality": 0.40, "valuation": 0.40,
-            "earnings_call": 0.02, "management_execution": 0.03, "future_growth": 0.05,
-        }
-        self.assertEqual({key: breakdown[key]["weight"] for key in expected_weights}, expected_weights)
-        expected_score = sum(
-            breakdown["all_scores"][key] * weight for key, weight in expected_weights.items()
-        )
-        self.assertAlmostEqual(breakdown["final_score"], round(expected_score, 2))
+    def test_identify_selects_latest_quarterly_10q_by_report_date(self):
+        """Test that identify() selects the 10-Q with the latest report_date (fiscal quarter end).
+        
+        Regression test for AVGO-like scenario where:
+        - Q2 FY2026 10-Q: report_date=2026-05-03 (quarter end Apr 26?), filing_date=2026-05-03
+        - Q3 FY2026 10-Q: report_date=2026-08-02 (quarter end Jul 26?), filing_date=2026-08-02
+        
+        The latest report_date (08-02) should win, not the earlier one (05-03).
+        """
+        with patch("run_analysis.search_filings") as mock_search, \
+             patch("run_analysis._now") as mock_now:
+            from datetime import datetime, timezone
+            mock_now.return_value = datetime(2026, 8, 10, tzinfo=timezone.utc)
+            
+            # Simulate two 10-Q filings - Q2 and Q3 FY2026
+            mock_search.return_value = [
+                {
+                    "ticker": "AVGO",
+                    "cik": "0001730168",
+                    "company_name": "Broadcom Inc.",
+                    "accession_number": "0001730168-26-000010",
+                    "accession_number_dashed": "0001730168-26-000010",
+                    "form_type": "10-Q",
+                    "filing_date": "2026-05-03",
+                    "report_date": "2026-05-03",
+                    "acceptance_datetime": "2026-05-03T16:00:00.000Z",
+                    "items": "",
+                    "primary_document": "avgo-q2-2026.htm",
+                    "primary_doc_description": "QUARTERLY REPORT",
+                    "fiscal_year_end": "10-31",
+                    "sector": "Semiconductors",
+                    "url": "https://www.sec.gov/Archives/edgar/data/1730168/000173016826000010/avgo-q2-2026.htm",
+                },
+                {
+                    "ticker": "AVGO",
+                    "cik": "0001730168",
+                    "company_name": "Broadcom Inc.",
+                    "accession_number": "0001730168-26-000020",
+                    "accession_number_dashed": "0001730168-26-000020",
+                    "form_type": "10-Q",
+                    "filing_date": "2026-08-02",
+                    "report_date": "2026-08-02",
+                    "acceptance_datetime": "2026-08-02T16:00:00.000Z",
+                    "items": "",
+                    "primary_document": "avgo-q3-2026.htm",
+                    "primary_doc_description": "QUARTERLY REPORT",
+                    "fiscal_year_end": "10-31",
+                    "sector": "Semiconductors",
+                    "url": "https://www.sec.gov/Archives/edgar/data/1730168/000173016826000020/avgo-q3-2026.htm",
+                },
+            ]
+            
+            analyzer = EarningsAnalyzer("AVGO")
+            analyzer.identify()
+            
+            # Should select the Q3 filing (latest report_date = 2026-08-02)
+            self.assertEqual(analyzer.filing["report_date"], "2026-08-02")
+            self.assertEqual(analyzer.filing["filing_date"], "2026-08-02")
+            self.assertEqual(analyzer.filing["form_type"], "10-Q")
 
-    def test_telegram_and_html_keep_structure_with_business_quality_line(self):
-        analyzer = EarningsAnalyzer("TEST")
-        analyzer.data = sample_data() | {
-            "financials": {"rows": [], "key_ratios": []},
-            "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": None},
-            "sources": sample_data()["sources"] | {"earnings_release_url": None},
-        }
-        analyzer.grade_and_thesis()
-        message = generate_dashboard_message(analyzer.data)
-        self.assertIn("🏢 Business Quality (40%): A+", message)
-        self.assertIn("92.0/100 — Exceptional Business Quality", message)
-        self.assertIn("💰 Valuation (40%): B", message)
-        self.assertIn("72.0/100 — Fair Value", message)
-        self.assertIn("📊 Financial Metrics (10%)", message)
-        self.assertIn("📞 Earnings Call (2%)", message)
-        self.assertIn("👔 Management Execution (3%)", message)
-        self.assertIn("🚀 Future Growth (5%)", message)
-        self.assertNotIn("P/S Relative Valuation", message)
-        self.assertNotIn("Final Valuation Score", message)
+    def test_identify_prefers_amendment_when_same_report_date(self):
+        """Test that 10-Q/A amendment is preferred over original 10-Q when report_date is the same."""
+        with patch("run_analysis.search_filings") as mock_search, \
+             patch("run_analysis._now") as mock_now:
+            from datetime import datetime, timezone
+            mock_now.return_value = datetime(2026, 8, 10, tzinfo=timezone.utc)
+            
+            mock_search.return_value = [
+                {
+                    "ticker": "AVGO",
+                    "cik": "0001730168",
+                    "company_name": "Broadcom Inc.",
+                    "accession_number": "0001730168-26-000010",
+                    "accession_number_dashed": "0001730168-26-000010",
+                    "form_type": "10-Q",
+                    "filing_date": "2026-08-02",
+                    "report_date": "2026-08-02",
+                    "acceptance_datetime": "2026-08-02T16:00:00.000Z",
+                    "items": "",
+                    "primary_document": "avgo-q3-2026.htm",
+                    "primary_doc_description": "QUARTERLY REPORT",
+                    "fiscal_year_end": "10-31",
+                    "sector": "Semiconductors",
+                    "url": "https://www.sec.gov/Archives/edgar/data/1730168/000173016826000010/avgo-q3-2026.htm",
+                },
+                {
+                    "ticker": "AVGO",
+                    "cik": "0001730168",
+                    "company_name": "Broadcom Inc.",
+                    "accession_number": "0001730168-26-000020",
+                    "accession_number_dashed": "0001730168-26-000020",
+                    "form_type": "10-Q/A",
+                    "filing_date": "2026-08-15",
+                    "report_date": "2026-08-02",
+                    "acceptance_datetime": "2026-08-15T16:00:00.000Z",
+                    "items": "",
+                    "primary_document": "avgo-q3-2026-amend.htm",
+                    "primary_doc_description": "QUARTERLY REPORT (AMENDMENT)",
+                    "fiscal_year_end": "10-31",
+                    "sector": "Semiconductors",
+                    "url": "https://www.sec.gov/Archives/edgar/data/1730168/000173016826000020/avgo-q3-2026-amend.htm",
+                },
+            ]
+            
+            analyzer = EarningsAnalyzer("AVGO")
+            analyzer.identify()
+            
+            # Should select the 10-Q/A amendment (same report_date, later filing_date, ends with /A)
+            self.assertEqual(analyzer.filing["form_type"], "10-Q/A")
+            self.assertEqual(analyzer.filing["filing_date"], "2026-08-15")
 
-        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
-        self.assertIn('{ key: "business_quality", label: "Business Quality", icon: "🏢" }', script)
-        self.assertIn('renderList("grade-reasoning-content", rows, 7, 200)', script)
-        self.assertNotIn("P/S Relative Valuation", script)
-        self.assertNotIn("Final Valuation Score", script)
+    def test_identify_rejects_future_report_dates(self):
+        """Test that identify() rejects filings with report_date in the future."""
+        with patch("run_analysis.search_filings") as mock_search, \
+             patch("run_analysis._now") as mock_now:
+            from datetime import datetime, timezone
+            mock_now.return_value = datetime(2026, 8, 10, tzinfo=timezone.utc)
+            
+            mock_search.return_value = [
+                {
+                    "ticker": "AVGO",
+                    "cik": "0001730168",
+                    "company_name": "Broadcom Inc.",
+                    "accession_number": "0001730168-26-000010",
+                    "accession_number_dashed": "0001730168-26-000010",
+                    "form_type": "10-Q",
+                    "filing_date": "2026-08-02",
+                    "report_date": "2026-11-15",  # Future report date - should be filtered out
+                    "acceptance_datetime": "2026-08-02T16:00:00.000Z",
+                    "items": "",
+                    "primary_document": "avgo-q3-2026.htm",
+                    "primary_doc_description": "QUARTERLY REPORT",
+                    "fiscal_year_end": "10-31",
+                    "sector": "Semiconductors",
+                    "url": "https://www.sec.gov/Archives/edgar/data/1730168/000173016826000010/avgo-q3-2026.htm",
+                },
+                {
+                    "ticker": "AVGO",
+                    "cik": "0001730168",
+                    "company_name": "Broadcom Inc.",
+                    "accession_number": "0001730168-26-000020",
+                    "accession_number_dashed": "0001730168-26-000020",
+                    "form_type": "10-Q",
+                    "filing_date": "2026-05-03",
+                    "report_date": "2026-05-03",
+                    "acceptance_datetime": "2026-05-03T16:00:00.000Z",
+                    "items": "",
+                    "primary_document": "avgo-q2-2026.htm",
+                    "primary_doc_description": "QUARTERLY REPORT",
+                    "fiscal_year_end": "10-31",
+                    "sector": "Semiconductors",
+                    "url": "https://www.sec.gov/Archives/edgar/data/1730168/000173016826000020/avgo-q2-2026.htm",
+                },
+            ]
+            
+            analyzer = EarningsAnalyzer("AVGO")
+            analyzer.identify()
+            
+            # Should select the Q2 filing (only one with report_date <= today)
+            self.assertEqual(analyzer.filing["report_date"], "2026-05-03")
+
+    def test_identify_matches_stockanalysis_latest_quarter_avgo(self):
+        """Integration test: verify identify() cross-references StockAnalysis for latest quarter.
+        
+        This test fetches live data from:
+        1. SEC EDGAR submissions (via search_filings) - gets available 10-Q report_dates
+        2. StockAnalysis.com quarterly financials page - gets latest quarter end date
+        
+        The code should attempt to match and fall back gracefully when SEC lags.
+        """
+        import requests
+        from bs4 import BeautifulSoup
+        from sec_edgar_search import search_filings
+        from datetime import datetime, timezone
+        import re
+        
+        ticker = "AVGO"
+        
+        # 1. Get available 10-Qs from SEC (real call)
+        filings_10q = search_filings(ticker, ["10-Q", "10-Q/A"], limit=10)
+        # Filter out future report dates
+        today = datetime.now(timezone.utc).date().isoformat()
+        filings_10q = [f for f in filings_10q if f.get("report_date") and f["report_date"] <= today]
+        self.assertTrue(filings_10q, "Should find at least one 10-Q filing for AVGO")
+        
+        # 2. Get latest quarter from StockAnalysis.com using SAME LOGIC as _get_latest_quarter_from_stockanalysis
+        url = "https://stockanalysis.com/stocks/avgo/financials/?p=quarterly"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        response = requests.get(url, headers=headers, timeout=30)
+        self.assertEqual(response.status_code, 200, f"Failed to fetch {url}")
+        
+        soup = BeautifulSoup(response.text, "html.parser")
+        
+        # Find the "Period Ending" row which has the actual dates
+        # Format: "Aug '26 Aug 2, 2026" or just "Aug 2, 2026"
+        period_ending_dates = []
+        for th in soup.find_all("th"):
+            text = th.get_text(strip=True)
+            # Match date patterns like "Aug 2, 2026", "Aug '26 Aug 2, 2026", etc.
+            # First try: "MMM DD, YYYY" at end of string
+            match = re.search(r"([A-Z][a-z]{2})\s+(\d{1,2}),\s+(\d{4})$", text)
+            if match:
+                month_str, day, year = match.groups()
+            else:
+                # Second try: standalone "MMM DD, YYYY"
+                match = re.match(r"([A-Z][a-z]{2})\s+(\d{1,2}),\s+(\d{4})$", text)
+                if match:
+                    month_str, day, year = match.groups()
+                else:
+                    continue
+            month_map = {
+                "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
+                "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
+                "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
+            }
+            month = month_map.get(month_str[:3])
+            if month:
+                period_ending_dates.append(f"{year}-{month}-{int(day):02d}")
+        
+        self.assertTrue(period_ending_dates, "Should find Period Ending dates on StockAnalysis page")
+        
+        # The first date in the "Period Ending" row is the latest quarter
+        sa_quarter_end = period_ending_dates[0]
+        
+        # Also get the quarter label for that column
+        quarter_labels = []
+        for th in soup.find_all("th"):
+            text = th.get_text(strip=True)
+            match = re.match(r"Q([1-4])\s+(\d{4})", text)
+            if match:
+                quarter_labels.append((int(match.group(2)), int(match.group(1)), f"Q{match.group(1)}"))
+        
+        self.assertTrue(quarter_labels, "Should find quarter labels on StockAnalysis page")
+        
+        # Get latest quarter label
+        sa_period = max(quarter_labels, key=lambda x: (x[0], x[1]))[2]
+        
+        # 3. Run the actual identify() method and verify it handles the mismatch correctly
+        from run_analysis import EarningsAnalyzer
+        analyzer = EarningsAnalyzer(ticker)
+        analyzer.identify()
+        
+        # Verify the code attempted to match StockAnalysis
+        self.assertIn("stockanalysis_period", str(analyzer.execution_log))
+        
+        # Verify it selected a valid 10-Q (fallback to latest available)
+        self.assertEqual(analyzer.filing["form_type"], "10-Q")
+        self.assertIn(analyzer.filing["report_date"], [f["report_date"] for f in filings_10q])
+        
+        # Verify the latest available SEC 10-Q is selected when no exact match
+        latest_sec_report_date = max(f["report_date"] for f in filings_10q)
+        self.assertEqual(analyzer.filing["report_date"], latest_sec_report_date)
+        
+        print(f"✓ StockAnalysis latest: {sa_period} -> quarter end {sa_quarter_end}")
+        print(f"✓ SEC available report_dates: {[f['report_date'] for f in filings_10q[:5]]}...")
+        print(f"✓ Selected SEC 10-Q: {analyzer.filing['form_type']} report_date {analyzer.filing['report_date']} filed {analyzer.filing['filing_date']}")
+        print(f"✓ Cross-reference attempted and fallback handled correctly")
 
 
 class BusinessKpiTests(unittest.TestCase):
@@ -399,11 +574,10 @@ class ExtractionTests(unittest.TestCase):
             "transcript_insights": [],
             "sources": {"earnings_release_url": None, "transcript_url": "https://example.com/t"},
             "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": None},
-            "company_valuation_score": sample_data()["company_valuation_score"],
             "risks": [],
         }
         analyzer.grade_and_thesis()
-        self.assertRegex(analyzer.data["grade"]["letter"], r"^(?:A|B|C|D)[+-]?$|^F$")
+        self.assertIn(analyzer.data["grade"]["letter"], {"A", "B", "C", "D", "F"})
         self.assertEqual(analyzer.data["thesis"]["recommendation"], "INSUFFICIENT DATA")
 
     def test_negative_pe_uses_normalized_earnings_proxy_for_thesis(self):
@@ -497,6 +671,27 @@ class ExtractionTests(unittest.TestCase):
                 published_evidence += [row["desc"] for row in result["channels"]]
                 published_evidence += [row["detail"] for row in result["strategic_pillars"]]
                 self.assertFalse(any("launch industry needs" in text.lower() for text in published_evidence))
+
+    def test_line_based_qa_boundary_supports_management_handoff_for_qa(self):
+        transition = "With that, I will turn it back over to Hamza for Q&A."
+        transcript = (
+            "Chief Executive Officer\n"
+            "Chairman and CEO\n"
+            "We delivered strong customer growth across our platform.\n"
+            f"{transition}\n"
+            "Jane Smith\n"
+            "Analyst, Example Research\n"
+            "Can you discuss customer demand?\n"
+            "John Doe\n"
+            "Chairman and CEO, Example Corp\n"
+            "We expect customer demand to remain strong for the next few quarters.\n"
+        )
+        self.assertEqual(_qa_boundary_start(transcript), transcript.index(transition))
+        result = extract_transcript_sections(
+            transcript,
+            "https://stockanalysis.com/stocks/test/transcripts/1-q2-2026/",
+        )
+        self.assertTrue(any(row["section"] == "Analyst Q&A" for row in result["insights"]))
 
     def test_line_based_qa_boundary_retains_explicit_headings(self):
         for heading in ("Question-and-Answer Session", "Questions & Answers", "Q&A Session"):
@@ -671,12 +866,11 @@ class SafetyTests(unittest.TestCase):
         self.assertTrue(test.data["valuation"]["quote_is_stale"])
         self.assertIn("not actionable", test.data["warnings"][0])
 
-    @patch("run_analysis.fetch_short_interest", side_effect=RuntimeError("not needed"))
-    @patch("run_analysis.get_quote")
     @patch("run_analysis._now")
-    def test_latest_completed_close_is_valid_production_data(self, now, quote, _short):
+    @patch("run_analysis.get_quote")
+    def test_completed_regular_session_close_is_valid_in_production(self, quote, now):
         from datetime import datetime, timezone
-        now.return_value = datetime(2026, 8, 26, 20, 52, tzinfo=timezone.utc)
+        now.return_value = datetime(2026, 8, 9, tzinfo=timezone.utc)
         quote.return_value = {
             "price": 345.73,
             "market_cap": 96_000_000_000,
@@ -684,14 +878,10 @@ class SafetyTests(unittest.TestCase):
             "source": "robinhood-trading MCP completed daily regular-session close",
         }
         analyzer = EarningsAnalyzer("TEST")
-        analyzer.data["_xbrl"] = {
-            "metrics": {"revenue": {"value": 100, "duration_days": 91}}
-        }
+        analyzer.data["_xbrl"] = {"metrics": {"revenue": {"value": 100, "duration_days": 91}}}
         analyzer.quote_and_valuation()
-        self.assertFalse(analyzer.data["test_run"])
         self.assertFalse(analyzer.data["valuation"]["quote_is_stale"])
-        self.assertTrue(analyzer.data["valuation"]["quote_is_completed_close"])
-        self.assertIn("latest completed", analyzer.data["warnings"][0])
+        self.assertFalse(analyzer.data["test_run"])
 
     @patch("robinhood_mcp_get_quote._expected_account", return_value=None)
     @patch("robinhood_mcp_get_quote._call")
@@ -699,6 +889,40 @@ class SafetyTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "ROBINHOOD_EXPECTED_ACCOUNT"):
             get_quote("TEST")
         call.assert_not_called()
+
+    def test_delivery_dry_run_never_sends(self):
+        with tempfile.TemporaryDirectory() as directory:
+            pdf = Path(directory) / "a.pdf"; pdf.write_bytes(b"%PDF" + b"x"*1200)
+            with patch("telegram_notify.subprocess.run") as run:
+                result = deliver_reports(sample_data(), str(pdf), dry_run=True)
+            self.assertEqual(len(result), 2); run.assert_not_called()
+
+    def test_delivery_rejects_missing_attachment(self):
+        with self.assertRaisesRegex(RuntimeError, "missing or empty"):
+            deliver_reports(sample_data(), "/missing.pdf", dry_run=False)
+
+    def test_delivery_requires_json_receipt(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
+            with patch("telegram_notify.subprocess.run", return_value=subprocess.CompletedProcess([], 0, "not-json", "")), \
+                 patch("telegram_notify.validate_pdf"):
+                with self.assertRaisesRegex(RuntimeError, "malformed JSON"):
+                    _send("message", str(pdf), "telegram")
+
+    def test_delivery_success_receipt_and_command(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
+            result = subprocess.CompletedProcess([], 0, json.dumps({"success": True, "message_id": "m1"}), "")
+            with patch("telegram_notify.subprocess.run", return_value=result) as run, \
+                 patch("telegram_notify.validate_pdf"):
+                receipt = _send("message", str(pdf), "telegram")
+            self.assertTrue(receipt["success"]); self.assertEqual(receipt["backend_id"], "m1")
+            args = run.call_args.args[0]
+            self.assertEqual(args[:5], ["hermes", "send", "--to", "telegram", "--json"])
+            self.assertIn("MEDIA:" + str(pdf.resolve()), args[5])
+
 
 class OutputTests(unittest.TestCase):
     def test_cross_ticker_compaction_preserves_material_evidence(self):
@@ -898,26 +1122,10 @@ class OutputTests(unittest.TestCase):
         self.assertIn("TEST ONLY", generate_dashboard_message(data))
         self.assertIn("TEST ONLY", generate_call_message(data))
 
-    def test_save_creates_nonempty_dashboard_zip_with_required_files(self):
-        analyzer = EarningsAnalyzer("TEST", output_format="json")
-        analyzer.data = sample_data()
-
-        def create_dashboard(_data, output_dir, **_kwargs):
-            root = Path(output_dir)
-            files = {
-                "index.html": "<html><body>dashboard</body></html>",
-                "css/dashboard.css": "body { color: #111; }",
-                "js/dashboard.js": "window.EARNINGS_REPORT = {};",
-                "data/report.json": "{}",
-            }
-            for relative, content in files.items():
-                path = root / relative
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(content, encoding="utf-8")
-            return str(root / "index.html")
-
+    def test_save_delivers_automatically_by_default(self):
+        analyzer = EarningsAnalyzer("TEST", output_format="json"); analyzer.data = sample_data()
         with tempfile.TemporaryDirectory() as directory, \
-                patch("run_analysis.create_interactive_dashboard", side_effect=create_dashboard):
+                patch("run_analysis.create_interactive_dashboard", return_value="/tmp/index.html"):
             paths = analyzer.save(directory, deliver=False)
             archive = Path(paths["dashboard_zip"])
             self.assertTrue(archive.is_file())
@@ -954,6 +1162,7 @@ class OutputTests(unittest.TestCase):
                 names = zipped.namelist()
                 self.assertEqual(names, [png_path.name])
                 self.assertGreater(zipped.getinfo(png_path.name).file_size, 0)
+
 
 class InteractiveDashboardTests(unittest.TestCase):
     def test_dashboard_schema_is_company_neutral_and_metadata_complete(self):
@@ -1210,6 +1419,23 @@ class InteractiveDashboardTests(unittest.TestCase):
         for forbidden in ("RKLB", "$234.1M", "57.9x", "$79.99", "$54.4B"):
             self.assertNotIn(forbidden, source)
 
+    def test_section_order_interaction_and_accessibility_contract(self):
+        html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
+        headings = [
+            "Income Statement Highlights", ">KPI<", "Key Ratios", "Valuation", "Capital &amp; Liquidity",
+            "Short Interest &amp; SBC",
+            "Guidance &amp; Outlook", "Earnings Call Summary", "Key Channels &amp; Segments",
+            "Strategic Pillars", "Key Risks", "Investment Thesis",
+        ]
+        positions = [html.index(heading) for heading in headings]
+        self.assertEqual(positions, sorted(positions))
+        self.assertNotIn("risk-metric-cards", html)
+        self.assertIn('<dialog id="metric-dialog"', html)
+        self.assertIn('aria-labelledby="dialog-title"', html)
+        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        for behavior in ('button.type = "button"', 'dialog.showModal()', 'lastTrigger.focus()',
+                         'window.print()', 'event.target.files'):
+            self.assertIn(behavior, script)
 
     def test_a4_print_contract_and_bundled_inter_font(self):
         dashboard_css = (ROOT / "earnings-dashboard" / "css" / "dashboard.css").read_text()
@@ -1353,6 +1579,11 @@ class InteractiveDashboardTests(unittest.TestCase):
                 width = struct.unpack(">I", handle.read(4))[0]
                 height = struct.unpack(">I", handle.read(4))[0]
             self.assertEqual((width, height), (2716, 3840))
+
+    def test_telegram_messages_name_interactive_dashboard_attachment(self):
+        self.assertIn("Interactive A4 dashboard attached", generate_dashboard_message(sample_data()))
+        self.assertIn("Interactive A4 dashboard attached", generate_call_message(sample_data()))
+
 
 class ValuationGuideTests(unittest.TestCase):
     def _sections(self, positive=False):

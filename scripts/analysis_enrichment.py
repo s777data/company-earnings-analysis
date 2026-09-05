@@ -161,23 +161,25 @@ def _qa_boundary_start(text: str) -> int:
         is_heading = normalized in QA_SECTION_HEADINGS
         is_first_question = (
             "first question" in normalized
-            and any(phrase in normalized for phrase in ("comes from", "take", "go to", "is from"))
+            and any(phrase in normalized for phrase in ("comes from", "take", "go to"))
         )
         is_operator_handoff = any(phrase in normalized for phrase in (
             "open the call for questions",
             "ready for questions",
             "operator for questions",
             "begin the question portion",
+            "begin the question-and-answer",
             "one moment for questions",
             "kick off the q",
             "go to questions",
             "turn to questions",
             "open up the call",
-            "turn the call back over to the operator",
-            "turn the call over to",
-            "get our q a started",
-            "get our q&a started",
-        ))
+            "open up the line for q",
+            "happy to take your questions",
+            "take your questions",
+            "turn it back over to",
+            "we will now begin the",
+        )) and ("question" in normalized or "q a" in normalized)
         # A heading may include decorative words, but it must still consist only
         # of Q&A/session vocabulary after punctuation normalization.
         is_heading_variant = (
@@ -185,9 +187,7 @@ def _qa_boundary_start(text: str) -> int:
             and bool({"answer", "answers"} & words)
             and words <= {"question", "questions", "and", "answer", "answers", "session"}
         )
-        # Also detect "Q&A" or "Q A" in a short line as a heading variant
-        is_qa_heading = normalized in {"q a", "q&a", "q a started", "q&a started", "begin q a", "begin q&a"}
-        if is_heading or is_heading_variant or is_first_question or is_operator_handoff or is_qa_heading:
+        if is_heading or is_heading_variant or is_first_question or is_operator_handoff:
             return offset
         offset += len(raw_line)
     return len(text)

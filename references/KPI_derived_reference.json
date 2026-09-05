@@ -292,6 +292,666 @@
     }
   },
   {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "AI-Driven Revenue Mix",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 35%",
+        "last_year_quarter_value": "Q2 2025: 22%",
+        "analyst_view": "AI-related revenue increased to 35% of total, up from 22% a year ago.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Free Cash Flow Conversion",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 110%",
+        "last_year_quarter_value": "Q2 2025: 95%",
+        "analyst_view": "FCF conversion exceeded 100% for the second consecutive quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Gross Margin Expansion",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 48.5%",
+        "last_year_quarter_value": "Q2 2025: 46.2%",
+        "analyst_view": "Gross margin expanded 230 bps YoY on favorable mix and cost improvements.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Operating Margin",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 18.2%",
+        "last_year_quarter_value": "Q2 2025: 15.8%",
+        "analyst_view": "Operating margin improved 240 bps YoY on operating leverage and disciplined spending.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Revenue Growth Outlook",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 20%+ YoY growth",
+        "last_year_quarter_value": "Q2 2025: 15% YoY growth",
+        "analyst_view": "Management guided 20%+ revenue growth driven by AI demand and new product ramps.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Backlog Growth",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: $2.1B",
+        "last_year_quarter_value": "Q2 2025: $1.6B",
+        "analyst_view": "Backlog grew 31% YoY providing strong revenue visibility.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Customer Design Wins",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 12 new wins",
+        "last_year_quarter_value": "Q2 2025: 8 new wins",
+        "analyst_view": "Design win momentum accelerating with 12 new customer engagements.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "New Product Introductions",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 3 major products",
+        "last_year_quarter_value": "Q2 2025: 2 major products",
+        "analyst_view": "Three major product launches in the quarter strengthen competitive positioning.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "R&D Investment Rate",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 12.5% of revenue",
+        "last_year_quarter_value": "Q2 2025: 11.8% of revenue",
+        "analyst_view": "R&D investment increased to support AI and next-gen product roadmap.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Capital Return Program",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: $150M buybacks",
+        "last_year_quarter_value": "Q2 2025: $100M buybacks",
+        "analyst_view": "Share repurchases increased 50% YoY, returning capital to shareholders.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "International Revenue Mix",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: 65% ex-US",
+        "last_year_quarter_value": "Q2 2025: 60% ex-US",
+        "analyst_view": "International diversification improved with Asia-Pacific leading growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Bull Inc.",
+    "TICKER": "BULL",
+    "SECTOR": "Semiconductor Equipment",
+    "metric": "Supply Chain Resilience",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q2 2026: No disruptions",
+        "last_year_quarter_value": "Q2 2025: Minor delays",
+        "analyst_view": "Supply chain fully normalized, no material constraints expected.",
+        "source": "IR",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "AEC Business Position",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Largest business; continued growth",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "AEC remained Credo’s largest business and continued growing, supported by deeper deployment penetration and higher data rates; no product-level revenue was disclosed.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Customer Revenue Concentration",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Top four customers were 33%, 28%, 13%, and 11%",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Four customers each exceeded 10% of revenue; concentration remains material despite expansion across hyperscalers and NeoCloud customers.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Fiscal-Year Optical Revenue Outlook",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: More than $600M expected in FY2027",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Management maintained an optical-revenue outlook above $600 million for FY2027, making optics the fastest-growing portfolio pillar; this remains forward-looking.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Fiscal-Year Revenue Growth Outlook",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: More than 85% YoY expected for FY2027",
+        "last_year_quarter_value": "Q1 2026: More than 85% YoY expected for FY2026",
+        "analyst_view": "Management expects FY2027 revenue growth above 85%, continuing an exceptional growth trajectory; the outlook depends on second-half optical ramps.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Hyperscaler AEC Relationships",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: 5 hyperscalers",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Deep AEC relationships with five hyperscalers broaden the demand base, although engagement does not itself quantify production revenue.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Optical DSP Revenue",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Record revenue",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Optical DSP revenue reached a record with both 50G- and 100G-per-lane deployments; the company did not disclose dollars.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Retimer Revenue",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Record revenue",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Retimer revenue reached a record as Screaming Eagle deployments grew and Blue Heron began contributing, indicating broader scale-up exposure.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "ZeroFlap Optics Commercialization",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Production shipments underway",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "ZeroFlap Optics moved into production shipments, with more customer ramps expected during FY2027 across 800G and 1.6T; ramp magnitude was not quantified.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "1.6T Optical DSP Ramp",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: First revenue on track for later FY2027",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "The first 1.6T DSP revenue remains targeted for later FY2027, supported by customer engagement across fully retimed and LRO solutions.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Active LED Cable Commercialization",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Initial revenue targeted for FY2028",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Active LED Cables remain pre-revenue, with initial sales targeted for FY2028; customer engagement is increasing but timing remains forward-looking.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Greater-than-10% Customer Count",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: 4 customers",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Four customers exceeded 10% of quarterly revenue, evidencing both multiple scaled relationships and continued concentration risk.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "NPO Design-Win Ramp",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Confirmed design wins expected to ramp in FY2028",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Near-package-optics activity is increasing, with confirmed design wins expected to begin ramping in FY2028; this is a future growth indicator rather than current revenue.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "OmniConnect Commercialization",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: Revenue targeted to begin in FY2028",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "OmniConnect remains pre-revenue but management targets FY2028 commercialization and sees potentially significant content per GPU; no booked revenue was disclosed.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Credo Technology Group Holding Ltd",
+    "TICKER": "CRDO",
+    "SECTOR": "Semiconductors",
+    "metric": "Silicon Photonics PIC Commercialization",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q1 2027: First revenue recognized",
+        "last_year_quarter_value": "Q1 2026: No acquired PIC revenue",
+        "analyst_view": "Credo recognized its first silicon-photonics PIC revenue after acquiring DustPhotonics, establishing a new optical growth contribution that is still early in its ramp.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "AI Server Order Backlog",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $24.4B booked",
+        "last_year_quarter_value": "Q1 FY2026: N/A",
+        "analyst_view": "Booked $24.4B in AI server orders in Q1, indicating sustained demand visibility into FY27.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "AI-Optimized Server Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $16.1B",
+        "last_year_quarter_value": "Q1 FY2026: $1.9B",
+        "analyst_view": "AI-optimized server revenue surged 757% YoY; FY27 guidance raised to ~$60B (up 144% YoY).",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "CSG Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $14.6B",
+        "last_year_quarter_value": "Q1 FY2026: $12.5B",
+        "analyst_view": "Client Solutions Group revenue grew 17% YoY, led by commercial client strength.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Diluted EPS (GAAP)",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $5.24",
+        "last_year_quarter_value": "Q1 FY2026: $1.37",
+        "analyst_view": "GAAP diluted EPS surged 282% YoY on record revenue and operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Free Cash Flow",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $3.1B",
+        "last_year_quarter_value": "Q1 FY2026: $2.2B",
+        "analyst_view": "Free cash flow grew 40% YoY to $3.1B, supporting shareholder returns and investment.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "FY27 AI Server Revenue Guidance",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: ~$60B",
+        "last_year_quarter_value": "FY2026: ~$24.6B",
+        "analyst_view": "AI-optimized server revenue guided to ~$60B for FY27, up 144% YoY from ~$24.6B in FY26.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "FY27 Revenue Guidance",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $165-169B (midpoint $167B)",
+        "last_year_quarter_value": "FY2026: $113.5B",
+        "analyst_view": "Full-year FY27 revenue guided at $165-169B (midpoint $167B), up 47% YoY on AI and commercial strength.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "ISG Operating Income",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $3.1B",
+        "last_year_quarter_value": "Q1 FY2026: $1.0B",
+        "analyst_view": "ISG operating income grew 206% YoY with expanding margins on AI server mix.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "ISG Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $29.0B",
+        "last_year_quarter_value": "Q1 FY2026: $10.3B",
+        "analyst_view": "Infrastructure Solutions Group revenue grew 181% YoY, driven by record AI-optimized server demand.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Non-GAAP Diluted EPS",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $4.86",
+        "last_year_quarter_value": "Q1 FY2026: $1.55",
+        "analyst_view": "Non-GAAP diluted EPS grew 214% YoY, excluding amortization and stock compensation.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Operating Cash Flow",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $4.1B",
+        "last_year_quarter_value": "Q1 FY2026: $2.4B",
+        "analyst_view": "Record Q1 operating cash flow of $4.1B, up 71% YoY on strong earnings and working capital.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Total Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $43.8B",
+        "last_year_quarter_value": "Q1 FY2026: $23.4B",
+        "analyst_view": "Revenue grew 88% YoY driven by exceptional AI server demand and strong commercial client performance.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Capital Return to Shareholders",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $2.1B",
+        "last_year_quarter_value": "Q1 FY2026: $1.5B",
+        "analyst_view": "Returned $2.1B via buybacks and dividends; $30B total authorization with ~$15.2B remaining.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Commercial Client Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $13.0B",
+        "last_year_quarter_value": "Q1 FY2026: $11.0B",
+        "analyst_view": "Commercial client revenue grew 18% YoY, reflecting enterprise refresh and AI PC adoption.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "CSG Operating Income",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $1.2B",
+        "last_year_quarter_value": "Q1 FY2026: $0.7B",
+        "analyst_view": "CSG operating income grew 79% YoY with margin expansion from commercial mix.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Storage Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $4.3B",
+        "last_year_quarter_value": "Q1 FY2026: $4.0B",
+        "analyst_view": "Storage revenue grew 8% YoY, showing steady performance in core portfolio.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Traditional Server & Networking Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $8.5B",
+        "last_year_quarter_value": "Q1 FY2026: $4.4B",
+        "analyst_view": "Traditional server revenue grew 92% YoY alongside AI demand, indicating broad infrastructure strength.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Dell Technologies Inc.",
+    "TICKER": "DELL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Consumer Revenue",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q1 FY2027: $1.6B",
+        "last_year_quarter_value": "Q1 FY2026: $1.5B",
+        "analyst_view": "Consumer revenue grew 9% YoY, modest growth in a cyclical segment.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
     "COMPANY": "Figure Technology, Inc.",
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
@@ -393,6 +1053,801 @@
         "analyst_view": "Capital availability and pricing advantage spreading across existing partner base, expected to drive continued volume growth.",
         "source": "IR",
         "importance": "Tier 3 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Fair Financing GMV",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $4.7B",
+        "last_year_quarter_value": "Q2 2025: $2.6B",
+        "analyst_view": "Fastest growing product, up 82% YoY, now offered by 256,000 merchants (up from 151,000 in Nov 2025).",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "GMV",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $36.6B",
+        "last_year_quarter_value": "Q2 2025: $31.0B",
+        "analyst_view": "GMV grew 18% YoY (15% like-for-like), driven by Fair Financing and US growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Klarna Membership Subscribers",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 2.0M",
+        "last_year_quarter_value": "Q2 2025: 0.25M",
+        "analyst_view": "Subscription revenue grew 600%+ YoY, providing high-margin recurring revenue with almost no GMV attachment.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Net Profit (Loss)",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $9M",
+        "last_year_quarter_value": "Q2 2025: -$53M",
+        "analyst_view": "First quarterly profit as a public company, reflecting operating leverage with volume, revenue, and margin all growing.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Total Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $1,042M",
+        "last_year_quarter_value": "Q2 2025: $823M",
+        "analyst_view": "Revenue grew 27% YoY, driven by transaction and service revenue growth and Fair Financing expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Transaction Margin Dollars",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $446M",
+        "last_year_quarter_value": "Q2 2025: $315M",
+        "analyst_view": "Transaction margin dollars surged 42% YoY, reflecting improved unit economics and product mix shift toward higher-margin products.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "US GMV",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $7.8B",
+        "last_year_quarter_value": "Q2 2025: $6.2B",
+        "analyst_view": "US GMV grew 27% YoY, now largest market by volume share, with transaction margin improving from 14% to 23% of revenue.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Consumer Deposits",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $11,673M",
+        "last_year_quarter_value": "Q4 2025: $13,003M",
+        "analyst_view": "Deposits declined from year-end, partially reflecting balance sheet optimization and asset sales.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Consumer Receivables at Amortized Cost",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $8,831M",
+        "last_year_quarter_value": "Q4 2025: $10,459M",
+        "analyst_view": "Receivables declined from year-end due to forward flow sales and seasonal patterns; Fair Financing and Pay Later mix shifting.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Fair Financing Merchant Count",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 256,000",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Merchant base expanded significantly from 151,000 in Nov 2025, supporting volume growth.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Klarna Card Active Users",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 6.5M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Card reached 6.5M active users across 16 countries, driving higher engagement and transaction margin.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Provisions for Credit Losses as % of GMV",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 0.52%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Provisions declined as share of GMV for consecutive quarters, reflecting underwriting improvements and forward flow arrangements.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "Total Equity",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: $2,666M",
+        "last_year_quarter_value": "Q4 2025: $2,684M",
+        "analyst_view": "Equity stable, includes non-controlling interests from AT1 securities issued by subsidiary.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Klarna Group plc",
+    "TICKER": "KLAR",
+    "SECTOR": "Financial Technology",
+    "metric": "US Transaction Margin % of Revenue",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q2 2026: 23%",
+        "last_year_quarter_value": "Q2 2025: 14%",
+        "analyst_view": "US margin improved 9pp YoY, reflecting scale benefits and product mix shift toward Fair Financing and Card.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Adjusted Free Cash Flow (Quarterly)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $910M",
+        "last_year_quarter_value": "Q3 2025: $578M",
+        "analyst_view": "Quarterly adjusted FCF surged 57% YoY to $910M. Includes $117M acquisition-related payments. TTM adjusted FCF $4.079B vs $3.038B YoY (+34%).",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Adjusted Free Cash Flow Margin (TTM)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: 38.5%",
+        "last_year_quarter_value": "Q3 2025: 34.2%",
+        "analyst_view": "TTM adjusted FCF margin expanded 430 bps YoY to 38.5%, on track for FY28 target of 40%. Quarterly adjusted FCF of $910M vs $578M YoY (+57%).",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "CyberArk & Chronosphere NGS ARR Contribution",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $1.6B",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Acquisitions contributed $1.6B to NGS ARR and $388M to quarterly revenue in their first post-close quarter, exceeding internal benchmarks.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "CyberArk & Chronosphere Quarterly Revenue Contribution",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $388M",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Acquisitions contributed $388M to Q3 revenue in first post-close quarter. CyberArk surpassed internal benchmarks; Chronosphere observability ARR >$300M nearly doubled since announcement.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "FY26 Guidance - NGS ARR",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "FY26: $8.90-8.95B (59-60% YoY)",
+        "last_year_quarter_value": "FY25: N/A",
+        "analyst_view": "Raised FY26 NGS ARR guidance to $8.90-8.95B (59-60% YoY growth). Q3 at $8.1B on track. RPO guidance $20.9-21.0B (32-33% YoY). Revenue $11.415-11.425B (24% YoY). Non-GAAP OM 28.9-29.2%.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Net Cash from Operations (Quarterly)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $871M",
+        "last_year_quarter_value": "Q3 2025: $628M",
+        "analyst_view": "Operating cash flow grew 39% YoY to $871M. TTM operating cash flow $4.2B vs $3.2B YoY (+32%). Strong conversion supports FCF trajectory.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Net New Platformizations",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: 110",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Secured 110 net new platformizations in Q3, including 20 from CyberArk and Chronosphere integrations. Expanding into identity and observability markets.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Next-Generation Security ARR",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $8.1B",
+        "last_year_quarter_value": "Q3 2025: $5.06B",
+        "analyst_view": "NGS ARR grew 60% YoY to $8.1B, surpassing guidance. Includes $1.6B from CyberArk and Chronosphere acquisitions; organic NGS ARR grew 28%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Non-GAAP Net Income per Share (Diluted)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $0.85",
+        "last_year_quarter_value": "Q3 2025: $0.80",
+        "analyst_view": "Non-GAAP EPS grew 6% YoY to $0.85 on 807M diluted shares. GAAP net loss of ($0.22) vs $0.37 income YoY due to acquisition accounting and SBC.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Non-GAAP Operating Income",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $814M",
+        "last_year_quarter_value": "Q3 2025: $627M",
+        "analyst_view": "Non-GAAP operating income grew 30% YoY to $814M. GAAP operating loss of $183M reflects $517M SBC, $280M amortization of acquired intangibles, and acquisition-related costs.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Observability ARR (Chronosphere)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: >$300M",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Observability ARR surpassed $300M, nearly doubling since acquisition announcement. 80% of net new customers adopted multiple products. Two of top five frontier AI labs adopted Chronosphere.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Platformized Customers",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: ~2,280",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Concluded Q3 with roughly 2,280 total platformized customers, bolstered by CyberArk and Chronosphere integrations. These represent deep architectural commitments with superior long-term retention.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Remaining Performance Obligation (RPO)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $18.4B",
+        "last_year_quarter_value": "Q3 2025: $13.5B",
+        "analyst_view": "RPO grew 36% YoY to $18.4B, including $1.8B from CyberArk and Chronosphere. Organic RPO grew 22% YoY, indicating strong booking momentum.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "SASE ARR",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: >$600M",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "SASE ARR exceeded $600M with 100% YoY growth across 740+ customers. Palo Alto Networks remains the fastest-growing SASE provider with nearly 50 displacement wins totaling $200M contract value YTD.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Total Revenue",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $3.002B",
+        "last_year_quarter_value": "Q3 2025: $2.289B",
+        "analyst_view": "Total revenue grew 31% YoY to $3.002B, including $388M from CyberArk and Chronosphere. Beat consensus of $2.94B. Product revenue $594M (+31%), Subscription & Support $2.408B (+31%).",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "XSIAM ARR",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: >$600M",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "XSIAM ARR exceeded $600M with 100% YoY growth across 740+ customers. Primary response to frontier model threats; majority of XSIAM customers achieve 10x reduction in MTTR.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Cortex Cloud Migration Progress",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: Most Prisma customers by FY end",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Proactively transitioning cloud portfolio from static posture to real-time detection via Cortex Cloud. Anticipate most Prisma customers migrated by end of FY26. Enables identity management for agentic AI.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Daily Telemetry Ingestion",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: 17+ PB",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Platform processes 17+ PB of daily telemetry across 125M+ sensors (network, endpoint, cloud). Unmatched scale among pure-play security vendors; creates data flywheel for AI-powered detection.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Frontier AI Lab Win (Observability)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: >$200M ARR",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Surpassed $200M ARR with leading frontier AI lab for observability across training/inference clusters. Expected to grow further as migration to Chronosphere completes.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Large Deal Momentum",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: $80M power producer, >$20M consulting leader",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Largest Q3 deal: $80M with leading US power producer (NG firewalls + SASE for 25K+ employees). Global consulting leader: >$20M Prisma AIRS for 2T+ tokens/month. Validates platformization at AI scale.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Multi-Product Adoption Rate (Net New Customers)",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: 80%",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "80% of net new customer acquisitions in FY26 adopted multiple products, reinforcing platformization momentum and expanding wallet share per customer.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Prisma AIRS (AI Security) Traction",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: Record >$20M deal",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Record Prisma AIRS win >$20M securing 2T+ tokens/month for global consulting leader. Fastest-scaling product in company history, validating AI security platform demand.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Secure Browser Licenses",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: 11M licenses",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Secure Browser scaled to 11M licenses (4x increase), establishing as critical control point for AI enterprise. Competitive displacement wins: nearly 50 YTD totaling $200M contract value.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Palo Alto Networks, Inc.",
+    "TICKER": "PANW",
+    "SECTOR": "Cybersecurity",
+    "metric": "Unit 42 Frontier AI Defense Engagement",
+    "details_map": {
+      "2026-09-02": {
+        "latest_quarter_value": "Q3 2026: 1,200+ outreaches, 800 meetings",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Over 1,200 customer outreaches for Frontier AI Defense, completing 800 meetings in 6 weeks. CEO and CPO personally conducted ~100 meetings each. Driving cross-platform conversations and agentic endpoint security interest (150+ customers).",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Ad Revenue",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $762M",
+        "last_year_quarter_value": "Q2 2025: $464M",
+        "analyst_view": "Ad revenue grew 64% YoY to $762M, driven by ad load improvements, auction density, and international expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Adjusted EBITDA",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $346M",
+        "last_year_quarter_value": "Q2 2025: $212M",
+        "analyst_view": "Adjusted EBITDA grew 63% YoY with 43% margin; Q3 guidance of $385-395M implies 63-67% YoY growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Adjusted EBITDA Margin",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: 43%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Adjusted EBITDA margin of 43% in Q2; Q3 guidance of 45% at midpoint showing continued margin expansion.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Average Revenue Per Unique User (ARPU)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $6.18",
+        "last_year_quarter_value": "Q2 2025: $4.54",
+        "analyst_view": "ARPU grew 36% YoY to $6.18, driven by ad load improvements, auction density, and international monetization.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Daily Active Users (DAU)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: 130M+",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "DAU grew, driven by product improvements and marketing; new app user retention up 50% YoY.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "International Revenue",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $318M",
+        "last_year_quarter_value": "Q2 2025: $173M",
+        "analyst_view": "International revenue grew 84% YoY, outpacing US growth; monetization expanding in ex-US markets.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "New App User Retention",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: Up 50% YoY",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "New app user retention improved 50% YoY on relative basis, a key priority for converting weekly users to daily active users.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Share Repurchase",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $235M (1.5M shares)",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Repurchased $235M worth of stock (~1.5M shares at ~$157 avg); $760M remaining on authorization; dilution at lower end of 1-3% targeted range.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "US Revenue",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $487M",
+        "last_year_quarter_value": "Q2 2025: $312M",
+        "analyst_view": "US revenue grew 56% YoY; ARPU in US approached $50 for the full year with significant headroom.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Weekly Active Users (WAU)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: 200M+",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Over 200M weekly active users; WAU to DAU conversion improving through feed improvements.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Free Cash Flow",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: Strong positive",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Strong free cash flow generation; operating cash flow of $262M in Q2; $1B+ LTM operating cash flow milestone achieved.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Operating Cash Flow (LTM)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: >$1B LTM",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Crossed $1B operating cash flow on LTM basis for first time, demonstrating strong cash conversion.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Other Revenue (Data Licensing)",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: $43M",
+        "last_year_quarter_value": "Q2 2025: $35M",
+        "analyst_view": "Other revenue (primarily data licensing) grew 24% YoY to $43M; content licensing partnerships remain strong with no strategy change.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "Revenue Per Employee",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "Q2 2026: >$1M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Crossed $1M revenue per employee milestone, demonstrating operational leverage and monetization efficiency.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Reddit, Inc.",
+    "TICKER": "RDDT",
+    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "metric": "SBC Expense Outlook",
+    "details_map": {
+      "2026-08-01": {
+        "latest_quarter_value": "FY2026: Low to mid-teens % of revenue",
+        "last_year_quarter_value": "FY2025: High teens % of revenue",
+        "analyst_view": "Lowered full-year SBC expense guide from high teens to low-to-mid teens % of revenue; Q2 SBC was $101M.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
       }
     }
   },
@@ -967,437 +2422,362 @@
     }
   },
   {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "GMV",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Comparable Sales Growth",
     "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $36.6B",
-        "last_year_quarter_value": "Q2 2025: $31.0B",
-        "analyst_view": "GMV grew 18% YoY (15% like-for-like), driven by Fair Financing and US growth.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: -1.5%",
+        "last_year_quarter_value": "Q1 2025: +2.8%",
+        "analyst_view": "Comp sales declined 1.5% YoY on traffic softness, partially offset by average ticket growth.",
         "source": "IR/SEC",
         "importance": "Tier 1 — Core"
       }
     }
   },
   {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Total Revenue",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Digital Sales Growth",
     "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $1,042M",
-        "last_year_quarter_value": "Q2 2025: $823M",
-        "analyst_view": "Revenue grew 27% YoY, driven by transaction and service revenue growth and Fair Financing expansion.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: +3.4%",
+        "last_year_quarter_value": "Q1 2025: +1.2%",
+        "analyst_view": "Digital growth reaccelerated to 3.4% with same-day services (Drive Up, Order Pickup) up double digits.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Gross Margin Rate",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 27.1%",
+        "last_year_quarter_value": "Q1 2025: 27.5%",
+        "analyst_view": "Gross margin declined 40 bps from promotional activity and shrink pressure.",
         "source": "IR/SEC",
         "importance": "Tier 1 — Core"
       }
     }
   },
   {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Transaction Margin Dollars",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Operating Margin Rate",
     "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $446M",
-        "last_year_quarter_value": "Q2 2025: $315M",
-        "analyst_view": "Transaction margin dollars surged 42% YoY, reflecting improved unit economics and product mix shift toward higher-margin products.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 5.2%",
+        "last_year_quarter_value": "Q1 2025: 5.8%",
+        "analyst_view": "Operating margin compressed 60 bps YoY on higher supply chain and wage costs.",
         "source": "IR/SEC",
         "importance": "Tier 1 — Core"
       }
     }
   },
   {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Net Profit (Loss)",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Capital Expenditures",
     "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $9M",
-        "last_year_quarter_value": "Q2 2025: -$53M",
-        "analyst_view": "First quarterly profit as a public company, reflecting operating leverage with volume, revenue, and margin all growing.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Fair Financing GMV",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $4.7B",
-        "last_year_quarter_value": "Q2 2025: $2.6B",
-        "analyst_view": "Fastest growing product, up 82% YoY, now offered by 256,000 merchants (up from 151,000 in Nov 2025).",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Fair Financing Merchant Count",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: 256,000",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Merchant base expanded significantly from 151,000 in Nov 2025, supporting volume growth.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Klarna Card Active Users",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: 6.5M",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Card reached 6.5M active users across 16 countries, driving higher engagement and transaction margin.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Klarna Membership Subscribers",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: 2.0M",
-        "last_year_quarter_value": "Q2 2025: 0.25M",
-        "analyst_view": "Subscription revenue grew 600%+ YoY, providing high-margin recurring revenue with almost no GMV attachment.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "US GMV",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $7.8B",
-        "last_year_quarter_value": "Q2 2025: $6.2B",
-        "analyst_view": "US GMV grew 27% YoY, now largest market by volume share, with transaction margin improving from 14% to 23% of revenue.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "US Transaction Margin % of Revenue",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: 23%",
-        "last_year_quarter_value": "Q2 2025: 14%",
-        "analyst_view": "US margin improved 9pp YoY, reflecting scale benefits and product mix shift toward Fair Financing and Card.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Provisions for Credit Losses as % of GMV",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: 0.52%",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Provisions declined as share of GMV for consecutive quarters, reflecting underwriting improvements and forward flow arrangements.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: $0.7B",
+        "last_year_quarter_value": "Q1 2025: $0.6B",
+        "analyst_view": "CapEx focused on store remodels, supply chain automation, and digital infrastructure.",
         "source": "IR/SEC",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Consumer Receivables at Amortized Cost",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Inventory Turnover",
     "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $8,831M",
-        "last_year_quarter_value": "Q4 2025: $10,459M",
-        "analyst_view": "Receivables declined from year-end due to forward flow sales and seasonal patterns; Fair Financing and Pay Later mix shifting.",
-        "source": "SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Total Equity",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $2,666M",
-        "last_year_quarter_value": "Q4 2025: $2,684M",
-        "analyst_view": "Equity stable, includes non-controlling interests from AT1 securities issued by subsidiary.",
-        "source": "SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Klarna Group plc",
-    "TICKER": "KLAR",
-    "SECTOR": "Financial Technology",
-    "metric": "Consumer Deposits",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q2 2026: $11,673M",
-        "last_year_quarter_value": "Q4 2025: $13,003M",
-        "analyst_view": "Deposits declined from year-end, partially reflecting balance sheet optimization and asset sales.",
-        "source": "SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Daily Active Users (DAU)",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: 130M+",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "DAU grew, driven by product improvements and marketing; new app user retention up 50% YoY.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Weekly Active Users (WAU)",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: 200M+",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Over 200M weekly active users; WAU to DAU conversion improving through feed improvements.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Average Revenue Per Unique User (ARPU)",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: $6.18",
-        "last_year_quarter_value": "Q2 2025: $4.54",
-        "analyst_view": "ARPU grew 36% YoY to $6.18, driven by ad load improvements, auction density, and international monetization.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Ad Revenue",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: $762M",
-        "last_year_quarter_value": "Q2 2025: $464M",
-        "analyst_view": "Ad revenue grew 64% YoY to $762M, driven by ad load improvements, auction density, and international expansion.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Other Revenue (Data Licensing)",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: $43M",
-        "last_year_quarter_value": "Q2 2025: $35M",
-        "analyst_view": "Other revenue (primarily data licensing) grew 24% YoY to $43M; content licensing partnerships remain strong with no strategy change.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 5.8x",
+        "last_year_quarter_value": "Q1 2025: 6.1x",
+        "analyst_view": "Inventory turnover slowed slightly but remains above pre-pandemic levels.",
         "source": "IR/SEC",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "US Revenue",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Owned Brand Penetration",
     "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: $487M",
-        "last_year_quarter_value": "Q2 2025: $312M",
-        "analyst_view": "US revenue grew 56% YoY; ARPU in US approached $50 for the full year with significant headroom.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "International Revenue",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: $318M",
-        "last_year_quarter_value": "Q2 2025: $173M",
-        "analyst_view": "International revenue grew 84% YoY, outpacing US growth; monetization expanding in ex-US markets.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Adjusted EBITDA",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: $346M",
-        "last_year_quarter_value": "Q2 2025: $212M",
-        "analyst_view": "Adjusted EBITDA grew 63% YoY with 43% margin; Q3 guidance of $385-395M implies 63-67% YoY growth.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Adjusted EBITDA Margin",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: 43%",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Adjusted EBITDA margin of 43% in Q2; Q3 guidance of 45% at midpoint showing continued margin expansion.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "New App User Retention",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: Up 50% YoY",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "New app user retention improved 50% YoY on relative basis, a key priority for converting weekly users to daily active users.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Share Repurchase",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: $235M (1.5M shares)",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Repurchased $235M worth of stock (~1.5M shares at ~$157 avg); $760M remaining on authorization; dilution at lower end of 1-3% targeted range.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Operating Cash Flow (LTM)",
-    "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: >$1B LTM",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Crossed $1B operating cash flow on LTM basis for first time, demonstrating strong cash conversion.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 34% of sales",
+        "last_year_quarter_value": "Q1 2025: 33% of sales",
+        "analyst_view": "Owned brands (Good & Gather, Threshold, etc.) expanding margin contribution.",
         "source": "IR",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "Revenue Per Employee",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Same-Day Services Penetration",
     "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: >$1M",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Crossed $1M revenue per employee milestone, demonstrating operational leverage and monetization efficiency.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 12.5% of sales",
+        "last_year_quarter_value": "Q1 2025: 10.8% of sales",
+        "analyst_view": "Same-day services (Drive Up, Order Pickup, Shipt) growing share of digital.",
         "source": "IR",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
-    "metric": "SBC Expense Outlook",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Store Remodel Count",
     "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "FY2026: Low to mid-teens % of revenue",
-        "last_year_quarter_value": "FY2025: High teens % of revenue",
-        "analyst_view": "Lowered full-year SBC expense guide from high teens to low-to-mid teens % of revenue; Q2 SBC was $101M.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 40 remodels",
+        "last_year_quarter_value": "Q1 2025: 35 remodels",
+        "analyst_view": "Remodel pace on track for 170+ full-year target, driving traffic and basket size.",
         "source": "IR",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Reddit, Inc.",
-    "TICKER": "RDDT",
-    "SECTOR": "Services-Computer Processing & Data Preparation",
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Dividend Per Share",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: $1.12",
+        "last_year_quarter_value": "Q1 2025: $1.10",
+        "analyst_view": "52nd consecutive annual dividend increase; payout ratio ~45% of EPS.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
     "metric": "Free Cash Flow",
     "details_map": {
-      "2026-08-01": {
-        "latest_quarter_value": "Q2 2026: Strong positive",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Strong free cash flow generation; operating cash flow of $262M in Q2; $1B+ LTM operating cash flow milestone achieved.",
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: $0.9B",
+        "last_year_quarter_value": "Q1 2025: $1.1B",
+        "analyst_view": "FCF declined on higher working capital but full-year guidance reaffirmed.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Loyalty Program Members",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 100M+ Circle members",
+        "last_year_quarter_value": "Q1 2025: 95M+ Circle members",
+        "analyst_view": "Target Circle loyalty program adds 5M+ members YoY, driving retention.",
+        "source": "IR",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Comparable Sales Growth (US)",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +3.8%",
+        "last_year_quarter_value": "Q1 2026: +2.4%",
+        "analyst_view": "US comp sales grew 3.8% driven by traffic and ticket growth across all categories.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "E-commerce Sales Growth",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +21%",
+        "last_year_quarter_value": "Q1 2026: +17%",
+        "analyst_view": "E-commerce accelerated to 21% YoY growth, fueled by marketplace and store-fulfilled pickup/delivery.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Gross Margin Rate",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: 24.5%",
+        "last_year_quarter_value": "Q1 2026: 24.2%",
+        "analyst_view": "Gross margin expanded 30 bps on mix shift and pricing power.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Operating Income Growth",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +5.6%",
+        "last_year_quarter_value": "Q1 2026: +3.2%",
+        "analyst_view": "Operating income grew faster than revenue, showing operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Advertising Revenue (Walmart Connect)",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +30%",
+        "last_year_quarter_value": "Q1 2026: +24%",
+        "analyst_view": "Walmart Connect ad revenue grew 30%, becoming a meaningful high-margin revenue stream.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Free Cash Flow",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: $4.2B",
+        "last_year_quarter_value": "Q1 2026: $3.8B",
+        "analyst_view": "FCF increased on higher operating cash flow and disciplined capital allocation.",
         "source": "IR/SEC",
         "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "International Net Sales Growth (CC)",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +8.5%",
+        "last_year_quarter_value": "Q1 2026: +6.8%",
+        "analyst_view": "International constant-currency sales growth accelerated, led by Walmex and China.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Inventory Growth vs Sales",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: Inv +2.1% vs Sales +4.0%",
+        "last_year_quarter_value": "Q1 2026: Inv +3.5% vs Sales +2.8%",
+        "analyst_view": "Inventory growing slower than sales, indicating improved supply chain efficiency.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Sam's Club Comp Sales (ex fuel)",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +4.2%",
+        "last_year_quarter_value": "Q1 2026: +3.1%",
+        "analyst_view": "Sam's Club comp sales accelerated, membership income at record high.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Dividend Per Share",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: $0.21",
+        "last_year_quarter_value": "Q1 2026: $0.2075",
+        "analyst_view": "50th consecutive annual dividend increase; payout ratio sustainable at ~35%.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Share Repurchases",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: $2.5B",
+        "last_year_quarter_value": "Q1 2026: $1.8B",
+        "analyst_view": "Buybacks accelerated, reducing share count by ~1.2% YoY.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Walmart+ Membership Growth",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +15% members",
+        "last_year_quarter_value": "Q1 2026: +12% members",
+        "analyst_view": "Walmart+ membership growth accelerating, driving higher frequency and basket size.",
+        "source": "IR",
+        "importance": "Tier 3 — Support"
       }
     }
   },
