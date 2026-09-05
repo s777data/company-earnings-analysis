@@ -11,6 +11,8 @@ from pathlib import Path
 from typing import Any
 import zipfile
 
+from render_interactive_dashboard_pdf import render_dashboard_png
+
 SIGNAL_EMOJIS = {
     "best": "🟦", "strong_positive": "🔷", "positive": "🔵", "neutral": "🟡",
     "medium": "🟡", "caution": "🟠", "negative": "🔴", "worst": "🟥",
@@ -295,7 +297,7 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     else:
         lines.append("\n📝 **Metrics Note:** All Tier 1 metrics displayed.")
 
-    lines.extend(["", "📎 Dashboard artifacts: ZIP + PDF + 4K PNG generated",
+    lines.extend(["", "📎 Dashboard artifacts: ZIP + 4K PNG generated",
                   f"🔗 SEC: {data['sources']['filing_url']}"])
     if data["sources"].get("investor_relations_url"):
         lines.append(f"🔗 IR: {data['sources']['investor_relations_url']}")
@@ -331,7 +333,7 @@ def generate_call_message(data: dict[str, Any]) -> str:
             lines.append(f"   Evidence: {insight.get('section', 'Transcript')} chars {insight.get('citation', {}).get('start', 'N/A')}–{insight.get('citation', {}).get('end', 'N/A')}")
             lines.append("")
     lines.extend([f"Source: Earnings call transcript (prepared remarks + analyst Q&A) — {data['sources']['transcript_url']}",
-                  "📎 Dashboard artifacts: ZIP + PDF + 4K PNG generated"])
+                  "📎 Dashboard artifacts: ZIP + PNG-in-ZIP generated"])
     return "\n".join(lines)
 
 
@@ -354,18 +356,45 @@ def _create_html_zip(html_dir: str) -> str:
     return str(zip_path)
 
 
-def _send(message: str, html_dir: str, target: str) -> dict[str, Any]:
-    zip_path = _create_html_zip(html_dir)
-    path = Path(zip_path).resolve()
-    if not path.is_file() or path.stat().st_size == 0: 
-        raise RuntimeError("HTML zip file is missing or empty")
-    
+def _dashboard_png_path(html_dir: str) -> Path:
+    dashboard_dir = Path(html_dir).resolve()
+    if not dashboard_dir.is_dir():
+        raise RuntimeError(f"Interactive dashboard HTML directory not found: {html_dir}")
+    return dashboard_dir.parent / f"{dashboard_dir.name}.png"
+
+
+def _dashboard_png_zip_path(html_dir: str) -> Path:
+    dashboard_dir = Path(html_dir).resolve()
+    if not dashboard_dir.is_dir():
+        raise RuntimeError(f"Interactive dashboard HTML directory not found: {html_dir}")
+    return dashboard_dir.parent / f"{dashboard_dir.name}_4K.zip"
+
+
+def _create_png_zip(png_path: str, zip_path: str | None = None) -> str:
+    png_file = Path(png_path).resolve()
+    if not png_file.is_file():
+        raise RuntimeError(f"PNG file not found: {png_path}")
+    zip_file = Path(zip_path).resolve() if zip_path else png_file.with_name(f"{png_file.stem}_4K.zip")
+    if zip_file.exists():
+        zip_file.unlink()
+    with zipfile.ZipFile(zip_file, "w", compression=zipfile.ZIP_STORED) as zipf:
+        zipf.write(png_file, arcname=png_file.name)
+    return str(zip_file)
+
+
+def _send(message: str, media_path: str, target: str) -> dict[str, Any]:
+    path = Path(media_path).resolve()
+    if not path.is_file() or path.stat().st_size == 0:
+        raise RuntimeError(f"Attachment is missing or empty: {path}")
+
     body = f"{message}\n\nMEDIA:{path}"
     result = subprocess.run(["hermes", "send", "--to", target, "--json", body], capture_output=True, text=True, timeout=60)
     if result.returncode != 0:
         raise RuntimeError(f"Telegram delivery failed: {(result.stderr or result.stdout).strip()}")
-    try: response = json.loads(result.stdout)
-    except json.JSONDecodeError as exc: raise RuntimeError("Telegram delivery returned malformed JSON") from exc
+    try:
+        response = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("Telegram delivery returned malformed JSON") from exc
     if not isinstance(response, dict) or response.get("success") is False or response.get("error"):
         raise RuntimeError("Telegram backend did not confirm successful delivery")
     backend_id = response.get("message_id") or response.get("id") or response.get("delivery_id")
@@ -377,7 +406,20 @@ def _send(message: str, html_dir: str, target: str) -> dict[str, Any]:
 
 def deliver_reports(data: dict[str, Any], html_dir: str, target: str = "telegram", dry_run: bool = False) -> list[dict[str, Any]]:
     messages = [generate_dashboard_message(data), generate_call_message(data)]
+    zip_path = _create_html_zip(html_dir)
+    png_path = _dashboard_png_path(html_dir)
+    if not png_path.is_file() or png_path.stat().st_size == 0:
+        render_dashboard_png(zip_path, str(png_path))
+    png_zip_path = _dashboard_png_zip_path(html_dir)
+    if not png_zip_path.is_file() or png_zip_path.stat().st_size == 0:
+        _create_png_zip(str(png_path), str(png_zip_path))
     if dry_run:
-        zip_path = _create_html_zip(html_dir)
-        return [{"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())} for message in messages]
-    return [_send(message, html_dir, target) for message in messages]
+        dry_results = [
+            {"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())}
+            for message in messages
+        ]
+        dry_results.append({"success": False, "dry_run": True, "message": "PNG-in-ZIP dashboard render", "media_path": str(png_zip_path.resolve())})
+        return dry_results
+    deliveries = [_send(message, zip_path, target) for message in messages]
+    deliveries.append(_send("PNG-in-ZIP dashboard render", str(png_zip_path), target))
+    return deliveries

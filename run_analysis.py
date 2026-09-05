@@ -1232,15 +1232,12 @@ class EarningsAnalyzer:
                 "html": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard" / "index.html"),
                 "zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
                 "dashboard_zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
-                "dashboard_pdf": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"),
                 "dashboard_png": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.png"),
+                "dashboard_pdf": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"),
             }
-            pdf_path = Path(paths["dashboard_pdf"])
             png_path = Path(paths["dashboard_png"])
-            if not pdf_path.is_file() or pdf_path.stat().st_size == 0:
-                render_dashboard_pdf(paths["dashboard_zip"], str(pdf_path))
             if not png_path.is_file() or png_path.stat().st_size == 0:
-                render_dashboard_png(str(pdf_path), str(png_path))
+                render_dashboard_png(paths["dashboard_zip"], str(png_path))
             self._log("SAVE_COMPLETE_EXISTING", {"paths": paths})
             return paths
 
@@ -1268,12 +1265,10 @@ class EarningsAnalyzer:
         paths["zip"] = str(zip_path)
         paths["dashboard_zip"] = str(zip_path)
 
-        dashboard_pdf = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"
         dashboard_png = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.png"
-        render_dashboard_pdf(paths["dashboard_zip"], str(dashboard_pdf))
-        render_dashboard_png(str(dashboard_pdf), str(dashboard_png))
-        paths["dashboard_pdf"] = str(dashboard_pdf)
+        render_dashboard_png(paths["dashboard_zip"], str(dashboard_png))
         paths["dashboard_png"] = str(dashboard_png)
+        paths["dashboard_pdf"] = str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf")
 
         if deliver: 
             paths["delivery"] = deliver_reports(public, str(dashboard_dir), telegram_target, dry_run)

@@ -21,7 +21,8 @@ from render_interactive_dashboard_pdf import render_dashboard_pdf, render_dashbo
 from robinhood_mcp_get_quote import get_quote, _decode
 from sec_edgar_search import _matches_query
 from telegram_notify import (generate_call_message, generate_dashboard_message,
-                             _complete_insight_selection, SIGNAL_EMOJIS)
+                             _complete_insight_selection, SIGNAL_EMOJIS, _create_png_zip,
+                             deliver_reports)
 from web_search import _validate as _validate_transcript
 from xbrl_parser import parse_xbrl_financials
 from valuation_metrics import build_valuation_sections, MAIN_ORDER, PROFIT_ORDER, RISK_ORDER
@@ -937,6 +938,24 @@ class OutputTests(unittest.TestCase):
                 self.assertTrue(all(zipped.getinfo(name).file_size > 0 for name in required))
             self.assertTrue(paths["dashboard_pdf"].endswith("TEST_Q2_FY2026_Interactive_Dashboard.pdf"))
             self.assertTrue(paths["dashboard_png"].endswith("TEST_Q2_FY2026_Interactive_Dashboard.png"))
+
+    def test_deliver_reports_wraps_png_in_zip_attachment(self):
+        data = sample_data()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "TEST_Q2_FY2026_Interactive_Dashboard"
+            root.mkdir(parents=True, exist_ok=True)
+            (root / "index.html").write_text("<html></html>", encoding="utf-8")
+            png_path = root.with_suffix(".png")
+            png_path.write_bytes(b"\x89PNG\r\n\x1a\n" + b"fakepngdata")
+            attachments = deliver_reports(data, str(root), dry_run=True)
+            png_zip = Path(attachments[-1]["media_path"])
+            self.assertTrue(png_zip.name.endswith("_4K.zip"))
+            self.assertTrue(png_zip.is_file())
+            self.assertTrue(zipfile.is_zipfile(png_zip))
+            with zipfile.ZipFile(png_zip) as zipped:
+                names = zipped.namelist()
+                self.assertEqual(names, [png_path.name])
+                self.assertGreater(zipped.getinfo(png_path.name).file_size, 0)
 
 class InteractiveDashboardTests(unittest.TestCase):
     def test_dashboard_schema_is_company_neutral_and_metadata_complete(self):

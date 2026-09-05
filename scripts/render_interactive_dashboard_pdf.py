@@ -56,31 +56,96 @@ def validate_pdf(path: str, expected_urls: list[str]) -> None:
             raise RuntimeError("PDF is missing clickable source links")
 
 
-def render_dashboard_png(pdf_path: str, output_path: str, target_height_px: int = 3840) -> str:
-    """Rasterize the first page of a validated dashboard PDF to a 4K PNG."""
-    source = Path(pdf_path).resolve()
-    if not source.is_file():
-        raise RuntimeError("Dashboard PDF is missing")
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+PNG_MIN_WIDTH = 2400
+PNG_MIN_HEIGHT = 3400
+PNG_DEVICE_SCALE_FACTOR = 3.125
+PNG_VIEWPORT = {"width": 1280, "height": 1800}
+PNG_SELECTOR = "#report"
+
+
+def _validate_png(path: Path) -> tuple[int, int]:
+    data = path.read_bytes()
+    if not data.startswith(PNG_SIGNATURE):
+        raise RuntimeError("Dashboard PNG signature is invalid")
+    if len(data) < 33:
+        raise RuntimeError("Dashboard PNG is truncated")
+    width = int.from_bytes(data[16:20], "big")
+    height = int.from_bytes(data[20:24], "big")
+    if width < PNG_MIN_WIDTH or height < PNG_MIN_HEIGHT:
+        raise RuntimeError(f"Dashboard PNG is too small: {width}x{height}")
+    return width, height
+
+
+def render_dashboard_png(html_path: str, output_path: str, expected_urls: Iterable[str] = (), playwright_cli: str | None = None) -> str:
+    """Render the final dashboard HTML to a high-resolution PNG.
+
+    The input may be the dashboard HTML entry point, the dashboard ZIP archive,
+    or a legacy dashboard PDF. ZIP/HTML inputs render directly from Chromium;
+    PDF inputs are accepted for backward compatibility.
+    """
+    source_path = Path(html_path).resolve()
     destination = Path(output_path).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists():
         destination.unlink()
-    if target_height_px <= 0:
-        raise RuntimeError("Target PNG height must be positive")
 
-    document = fitz.open(source)
-    try:
-        if len(document) != 1:
-            raise RuntimeError("Dashboard PDF must contain exactly one page")
-        page = document[0]
-        scale = target_height_px / page.rect.height
-        pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)
-        pixmap.save(str(destination))
-    finally:
-        document.close()
+    del expected_urls, playwright_cli
+
+    if source_path.suffix.lower() == ".pdf":
+        document = fitz.open(source_path)
+        try:
+            if len(document) != 1:
+                raise RuntimeError("Dashboard PDF must contain exactly one page")
+            page = document[0]
+            scale = 3840 / page.rect.height
+            pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)
+            pixmap.save(str(destination))
+        finally:
+            document.close()
+    else:
+        source, tempdir = _resolve_source_html(source_path)
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch()
+                context = browser.new_context(viewport=PNG_VIEWPORT, device_scale_factor=PNG_DEVICE_SCALE_FACTOR)
+                page = context.new_page()
+                try:
+                    page.emulate_media(media="print")
+                    page.goto(source.as_uri(), wait_until="networkidle", timeout=120_000)
+                    page.wait_for_function(
+                        """
+                        () => document.fonts && document.fonts.status === 'loaded' &&
+                              document.body && document.body.dataset.layoutReady === 'true'
+                        """,
+                        timeout=120_000,
+                    )
+                    page.wait_for_selector(PNG_SELECTOR, timeout=120_000)
+                    page.evaluate(
+                        """
+                        () => new Promise((resolve) =>
+                            requestAnimationFrame(() =>
+                                requestAnimationFrame(resolve)
+                            )
+                        )
+                        """
+                    )
+                    issues = _layout_issues(page)
+                    if issues:
+                        raise RuntimeError(f"Dashboard layout validation failed: {issues}")
+                    report = page.locator(PNG_SELECTOR)
+                    report.screenshot(path=str(destination), scale="device")
+                finally:
+                    context.close()
+                    browser.close()
+        finally:
+            if tempdir is not None:
+                tempdir.cleanup()
 
     if not destination.is_file() or destination.stat().st_size == 0:
-        raise RuntimeError("Dashboard PNG renderer produced no file")
+        raise RuntimeError("Interactive dashboard PNG renderer produced no file")
+
+    _validate_png(destination)
     return str(destination)
 
 
