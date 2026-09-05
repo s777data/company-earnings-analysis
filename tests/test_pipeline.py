@@ -917,9 +917,7 @@ class OutputTests(unittest.TestCase):
             return str(root / "index.html")
 
         with tempfile.TemporaryDirectory() as directory, \
-                patch("run_analysis.create_interactive_dashboard", side_effect=create_dashboard), \
-                patch("run_analysis.render_dashboard_pdf", return_value="/tmp/dashboard.pdf") as render_pdf, \
-                patch("run_analysis.render_dashboard_png", return_value="/tmp/dashboard_4k.png") as render_png:
+                patch("run_analysis.create_interactive_dashboard", side_effect=create_dashboard):
             paths = analyzer.save(directory, deliver=False)
             archive = Path(paths["dashboard_zip"])
             self.assertTrue(archive.is_file())
@@ -936,8 +934,8 @@ class OutputTests(unittest.TestCase):
                 }
                 self.assertTrue(required <= names)
                 self.assertTrue(all(zipped.getinfo(name).file_size > 0 for name in required))
-            self.assertTrue(paths["dashboard_pdf"].endswith("TEST_Q2_FY2026_Interactive_Dashboard.pdf"))
-            self.assertTrue(paths["dashboard_png"].endswith("TEST_Q2_FY2026_Interactive_Dashboard.png"))
+            self.assertNotIn("dashboard_pdf", paths)
+            self.assertNotIn("dashboard_png", paths)
 
     def test_deliver_reports_wraps_png_in_zip_attachment(self):
         data = sample_data()

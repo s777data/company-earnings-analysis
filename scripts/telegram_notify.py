@@ -297,7 +297,7 @@ def generate_dashboard_message(data: dict[str, Any]) -> str:
     else:
         lines.append("\n📝 **Metrics Note:** All Tier 1 metrics displayed.")
 
-    lines.extend(["", "📎 Dashboard artifacts: ZIP + 4K PNG generated",
+    lines.extend(["", "📎 Dashboard artifacts: ZIP + PNG-in-ZIP generated",
                   f"🔗 SEC: {data['sources']['filing_url']}"])
     if data["sources"].get("investor_relations_url"):
         lines.append(f"🔗 IR: {data['sources']['investor_relations_url']}")
@@ -408,18 +408,25 @@ def deliver_reports(data: dict[str, Any], html_dir: str, target: str = "telegram
     messages = [generate_dashboard_message(data), generate_call_message(data)]
     zip_path = _create_html_zip(html_dir)
     png_path = _dashboard_png_path(html_dir)
-    if not png_path.is_file() or png_path.stat().st_size == 0:
-        render_dashboard_png(zip_path, str(png_path))
     png_zip_path = _dashboard_png_zip_path(html_dir)
-    if not png_zip_path.is_file() or png_zip_path.stat().st_size == 0:
-        _create_png_zip(str(png_path), str(png_zip_path))
-    if dry_run:
-        dry_results = [
-            {"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())}
-            for message in messages
-        ]
-        dry_results.append({"success": False, "dry_run": True, "message": "PNG-in-ZIP dashboard render", "media_path": str(png_zip_path.resolve())})
-        return dry_results
-    deliveries = [_send(message, zip_path, target) for message in messages]
-    deliveries.append(_send("PNG-in-ZIP dashboard render", str(png_zip_path), target))
-    return deliveries
+    try:
+        if not png_path.is_file() or png_path.stat().st_size == 0:
+            render_dashboard_png(zip_path, str(png_path))
+        if not png_zip_path.is_file() or png_zip_path.stat().st_size == 0:
+            _create_png_zip(str(png_path), str(png_zip_path))
+        if dry_run:
+            dry_results = [
+                {"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())}
+                for message in messages
+            ]
+            dry_results.append({"success": False, "dry_run": True, "message": "PNG-in-ZIP dashboard render", "media_path": str(png_zip_path.resolve())})
+            return dry_results
+        deliveries = [_send(message, zip_path, target) for message in messages]
+        deliveries.append(_send("PNG-in-ZIP dashboard render", str(png_zip_path), target))
+        return deliveries
+    finally:
+        if png_path.exists():
+            try:
+                png_path.unlink()
+            except OSError:
+                pass

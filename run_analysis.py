@@ -16,7 +16,6 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
 from create_interactive_dashboard import create_interactive_dashboard
-from render_interactive_dashboard_pdf import render_dashboard_pdf, render_dashboard_png
 from robinhood_mcp_get_quote import get_quote
 from nasdaq_short_interest import fetch_short_interest
 from valuation_metrics import build_valuation_sections
@@ -1232,12 +1231,7 @@ class EarningsAnalyzer:
                 "html": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard" / "index.html"),
                 "zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
                 "dashboard_zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
-                "dashboard_png": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.png"),
-                "dashboard_pdf": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf"),
             }
-            png_path = Path(paths["dashboard_png"])
-            if not png_path.is_file() or png_path.stat().st_size == 0:
-                render_dashboard_png(paths["dashboard_zip"], str(png_path))
             self._log("SAVE_COMPLETE_EXISTING", {"paths": paths})
             return paths
 
@@ -1264,11 +1258,6 @@ class EarningsAnalyzer:
                     zipf.write(file_path, arcname)
         paths["zip"] = str(zip_path)
         paths["dashboard_zip"] = str(zip_path)
-
-        dashboard_png = ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.png"
-        render_dashboard_png(paths["dashboard_zip"], str(dashboard_png))
-        paths["dashboard_png"] = str(dashboard_png)
-        paths["dashboard_pdf"] = str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.pdf")
 
         if deliver: 
             paths["delivery"] = deliver_reports(public, str(dashboard_dir), telegram_target, dry_run)
