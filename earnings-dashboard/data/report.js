@@ -1,19 +1,19 @@
 window.EARNINGS_REPORT = {
   "schema_version": 2,
   "company": {
-    "ticker": "DELL",
-    "period": "Q1 FY2027",
-    "report_date": "2026-05-01",
-    "call_date": "2026-05-28",
-    "grade": "A-",
+    "ticker": "ZS",
+    "period": "Q3 FY2026",
+    "report_date": "2026-04-30",
+    "call_date": "2026-05-26",
+    "grade": "C+",
     "confidence": 0.9500000000000001,
-    "recommendation": "BUY",
-    "price": 508.1,
-    "market_cap": 329414444290.385,
-    "pe_ttm": 28.570931,
-    "high_52": 514.0,
-    "low_52": 110.22,
-    "test_run": true,
+    "recommendation": "HOLD",
+    "price": 169.8,
+    "market_cap": 27403376600.0,
+    "pe_ttm": -429.55,
+    "high_52": 336.99,
+    "low_52": 114.625,
+    "test_run": false,
     "model_name": "nvidia/nemotron-3-ultra-550b-a55b"
   },
   "sections": {
@@ -21,12 +21,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "revenue",
         "name": "Revenue",
-        "raw_value": 43842000000.0,
-        "display_value": "$43.84B",
-        "comparison": "+87.5% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+87.5% YoY, QoQ unavailable",
+        "raw_value": 850475000.0,
+        "display_value": "$850.5M",
+        "comparison": "+25.4% YoY, -47.0% QoQ",
+        "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+25.4% YoY, -47.0% QoQ",
         "description": "Revenue recognized during the reported period.",
         "why_it_matters": "Shows the scale and growth of the core business.",
         "directionality": "Higher is generally better when growth is profitable.",
@@ -54,12 +54,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "gross_profit",
         "name": "Gross Profit",
-        "raw_value": 7782000000.0,
-        "display_value": "$7.78B",
-        "comparison": "+57.6% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+57.6% YoY, QoQ unavailable",
+        "raw_value": 657823000.0,
+        "display_value": "$657.8M",
+        "comparison": "+26.0% YoY, -46.4% QoQ",
+        "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+26.0% YoY, -46.4% QoQ",
         "description": "Revenue remaining after direct costs.",
         "why_it_matters": "Funds operating expenses, investment, and profit.",
         "directionality": "Higher and expanding is generally better.",
@@ -71,12 +71,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "operating_income",
         "name": "Operating Income",
-        "raw_value": 3656000000.0,
-        "display_value": "$3.66B",
-        "comparison": "+213.8% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+213.8% YoY, QoQ unavailable",
+        "raw_value": -29640000.0,
+        "display_value": "-$29.6M",
+        "comparison": "-16.6% YoY, +66.4% QoQ",
+        "status": "negative",
+        "tier": "negative",
+        "assessment": "-16.6% YoY, +66.4% QoQ",
         "description": "Profit from core operations before interest and taxes.",
         "why_it_matters": "Measures operating execution and cost discipline.",
         "directionality": "Higher is generally better.",
@@ -88,12 +88,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_income",
         "name": "Net Income",
-        "raw_value": 3438000000.0,
-        "display_value": "$3.44B",
-        "comparison": "+256.3% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+256.3% YoY, QoQ unavailable",
+        "raw_value": -13883000.0,
+        "display_value": "-$13.9M",
+        "comparison": "-236.6% YoY, +69.8% QoQ",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "-236.6% YoY, +69.8% QoQ",
         "description": "Profit attributable after all recognized expenses.",
         "why_it_matters": "Captures the period's bottom-line result.",
         "directionality": "Higher and durable is generally better.",
@@ -105,12 +105,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "free_cash_flow",
         "name": "Free Cash Flow",
-        "raw_value": 3118000000.0,
-        "display_value": "$3.12B",
-        "comparison": "+39.9% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+39.9% YoY, QoQ unavailable",
+        "raw_value": 772902000.0,
+        "display_value": "$772.9M",
+        "comparison": "+25.1% YoY, QoQ unavailable",
+        "status": "strong_positive",
+        "tier": "strong_positive",
+        "assessment": "+25.1% YoY, QoQ unavailable",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
@@ -122,12 +122,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "operating_cash_flow",
         "name": "Operating Cash Flow",
-        "raw_value": 4081000000.0,
-        "display_value": "$4.08B",
-        "comparison": "+46.0% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+46.0% YoY, QoQ unavailable",
+        "raw_value": 850369000.0,
+        "display_value": "$850.4M",
+        "comparison": "+17.8% YoY, QoQ unavailable",
+        "status": "positive",
+        "tier": "positive",
+        "assessment": "+17.8% YoY, QoQ unavailable",
         "description": "Cash generated by operating activities.",
         "why_it_matters": "Tests whether accounting earnings convert into cash.",
         "directionality": "Higher and consistent is generally better.",
@@ -139,12 +139,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "capex",
         "name": "Capital Expenditures",
-        "raw_value": 963000000.0,
-        "display_value": "$963.0M",
-        "comparison": "+69.5% YoY, QoQ unavailable",
+        "raw_value": 77467000.0,
+        "display_value": "$77.5M",
+        "comparison": "-25.7% YoY, QoQ unavailable",
         "status": "positive",
         "tier": "positive",
-        "assessment": "+69.5% YoY, QoQ unavailable",
+        "assessment": "-25.7% YoY, QoQ unavailable",
         "description": "Cash or obligations used for long-lived productive assets.",
         "why_it_matters": "Indicates reinvestment needs and pressure on free cash flow.",
         "directionality": "Context dependent; efficiency matters more than simply lower or higher.",
@@ -156,12 +156,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "eps_diluted",
         "name": "Diluted EPS",
-        "raw_value": 5.24,
-        "display_value": "$5.24",
-        "comparison": "+282.5% YoY, QoQ unavailable",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+282.5% YoY, QoQ unavailable",
+        "raw_value": -0.09,
+        "display_value": "$-0.09",
+        "comparison": "-200.0% YoY, +67.9% QoQ",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "-200.0% YoY, +67.9% QoQ",
         "description": "Earnings allocated to each diluted weighted-average share.",
         "why_it_matters": "Connects company profit to shareholder economics.",
         "directionality": "Higher sustainable EPS is generally better.",
@@ -174,58 +174,16 @@ window.EARNINGS_REPORT = {
     "business_kpis": {
       "rows": [
         {
-          "key": "ai_server_order_backlog",
-          "name": "AI Server Order Backlog",
-          "latest_value": "$24.4B booked",
-          "latest_period": "Q1 2027",
-          "prior_value": "N/A",
-          "prior_period": "Q1 2026",
-          "display_value": "$24.4B booked",
-          "comparison": "Q1 2026: N/A",
-          "analyst_view": "Booked $24.4B in AI server orders in Q1, indicating sustained demand visibility into FY27.",
+          "key": "annual_recurring_revenue",
+          "name": "Annual Recurring Revenue",
+          "latest_value": "$3.525B",
+          "latest_period": "Q3 2026",
+          "prior_value": "~$2.820B",
+          "prior_period": "Q3 2025",
+          "display_value": "$3.525B",
+          "comparison": "Q3 2025: ~$2.820B",
+          "analyst_view": "ARR expanded 25% YoY to a record $3.525B, showing durable subscription momentum and strong retention/upsell.",
           "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://investors.delltechnologies.com/news-events/upcoming-events",
-          "scale": []
-        },
-        {
-          "key": "ai_optimized_server_revenue",
-          "name": "AI-Optimized Server Revenue",
-          "latest_value": "$16.1B",
-          "latest_period": "Q1 2027",
-          "prior_value": "$1.9B",
-          "prior_period": "Q1 2026",
-          "display_value": "$16.1B",
-          "comparison": "Q1 2026: $1.9B",
-          "analyst_view": "AI-optimized server revenue surged 757% YoY; FY27 guidance raised to ~$60B (up 144% YoY).",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://investors.delltechnologies.com/news-events/upcoming-events",
-          "scale": []
-        },
-        {
-          "key": "csg_revenue",
-          "name": "CSG Revenue",
-          "latest_value": "$14.6B",
-          "latest_period": "Q1 2027",
-          "prior_value": "$12.5B",
-          "prior_period": "Q1 2026",
-          "display_value": "$14.6B",
-          "comparison": "Q1 2026: $12.5B",
-          "analyst_view": "Client Solutions Group revenue grew 17% YoY, led by commercial client strength.",
-          "source": "IR/SEC",
           "importance": "Tier 1 — Core",
           "tier": 1,
           "status": "positive",
@@ -233,103 +191,19 @@ window.EARNINGS_REPORT = {
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://investors.delltechnologies.com/news-events/upcoming-events",
-          "scale": []
-        },
-        {
-          "key": "diluted_eps_gaap",
-          "name": "Diluted EPS (GAAP)",
-          "latest_value": "$5.24",
-          "latest_period": "Q1 2027",
-          "prior_value": "$1.37",
-          "prior_period": "Q1 2026",
-          "display_value": "$5.24",
-          "comparison": "Q1 2026: $1.37",
-          "analyst_view": "GAAP diluted EPS surged 282% YoY on record revenue and operating leverage.",
-          "source": "IR/SEC",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "positive",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://investors.delltechnologies.com/news-events/upcoming-events",
+          "source_note": "IR — https://ir.zscaler.com",
           "scale": []
         },
         {
           "key": "free_cash_flow",
           "name": "Free Cash Flow",
-          "latest_value": "$3.1B",
-          "latest_period": "Q1 2027",
-          "prior_value": "$2.2B",
-          "prior_period": "Q1 2026",
-          "display_value": "$3.1B",
-          "comparison": "Q1 2026: $2.2B",
-          "analyst_view": "Free cash flow grew 40% YoY to $3.1B, supporting shareholder returns and investment.",
-          "source": "IR/SEC",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://investors.delltechnologies.com/news-events/upcoming-events",
-          "scale": []
-        },
-        {
-          "key": "fy27_ai_server_revenue_guidance",
-          "name": "FY27 AI Server Revenue Guidance",
-          "latest_value": "~$60B",
-          "latest_period": "Q1 2027",
-          "prior_value": "FY2026: ~$24.6B",
-          "prior_period": "Q1 2026",
-          "display_value": "~$60B",
-          "comparison": "Q1 2026: FY2026: ~$24.6B",
-          "analyst_view": "AI-optimized server revenue guided to ~$60B for FY27, up 144% YoY from ~$24.6B in FY26.",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://investors.delltechnologies.com/news-events/upcoming-events",
-          "scale": []
-        },
-        {
-          "key": "fy27_revenue_guidance",
-          "name": "FY27 Revenue Guidance",
-          "latest_value": "$165-169B (midpoint $167B)",
-          "latest_period": "Q1 2027",
-          "prior_value": "FY2026: $113.5B",
-          "prior_period": "Q1 2026",
-          "display_value": "$165-169B (midpoint $167B)",
-          "comparison": "Q1 2026: FY2026: $113.5B",
-          "analyst_view": "Full-year FY27 revenue guided at $165-169B (midpoint $167B), up 47% YoY on AI and commercial strength.",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "positive",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://investors.delltechnologies.com/news-events/upcoming-events",
-          "scale": []
-        },
-        {
-          "key": "isg_operating_income",
-          "name": "ISG Operating Income",
-          "latest_value": "$3.1B",
-          "latest_period": "Q1 2027",
-          "prior_value": "$1.0B",
-          "prior_period": "Q1 2026",
-          "display_value": "$3.1B",
-          "comparison": "Q1 2026: $1.0B",
-          "analyst_view": "ISG operating income grew 206% YoY with expanding margins on AI server mix.",
+          "latest_value": "$136.0M",
+          "latest_period": "Q3 2026",
+          "prior_value": "$119.5M",
+          "prior_period": "Q3 2025",
+          "display_value": "$136.0M",
+          "comparison": "Q3 2025: $119.5M",
+          "analyst_view": "Free cash flow increased 14% YoY, showing improved conversion even with higher capital intensity.",
           "source": "IR/SEC",
           "importance": "Tier 1 — Core",
           "tier": 1,
@@ -338,40 +212,19 @@ window.EARNINGS_REPORT = {
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://investors.delltechnologies.com/news-events/upcoming-events",
+          "source_note": "IR/SEC — https://ir.zscaler.com",
           "scale": []
         },
         {
-          "key": "isg_revenue",
-          "name": "ISG Revenue",
-          "latest_value": "$29.0B",
-          "latest_period": "Q1 2027",
-          "prior_value": "$10.3B",
-          "prior_period": "Q1 2026",
-          "display_value": "$29.0B",
-          "comparison": "Q1 2026: $10.3B",
-          "analyst_view": "Infrastructure Solutions Group revenue grew 181% YoY, driven by record AI-optimized server demand.",
-          "source": "IR/SEC",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "positive",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://investors.delltechnologies.com/news-events/upcoming-events",
-          "scale": []
-        },
-        {
-          "key": "non_gaap_diluted_eps",
-          "name": "Non-GAAP Diluted EPS",
-          "latest_value": "$4.86",
-          "latest_period": "Q1 2027",
-          "prior_value": "$1.55",
-          "prior_period": "Q1 2026",
-          "display_value": "$4.86",
-          "comparison": "Q1 2026: $1.55",
-          "analyst_view": "Non-GAAP diluted EPS grew 214% YoY, excluding amortization and stock compensation.",
+          "key": "free_cash_flow_margin",
+          "name": "Free Cash Flow Margin",
+          "latest_value": "16%",
+          "latest_period": "Q3 2026",
+          "prior_value": "18%",
+          "prior_period": "Q3 2025",
+          "display_value": "16%",
+          "comparison": "Q3 2025: 18%",
+          "analyst_view": "Free cash flow margin stayed healthy at 16%, though it declined versus the prior year because of higher CapEx.",
           "source": "IR",
           "importance": "Tier 1 — Core",
           "tier": 1,
@@ -380,40 +233,124 @@ window.EARNINGS_REPORT = {
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://investors.delltechnologies.com/news-events/upcoming-events",
+          "source_note": "IR — https://ir.zscaler.com",
+          "scale": []
+        },
+        {
+          "key": "net_new_arr",
+          "name": "Net New ARR",
+          "latest_value": "$166M",
+          "latest_period": "Q3 2026",
+          "prior_value": "~$134M",
+          "prior_period": "Q3 2025",
+          "display_value": "$166M",
+          "comparison": "Q3 2025: ~$134M",
+          "analyst_view": "Net new ARR of $166M rose 24% YoY, indicating continued expansion across the installed base.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://ir.zscaler.com",
+          "scale": []
+        },
+        {
+          "key": "non_gaap_income_from_operations",
+          "name": "Non-GAAP Income from Operations",
+          "latest_value": "$195.8M",
+          "latest_period": "Q3 2026",
+          "prior_value": "$146.7M",
+          "prior_period": "Q3 2025",
+          "display_value": "$195.8M",
+          "comparison": "Q3 2025: $146.7M",
+          "analyst_view": "Non-GAAP operating income increased meaningfully year over year, reflecting improved operating leverage.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://ir.zscaler.com",
+          "scale": []
+        },
+        {
+          "key": "non_gaap_operating_margin",
+          "name": "Non-GAAP Operating Margin",
+          "latest_value": "23%",
+          "latest_period": "Q3 2026",
+          "prior_value": "22%",
+          "prior_period": "Q3 2025",
+          "display_value": "23%",
+          "comparison": "Q3 2025: 22%",
+          "analyst_view": "Non-GAAP operating margin reached an all-time high of 23%, confirming stronger profitability at scale.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://ir.zscaler.com",
           "scale": []
         },
         {
           "key": "operating_cash_flow",
           "name": "Operating Cash Flow",
-          "latest_value": "$4.1B",
-          "latest_period": "Q1 2027",
-          "prior_value": "$2.4B",
-          "prior_period": "Q1 2026",
-          "display_value": "$4.1B",
-          "comparison": "Q1 2026: $2.4B",
-          "analyst_view": "Record Q1 operating cash flow of $4.1B, up 71% YoY on strong earnings and working capital.",
+          "latest_value": "$198.0M",
+          "latest_period": "Q3 2026",
+          "prior_value": "$211.1M",
+          "prior_period": "Q3 2025",
+          "display_value": "$198.0M",
+          "comparison": "Q3 2025: $211.1M",
+          "analyst_view": "Operating cash flow remained robust despite a modest YoY decline, keeping cash generation strong.",
           "source": "IR/SEC",
           "importance": "Tier 1 — Core",
           "tier": 1,
-          "status": "positive",
+          "status": "negative",
           "description": "Company-specific operating performance measure.",
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://investors.delltechnologies.com/news-events/upcoming-events",
+          "source_note": "IR/SEC — https://ir.zscaler.com",
           "scale": []
         },
         {
-          "key": "total_revenue",
-          "name": "Total Revenue",
-          "latest_value": "$43.8B",
-          "latest_period": "Q1 2027",
-          "prior_value": "$23.4B",
-          "prior_period": "Q1 2026",
-          "display_value": "$43.8B",
-          "comparison": "Q1 2026: $23.4B",
-          "analyst_view": "Revenue grew 88% YoY driven by exceptional AI server demand and strong commercial client performance.",
+          "key": "remaining_performance_obligation",
+          "name": "Remaining Performance Obligation",
+          "latest_value": "~$6.5B",
+          "latest_period": "Q3 2026",
+          "prior_value": "~$5.0B",
+          "prior_period": "Q3 2025",
+          "display_value": "~$6.5B",
+          "comparison": "Q3 2025: ~$5.0B",
+          "analyst_view": "RPO grew about 30% YoY to roughly $6.5B, indicating strong contracted demand visibility.",
+          "source": "IR",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "negative",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://ir.zscaler.com",
+          "scale": []
+        },
+        {
+          "key": "revenue",
+          "name": "Revenue",
+          "latest_value": "$850.5M",
+          "latest_period": "Q3 2026",
+          "prior_value": "~$680.4M",
+          "prior_period": "Q3 2025",
+          "display_value": "$850.5M",
+          "comparison": "Q3 2025: ~$680.4M",
+          "analyst_view": "Revenue grew 25% YoY and beat the high end of guidance, supporting strong platform adoption.",
           "source": "IR/SEC",
           "importance": "Tier 1 — Core",
           "tier": 1,
@@ -422,7 +359,70 @@ window.EARNINGS_REPORT = {
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://investors.delltechnologies.com/news-events/upcoming-events",
+          "source_note": "IR/SEC — https://ir.zscaler.com",
+          "scale": []
+        },
+        {
+          "key": "customers_with_100k_arr",
+          "name": "Customers with >$100K ARR",
+          "latest_value": "4,003",
+          "latest_period": "Q3 2026",
+          "prior_value": "~3,366",
+          "prior_period": "Q3 2025",
+          "display_value": "4,003",
+          "comparison": "Q3 2025: ~3,366",
+          "analyst_view": "Customers above the $100K ARR threshold grew 19% YoY, showing broadening enterprise penetration.",
+          "source": "IR",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://ir.zscaler.com",
+          "scale": []
+        },
+        {
+          "key": "customers_with_1m_arr",
+          "name": "Customers with >$1M ARR",
+          "latest_value": "748",
+          "latest_period": "Q3 2026",
+          "prior_value": "~634",
+          "prior_period": "Q3 2025",
+          "display_value": "748",
+          "comparison": "Q3 2025: ~634",
+          "analyst_view": "The number of customers generating more than $1M of ARR increased 18% YoY, reflecting continued enterprise scaling.",
+          "source": "IR",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://ir.zscaler.com",
+          "scale": []
+        },
+        {
+          "key": "installed_base_customers",
+          "name": "Installed Base Customers",
+          "latest_value": ">9,400",
+          "latest_period": "Q3 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q3 2025",
+          "display_value": ">9,400",
+          "comparison": "Q3 2025: N/A",
+          "analyst_view": "The installed base exceeded 9,400 customers, underscoring continued platform adoption across the enterprise base.",
+          "source": "IR",
+          "importance": "Tier 2 — High",
+          "tier": 2,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR — https://ir.zscaler.com",
           "scale": []
         }
       ],
@@ -433,12 +433,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "gross_margin",
         "name": "Gross Margin",
-        "raw_value": 0.1775010264130286,
-        "display_value": "17.8%",
-        "comparison": "-3.4 pp YoY",
-        "status": "positive",
-        "tier": "positive",
-        "assessment": "-3.4 pp YoY",
+        "raw_value": 0.7734771745201211,
+        "display_value": "77.3%",
+        "comparison": "+0.4 pp YoY, +0.8 pp QoQ",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+0.4 pp YoY, +0.8 pp QoQ",
         "description": "Share of revenue remaining after direct costs.",
         "why_it_matters": "Shows product economics and pricing/cost performance.",
         "directionality": "Higher and durable is generally better.",
@@ -450,12 +450,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "operating_margin",
         "name": "Operating Margin",
-        "raw_value": 0.08339035627936682,
-        "display_value": "8.3%",
-        "comparison": "+3.4 pp YoY",
-        "status": "neutral",
-        "tier": "neutral",
-        "assessment": "+3.4 pp YoY",
+        "raw_value": -0.034851112613539494,
+        "display_value": "-3.5%",
+        "comparison": "+0.3 pp YoY, +2.0 pp QoQ",
+        "status": "negative",
+        "tier": "negative",
+        "assessment": "+0.3 pp YoY, +2.0 pp QoQ",
         "description": "Share of revenue retained as operating profit.",
         "why_it_matters": "Measures operating efficiency and pricing power.",
         "directionality": "Higher and durable is generally better.",
@@ -467,12 +467,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_margin",
         "name": "Net Margin",
-        "raw_value": 0.07841795538524703,
-        "display_value": "7.8%",
-        "comparison": "+3.7 pp YoY",
-        "status": "neutral",
-        "tier": "neutral",
-        "assessment": "+3.7 pp YoY",
+        "raw_value": -0.016323819042299893,
+        "display_value": "-1.6%",
+        "comparison": "-1.0 pp YoY, +1.2 pp QoQ",
+        "status": "negative",
+        "tier": "negative",
+        "assessment": "-1.0 pp YoY, +1.2 pp QoQ",
         "description": "Share of revenue retained as net income.",
         "why_it_matters": "Summarizes bottom-line profitability.",
         "directionality": "Higher and durable is generally better.",
@@ -484,12 +484,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "sbc_revenue",
         "name": "SBC / Revenue",
-        "raw_value": 0.0043109347201313805,
-        "display_value": "0.4%",
-        "comparison": "-0.4 pp YoY",
-        "status": "worst",
-        "tier": "worst",
-        "assessment": "-0.4 pp YoY",
+        "raw_value": 0.24126047208912665,
+        "display_value": "24.1%",
+        "comparison": "+0.6 pp YoY, -1.1 pp QoQ",
+        "status": "caution",
+        "tier": "caution",
+        "assessment": "+0.6 pp YoY, -1.1 pp QoQ",
         "description": "Stock-based compensation expense relative to revenue.",
         "why_it_matters": "Highlights equity-compensation intensity and potential dilution pressure.",
         "directionality": "Lower is generally better.",
@@ -503,12 +503,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "ps_annualized",
         "name": "P/S (Annualized)",
-        "raw_value": 1.8732718566874347,
-        "display_value": "1.9x",
-        "comparison": "Attractive",
-        "status": "positive",
+        "raw_value": 7.856690938303212,
+        "display_value": "7.9x",
+        "comparison": "Expensive",
+        "status": "caution",
         "tier": 1,
-        "assessment": "Attractive",
+        "assessment": "Expensive",
         "description": "Market capitalization / annualized revenue.",
         "why_it_matters": "Shows how much equity investors are paying for each dollar of annualized sales. Useful when earnings are negative or too small for P/E to be meaningful.",
         "directionality": "Lower is better",
@@ -535,18 +535,18 @@ window.EARNINGS_REPORT = {
             "signal": "worst"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "ev_revenue",
         "name": "EV / Revenue",
-        "raw_value": 1.9416995794003147,
-        "display_value": "1.9x",
-        "comparison": "Deep Value",
-        "status": "positive",
+        "raw_value": 7.575114307677378,
+        "display_value": "7.6x",
+        "comparison": "Expensive",
+        "status": "negative",
         "tier": 1,
-        "assessment": "Deep Value",
+        "assessment": "Expensive",
         "description": "Enterprise value / total annualized revenue.",
         "why_it_matters": "Tells you how much you are paying for one dollar of total sales, adjusting for debt and cash.",
         "directionality": "Lower is better",
@@ -568,14 +568,14 @@ window.EARNINGS_REPORT = {
             "signal": "negative"
           }
         ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "ev_gross_profit",
         "name": "EV / Gross Profit",
-        "raw_value": 10.93908930352976,
-        "display_value": "10.9x",
+        "raw_value": 9.793584810537057,
+        "display_value": "9.8x",
         "comparison": "Context Only",
         "status": "neutral",
         "tier": 2,
@@ -585,14 +585,14 @@ window.EARNINGS_REPORT = {
         "directionality": "Lower is better",
         "formula": "Enterprise value ÷ annualized gross profit",
         "scale": [],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
         "key": "ev_revenue_growth",
         "name": "EV / Revenue / Growth",
-        "raw_value": 2.2181906160682447,
-        "display_value": "2.2x",
+        "raw_value": 29.78517321571855,
+        "display_value": "29.8x",
         "comparison": "Context Only",
         "status": "neutral",
         "tier": 2,
@@ -602,208 +602,107 @@ window.EARNINGS_REPORT = {
         "directionality": "Lower is better",
         "formula": "EV/Revenue ÷ YoY revenue growth %",
         "scale": [],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       },
       {
-        "key": "forward_pe",
-        "name": "Forward P/E (NTM)",
-        "raw_value": 18.14,
-        "display_value": "18.1x",
-        "comparison": "Typical",
+        "key": "price_to_book",
+        "name": "Price to Book (P/B)",
+        "raw_value": 11.57924216014992,
+        "display_value": "11.6x",
+        "comparison": "Expensive",
+        "status": "negative",
+        "tier": 2,
+        "assessment": "Expensive",
+        "description": "Market cap / total equity (or tangible book value).",
+        "why_it_matters": "Shows the price paid relative to the accounting value of assets after liabilities.",
+        "directionality": "Lower is better",
+        "formula": "Market cap ÷ total equity",
+        "scale": [
+          {
+            "max": 1,
+            "label": "Below Book",
+            "signal": "positive"
+          },
+          {
+            "max": 3,
+            "label": "Typical",
+            "signal": "neutral"
+          },
+          {
+            "max": null,
+            "label": "Expensive",
+            "signal": "negative"
+          }
+        ],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
+        "source_date": null
+      },
+      {
+        "key": "ev_backlog",
+        "name": "EV / Backlog",
+        "raw_value": 4.090422274859505,
+        "display_value": "4.1x",
+        "comparison": "Context Only",
         "status": "neutral",
         "tier": 1,
-        "assessment": "Typical",
-        "description": "Current share price / consensus next-twelve-month diluted EPS.",
-        "why_it_matters": "Shows the price paid today for expected next-twelve-month earnings.",
+        "assessment": "Context Only",
+        "description": "Enterprise value / total order backlog.",
+        "why_it_matters": "Compares enterprise value with contracted future work for project-based companies.",
         "directionality": "Lower is better",
-        "formula": "Share price ÷ consensus NTM diluted EPS",
-        "scale": [
-          {
-            "max": 15,
-            "label": "Attractive",
-            "signal": "positive"
-          },
-          {
-            "max": 25,
-            "label": "Typical",
-            "signal": "neutral"
-          },
-          {
-            "max": null,
-            "label": "Expensive",
-            "signal": "negative"
-          }
-        ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
-        "source_date": null
-      },
-      {
-        "key": "trailing_pe",
-        "name": "Trailing P/E",
-        "raw_value": 28.570931,
-        "display_value": "28.6x",
-        "comparison": "Expensive",
-        "status": "negative",
-        "tier": 1,
-        "assessment": "Expensive",
-        "description": "Market cap / trailing net income, or share price / trailing diluted EPS.",
-        "why_it_matters": "Shows the price paid for profits generated over the trailing twelve months.",
-        "directionality": "Lower is better",
-        "formula": "Market cap ÷ trailing net income",
-        "scale": [
-          {
-            "max": 15,
-            "label": "Attractive",
-            "signal": "positive"
-          },
-          {
-            "max": 25,
-            "label": "Typical",
-            "signal": "neutral"
-          },
-          {
-            "max": null,
-            "label": "Expensive",
-            "signal": "negative"
-          }
-        ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
-        "source_date": null
-      },
-      {
-        "key": "ev_ebitda",
-        "name": "EV / EBITDA",
-        "raw_value": 19.285906878130625,
-        "display_value": "19.3x",
-        "comparison": "Expensive",
-        "status": "negative",
-        "tier": 1,
-        "assessment": "Expensive",
-        "description": "Enterprise value / EBITDA.",
-        "why_it_matters": "Compares the total business value with operating earning power before interest, taxes, depreciation, and amortization.",
-        "directionality": "Lower is better",
-        "formula": "Enterprise value ÷ EBITDA",
-        "scale": [
-          {
-            "max": 8,
-            "label": "Attractive",
-            "signal": "positive"
-          },
-          {
-            "max": 15,
-            "label": "Typical",
-            "signal": "neutral"
-          },
-          {
-            "max": null,
-            "label": "Expensive",
-            "signal": "negative"
-          }
-        ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
-        "source_date": null
-      },
-      {
-        "key": "levered_fcf_yield",
-        "name": "Levered FCF Yield",
-        "raw_value": 3.796513465948455,
-        "display_value": "3.8%",
-        "comparison": "Expensive",
-        "status": "negative",
-        "tier": 1,
-        "assessment": "Expensive",
-        "description": "FCF available to common equity / market cap.",
-        "why_it_matters": "Shows the cash return generated for common shareholders relative to the stock's market value.",
-        "directionality": "Higher is better",
-        "formula": "Levered FCF ÷ market cap",
-        "scale": [
-          {
-            "max": 5,
-            "label": "Expensive",
-            "signal": "negative"
-          },
-          {
-            "max": 10,
-            "label": "Typical",
-            "signal": "neutral"
-          },
-          {
-            "max": null,
-            "label": "Attractive",
-            "signal": "positive"
-          }
-        ],
-        "source_note": "robinhood-trading MCP regular-session last trade; SEC filing/XBRL",
+        "formula": "Enterprise value ÷ reported backlog",
+        "scale": [],
+        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
         "source_date": null
       }
     ],
-    "valuation_regime": "Positive Earnings / FCF",
+    "valuation_regime": "Negative Earnings / FCF",
     "short_interest_sbc": [
       {
         "name": "Short Interest % of Float",
-        "detail": "N/A — Unavailable",
+        "detail": "5.9% — Moderate",
         "signal": "neutral",
         "tier": 1
       },
       {
         "name": "Short Ratio / Days to Cover",
-        "detail": "N/A — Unavailable",
+        "detail": "2.7d — Moderate",
         "signal": "neutral",
         "tier": 1
       },
       {
         "name": "SBC / Revenue",
-        "detail": "0.4% — Low",
-        "signal": "positive",
+        "detail": "24.1% — Very High",
+        "signal": "worst",
         "tier": 1
       },
       {
         "name": "SBC / Free Cash Flow",
-        "detail": "6.1% — Strong",
-        "signal": "positive",
+        "detail": "81.4% — Very High",
+        "signal": "negative",
         "tier": 2
       },
       {
         "name": "SBC-Adjusted FCF Yield",
-        "detail": "3.6% — Expensive",
-        "signal": "negative",
+        "detail": "0.7% — Very Expensive",
+        "signal": "worst",
         "tier": 1
       },
       {
         "name": "Net Share Dilution",
-        "detail": "-6.6% — Shrinking",
-        "signal": "positive",
+        "detail": "3.8% — High",
+        "signal": "caution",
         "tier": 1
       }
     ],
     "capital_liquidity": [
       {
-        "name": "Total Liabilities",
-        "value": "$116.32B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Liabilities",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-5",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-6",
-          "period_start": null,
-          "period_end": "2026-05-01"
-        }
-      },
-      {
         "name": "Capital Expenditures",
-        "value": "$963.0M",
+        "value": "$77.5M",
         "signal": "positive",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
           "start": null,
           "end": null,
           "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
@@ -811,75 +710,75 @@ window.EARNINGS_REPORT = {
           "context": "c-1",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-6",
-          "period_start": "2026-01-31",
-          "period_end": "2026-05-01"
+          "decimals": "-3",
+          "period_start": "2025-08-01",
+          "period_end": "2026-04-30"
         }
       },
       {
-        "name": "Long-term Debt",
-        "value": "$23.61B",
-        "signal": "neutral",
+        "name": "Total Equity",
+        "value": "$2.37B",
+        "signal": "best",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
           "start": null,
           "end": null,
-          "concept": "LongTermDebtNoncurrent",
+          "concept": "StockholdersEquity",
           "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-5",
+          "context": "c-3",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-6",
+          "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-05-01"
-        }
-      },
-      {
-        "name": "Total Assets",
-        "value": "$114.91B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Assets",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-5",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-6",
-          "period_start": null,
-          "period_end": "2026-05-01"
+          "period_end": "2026-04-30"
         }
       },
       {
         "name": "Cash",
-        "value": "$11.58B",
+        "value": "$982.1M",
         "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
           "start": null,
           "end": null,
           "concept": "CashAndCashEquivalentsAtCarryingValue",
           "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-5",
+          "context": "c-3",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-6",
+          "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-05-01"
+          "period_end": "2026-04-30"
+        }
+      },
+      {
+        "name": "Total Assets",
+        "value": "$7.10B",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "Assets",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-3",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": null,
+          "period_end": "2026-04-30"
         }
       },
       {
         "name": "Operating Cash Flow",
-        "value": "$4.08B",
-        "signal": "best",
+        "value": "$850.4M",
+        "signal": "positive",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
           "start": null,
           "end": null,
           "concept": "NetCashProvidedByUsedInOperatingActivities",
@@ -887,131 +786,96 @@ window.EARNINGS_REPORT = {
           "context": "c-1",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-6",
-          "period_start": "2026-01-31",
-          "period_end": "2026-05-01"
+          "decimals": "-3",
+          "period_start": "2025-08-01",
+          "period_end": "2026-04-30"
         }
       },
       {
-        "name": "Total Equity",
-        "value": "-$1.40B",
-        "signal": "best",
+        "name": "Total Liabilities",
+        "value": "$4.73B",
+        "signal": "neutral",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
           "start": null,
           "end": null,
-          "concept": "StockholdersEquity",
+          "concept": "Liabilities",
           "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-5",
+          "context": "c-3",
           "dimensions": [],
           "unit": "usd",
-          "decimals": "-6",
+          "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-05-01"
+          "period_end": "2026-04-30"
         }
-      },
-      {
-        "name": "Net cash / (debt)",
-        "value": "-$12.03B",
-        "signal": "caution",
-        "citation": [
-          {
-            "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
-            "start": null,
-            "end": null,
-            "concept": "CashAndCashEquivalentsAtCarryingValue",
-            "taxonomy": "http://fasb.org/us-gaap/2025",
-            "context": "c-5",
-            "dimensions": [],
-            "unit": "usd",
-            "decimals": "-6",
-            "period_start": null,
-            "period_end": "2026-05-01"
-          },
-          {
-            "source": "SEC XBRL",
-            "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
-            "start": null,
-            "end": null,
-            "concept": "LongTermDebtNoncurrent",
-            "taxonomy": "http://fasb.org/us-gaap/2025",
-            "context": "c-5",
-            "dimensions": [],
-            "unit": "usd",
-            "decimals": "-6",
-            "period_start": null,
-            "period_end": "2026-05-01"
-          }
-        ]
       }
     ],
     "guidance": [
       {
         "name": "Forward outlook",
-        "detail": "Excluding the impact of AI mix, our gross margin outlook is higher than it was 90 days ago and remains up year-over-year.",
+        "detail": "For Red Canary, we expect ARR of approximately $137 million in fiscal 2026, up from our prior guidance of $130 million, with net new ARR of approximately $10 million in Q4.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 16748,
-          "end": 16869
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 22464,
+          "end": 22636
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "For the full year, we expect revenue of $165 billion-$169 billion, up nearly 50% at the midpoint of $167 billion.",
+        "detail": "We expect Red Canary revenue of approximately $137 million in fiscal 2026, up from our prior guidance of $125 million.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 16343,
-          "end": 16456
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 22842,
+          "end": 22960
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "For Q2, we expect revenue of $44 billion-$45 billion, up roughly 50% at the midpoint of $44.5 billion.",
+        "detail": "For the full year fiscal 2026, we expect ARR of $3.740 billion-$3.749 billion, or year-over-year growth of approximately 24%.",
+        "signal": "positive",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 22253,
+          "end": 22378
+        }
+      },
+      {
+        "name": "Forward outlook",
+        "detail": "For the fourth quarter, we expect revenue of $875 million-$878 million, reflecting approximately 22% year-over-year growth.",
+        "signal": "positive",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 21833,
+          "end": 21956
+        }
+      },
+      {
+        "name": "Forward outlook",
+        "detail": "Looking ahead to fiscal 2027, based on higher prices we see in the market today, we expect CapEx as a percentage of revenue to increase up to 200 basis points compared to fiscal 2026 levels.",
+        "signal": "positive",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 21137,
+          "end": 21327
+        }
+      },
+      {
+        "name": "Forward outlook",
+        "detail": "Operating profit of $755 million-$757 million, up approximately 30% year-over-year, up from our prior guidance of $742 million-$748 million.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 15655,
-          "end": 15757
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "We expect sequential improvement in ISG operating income rate, while CSG operating income rates moderates to roughly 6% as we balance demand, share, and profitability.",
-        "signal": "positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 16007,
-          "end": 16174
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Reflecting that strength, we raised our FY 2027 revenue and EPS guidance by approximately $27 billion and $5 respectively.",
-        "signal": "positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 53526,
-          "end": 53648
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Full-year guidance raised by $27 billion as demand outpaces supply, with robust pipelines and continued capital returns.",
-        "signal": "positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 474,
-          "end": 595
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 22961,
+          "end": 23101
         }
       }
     ],
@@ -1019,407 +883,429 @@ window.EARNINGS_REPORT = {
       {
         "topic": "Management Tone",
         "category": "outlook",
-        "detail": "Confident → Assured, All in, we remain confident in the demand outlook for traditional servers, and our portfolio is well-positioned to capture that opportunity.",
+        "detail": "Confident → Assured, We are confident that our innovative approach to staying ahead of threat actors will help to drive further share gains.",
         "signal": "positive",
         "tier": "positive",
         "reasoning": "The cited prepared remarks evidence is supportive for management tone.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 8671,
-          "end": 8811
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 15568,
+          "end": 15687
         },
         "confidence_category": "Confident",
         "confidence_subcategory": "Assured",
         "confidence_rank": 4,
-        "confidence_reasoning": "Aggregate management-language scores were Confident 101, Vague 5, and Not Confident 15; the leading assured cues were we expect (7), we anticipate (1), we believe (1)."
+        "confidence_reasoning": "Aggregate management-language scores were Confident 97, Vague 18, and Not Confident 9; the leading assured cues were we expect (10), we believe (2), confident (4)."
       },
       {
         "topic": "Revenue & Demand",
         "category": "revenue",
-        "detail": "Turning to CSG, revenue grew 17%, and we gained share for the second consecutive quarter with broad-based demand led by large enterprise customers.",
+        "detail": "Free cash flow margin of approximately 22.8%-23.3%, down from our prior expectations of 26.5%-27%, reflecting CapEx in the high single digits as a percentage of revenue.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for revenue & demand.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 9627,
-          "end": 9774
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 23213,
+          "end": 23382
         }
       },
       {
         "topic": "Margins & Profitability",
         "category": "margin",
-        "detail": "We expect sequential improvement in ISG operating income rate, while CSG operating income rates moderates to roughly 6% as we balance demand, share, and profitability.",
-        "signal": "positive",
-        "tier": "positive",
-        "reasoning": "The cited prepared remarks evidence is supportive for margins & profitability.",
+        "detail": "This equates to a free cash flow margin of 16% this quarter, down from 18% last year, reflecting the timing of cash collections and a free cash flow margin of 29% year to date.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for margins & profitability.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 16007,
-          "end": 16174
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 20126,
+          "end": 20302
         }
       },
       {
         "topic": "Guidance",
         "category": "guidance",
-        "detail": "Excluding the impact of AI mix, our gross margin outlook is higher than it was 90 days ago and remains up year-over-year.",
+        "detail": "For Red Canary, we expect ARR of approximately $137 million in fiscal 2026, up from our prior guidance of $130 million, with net new ARR of approximately $10 million in Q4.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for guidance.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 16748,
-          "end": 16869
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 22464,
+          "end": 22636
         }
       },
       {
         "topic": "Products & Innovation",
         "category": "product",
-        "detail": "Our desk side agentic AI solutions help enterprises run production-ready AI locally, supporting use cases like coding, research, and secure private assistance while keeping sensitive data and IP on-prem.",
+        "detail": "The next customer I'll highlight is a seven-figure new logo win with a leading healthcare technology company for a platform-wide adoption.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for products & innovation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 4213,
-          "end": 4416
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 12354,
+          "end": 12492
         }
       },
       {
         "topic": "Customers & Engagement",
         "category": "customer",
-        "detail": "Our customer count surpassed 5,000, with growth across neocloud, sovereigns, and enterprise customers.",
-        "signal": "positive",
-        "tier": "positive",
+        "detail": "Our go-to-market strategy is a key growth lever enabling us to deepen customer relationships, accelerate platform adoption, and expand multi-year engagements.",
+        "signal": "best",
+        "tier": "best",
         "reasoning": "The cited prepared remarks evidence is supportive for customers & engagement.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 6777,
-          "end": 6879
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 17897,
+          "end": 18055
         }
       },
       {
         "topic": "Capital Allocation",
         "category": "capital",
-        "detail": "We returned $2.1 billion to shareholders this quarter, including repurchasing 11 million shares at an average price of $147 per share and paying a dividend of approximately $0.63 per share.",
+        "detail": "As a result, we expect higher CapEx in Q4, taking fiscal 2026 CapEx to the high single digits as a percentage of revenue, up from our prior expectation of mid-single digits.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for capital allocation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 14661,
-          "end": 14850
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 20963,
+          "end": 21136
         }
       },
       {
         "topic": "Competition & Market",
         "category": "competition",
-        "detail": "We also extended AI to the desktop with the new Dell Pro Max systems supporting the GB10 and introducing the industry's first OEM desktop with GB300.",
+        "detail": "We offer the industry's only complete Zero Trust SASE solution, a singular Zero Trust platform across users, across cloud workloads, and across branches.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for competition & market.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 3942,
-          "end": 4091
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 3158,
+          "end": 3311
         }
       },
       {
         "topic": "Analyst Q&A",
         "category": "qa",
-        "detail": "When we look at the demand environment that we are operating in today, it's very different than historical.",
+        "detail": "Regarding the sales leadership changes, these two leaders were part of our CRO, Mike Rich's team.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "This is a substantive management response from the analyst Q&A section.",
         "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 19442,
-          "end": 19549
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 25704,
+          "end": 25801
         }
       }
     ],
     "channels": [
       {
         "name": "Products & platforms",
-        "desc": "We continue to expand the Dell AI Factory ecosystem with partners including NVIDIA, Google Cloud, OpenAI, SpaceXAI, ServiceNow, Palantir, Mistral, and CrowdStrike.",
+        "desc": "Q3 saw 25% ARR growth, record operating margins, and robust customer expansion, driven by AI adoption and Zero Trust platform wins.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 5500,
-          "end": 5663
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 425,
+          "end": 556
         },
         "signal": "positive"
       },
       {
         "name": "Customers & engagement",
-        "desc": "Turning to CSG, revenue grew 17%, and we gained share for the second consecutive quarter with broad-based demand led by large enterprise customers.",
+        "desc": "Our go-to-market strategy is a key growth lever enabling us to deepen customer relationships, accelerate platform adoption, and expand multi-year engagements.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 9627,
-          "end": 9774
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 17897,
+          "end": 18055
         },
-        "signal": "neutral"
+        "signal": "positive"
       },
       {
         "name": "Markets & distribution",
-        "desc": "Moving to traditional servers, revenue was up 92%, as demand remained well ahead of supply in Q1, with strength across every region.",
+        "desc": "For fiscal 2026 year to date, we transacted approximately $900 million in TCV through our cloud marketplaces, which more than doubled year-over-year.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 7526,
-          "end": 7658
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 8735,
+          "end": 8884
         },
         "signal": "neutral"
       },
       {
         "name": "Business lines",
-        "desc": "ISG operating income was a record $3.1 billion, up 206%, marking eight consecutive quarters of double-digit or better growth, primarily driven by higher revenue across the business.",
+        "desc": "In a seven-figure upsell deal, a Fortune 500 financial technology company chose Zscaler to secure rapid enterprise adoption of AI with our AI Protect solution, which we introduced in January.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 13066,
-          "end": 13247
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 9392,
+          "end": 9583
         },
-        "signal": "positive"
+        "signal": "neutral"
       }
     ],
     "strategic_pillars": [
       {
         "name": "Innovation Roadmap",
-        "detail": "On the data side, advancements in the Dell AI Data Platform help customers make enterprise data ready at scale with stronger orchestration, faster indexing of unstructured data, and improved analytics performance.",
-        "signal": "best",
+        "detail": "We have steadily expanded our zero trust platform beyond users to protect branches, workloads, AI applications, and now AI agents.",
+        "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 4902,
-          "end": 5115
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 16769,
+          "end": 16899
         }
       },
       {
         "name": "Growth Expansion",
-        "detail": "The majority of demand was driven by large enterprise customers refreshing their compute environments and expanding capacities to support growing workloads.",
-        "signal": "positive",
+        "detail": "Enterprises don't have the capacity to patch and update existing vulnerabilities, so backlogs are piling up faster than organizations can address them.",
+        "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 7659,
-          "end": 7815
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 5957,
+          "end": 6108
         }
       },
       {
         "name": "Customer Value",
-        "detail": "The bottom line, Dell is expanding the AI Factory from the data center to the desk side across compute, storage, networking, software, and services.",
-        "signal": "positive",
+        "detail": "GSIs will be able to leverage Zscaler's AI Protect portfolio to build specialized AI discovery and risk mitigation services.",
+        "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 5888,
-          "end": 6036
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 8547,
+          "end": 8671
         }
       },
       {
         "name": "Operational Excellence",
-        "detail": "In servers, our 18th generation of PowerEdge server portfolio expands support for AI, HPC, and enterprise workloads with new air-cooled systems that improve compute density and efficiency.",
-        "signal": "strong_positive",
+        "detail": "In another example, an existing seven-figure ARR Global 2000 semiconductor manufacturing customer increased their annual spend with us by 60% in a three-year, eight-figure Z-Flex deal.",
+        "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 4713,
-          "end": 4901
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 19222,
+          "end": 19406
         }
       },
       {
         "name": "Capital Discipline",
-        "detail": "During this call, unless otherwise indicated, all references to financial measures refer to non-GAAP financial measures, including non-GAAP gross margin, operating expenses, operating income, net income, diluted earnings per share, free cash flow, and adjusted free cash flow.",
-        "signal": "neutral",
+        "detail": "Year to date, with 26% revenue growth and a 29% free cash flow margin, we achieved Rule of 55 performance.",
+        "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 1704,
-          "end": 1980
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 16009,
+          "end": 16115
         }
       },
       {
         "name": "Long-Term Strategy",
-        "detail": "Statements made during this call that relate to future results and events are forward-looking statements based on current expectations.",
+        "detail": "Building on Jay's earlier comments on enhancements to our go-to-market engine, we are continuing to strengthen our position as a long-term strategic partner and driving deeper customer adoption over time through our account-centric sales motion.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
-          "start": 2194,
-          "end": 2329
+          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+          "start": 18056,
+          "end": 18301
         }
       }
     ],
     "risks": [
       {
-        "risk": "Regulatory / legal exposure",
-        "evidence": "All statements by us regarding our expected financial position, revenues, cash flows and other operating results, business strategy, legal proceedings, and similar matters are forward-looking statements.",
+        "risk": "Competitive pressure",
+        "evidence": "We face intense and increasing competition and could lose market share to our competitors, which could adversely affect our business, financial condition and results of operations.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501.htm",
-          "start": 32434,
-          "end": 32638
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
+          "start": 198891,
+          "end": 199071
+        }
+      },
+      {
+        "risk": "Regulatory / legal exposure",
+        "evidence": "This Quarterly Report on Form 10-Q contains forward-looking statements within the meaning of the Private Securities Litigation Reform Act of 1995, including but not limited to statements regarding our financial outlook and market positioning.",
+        "probability": null,
+        "eps_impact": null,
+        "quantification": "Not company-disclosed; no probability or EPS impact invented",
+        "signal": "caution",
+        "citation": {
+          "source": "SEC filing / earnings transcript",
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
+          "start": 29064,
+          "end": 29306
         }
       },
       {
         "risk": "Demand / macro exposure",
-        "evidence": "The allowance for financing receivable losses on the lease receivable is determined based on various factors, including lifetime expected losses determined using macroeconomic forecast assumptions and management judgments applicable to and through the expected life of the portfolios as well as past due receivables, receivable type, and customer risk profile.",
+        "evidence": "Due to uncertainty in the macroeconomic and geopolitical environment, there is ongoing disruption in the global economy and financial markets.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501.htm",
-          "start": 62759,
-          "end": 63120
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
+          "start": 50583,
+          "end": 50725
         }
       },
       {
         "risk": "Capital intensity / cash-flow pressure",
-        "evidence": "Capital expenditures and capitalized software development costs",
+        "evidence": "Included in this legislation are provisions that allow for the immediate expensing of domestic research and development expenses, immediate expensing of certain capital expenditures, and other changes to the U.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501.htm",
-          "start": 39627,
-          "end": 39690
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
+          "start": 143983,
+          "end": 144194
         }
       },
       {
         "risk": "Supply / execution exposure",
-        "evidence": "In the event one or more of these criteria are not met and the Company is unable to restructure the facility, no further funding of receivables will be permitted and the timing of the Company’s expected cash flows from over-collateralization will be delayed.",
+        "evidence": "Due to uncertainty in the macroeconomic and geopolitical environment, there is ongoing disruption in the global economy and financial markets.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501.htm",
-          "start": 70234,
-          "end": 70493
+          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
+          "start": 50583,
+          "end": 50725
         }
       }
     ],
     "thesis": {
-      "recommendation": "BUY",
+      "recommendation": "HOLD",
       "hurdle_rate": 0.12,
       "scenario_weights": {
         "base_case": 0.5,
         "bull_case": 0.3,
         "bear_case": 0.2
       },
-      "method": "Five-year EPS scenarios use broker-derived TTM EPS, bounded reported growth, and transparent scenario weights/multiples.",
+      "method": "Five-year EPS scenarios use broker-derived TTM EPS when available; when trailing P/E is negative, the model falls back to a normalized earnings proxy built from revenue, gross margin, adjusted EBITDA margin, and diluted shares.",
       "base_case": {
         "eps_cagr": 0.2,
-        "exit_multiple": 28.570931,
-        "exit_eps": 44.25180936526009,
-        "exit_price": 1264.3153919999997,
-        "irr": 0.19999999999999996,
+        "exit_multiple": 19.144223437500006,
+        "exit_eps": 10.532491160313795,
+        "exit_price": 201.63636412654097,
+        "irr": 0.0349663609930293,
         "probability": 0.5,
-        "summary": "TTM EPS $17.78 -> $44.25; EPS CAGR 20.0%; exit P/E 28.6x = $1264.32; IRR 20.0%",
-        "detail": "TTM EPS $17.78 -> $44.25; EPS CAGR 20.0%; exit P/E 28.6x = $1264.32; IRR 20.0%"
+        "summary": "EPS $4.23 -> $10.53; EPS CAGR 20.0%; exit P/E 19.1x = $201.64; IRR 3.5%",
+        "detail": "EPS $4.23 -> $10.53; EPS CAGR 20.0%; exit P/E 19.1x = $201.64; IRR 3.5%"
       },
       "bull_case": {
         "eps_cagr": 0.28,
-        "exit_multiple": 31.570931,
-        "exit_eps": 61.10470486516804,
-        "exit_price": 1929.1324210735845,
-        "irr": 0.3058177539398865,
+        "exit_multiple": 26.44790538240001,
+        "exit_eps": 14.54369376252471,
+        "exit_price": 384.6502365418547,
+        "irr": 0.1776755633681466,
         "probability": 0.3,
-        "summary": "TTM EPS $17.78 -> $61.10; EPS CAGR 28.0%; exit P/E 31.6x = $1929.13; IRR 30.6%",
-        "detail": "TTM EPS $17.78 -> $61.10; EPS CAGR 28.0%; exit P/E 31.6x = $1929.13; IRR 30.6%"
+        "summary": "EPS $4.23 -> $14.54; EPS CAGR 28.0%; exit P/E 26.4x = $384.65; IRR 17.8%",
+        "detail": "EPS $4.23 -> $14.54; EPS CAGR 28.0%; exit P/E 26.4x = $384.65; IRR 17.8%"
       },
       "bear_case": {
         "eps_cagr": 0.08000000000000002,
-        "exit_multiple": 23.570931,
-        "exit_eps": 26.130250912092446,
-        "exit_price": 615.9143412616181,
-        "irr": 0.039236099733051866,
+        "exit_multiple": 11.592740743,
+        "exit_eps": 6.219330705253696,
+        "exit_price": 72.09908846098544,
+        "irr": -0.1574446945627429,
         "probability": 0.2,
-        "summary": "TTM EPS $17.78 -> $26.13; EPS CAGR 8.0%; exit P/E 23.6x = $615.91; IRR 3.9%",
-        "detail": "TTM EPS $17.78 -> $26.13; EPS CAGR 8.0%; exit P/E 23.6x = $615.91; IRR 3.9%"
+        "summary": "EPS $4.23 -> $6.22; EPS CAGR 8.0%; exit P/E 11.6x = $72.10; IRR -15.7%",
+        "detail": "EPS $4.23 -> $6.22; EPS CAGR 8.0%; exit P/E 11.6x = $72.10; IRR -15.7%"
       },
       "base_cagr": 0.2,
-      "irr": 0.19999999999999996,
-      "key_risks_summary": "Regulatory / legal exposure, Demand / macro exposure, Capital intensity / cash-flow pressure"
+      "irr": 0.0349663609930293,
+      "key_risks_summary": "Competitive pressure, Regulatory / legal exposure, Demand / macro exposure"
     }
   },
   "sources": {
-    "filing_url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501.htm",
-    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501_htm.xml",
-    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000021/exhibit991earnings8kq1fy27.htm",
-    "investor_relations_url": "https://investors.delltechnologies.com/news-events/upcoming-events",
-    "transcript_url": "https://stockanalysis.com/stocks/dell/transcripts/559834-q1-2027/",
+    "filing_url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
+    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
+    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000095/zs-04302026_991.htm",
+    "investor_relations_url": "https://ir.zscaler.com",
+    "transcript_url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
     "transcript_provider": "stockanalysis.com",
-    "transcript_call_date": "2026-05-28",
-    "transcript_retrieved_at": "2026-09-03T15:09:35.310213+00:00",
-    "transcript_content_sha256": "cdefcbd8eb8fc72faa7f126a09324049b17e4d0f38bfc260a732445e30962342"
+    "transcript_call_date": "2026-05-26",
+    "transcript_retrieved_at": "2026-09-05T22:46:45.050689+00:00",
+    "transcript_content_sha256": "f5ec558090f7198d29f3f316989891e3f99535cdf328d0d1db762095060863c2",
+    "short_interest_url": "https://www.nasdaq.com/market-activity/stocks/zs/short-interest"
   },
   "warnings": [
-    "Official Nasdaq short-interest data unavailable: RuntimeError",
-    "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 18.14x"
+    "Using latest completed daily regular-session close (46.8 hours old) — production data"
   ],
   "grade_breakdown": {
     "financial_metrics": {
-      "grade": "A",
-      "reason": "Strong growth in most core metrics with healthy profitability",
-      "weight": 0.3
+      "grade": "B-",
+      "reason": "Growth offset by notable weakness in some metrics",
+      "weight": 0.1
+    },
+    "business_quality": {
+      "grade": "B-",
+      "score": 66.71849999999999,
+      "reason": "66.7/100 — Adequate Business Quality",
+      "weight": 0.4
     },
     "valuation": {
-      "grade": "B-",
-      "reason": "Rich valuation on multiple metrics",
-      "weight": 0.3
+      "grade": "C",
+      "score": 50.0,
+      "reason": "50.0/100 — Fallback neutral valuation (insufficient_data)",
+      "weight": 0.4
     },
     "earnings_call": {
-      "grade": "A",
-      "reason": "Confident management, good guidance, mostly positive discussion",
-      "weight": 0.1
+      "grade": "A-",
+      "reason": "Solid call with guidance, minor caution in Q&A",
+      "weight": 0.02
     },
     "management_execution": {
-      "grade": "A",
-      "reason": "Strong execution on multiple fronts: buybacks, quality earnings, margin improvement",
-      "weight": 0.1
+      "grade": "B-",
+      "reason": "Neutral execution, no strong signals either way",
+      "weight": 0.03
     },
     "future_growth": {
       "grade": "A",
       "reason": "Strong growth outlook: high revenue growth, backlog building, positive guidance",
-      "weight": 0.2
+      "weight": 0.05
     },
-    "final_grade": "A-",
-    "final_score": 10.8,
+    "final_grade": "C+",
+    "final_score": 7.46,
     "all_scores": {
-      "financial_metrics": 12,
-      "valuation": 8,
-      "earnings_call": 12,
-      "management_execution": 12,
+      "financial_metrics": 8,
+      "business_quality": 8,
+      "valuation": 6,
+      "earnings_call": 11,
+      "management_execution": 8,
       "future_growth": 12
     }
   }

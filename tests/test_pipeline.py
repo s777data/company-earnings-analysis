@@ -4,13 +4,14 @@ import shutil
 import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "scripts"))
 from run_analysis import (EarningsAnalyzer, _change, _display, _extract_investor_relations_url,
-                          _validate_transcript_call_date)
+                          _validate_dashboard_period_consistency, _validate_transcript_call_date)
 from pdf_utils import (_compact_summary, _compact_items,
                                   _direction_marker, _select_call_summary_insights,
                                   COMPACT_LABELS, SEMANTIC_SYMBOL_COLORS, COLORS,
@@ -53,6 +54,15 @@ def sample_data():
             "transcript_insights":[{"topic":"Q&A","detail":"Analyst questions were answered.","tier":"medium"}],
             "growth_drivers":[{"driver":"Revenue increased.","tier":"best"}],"risks":[{"risk":"Competition disclosed"}],
             "sources":{"filing_url":"https://www.sec.gov/Archives/edgar/data/1/filing.htm","transcript_url":"https://stockanalysis.com/stocks/test/transcripts/1-q2-2026/"}}
+
+
+def sample_company_valuation_score():
+    """Deterministic canonical-valuation result for unit tests."""
+    return {
+        "run_id": "test-run",
+        "business_quality": {"status": "ok", "score": 70.0, "grade": "B", "classification": "Good"},
+        "valuation": {"status": "ok", "score": 50.0, "grade": "C", "classification": "Fair"},
+    }
 
 
 class FilingSelectionTests(unittest.TestCase):
@@ -317,6 +327,90 @@ class FilingSelectionTests(unittest.TestCase):
         print(f"✓ Cross-reference attempted and fallback handled correctly")
 
 
+class DashboardPeriodConsistencyTests(unittest.TestCase):
+    """Publication gate tests preventing mixed-quarter dashboard sections."""
+
+    def _aligned_data(self):
+        transcript_url = "https://stockanalysis.com/stocks/zs/transcripts/680670-q4-2026/"
+        filing_url = "https://www.sec.gov/Archives/edgar/data/1713683/q4.htm"
+        quarter_citation = {
+            "url": filing_url,
+            "period_start": "2026-05-01",
+            "period_end": "2026-07-31",
+            "period_scope": "quarter",
+        }
+        transcript_citation = {"url": transcript_url, "start": 100, "end": 200}
+        return {
+            "ticker": "ZS",
+            "fiscal_period": "Q4",
+            "fiscal_year": 2026,
+            "report_date": "2026-07-31",
+            "sources": {
+                "filing_url": filing_url,
+                "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1713683/q4-release.htm",
+                "transcript_url": transcript_url,
+                "transcript_fiscal_period": "Q4",
+                "transcript_fiscal_year": 2026,
+            },
+            "business_kpis": {"rows": [{"metric": "ARR", "latest_period": "Q4 2026"}]},
+            "financials": {
+                "rows": [{"key": "revenue", "available": True, "citation": dict(quarter_citation)}],
+                "key_ratios": [{"label": "Gross Margin", "citation": [dict(quarter_citation)]}],
+            },
+            "capital_liquidity": {"items": [{"name": "Cash", "citation": {"url": filing_url, "period_end": "2026-07-31"}}]},
+            "growth_drivers": [{"driver": "Revenue growth", "citation": dict(quarter_citation)}],
+            "transcript_insights": [{"topic": "Management Tone", "citation": dict(transcript_citation)}],
+            "earnings_call_summary": {"insights": [{"topic": "Guidance", "citation": dict(transcript_citation)}]},
+            "guidance": {"rows": [{"name": "Outlook", "citation": dict(transcript_citation)}]},
+            "channels": {"items": [{"name": "Enterprise", "citation": dict(transcript_citation)}]},
+            "strategic_pillars": [{"name": "AI", "citation": dict(transcript_citation)}],
+            "risks": [{"risk": "Competition", "citation": {"url": filing_url}}],
+        }
+
+    def test_all_dashboard_sections_accept_same_quarter(self):
+        _validate_dashboard_period_consistency(self._aligned_data())
+
+    def test_rejects_kpi_from_another_quarter(self):
+        data = self._aligned_data()
+        data["business_kpis"]["rows"][0]["latest_period"] = "Q3 2026"
+        with self.assertRaisesRegex(RuntimeError, "business_kpis.*Q3 2026"):
+            _validate_dashboard_period_consistency(data)
+
+    def test_rejects_financial_fact_ending_in_another_quarter(self):
+        data = self._aligned_data()
+        data["financials"]["rows"][0]["citation"]["period_end"] = "2026-04-30"
+        with self.assertRaisesRegex(RuntimeError, "financials.*2026-04-30"):
+            _validate_dashboard_period_consistency(data)
+
+    def test_rejects_ytd_fact_presented_as_current_quarter(self):
+        data = self._aligned_data()
+        citation = data["financials"]["rows"][0]["citation"]
+        citation["period_start"] = "2025-08-01"
+        citation.pop("period_scope")
+        with self.assertRaisesRegex(RuntimeError, "spans 365 days"):
+            _validate_dashboard_period_consistency(data)
+
+    def test_rejects_mismatched_transcript_quarter(self):
+        data = self._aligned_data()
+        data["sources"]["transcript_url"] = "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/"
+        with self.assertRaisesRegex(RuntimeError, "transcript URL identifies Q3 2026"):
+            _validate_dashboard_period_consistency(data)
+
+    def test_rejects_section_citing_different_transcript(self):
+        data = self._aligned_data()
+        data["guidance"]["rows"][0]["citation"]["url"] = (
+            "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/"
+        )
+        with self.assertRaisesRegex(RuntimeError, "guidance.*different transcript"):
+            _validate_dashboard_period_consistency(data)
+
+    def test_rejects_risk_from_unselected_filing(self):
+        data = self._aligned_data()
+        data["risks"][0]["citation"]["url"] = "https://www.sec.gov/Archives/edgar/data/1713683/q3.htm"
+        with self.assertRaisesRegex(RuntimeError, "risks.*outside the selected quarter"):
+            _validate_dashboard_period_consistency(data)
+
+
 class BusinessKpiTests(unittest.TestCase):
     def _rows(self, count=13):
         rows = []
@@ -576,8 +670,9 @@ class ExtractionTests(unittest.TestCase):
             "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": None},
             "risks": [],
         }
-        analyzer.grade_and_thesis()
-        self.assertIn(analyzer.data["grade"]["letter"], {"A", "B", "C", "D", "F"})
+        with patch("run_analysis._run_company_valuation_score", return_value=sample_company_valuation_score()):
+            analyzer.grade_and_thesis()
+        self.assertRegex(analyzer.data["grade"]["letter"], r"^[A-F][+-]?$")
         self.assertEqual(analyzer.data["thesis"]["recommendation"], "INSUFFICIENT DATA")
 
     def test_negative_pe_uses_normalized_earnings_proxy_for_thesis(self):
@@ -600,7 +695,8 @@ class ExtractionTests(unittest.TestCase):
             "valuation": {"market_cap": 1000, "current_price": 10, "pe_ttm": -27.1},
             "sources": sample_data()["sources"] | {"earnings_release_url": "x"},
         }
-        analyzer.grade_and_thesis()
+        with patch("run_analysis._run_company_valuation_score", return_value=sample_company_valuation_score()):
+            analyzer.grade_and_thesis()
         self.assertNotEqual(analyzer.data["thesis"]["recommendation"], "INSUFFICIENT DATA")
         self.assertIn("negative", analyzer.data["thesis"]["method"].lower())
         self.assertIsNotNone(analyzer.data["thesis"]["base_case"]["irr"])
@@ -892,21 +988,23 @@ class SafetyTests(unittest.TestCase):
 
     def test_delivery_dry_run_never_sends(self):
         with tempfile.TemporaryDirectory() as directory:
-            pdf = Path(directory) / "a.pdf"; pdf.write_bytes(b"%PDF" + b"x"*1200)
+            dashboard = Path(directory) / "dashboard"; dashboard.mkdir()
+            (dashboard / "index.html").write_text("<html></html>", encoding="utf-8")
+            dashboard.with_suffix(".png").write_bytes(b"\x89PNG\r\n\x1a\n" + b"x" * 100)
             with patch("telegram_notify.subprocess.run") as run:
-                result = deliver_reports(sample_data(), str(pdf), dry_run=True)
-            self.assertEqual(len(result), 2); run.assert_not_called()
+                result = deliver_reports(sample_data(), str(dashboard), dry_run=True)
+            self.assertEqual(len(result), 3); run.assert_not_called()
+            self.assertTrue(all(item["dry_run"] for item in result))
 
     def test_delivery_rejects_missing_attachment(self):
-        with self.assertRaisesRegex(RuntimeError, "missing or empty"):
-            deliver_reports(sample_data(), "/missing.pdf", dry_run=False)
+        with self.assertRaisesRegex(RuntimeError, "HTML directory not found"):
+            deliver_reports(sample_data(), "/missing", dry_run=False)
 
     def test_delivery_requires_json_receipt(self):
         import subprocess
         with tempfile.TemporaryDirectory() as directory:
             pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
-            with patch("telegram_notify.subprocess.run", return_value=subprocess.CompletedProcess([], 0, "not-json", "")), \
-                 patch("telegram_notify.validate_pdf"):
+            with patch("telegram_notify.subprocess.run", return_value=subprocess.CompletedProcess([], 0, "not-json", "")):
                 with self.assertRaisesRegex(RuntimeError, "malformed JSON"):
                     _send("message", str(pdf), "telegram")
 
@@ -915,8 +1013,7 @@ class SafetyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             pdf = Path(directory) / "report.pdf"; pdf.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>\nendobj\nxref\n0 4\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \ntrailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n178\n%%EOF")
             result = subprocess.CompletedProcess([], 0, json.dumps({"success": True, "message_id": "m1"}), "")
-            with patch("telegram_notify.subprocess.run", return_value=result) as run, \
-                 patch("telegram_notify.validate_pdf"):
+            with patch("telegram_notify.subprocess.run", return_value=result) as run:
                 receipt = _send("message", str(pdf), "telegram")
             self.assertTrue(receipt["success"]); self.assertEqual(receipt["backend_id"], "m1")
             args = run.call_args.args[0]
@@ -1084,7 +1181,8 @@ class OutputTests(unittest.TestCase):
             "transcript_insights":[{"tier":"worst"},{"tier":"worst"}],
             "valuation":{"current_price":100,"pe_ttm":50},
             "sources":{"earnings_release_url":"x","transcript_url":"y"}}
-        analyzer.grade_and_thesis()
+        with patch("run_analysis._run_company_valuation_score", return_value=sample_company_valuation_score()):
+            analyzer.grade_and_thesis()
         self.assertNotEqual(analyzer.data["thesis"]["recommendation"], "BUY")
 
     def test_markdown_restores_both_rich_messages_and_sources(self):
@@ -1123,27 +1221,37 @@ class OutputTests(unittest.TestCase):
         self.assertIn("TEST ONLY", generate_call_message(data))
 
     def test_save_delivers_automatically_by_default(self):
-        analyzer = EarningsAnalyzer("TEST", output_format="json"); analyzer.data = sample_data()
-        with tempfile.TemporaryDirectory() as directory, \
-                patch("run_analysis.create_interactive_dashboard", return_value="/tmp/index.html"):
-            paths = analyzer.save(directory, deliver=False)
-            archive = Path(paths["dashboard_zip"])
-            self.assertTrue(archive.is_file())
-            self.assertGreater(archive.stat().st_size, 0)
-            self.assertTrue(zipfile.is_zipfile(archive))
-            with zipfile.ZipFile(archive) as zipped:
-                names = set(zipped.namelist())
-                prefix = "TEST_Q2_FY2026_Interactive_Dashboard/"
-                required = {
-                    prefix + "index.html",
-                    prefix + "css/dashboard.css",
-                    prefix + "js/dashboard.js",
-                    prefix + "data/report.json",
-                }
-                self.assertTrue(required <= names)
-                self.assertTrue(all(zipped.getinfo(name).file_size > 0 for name in required))
-            self.assertNotIn("dashboard_pdf", paths)
-            self.assertNotIn("dashboard_png", paths)
+        ticker = "TESTSAVE"
+        analyzer = EarningsAnalyzer(ticker, output_format="json")
+        analyzer.data = sample_data() | {"ticker": ticker}
+        ticker_dir = Path("/home/s777data/outputs/company-earnings-analysis") / f"{ticker}_Q2_FY2026"
+        shutil.rmtree(ticker_dir, ignore_errors=True)
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                def create_without_publishing(data, output_dir, publish_template_data=False):
+                    return create_interactive_dashboard(data, output_dir, publish_template_data=False)
+
+                with patch("run_analysis.create_interactive_dashboard", side_effect=create_without_publishing):
+                    paths = analyzer.save(directory, deliver=False)
+                archive = Path(paths["dashboard_zip"])
+                self.assertTrue(archive.is_file())
+                self.assertGreater(archive.stat().st_size, 0)
+                self.assertTrue(zipfile.is_zipfile(archive))
+                with zipfile.ZipFile(archive) as zipped:
+                    names = set(zipped.namelist())
+                    prefix = f"{ticker}_Q2_FY2026_Interactive_Dashboard/"
+                    required = {
+                        prefix + "index.html",
+                        prefix + "css/dashboard.css",
+                        prefix + "js/dashboard.js",
+                        prefix + "data/report.json",
+                    }
+                    self.assertTrue(required <= names)
+                    self.assertTrue(all(zipped.getinfo(name).file_size > 0 for name in required))
+                self.assertNotIn("dashboard_pdf", paths)
+                self.assertNotIn("dashboard_png", paths)
+        finally:
+            shutil.rmtree(ticker_dir, ignore_errors=True)
 
     def test_deliver_reports_wraps_png_in_zip_attachment(self):
         data = sample_data()
@@ -1422,9 +1530,9 @@ class InteractiveDashboardTests(unittest.TestCase):
     def test_section_order_interaction_and_accessibility_contract(self):
         html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
         headings = [
-            "Income Statement Highlights", ">KPI<", "Key Ratios", "Valuation", "Capital &amp; Liquidity",
-            "Short Interest &amp; SBC",
-            "Guidance &amp; Outlook", "Earnings Call Summary", "Key Channels &amp; Segments",
+            "Income Statement Highlights", ">KPI<", "Key Ratios", "Valuation", "Capital & Liquidity",
+            "Short Interest & SBC",
+            "Guidance & Outlook", "Earnings Call Summary", "Key Channels & Segments",
             "Strategic Pillars", "Key Risks", "Investment Thesis",
         ]
         positions = [html.index(heading) for heading in headings]
@@ -1581,8 +1689,9 @@ class InteractiveDashboardTests(unittest.TestCase):
             self.assertEqual((width, height), (2716, 3840))
 
     def test_telegram_messages_name_interactive_dashboard_attachment(self):
-        self.assertIn("Interactive A4 dashboard attached", generate_dashboard_message(sample_data()))
-        self.assertIn("Interactive A4 dashboard attached", generate_call_message(sample_data()))
+        expected = "Dashboard artifacts: ZIP + PNG-in-ZIP generated"
+        self.assertIn(expected, generate_dashboard_message(sample_data()))
+        self.assertIn(expected, generate_call_message(sample_data()))
 
 
 class ValuationGuideTests(unittest.TestCase):

@@ -88,6 +88,94 @@ def _extract_investor_relations_url(text: str) -> str | None:
 
 def _days_old(value: str) -> int: return (_now().date() - datetime.fromisoformat(value).date()).days
 
+
+def _validate_dashboard_period_consistency(data: dict[str, Any]) -> None:
+    """Fail publication when quarter-bound dashboard evidence is period-inconsistent."""
+    period = str(data.get("fiscal_period") or "").upper()
+    fiscal_year = data.get("fiscal_year")
+    report_date = data.get("report_date")
+    if not re.fullmatch(r"Q[1-4]", period) or not isinstance(fiscal_year, int) or not report_date:
+        raise RuntimeError("DASHBOARD_PERIOD_IDENTITY_MISSING")
+
+    expected_label = f"{period} {fiscal_year}"
+    sources = data.get("sources", {})
+    errors: list[str] = []
+
+    transcript_url = sources.get("transcript_url")
+    if transcript_url:
+        match = re.search(r"-q([1-4])-(20\d{2})/", transcript_url, re.I)
+        if match and (f"Q{match.group(1)}" != period or int(match.group(2)) != fiscal_year):
+            errors.append(f"transcript URL identifies Q{match.group(1)} {match.group(2)}, expected {expected_label}")
+    transcript_period = sources.get("transcript_fiscal_period")
+    transcript_year = sources.get("transcript_fiscal_year")
+    if transcript_period and str(transcript_period).upper() != period:
+        errors.append(f"transcript period is {transcript_period}, expected {period}")
+    if transcript_year is not None and int(transcript_year) != fiscal_year:
+        errors.append(f"transcript year is {transcript_year}, expected {fiscal_year}")
+
+    for index, row in enumerate(data.get("business_kpis", {}).get("rows", [])):
+        if row.get("latest_period") != expected_label:
+            errors.append(
+                f"business_kpis.rows[{index}].latest_period is {row.get('latest_period')!r}, expected {expected_label!r}"
+            )
+
+    def validate_citation(citation: Any, path: str, require_quarter_duration: bool = False) -> None:
+        if isinstance(citation, list):
+            for citation_index, item in enumerate(citation):
+                validate_citation(item, f"{path}[{citation_index}]", require_quarter_duration)
+            return
+        if not isinstance(citation, dict):
+            return
+        period_end = citation.get("period_end")
+        if period_end and period_end != report_date:
+            errors.append(f"{path}.period_end is {period_end}, expected {report_date}")
+        period_start = citation.get("period_start")
+        if require_quarter_duration and period_start and period_end == report_date:
+            duration = (
+                datetime.fromisoformat(str(period_end)).date()
+                - datetime.fromisoformat(str(period_start)).date()
+            ).days + 1
+            scope = str(citation.get("period_scope") or "").lower()
+            if not 70 <= duration <= 110 and scope not in {"instant", "q4_derived", "quarter"}:
+                errors.append(f"{path} spans {duration} days but is presented as current-quarter data")
+
+    for section_name in ("financials", "capital_liquidity"):
+        section = data.get(section_name, {})
+        rows = section.get("rows", []) if section_name == "financials" else section.get("items", [])
+        for index, row in enumerate(rows):
+            if row.get("available") is False:
+                continue
+            validate_citation(row.get("citation"), f"{section_name}[{index}].citation", require_quarter_duration=True)
+    for index, row in enumerate(data.get("financials", {}).get("key_ratios", [])):
+        validate_citation(row.get("citation"), f"financials.key_ratios[{index}].citation", require_quarter_duration=True)
+    for index, row in enumerate(data.get("growth_drivers", [])):
+        validate_citation(row.get("citation"), f"growth_drivers[{index}].citation", require_quarter_duration=True)
+
+    transcript_sections = {
+        "transcript_insights": data.get("transcript_insights", []),
+        "earnings_call_summary": data.get("earnings_call_summary", {}).get("insights", []),
+        "guidance": data.get("guidance", {}).get("rows", []),
+        "channels": data.get("channels", {}).get("items", []),
+        "strategic_pillars": data.get("strategic_pillars", []),
+    }
+    for section_name, rows in transcript_sections.items():
+        for index, row in enumerate(rows):
+            citation_url = (row.get("citation") or {}).get("url")
+            if transcript_url and citation_url and citation_url != transcript_url:
+                errors.append(f"{section_name}[{index}] cites a different transcript")
+
+    filing_url = sources.get("filing_url")
+    release_url = sources.get("earnings_release_url")
+    allowed_risk_urls = {url for url in (filing_url, release_url, transcript_url) if url}
+    for index, row in enumerate(data.get("risks", [])):
+        citation_url = (row.get("citation") or {}).get("url")
+        if citation_url and allowed_risk_urls and citation_url not in allowed_risk_urls:
+            errors.append(f"risks[{index}] cites evidence outside the selected quarter source set")
+
+    if errors:
+        raise RuntimeError("DASHBOARD_PERIOD_MISMATCH: " + "; ".join(errors))
+
+
 def _display(value: float, metric: str) -> str:
     if "eps" in metric: return f"${value:.2f}"
     if "shares" in metric:
@@ -160,16 +248,26 @@ def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str,
         }
         business_quality = payload.get("business_quality", {})
 
-    for label, result in (("valuation", valuation_grade), ("business quality", business_quality)):
-        if result.get("status") != "ok":
-            raise RuntimeError(f"company_valuation_score {label} status was not ok")
-        if not isinstance(result.get("score"), (int, float)) or result.get("grade") not in GRADE_SCALE:
-            raise RuntimeError(f"company_valuation_score {label} score or grade was unavailable")
+    if business_quality.get("status") != "ok":
+        raise RuntimeError("company_valuation_score business quality status was not ok")
+    if not isinstance(business_quality.get("score"), (int, float)) or business_quality.get("grade") not in GRADE_SCALE:
+        raise RuntimeError("company_valuation_score business quality score or grade was unavailable")
+
+    if valuation_grade.get("status") != "ok":
+        valuation_grade = {
+            "status": "fallback",
+            "score": 50.0,
+            "grade": "C",
+            "classification": f"Fallback neutral valuation ({valuation_grade.get('status', 'unavailable')})",
+            "confidence": "low",
+        }
+    elif not isinstance(valuation_grade.get("score"), (int, float)) or valuation_grade.get("grade") not in GRADE_SCALE:
+        raise RuntimeError("company_valuation_score valuation score or grade was unavailable")
 
     return {
         "run_id": payload.get("run_id"),
         "valuation": {
-            "status": "ok",
+            "status": valuation_grade.get("status", "ok"),
             "score": float(valuation_grade["score"]),
             "grade": valuation_grade["grade"],
             "classification": valuation_grade.get("classification", "Classification unavailable"),
@@ -683,6 +781,8 @@ class EarningsAnalyzer:
                                       "investor_relations_url": investor_relations_url,
                                       "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
                                       "transcript_call_date": transcript_call_date,
+                                      "transcript_fiscal_period": self.transcript["fiscal_period"],
+                                      "transcript_fiscal_year": self.transcript["fiscal_year"],
                                       "transcript_retrieved_at": self.transcript["retrieved_at"],
                                       "transcript_content_sha256": self.transcript["content_sha256"]},
                           "_xbrl": xbrl, "_filing_text": filing_doc["content"],
@@ -1307,6 +1407,7 @@ class EarningsAnalyzer:
         ticker_output_dir.mkdir(parents=True, exist_ok=True)
 
         public = {key: value for key, value in self.data.items() if not key.startswith("_")}
+        _validate_dashboard_period_consistency(public)
         # Add model name for dashboard footer
         import os
         public["model_name"] = os.environ.get("HERMES_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
