@@ -33,6 +33,21 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Iterable
 
+try:
+    from shareholder_letter_kpi_extractor import (
+        discover_shareholder_letter_pdf,
+        extract_shareholder_letter_kpis,
+        extract_shareholder_letter_text,
+    )
+except ModuleNotFoundError:
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from shareholder_letter_kpi_extractor import (
+        discover_shareholder_letter_pdf,
+        extract_shareholder_letter_kpis,
+        extract_shareholder_letter_text,
+    )
+
 ALLOWED_SOURCES = {"IR", "SEC", "IR/SEC"}
 DASHBOARD_KPI_LIMIT = 12
 
@@ -320,15 +335,61 @@ def _write_legacy_format(reference: Path, ordered_rows: list[dict[str, str]]) ->
     temporary.replace(reference)
 
 
+def _maybe_seed_shareholder_letter_rows(*, company: str, ticker: str, sector: str, fiscal_period: str, fiscal_year: int,
+                                       reference_path: str | Path, shareholder_letter_url: str | None = None,
+                                       shareholder_letter_text: str | None = None, source_date: str | None = None) -> int:
+    """Populate the KPI reference from a discovered shareholder-letter PDF when needed."""
+    if not shareholder_letter_url and not shareholder_letter_text:
+        return 0
+    text = shareholder_letter_text
+    if not text and shareholder_letter_url:
+        text = extract_shareholder_letter_text(shareholder_letter_url)
+    if not text:
+        return 0
+    rows = extract_shareholder_letter_kpis(
+        text=text,
+        company=company,
+        ticker=ticker,
+        sector=sector,
+        report_date=source_date or date.today().isoformat(),
+        fiscal_period=fiscal_period,
+        fiscal_year=fiscal_year,
+        source_url=shareholder_letter_url or "",
+    )
+    if not rows:
+        return 0
+    upsert_derived_kpis(rows, reference_path, added_on=source_date or date.today().isoformat())
+    return len(rows)
+
+
 def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: str,
                         release_url: str | None, fiscal_period: str, fiscal_year: int,
                         ir_url: str | None = None,
-                        reference_path: str | Path = DEFAULT_REFERENCE_PATH, **_: Any) -> dict[str, Any]:
+                        reference_path: str | Path = DEFAULT_REFERENCE_PATH,
+                        shareholder_letter_url: str | None = None,
+                        shareholder_letter_text: str | None = None,
+                        source_date: str | None = None,
+                        **_: Any) -> dict[str, Any]:
     """Load the top twelve source-derived KPIs for one company and fiscal period."""
     current_period = f"{fiscal_period.upper()} {fiscal_year}"
     prior_period = f"{fiscal_period.upper()} {fiscal_year - 1}"
     candidates = [row for row in read_derived_kpis(reference_path)
                   if row["ticker"].casefold() == ticker.casefold()]
+    current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
+    if not current_period_rows and (shareholder_letter_url or shareholder_letter_text):
+        _maybe_seed_shareholder_letter_rows(
+            company=company,
+            ticker=ticker,
+            sector=sector,
+            fiscal_period=fiscal_period,
+            fiscal_year=fiscal_year,
+            reference_path=reference_path,
+            shareholder_letter_url=shareholder_letter_url,
+            shareholder_letter_text=shareholder_letter_text,
+            source_date=source_date,
+        )
+        candidates = [row for row in read_derived_kpis(reference_path)
+                      if row["ticker"].casefold() == ticker.casefold()]
     selected: list[dict[str, Any]] = []
     stale_period_rows = 0
     for row in sorted(candidates, key=lambda item: (_importance_rank(item["importance"]), item["metric"].casefold())):

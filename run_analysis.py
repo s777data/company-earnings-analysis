@@ -36,6 +36,7 @@ from analysis_enrichment import (
     _percentile_rank,
 )
 from kpi_metrics import build_business_kpis
+from shareholder_letter_kpi_extractor import discover_shareholder_letter_pdf, extract_shareholder_letter_text
 from valuation_engine import (
     build_valuation_analysis,
     determine_valuation_regime,
@@ -952,7 +953,7 @@ class EarningsAnalyzer:
             "call_date": transcript_call_date
         })
         
-        release_doc = None; scored_releases = []
+        release_doc = None; release_text = ""; scored_releases = []
         for candidate in self.release_candidates:
             if abs((datetime.fromisoformat(candidate["filing_date"]) - datetime.fromisoformat(self.filing["filing_date"])).days) > 60: continue
             candidate_doc = fetch_filing(candidate["accession_number"], candidate["cik"], candidate["primary_document"], include_exhibits=True)
@@ -976,11 +977,25 @@ class EarningsAnalyzer:
                 release_doc.get("filing_url"),
             )
         investor_relations_url = _extract_investor_relations_url(release_text) if release_doc else None
+        shareholder_letter_url = discover_shareholder_letter_pdf(
+            page_url=investor_relations_url,
+            release_text=release_text,
+            report_date=report_date,
+            fiscal_period=period,
+            fiscal_year=int(year_text),
+        )
+        shareholder_letter_text = None
+        if shareholder_letter_url:
+            try:
+                shareholder_letter_text = extract_shareholder_letter_text(shareholder_letter_url)
+            except Exception as exc:
+                self.data.setdefault("warnings", []).append(f"Could not extract shareholder-letter PDF text: {exc}")
         self.data.update({"fiscal_period": period, "fiscal_year": int(year_text), "report_date": report_date,
                           "filing_date": self.filing["filing_date"], "accession_number": self.filing["accession_number"],
                           "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc.get("xbrl_url"),
                                       "earnings_release_url": release_url,
                                       "investor_relations_url": investor_relations_url,
+                                      "shareholder_letter_url": shareholder_letter_url,
                                       "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
                                       "transcript_call_date": transcript_call_date,
                                       "transcript_fiscal_period": self.transcript["fiscal_period"],
@@ -988,7 +1003,7 @@ class EarningsAnalyzer:
                                       "transcript_retrieved_at": self.transcript["retrieved_at"],
                                       "transcript_content_sha256": self.transcript["content_sha256"]},
                           "_xbrl": xbrl, "_filing_text": filing_doc["content"],
-                          "_release_text": release_text if release_doc else ""})
+                          "_release_text": release_text if release_doc else "", "_shareholder_letter_text": shareholder_letter_text})
         
         # Q4 standalone release extraction: if 10-K was selected and period is Q4,
         # use the official 8-K Exhibit 99.1 for standalone three-month values
@@ -1045,10 +1060,13 @@ class EarningsAnalyzer:
             filing_url=self.data["sources"]["filing_url"],
             release_url=self.data["sources"].get("earnings_release_url"),
             ir_url=self.data["sources"].get("investor_relations_url"),
+            shareholder_letter_url=self.data["sources"].get("shareholder_letter_url"),
+            shareholder_letter_text=self.data.get("_shareholder_letter_text"),
+            source_date=self.data.get("report_date"),
             fiscal_period=self.data["fiscal_period"],
             fiscal_year=self.data["fiscal_year"],
+            reference_path=reference_path,
         )
-        
         if self.data["business_kpis"]["selection_status"] == "DERIVED_REFERENCE_REQUIRED":
             raise RuntimeError(
                 f"KPI_DERIVATION_REQUIRED: No current-period source-derived KPI rows exist for "
