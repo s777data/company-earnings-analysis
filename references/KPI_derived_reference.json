@@ -3335,5 +3335,213 @@
         "importance": "Tier 2 — High"
       }
     }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "$100K+ ARR Customers",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 3,605",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "The $100K+ customer cohort reached 3,605, highlighting large-enterprise adoption.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "$1M+ ARR Customers",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 210",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "The $1M+ customer cohort reached 210, a quarterly record that underscores customer expansion at the top end.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "ARR from $100K+ ARR Customers",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: $1.3B",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "ARR from $100K+ customers reached $1.3B and represented 63% of total ARR.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "ARR from $1M+ ARR Customers",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: >$500M",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "ARR from the $1M+ cohort surpassed $500M, showing durable scale in the largest accounts.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "ARR per $100K+ ARR Customer",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: $369K",
+        "last_year_quarter_value": "Q2 FY2026: $349K",
+        "analyst_view": "Average ARR per $100K+ customer increased to $369K, up from $349K a year ago.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Core Customer Dollar-Based Net Retention Rate",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: ~115%",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "Core customer net retention was approximately 115%, consistent with strong expansion and retention.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Free Cash Flow Margin",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 13%",
+        "last_year_quarter_value": "Q2 FY2026: 12%",
+        "analyst_view": "Free cash flow margin reached 13%, 1 point higher year-over-year.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Emerging Products Share of Net New ACV",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 20%+",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "Emerging products contributed 20%+ of net new ACV for the third consecutive quarter.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "International Net New ACV Mix",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 18%",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "International markets generated 18% of Q2 net new ACV, tied for a quarterly record.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "2+ Products Penetration (Core Customers)",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 93%",
+        "last_year_quarter_value": "Q2 FY2026: 91%",
+        "analyst_view": "93% of core customers subscribed to 2+ products, up from 91% a year ago.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "3+ Products Penetration (Core Customers)",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 56%",
+        "last_year_quarter_value": "Q2 FY2026: 51%",
+        "analyst_view": "56% of core customers subscribed to 3+ products, up from 51% a year ago.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "2+ Products Penetration ($100K+ ARR Customers)",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 96%",
+        "last_year_quarter_value": "Q2 FY2026: 95%",
+        "analyst_view": "96% of $100K+ customers subscribed to 2+ products, up from 95% a year ago.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "3+ Products Penetration ($100K+ ARR Customers)",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 72%",
+        "last_year_quarter_value": "Q2 FY2026: 68%",
+        "analyst_view": "72% of $100K+ customers subscribed to 3+ products, up from 68% a year ago.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
   }
 ]

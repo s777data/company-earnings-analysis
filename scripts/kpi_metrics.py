@@ -44,7 +44,7 @@ LEGACY_REFERENCE_PATH = Path(__file__).resolve().parents[1] / "references" / "KP
 
 REFERENCE_FIELDS = (
     "company", "ticker", "sector", "metric", "latest_quarter", "prior_year_quarter",
-    "analyst_view", "source", "importance", "date_added",
+    "analyst_view", "source", "importance", "source_url", "date_added",
 )
 
 
@@ -130,6 +130,7 @@ def _convert_json_to_flat_rows(json_data: list[dict[str, Any]]) -> list[dict[str
                 "analyst_view": details.get("analyst_view", ""),
                 "source": details.get("source", ""),
                 "importance": details.get("importance", ""),
+                "source_url": metric_obj.get("source_url", ""),
                 "date_added": latest_date,
             }
             rows.append(row)
@@ -182,8 +183,10 @@ def _read_legacy_text_format(reference: Path) -> list[dict[str, str]]:
         if not line.strip():
             continue
         values = line.split("|")
-        if len(values) != len(REFERENCE_FIELDS):
+        if len(values) not in {len(REFERENCE_FIELDS), len(REFERENCE_FIELDS) - 1}:
             raise RuntimeError(f"KPI_REFERENCE_INVALID_ROW: {reference}:{line_number}")
+        if len(values) == len(REFERENCE_FIELDS) - 1:
+            values.append("")
         row = dict(zip(REFERENCE_FIELDS, map(_clean, values)))
         if row["source"] not in ALLOWED_SOURCES:
             raise RuntimeError(f"KPI_REFERENCE_INVALID_SOURCE: {reference}:{line_number}")
@@ -276,6 +279,7 @@ def _write_json_format(reference: Path, ordered_rows: list[dict[str, str]]) -> N
                 "TICKER": row["ticker"],
                 "SECTOR": row["sector"],
                 "metric": row["metric"],
+                "source_url": row.get("source_url", ""),
                 "details_map": details_map,
             })
         else:
@@ -294,6 +298,7 @@ def _write_json_format(reference: Path, ordered_rows: list[dict[str, str]]) -> N
                 "TICKER": row["ticker"],
                 "SECTOR": row["sector"],
                 "metric": row["metric"],
+                "source_url": row.get("source_url", ""),
                 "details_map": details_map,
             })
     
@@ -333,7 +338,7 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
             stale_period_rows += 1
             continue
         source = row["source"]
-        primary_url = filing_url if source == "SEC" else (ir_url or release_url or filing_url)
+        primary_url = row.get("source_url") or (filing_url if source == "SEC" else (ir_url or release_url or filing_url))
         selected.append({
             "key": re.sub(r"[^a-z0-9]+", "_", row["metric"].casefold()).strip("_"),
             "metric": row["metric"], "latest_quarter": latest_value, "latest_period": latest_period,

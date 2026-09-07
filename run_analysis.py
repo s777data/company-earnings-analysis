@@ -87,7 +87,7 @@ def _extract_investor_relations_url(text: str) -> str | None:
     return None
 
 
-def _release_matches_period(text: str, report_date: str, fiscal_period: str, fiscal_year: int) -> bool:
+def _release_matches_period(text: str, report_date: str, fiscal_period: str, fiscal_year: int | None = None) -> bool:
     """Match earnings-release period labels, including compact forms such as ``Q4 FY26``."""
     normalized = " ".join((text or "").casefold().split())
     if not normalized:
@@ -102,15 +102,22 @@ def _release_matches_period(text: str, report_date: str, fiscal_period: str, fis
         return True
     period = fiscal_period.upper()
     period_labels = {period.casefold()}
+    quarter_words = {"Q1": "first quarter", "Q2": "second quarter", "Q3": "third quarter", "Q4": "fourth quarter"}
+    if period in quarter_words:
+        period_labels.add(quarter_words[period])
     if period == "Q4":
         period_labels.add("fourth quarter")
+    if not any(label in normalized for label in period_labels):
+        return False
+    if fiscal_year is None:
+        return True
     year_labels = {
         str(fiscal_year),
         f"fy{str(fiscal_year)[-2:]}",
         f"fiscal {fiscal_year}",
         f"fiscal year {fiscal_year}",
     }
-    return any(label in normalized for label in period_labels) and any(label in normalized for label in year_labels)
+    return any(label in normalized for label in year_labels)
 
 
 def _days_old(value: str) -> int: return (_now().date() - datetime.fromisoformat(value).date()).days
@@ -695,7 +702,7 @@ class EarningsAnalyzer:
         # Prefer 10-Q/10-K if available (US GAAP with XBRL), otherwise use 6-K (foreign issuer, IFRS)
         if filings_10q_10k:
             self.is_foreign_issuer = False
-            
+
             # If StockAnalysis gives a specific quarter end, try exact match first
             if sa_quarter_end:
                 # Search for exact report_date match across all forms (10-Q, 10-Q/A, 10-K, 10-K/A)
@@ -706,12 +713,12 @@ class EarningsAnalyzer:
                         "stockanalysis_period": sa_period,
                         "stockanalysis_quarter_end": sa_quarter_end,
                         "selected_filing_report_date": self.filing["report_date"],
-                        "selected_filing_form": self.filing["form_type"]
+                        "selected_filing_form": self.filing["form_type"],
                     })
                 else:
-                    # No exact match between StockAnalysis and SEC. Do not fail closed here:
-                    # StockAnalysis can be ahead of SEC and still be useful for context,
-                    # but the analysis must stay anchored to the latest verified SEC filing.
+                    # No exact SEC quarterly match. Try to promote a matching earnings 8-K / IR release
+                    # that identifies the StockAnalysis quarter end directly; otherwise fall back to the
+                    # latest verified SEC filing so the analysis can still proceed.
                     latest_10k = max(
                         [f for f in filings_10q_10k if f["form_type"] in {"10-K", "10-K/A"}],
                         key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
@@ -722,33 +729,87 @@ class EarningsAnalyzer:
                         key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
                         default=None,
                     )
-                    fallback = max(
-                        filings_10q_10k,
-                        key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
-                    )
-                    self.filing = fallback
-                    self.data["warnings"].append(
-                        "StockAnalysis quarter is ahead of SEC verification; using the latest verified SEC filing "
-                        f"({fallback['form_type']} ending {fallback['report_date']}) and still searching for the matching 8-K earnings release."
-                    )
-                    self._log("IDENTIFY_STOCKANALYSIS_FALLBACK", {
-                        "stockanalysis_period": sa_period,
-                        "stockanalysis_quarter_end": sa_quarter_end,
-                        "selected_filing_report_date": self.filing["report_date"],
-                        "selected_filing_form": self.filing["form_type"],
-                        "latest_10k_report_date": latest_10k["report_date"] if latest_10k else None,
-                        "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None,
-                        "available_report_dates": [f["report_date"] for f in filings_10q_10k],
-                    })
+                    release_candidates = search_filings(self.ticker, ["8-K"], query="earnings", limit=8)
+                    self.release_candidates = release_candidates
+                    release_match = None
+                    release_doc = None
+                    release_text = ""
+                    if sa_quarter_end:
+                        sa_quarter_dt = datetime.fromisoformat(sa_quarter_end)
+                        for candidate in sorted(
+                            release_candidates,
+                            key=lambda row: (row.get("filing_date") or "", row.get("report_date") or ""),
+                            reverse=True,
+                        ):
+                            filing_date = candidate.get("filing_date")
+                            if not filing_date:
+                                continue
+                            candidate_dt = datetime.fromisoformat(filing_date)
+                            if candidate_dt < sa_quarter_dt - timedelta(days=10) or candidate_dt > sa_quarter_dt + timedelta(days=120):
+                                continue
+                            try:
+                                candidate_doc = fetch_filing(candidate["accession_number"], candidate["cik"], candidate["primary_document"], include_exhibits=True)
+                            except Exception:
+                                continue
+                            candidate_text = "\n".join(candidate_doc.get("exhibit_content", {}).values())
+                            if _release_matches_period(candidate_text, sa_quarter_end, sa_period or "", None):
+                                release_match = candidate
+                                release_doc = candidate_doc
+                                release_text = candidate_text
+                                break
+                    if release_match:
+                        self.filing = release_match
+                        self.release = release_doc
+                        self.data["_source_mode"] = "quarter_release"
+                        self.data["_release_only_report_date"] = sa_quarter_end
+                        self.data["_release_only_period"] = sa_period
+                        self.data["_release_only_period_start"] = (
+                            (datetime.fromisoformat(latest_10q["report_date"]) + timedelta(days=1)).date().isoformat()
+                            if latest_10q else None
+                        )
+                        self.data["warnings"].append(
+                            "Using a matching 8-K earnings release as the primary quarter source because no SEC 10-Q/10-K matched the StockAnalysis quarter."
+                        )
+                        self._log("IDENTIFY_RELEASE_SOURCE_SELECTED", {
+                            "stockanalysis_period": sa_period,
+                            "stockanalysis_quarter_end": sa_quarter_end,
+                            "selected_filing_report_date": self.filing["report_date"],
+                            "selected_filing_form": self.filing["form_type"],
+                            "latest_10k_report_date": latest_10k["report_date"] if latest_10k else None,
+                            "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None,
+                        })
+                    else:
+                        fallback = max(
+                            filings_10q_10k,
+                            key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
+                        )
+                        self.filing = fallback
+                        self.data["warnings"].append(
+                            "StockAnalysis quarter is ahead of SEC verification; using the latest verified SEC filing "
+                            f"({fallback['form_type']} ending {fallback['report_date']}) and still searching for the matching 8-K earnings release."
+                        )
+                        self._log("IDENTIFY_STOCKANALYSIS_FALLBACK", {
+                            "stockanalysis_period": sa_period,
+                            "stockanalysis_quarter_end": sa_quarter_end,
+                            "selected_filing_report_date": self.filing["report_date"],
+                            "selected_filing_form": self.filing["form_type"],
+                            "latest_10k_report_date": latest_10k["report_date"] if latest_10k else None,
+                            "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None,
+                            "available_report_dates": [f["report_date"] for f in filings_10q_10k],
+                        })
             else:
                 # No StockAnalysis data; select the latest filing by report_date, preferring 10-K for Q4
                 # If the latest is a 10-K, it's Q4; otherwise it's the latest 10-Q
-                latest_10k = max([f for f in filings_10q_10k if f["form_type"] in {"10-K", "10-K/A"}], 
-                                  key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")), 
-                                  default=None)
-                latest_10q = max([f for f in filings_10q_10k if f["form_type"] in {"10-Q", "10-Q/A"}], 
-                                  key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")), 
-                                  default=None)
+                latest_10k = max(
+                    [f for f in filings_10q_10k if f["form_type"] in {"10-K", "10-K/A"}],
+                    key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
+                    default=None,
+                )
+                latest_10q = max(
+                    [f for f in filings_10q_10k if f["form_type"] in {"10-Q", "10-Q/A"}],
+                    key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
+                    default=None,
+                )
                 if latest_10k and latest_10k["report_date"] >= (latest_10q["report_date"] if latest_10q else ""):
                     self.filing = latest_10k
                 else:
@@ -757,7 +818,7 @@ class EarningsAnalyzer:
                     "selected_filing_report_date": self.filing["report_date"],
                     "selected_filing_form": self.filing["form_type"],
                     "latest_10k_report_date": latest_10k["report_date"] if latest_10k else None,
-                    "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None
+                    "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None,
                 })
         elif filings_6k:
             # For foreign issuers, find the quarterly earnings 6-K
@@ -812,13 +873,31 @@ class EarningsAnalyzer:
 
     def retrieve(self):
         self._log("RETRIEVE_START", {})
+        release_mode = self.data.get("_source_mode") == "quarter_release"
         # For foreign issuers, fetch the financial statements exhibit if available
         if self.is_foreign_issuer and self.filing.get("financial_exhibit_document"):
             filing_doc = fetch_filing(self.filing["accession_number"], self.filing["cik"], self.filing["financial_exhibit_document"], include_exhibits=False)
         else:
-            filing_doc = fetch_filing(self.filing["accession_number"], self.filing["cik"], self.filing["primary_document"], include_exhibits=self.is_foreign_issuer)
+            filing_doc = fetch_filing(self.filing["accession_number"], self.filing["cik"], self.filing["primary_document"], include_exhibits=self.is_foreign_issuer or release_mode)
         
-        if self.is_foreign_issuer:
+        if release_mode:
+            release_doc = self.release or filing_doc
+            release_text = "\n".join(release_doc.get("exhibit_content", {}).values())
+            if not release_text:
+                raise RuntimeError("DATA SOURCE NOT READY: matching 8-K release did not contain exhibit text")
+            period_start = self.data.get("_release_only_period_start") or self.filing.get("report_date")
+            xbrl = parse_q4_release_financials(
+                release_text,
+                ticker=self.ticker,
+                fiscal_year=None,
+                report_date=self.data.get("_release_only_report_date") or self.filing.get("report_date"),
+                period_start=period_start,
+                source_url=release_doc.get("filing_url", filing_doc.get("filing_url")),
+                fiscal_period=self.data.get("_release_only_period") or "Q2",
+            )
+            self.data["_quarter_release"] = xbrl
+            self.data["_release_text"] = release_text
+        elif self.is_foreign_issuer:
             # Foreign issuer (6-K): parse HTML tables from exhibit
             # The financial exhibit document contains the financial statements in its main content
             # Try to get the financial statements from the main content first
@@ -991,8 +1070,8 @@ class EarningsAnalyzer:
         
         # If we have Q4 standalone release metrics, use those for the current quarter
         # XBRL metrics from 10-K are annual; Q4 release provides three-month values
-        if self.data.get("_q4_release"):
-            q4_metrics = self.data["_q4_release"]["metrics"]
+        if self.data.get("_q4_release") or self.data.get("_quarter_release"):
+            q4_metrics = (self.data.get("_quarter_release") or self.data["_q4_release"])["metrics"]
             # Merge: use Q4 release for quarter values, XBRL for annual/YTD/balance-sheet
             xbrl_metrics = self.data["_xbrl"]["metrics"]
             metrics = dict(xbrl_metrics)  # copy

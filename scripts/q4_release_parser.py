@@ -104,66 +104,112 @@ def parse_q4_release_financials(
     content: str,
     *,
     ticker: str,
-    fiscal_year: int,
+    fiscal_year: int | None,
     report_date: str,
     period_start: str,
     source_url: str,
+    fiscal_period: str = "Q4",
 ) -> dict[str, Any]:
-    """Return standalone three-month Q4 facts from an SEC/official release.
+    """Return standalone three-month facts from an SEC/official release.
 
-    The release must identify the fourth quarter, fiscal year, period end, and
-    explicit three-month tables. Values in the official tables are assumed to
-    be in thousands except per-share amounts.
+    Historically used for Q4 standalone earnings releases, but the parser is
+    now generalized so it can also parse Q1/Q2/Q3 earnings releases when the
+    filing source is an 8-K exhibit instead of a 10-Q/10-K.
     """
     if not content or len(content) < 100:
-        raise RuntimeError("Q4_RELEASE_UNAVAILABLE: official release text is empty")
-    lower = content.casefold()
-    if "fourth quarter" not in lower or f"fiscal {fiscal_year}" not in lower:
-        raise RuntimeError("Q4_RELEASE_PERIOD_MISMATCH: fourth-quarter fiscal-year identity is absent")
-    date_matches = {_iso_date(*match.groups()) for match in _MONTH_DATE.finditer(content[:8000])}
-    if report_date not in date_matches:
-        raise RuntimeError(
-            f"Q4_RELEASE_PERIOD_MISMATCH: release does not identify period end {report_date}"
-        )
+        raise RuntimeError("QUARTER_RELEASE_UNAVAILABLE: official release text is empty")
 
-    operations = _section(
-        content,
-        "Condensed Consolidated Statements of Operations",
-        "Condensed Consolidated Statements of Comprehensive",
-    )
-    cash_flows = _section(
-        content,
-        "Condensed Consolidated Statements of Cash Flows",
-        "Reconciliation of GAAP to Non-GAAP Financial Measures",
-    )
+    period = fiscal_period.upper()
+    quarter_terms = {
+        "Q1": "first quarter",
+        "Q2": "second quarter",
+        "Q3": "third quarter",
+        "Q4": "fourth quarter",
+    }
+    if period not in quarter_terms:
+        raise RuntimeError(f"QUARTER_RELEASE_PERIOD_INVALID: {period}")
+
+    lower = content.casefold()
+    if period.casefold() not in lower and quarter_terms[period] not in lower:
+        raise RuntimeError(f"QUARTER_RELEASE_PERIOD_MISMATCH: {period} identity is absent")
+
+    inferred_year = fiscal_year
+    if inferred_year is None:
+        year_match = re.search(r"fiscal\s+year\s+(20\d{2})", lower, re.I) or re.search(r"fy\s*(20\d{2})", lower, re.I)
+        if not year_match:
+            raise RuntimeError("QUARTER_RELEASE_YEAR_MISMATCH: fiscal year identity is absent")
+        inferred_year = int(year_match.group(1))
+    if f"fiscal year {inferred_year}" not in lower and f"fy{str(inferred_year)[-2:]}" not in lower and str(inferred_year) not in lower:
+        raise RuntimeError("QUARTER_RELEASE_YEAR_MISMATCH: fiscal year identity is absent")
+
+    date_matches = {_iso_date(*match.groups()) for match in _MONTH_DATE.finditer(content[:12000])}
+    if report_date not in date_matches:
+        raise RuntimeError(f"QUARTER_RELEASE_PERIOD_MISMATCH: release does not identify period end {report_date}")
+
+    lower_content = content.casefold()
+    balance_title = "condensed consolidated balance sheets"
+    ops_title = "condensed consolidated statements of operations and comprehensive income (loss)"
+    cash_title = "condensed consolidated statements of cash flows"
+
+    balance_title_index = lower_content.find(balance_title)
+    if balance_title_index < 0:
+        raise RuntimeError(f"Q4_RELEASE_TABLE_MISSING: {balance_title}")
+    ops_title_index = lower_content.find(ops_title, balance_title_index + len(balance_title))
+    if ops_title_index < 0:
+        raise RuntimeError(f"Q4_RELEASE_TABLE_MISSING: {ops_title}")
+    cash_title_index = lower_content.find(cash_title, ops_title_index + len(ops_title))
+    if cash_title_index < 0:
+        raise RuntimeError(f"Q4_RELEASE_TABLE_MISSING: {cash_title}")
+
+    def _anchored_section(title_index: int, title: str, end_title: str | None = None) -> str:
+        start_index = lower_content.rfind("samsara inc.", 0, title_index)
+        if start_index < 0:
+            start_index = title_index
+        result = content[start_index:]
+        if end_title:
+            end_index = result.casefold().find(end_title.casefold(), len(title))
+            if end_index >= 0:
+                result = result[:end_index]
+        return result
+
+    balance = _anchored_section(balance_title_index, balance_title, ops_title)
+    operations = _anchored_section(ops_title_index, ops_title, cash_title)
+    cash_flows = _anchored_section(cash_title_index, cash_title, "samsara inc.")
     if "Three Months Ended" not in operations or "Three Months Ended" not in cash_flows:
-        raise RuntimeError("Q4_RELEASE_SCOPE_MISMATCH: explicit three-month tables are required")
+        raise RuntimeError("QUARTER_RELEASE_SCOPE_MISMATCH: explicit three-month tables are required")
 
     rows: dict[str, tuple[tuple[str, ...], str, float]] = {
         "revenue": (("Revenue",), "Revenue", 1000.0),
         "gross_profit": (("Gross profit",), "GrossProfit", 1000.0),
-        "operating_income": (("Loss from operations", "Income from operations"), "OperatingIncomeLoss", 1000.0),
-        "net_income": (("Net loss", "Net income"), "NetIncomeLoss", 1000.0),
+        "operating_income": (("Loss from operations", "Income from operations", "Income (loss) from operations"), "OperatingIncomeLoss", 1000.0),
+        "net_income": (("Net loss", "Net income", "Net income (loss)"), "NetIncomeLoss", 1000.0),
         "eps_diluted": (
             ("Net loss per share, basic and diluted", "Net income per share, basic and diluted", "Net income (loss) per share, basic and diluted"),
             "EarningsPerShareDiluted",
             1.0,
         ),
         "shares_diluted": (
-            ("Weighted-average shares used in computing net loss per share, basic and diluted", "Weighted-average shares used in computing net income per share, basic and diluted"),
+            ("Weighted-average shares used in computing net loss per share, basic and diluted", "Weighted-average shares used in computing net income per share, basic and diluted", "Weighted-average shares used in computing net income (loss) per share, diluted"),
             "WeightedAverageNumberOfDilutedSharesOutstanding",
             1000.0,
         ),
-        "depreciation_amortization": (("Depreciation and amortization expense",), "DepreciationDepletionAndAmortization", 1000.0),
+        "depreciation_amortization": (("Depreciation and amortization expense", "Depreciation and amortization"), "DepreciationDepletionAndAmortization", 1000.0),
         "stock_based_compensation": (("Stock-based compensation expense",), "ShareBasedCompensation", 1000.0),
     }
     cash_rows: dict[str, tuple[tuple[str, ...], str, float]] = {
         "operating_cash_flow": (("Net cash provided by operating activities",), "NetCashProvidedByUsedInOperatingActivities", 1000.0),
     }
+    balance_rows: dict[str, tuple[tuple[str, ...], str, float]] = {
+        "cash": (("Cash and cash equivalents",), "CashAndCashEquivalentsAtCarryingValue", 1000.0),
+        "total_assets": (("Total assets",), "Assets", 1000.0),
+        "total_liabilities": (("Total liabilities",), "Liabilities", 1000.0),
+        "total_equity": (("Total stockholders’ equity", "Total stockholders' equity", "Total equity"), "StockholdersEquity", 1000.0),
+        "long_term_debt": (("Long-term debt",), "LongTermDebtNoncurrent", 1000.0),
+    }
 
     prior_end = _prior_year_date(report_date)
     metrics: dict[str, dict[str, Any]] = {}
-    optional_metrics = {"depreciation_amortization", "stock_based_compensation"}
+    optional_metrics = {"depreciation_amortization", "stock_based_compensation", "long_term_debt"}
     for metric, (aliases, concept, scale) in rows.items():
         try:
             current, prior, _, _ = _row_values(operations, aliases)
@@ -210,8 +256,37 @@ def parse_q4_release_financials(
             "url": source_url,
         }
 
-    pp_e = _row_values(cash_flows, ("Purchases of property, equipment and other assets",))
-    software = _row_values(cash_flows, ("Capitalized internal-use software",))
+    for metric, (aliases, concept, scale) in balance_rows.items():
+        try:
+            current, prior = _row_values(balance, aliases, count=2)
+        except RuntimeError:
+            if metric == "long_term_debt":
+                continue
+            raise
+        metrics[metric] = {
+            "value": current * scale,
+            "prior_value": prior * scale,
+            "prior_end": prior_end,
+            "concept": concept,
+            "context": "official_release_balance_sheet",
+            "start": report_date,
+            "end": report_date,
+            "instant": True,
+            "duration_days": 0,
+            "unit": "USD",
+            "decimals": None,
+            "dimensions": [],
+            "taxonomy": "official-release",
+            "period_scope": "instant",
+            "source": "SEC 8-K Exhibit 99.1",
+            "url": source_url,
+        }
+
+    pp_e = _row_values(cash_flows, ("Purchases of property, equipment and other assets", "Purchases of property and equipment"))
+    try:
+        software = _row_values(cash_flows, ("Capitalized internal-use software", "Capitalized internal use software"))
+    except RuntimeError:
+        software = [0.0, 0.0, 0.0, 0.0]
     metrics["capex"] = {
         "value": (abs(pp_e[0]) + abs(software[0])) * 1000.0,
         "prior_value": (abs(pp_e[1]) + abs(software[1])) * 1000.0,
@@ -235,11 +310,11 @@ def parse_q4_release_financials(
         },
     }
     return {
-        "fiscal_period": "Q4",
-        "fiscal_year": str(fiscal_year),
+        "fiscal_period": period,
+        "fiscal_year": str(inferred_year),
         "report_date": report_date,
         "metrics": metrics,
         "source_url": source_url,
-        "source_type": "official_standalone_q4_release",
+        "source_type": "official_standalone_quarter_release",
         "ticker": ticker.upper(),
     }
