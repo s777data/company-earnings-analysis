@@ -55,15 +55,17 @@ def extract_index_exhibits(index_html: str, root: str) -> dict[str, dict[str, st
     """Read exhibit types from the SEC filing-detail table when filenames omit ``ex99``."""
     soup = BeautifulSoup(index_html, "html.parser")
     exhibits: dict[str, dict[str, str]] = {}
-    for row in soup.select("table.tableFile tr"):
+    for row in soup.find_all("tr"):
         cells = row.find_all("td")
-        if len(cells) < 4:
+        if not cells:
             continue
-        exhibit_type = cells[3].get_text(" ", strip=True)
-        match = re.fullmatch(r"EX-(\d{2})\.(\d+)", exhibit_type, re.I)
+        row_text = " ".join(cell.get_text(" ", strip=True) for cell in cells)
+        match = re.search(r"EX[-]?(\d{2})[-.]?(\d)", row_text, re.I)
         number = f"{match.group(1)}.{match.group(2)}" if match else None
+        if not number:
+            continue
         link = row.find("a", href=True)
-        if not number or link is None:
+        if link is None:
             continue
         url = urljoin(f"{root}/", str(link.get("href", "")))
         exhibits[number] = {"name": urlparse(url).path.rsplit("/", 1)[-1], "url": url}
@@ -109,7 +111,10 @@ def fetch_filing(accession_number: str, cik: str, primary_document: str | None =
             continue
         exhibits[number] = {"name": name, "url": f"{root}/{name}"}
     if include_exhibits or exhibit_filter:
-        detail_name = f"{accession_number}-index.html"
+        detail_accession = accession_number
+        if re.fullmatch(r"\d{18}", accession_number):
+            detail_accession = f"{accession_number[:10]}-{accession_number[10:12]}-{accession_number[12:]}"
+        detail_name = f"{detail_accession}-index.html"
         try:
             indexed_exhibits = extract_index_exhibits(_get(f"{root}/{detail_name}").text, root)
             for number, meta in indexed_exhibits.items():

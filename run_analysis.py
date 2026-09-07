@@ -709,51 +709,37 @@ class EarningsAnalyzer:
                         "selected_filing_form": self.filing["form_type"]
                     })
                 else:
-                    # NO EXACT MATCH: newer quarter claimed but no SEC filing with that report_date.
-                    # Search for 10-K (Q4/FY) with a later report_date than the latest 10-Q.
-                    # If found, it supersedes the older 10-Q.
-                    filings_10k = [f for f in filings_10q_10k if f["form_type"] in {"10-K", "10-K/A"}]
-                    if filings_10k:
-                        latest_10k = max(filings_10k, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
-                        latest_10q = max([f for f in filings_10q_10k if f["form_type"] in {"10-Q", "10-Q/A"}], 
-                                          key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")), 
-                                          default=None)
-                        # If 10-K report_date is >= the claimed quarter end, use it as Q4
-                        if latest_10k["report_date"] >= sa_quarter_end:
-                            self.filing = latest_10k
-                            self._log("IDENTIFY_STOCKANALYSIS_10K_Q4", {
-                                "stockanalysis_period": sa_period,
-                                "stockanalysis_quarter_end": sa_quarter_end,
-                                "selected_filing_report_date": self.filing["report_date"],
-                                "selected_filing_form": self.filing["form_type"],
-                                "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None
-                            })
-                        else:
-                            # No 10-K covering the claimed period; fail closed
-                            self._log("IDENTIFY_STOCKANALYSIS_NO_MATCH", {
-                                "stockanalysis_period": sa_period,
-                                "stockanalysis_quarter_end": sa_quarter_end,
-                                "available_report_dates": [f["report_date"] for f in filings_10q_10k],
-                                "latest_10k_report_date": latest_10k["report_date"],
-                                "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None
-                            })
-                            raise RuntimeError(
-                                f"LATEST_QUARTER_SOURCE_MISMATCH: StockAnalysis reports {sa_period} ending {sa_quarter_end}, "
-                                f"but no matching SEC 10-Q/10-K with that report_date was verified. "
-                                f"Latest 10-K ends {latest_10k['report_date']}, latest 10-Q ends {latest_10q['report_date'] if latest_10q else 'N/A'}."
-                            )
-                    else:
-                        # No 10-K at all; fail closed
-                        self._log("IDENTIFY_STOCKANALYSIS_NO_MATCH", {
-                            "stockanalysis_period": sa_period,
-                            "stockanalysis_quarter_end": sa_quarter_end,
-                            "available_report_dates": [f["report_date"] for f in filings_10q_10k]
-                        })
-                        raise RuntimeError(
-                            f"LATEST_QUARTER_SOURCE_MISMATCH: StockAnalysis reports {sa_period} ending {sa_quarter_end}, "
-                            f"but no matching SEC 10-Q/10-K with that report_date was verified. "
-                            f"Available report dates: {[f['report_date'] for f in filings_10q_10k]}."
-                        )
+                    # No exact match between StockAnalysis and SEC. Do not fail closed here:
+                    # StockAnalysis can be ahead of SEC and still be useful for context,
+                    # but the analysis must stay anchored to the latest verified SEC filing.
+                    latest_10k = max(
+                        [f for f in filings_10q_10k if f["form_type"] in {"10-K", "10-K/A"}],
+                        key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
+                        default=None,
+                    )
+                    latest_10q = max(
+                        [f for f in filings_10q_10k if f["form_type"] in {"10-Q", "10-Q/A"}],
+                        key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
+                        default=None,
+                    )
+                    fallback = max(
+                        filings_10q_10k,
+                        key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
+                    )
+                    self.filing = fallback
+                    self.data["warnings"].append(
+                        "StockAnalysis quarter is ahead of SEC verification; using the latest verified SEC filing "
+                        f"({fallback['form_type']} ending {fallback['report_date']}) and still searching for the matching 8-K earnings release."
+                    )
+                    self._log("IDENTIFY_STOCKANALYSIS_FALLBACK", {
+                        "stockanalysis_period": sa_period,
+                        "stockanalysis_quarter_end": sa_quarter_end,
+                        "selected_filing_report_date": self.filing["report_date"],
+                        "selected_filing_form": self.filing["form_type"],
+                        "latest_10k_report_date": latest_10k["report_date"] if latest_10k else None,
+                        "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None,
+                        "available_report_dates": [f["report_date"] for f in filings_10q_10k],
+                    })
             else:
                 # No StockAnalysis data; select the latest filing by report_date, preferring 10-K for Q4
                 # If the latest is a 10-K, it's Q4; otherwise it's the latest 10-Q

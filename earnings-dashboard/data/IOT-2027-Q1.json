@@ -5,8 +5,8 @@
     "period": "Q1 FY2027",
     "report_date": "2026-05-02",
     "call_date": "2026-06-04",
-    "grade": "B-",
-    "confidence": 0.8700000000000001,
+    "grade": "C+",
+    "confidence": 0.9500000000000001,
     "recommendation": "HOLD",
     "price": 40.2,
     "market_cap": 23500364222.17,
@@ -191,7 +191,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -212,7 +212,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -233,7 +233,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -254,7 +254,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -275,7 +275,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -296,7 +296,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -317,7 +317,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -338,7 +338,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -359,7 +359,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -380,7 +380,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -401,7 +401,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         },
         {
@@ -422,7 +422,7 @@
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
+          "source_note": "IR/SEC — https://investors.samsara.com/",
           "scale": []
         }
       ],
@@ -779,25 +779,6 @@
     ],
     "capital_liquidity": [
       {
-        "name": "Operating Cash Flow",
-        "value": "$81.4M",
-        "signal": "best",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "NetCashProvidedByUsedInOperatingActivities",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-1",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": "2026-02-01",
-          "period_end": "2026-05-02"
-        }
-      },
-      {
         "name": "Cash",
         "value": "$219.0M",
         "signal": "worst",
@@ -813,45 +794,8 @@
           "unit": "usd",
           "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-05-02"
-        }
-      },
-      {
-        "name": "Total Assets",
-        "value": "$2.61B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Assets",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-5",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": null,
-          "period_end": "2026-05-02"
-        }
-      },
-      {
-        "name": "Total Equity",
-        "value": "$1.51B",
-        "signal": "best",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "StockholdersEquity",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-5",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": null,
-          "period_end": "2026-05-02"
+          "period_end": "2026-05-02",
+          "period_scope": "instant"
         }
       },
       {
@@ -870,7 +814,68 @@
           "unit": "usd",
           "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-05-02"
+          "period_end": "2026-05-02",
+          "period_scope": "instant"
+        }
+      },
+      {
+        "name": "Operating Cash Flow",
+        "value": "$81.4M",
+        "signal": "best",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-1",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": "2026-02-01",
+          "period_end": "2026-05-02",
+          "period_scope": "quarter"
+        }
+      },
+      {
+        "name": "Total Equity",
+        "value": "$1.51B",
+        "signal": "best",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "StockholdersEquity",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-5",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": null,
+          "period_end": "2026-05-02",
+          "period_scope": "instant"
+        }
+      },
+      {
+        "name": "Total Assets",
+        "value": "$2.61B",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "Assets",
+          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "context": "c-5",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": null,
+          "period_end": "2026-05-02",
+          "period_scope": "instant"
         }
       },
       {
@@ -889,7 +894,8 @@
           "unit": "usd",
           "decimals": "-3",
           "period_start": "2026-02-01",
-          "period_end": "2026-05-02"
+          "period_end": "2026-05-02",
+          "period_scope": "quarter"
         }
       }
     ],
@@ -1306,19 +1312,19 @@
   "sources": {
     "filing_url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502.htm",
     "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026041893/iot-20260502_htm.xml",
-    "earnings_release_url": null,
-    "investor_relations_url": null,
+    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1642896/000162828026040788/samsaraepr-q12027.htm",
+    "investor_relations_url": "https://investors.samsara.com/",
     "transcript_url": "https://stockanalysis.com/stocks/iot/transcripts/583864-q1-2027/",
     "transcript_provider": "stockanalysis.com",
     "transcript_call_date": "2026-06-04",
     "transcript_fiscal_period": "Q1",
     "transcript_fiscal_year": 2027,
-    "transcript_retrieved_at": "2026-09-07T03:16:03.256618+00:00",
+    "transcript_retrieved_at": "2026-09-07T04:21:38.118295+00:00",
     "transcript_content_sha256": "81dc4996d49449a7dd560fc5bc3478909b0f6aab86c67d7fbce9ca19643f9c9b"
   },
   "warnings": [
-    "No quarter-matched earnings 8-K exhibit was verified",
-    "Using latest completed daily regular-session close (75.3 hours old) — production data",
+    "StockAnalysis quarter is ahead of SEC verification; using the latest verified SEC filing (10-Q ending 2026-05-02) and still searching for the matching 8-K earnings release.",
+    "Using latest completed daily regular-session close (76.4 hours old) — production data",
     "Official Nasdaq short-interest data unavailable: RuntimeError",
     "Forward P/E sourced from StockAnalysis.com (S&P Global Market Intelligence): 47.61x"
   ],
@@ -1335,9 +1341,9 @@
       "weight": 0.4
     },
     "valuation": {
-      "grade": "C",
-      "score": 50.0,
-      "reason": "50.0/100 — Fallback neutral valuation (insufficient_data)",
+      "grade": "D",
+      "score": 47.51233397500131,
+      "reason": "47.5/100 — Very Expensive",
       "weight": 0.4
     },
     "earnings_call": {
@@ -1355,12 +1361,12 @@
       "reason": "Explosive growth trajectory: backlog expanding, >20% revenue growth, strong pipeline, clear secular tailwinds",
       "weight": 0.05
     },
-    "final_grade": "B-",
-    "final_score": 8.07,
+    "final_grade": "C+",
+    "final_score": 6.87,
     "all_scores": {
       "financial_metrics": 12,
       "business_quality": 8,
-      "valuation": 6,
+      "valuation": 3,
       "earnings_call": 13,
       "management_execution": 12,
       "future_growth": 13
