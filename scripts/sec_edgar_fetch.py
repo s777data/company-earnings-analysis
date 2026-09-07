@@ -70,6 +70,8 @@ def extract_index_exhibits(index_html: str, root: str) -> dict[str, dict[str, st
     return exhibits
 
 
+
+
 def _select_instance(files: list[dict[str, Any]]) -> str | None:
     candidates = [f["name"] for f in files if f.get("name", "").lower().endswith(".xml")]
     preferred = [name for name in candidates if name.lower().endswith("_htm.xml")]
@@ -99,6 +101,10 @@ def fetch_filing(accession_number: str, cik: str, primary_document: str | None =
     for item in files:
         name = item.get("name", "")
         number = extract_exhibit_number(name)
+        if not number:
+            # Try to infer from index metadata for non-standard filenames
+            # (e.g., Samsara's custom press-release exhibit name)
+            number = None
         if not number or (exhibit_filter and number != exhibit_filter):
             continue
         exhibits[number] = {"name": name, "url": f"{root}/{name}"}

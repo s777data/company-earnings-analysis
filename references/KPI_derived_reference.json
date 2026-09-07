@@ -1327,291 +1327,6 @@
     }
   },
   {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "2026 AI capacity sold status",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: Largely sold out",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Management reports 2026 capacity is largely sold, reducing near-term demand risk while leaving delivery and acceptance execution risk.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "2026 cumulative IT capacity target",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: ~0.3 GW",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The 2026 target establishes the near-term commissioned infrastructure milestone supporting contracted demand.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "2027 cumulative IT capacity target",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: ~0.8 GW",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The 2027 target implies a substantial year-over-year increase in delivered IT capacity and execution requirements.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Adjusted EBITDA",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $19.2M",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Adjusted EBITDA fell from $59.5M in Q3 as employee costs and platform investment preceded the AI Cloud revenue ramp.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "AI Cloud Services revenue",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $70.5M",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "AI Cloud revenue more than doubled sequentially from $33.6M in Q3, showing the transition toward AI infrastructure is accelerating.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Bitcoin Mining revenue",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $66.7M",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Mining revenue declined sequentially from $111.2M in Q3 as the company redirected sites and capital toward AI Cloud.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Contracted ARR for 2026 capacity",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $4.0B",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Contracted ARR indicates substantial booked demand, but it remains an operating metric subject to commissioning, testing, acceptance, and GAAP recognition differences.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Data center development pipeline",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: >5 GW",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The global pipeline provides long-duration expansion optionality across North America, Europe, and APAC.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Net income (loss)",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: -$684.0M",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The Q4 loss included a $450.4M non-cash impairment primarily tied to decommissioned mining hardware during AI conversion.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Operating ARR",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $1.0B",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Operating ARR as of August 26, 2026 establishes the currently commissioned revenue run-rate before the remaining 2026 capacity comes online.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Total revenue",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $137.2M",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Quarterly revenue decreased from $144.8M in Q3 despite rapid AI Cloud growth because Bitcoin Mining declined.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Additional GPU financings",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $2.8B",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The new financing package supports non-investment-grade customer deployments and broadens available capital sources.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Customer prepayments as share of GPU capex",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: 45–55%",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Upfront customer funding reduces IREN’s equity contribution and financing burden for recent deployments.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Estimated recent-contract payback period",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: ~2 years",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The estimated payback suggests attractive project economics, subject to the company’s GPU-capex and direct-cost assumptions.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Horizon 1 delivered IT capacity",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: 50 MW",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Delivery of the first of four liquid-cooled Horizon deployments to Microsoft demonstrates initial execution against the contracted build-out.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Mackenzie GPU capex financing coverage",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: 90%",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The $2.4B financing led by Blue Owl and PIMCO covers most associated GPU capex before customer prepayments.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Microsoft GPU financing",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: $3.6B at 6.0%",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Investment-grade GPU financing plus customer prepayments is expected to fund 96% of associated GPU capex.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "Recent contract revenue per MW",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: >$20M per MW (IT)",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "Recent three-year contracts carry higher revenue density and support management’s estimated roughly two-year payback.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "IREN Limited",
-    "TICKER": "IREN",
-    "SECTOR": "Digital Infrastructure / AI Cloud & Bitcoin Mining",
-    "metric": "FY26 headcount growth",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q4 2026: Nearly 3x",
-        "last_year_quarter_value": "Q4 2025: N/A",
-        "analyst_view": "The workforce expansion reflects platform build-out and helps explain higher employee costs ahead of revenue commissioning.",
-        "source": "IR/SEC",
-        "importance": "Tier 3 — Supporting"
-      }
-    }
-  },
-  {
     "COMPANY": "Klarna Group plc",
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
@@ -3265,49 +2980,12 @@
     "COMPANY": "Zscaler, Inc.",
     "TICKER": "ZS",
     "SECTOR": "Security Software",
-    "metric": "Capital Expenditures",
-    "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $218.5M",
-        "last_year_quarter_value": "Q4 2025: $78.7M",
-        "analyst_view": "CapEx increased 177.7% YoY to support capacity and infrastructure needs.",
-        "source": "SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Diluted EPS",
-    "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: -$0.02",
-        "last_year_quarter_value": "Q4 2025: -$0.11",
-        "analyst_view": "Diluted EPS improved to -$0.02 from -$0.11 a year ago.",
-        "source": "SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
     "metric": "Free Cash Flow",
     "details_map": {
       "2026-09-05": {
         "latest_quarter_value": "Q3 2026: $136.0M",
         "last_year_quarter_value": "Q3 2025: $119.5M",
         "analyst_view": "Free cash flow increased 14% YoY, showing improved conversion even with higher capital intensity.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      },
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $60.8M",
-        "last_year_quarter_value": "Q4 2025: $171.9M",
-        "analyst_view": "Free cash flow remained positive at $60.8M but declined 64.7% YoY on elevated CapEx.",
         "source": "IR/SEC",
         "importance": "Tier 1 — Core"
       }
@@ -3324,36 +3002,6 @@
         "last_year_quarter_value": "Q3 2025: 18%",
         "analyst_view": "Free cash flow margin stayed healthy at 16%, though it declined versus the prior year because of higher CapEx.",
         "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Gross Profit",
-    "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $689.2M",
-        "last_year_quarter_value": "Q4 2025: $547.0M",
-        "analyst_view": "Gross profit grew 26.0% YoY to $689.2M, showing strong top-line conversion.",
-        "source": "SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Net Income",
-    "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: -$3.4M",
-        "last_year_quarter_value": "Q4 2025: -$17.6M",
-        "analyst_view": "Net loss narrowed 80.8% YoY to -$3.4M, approaching break-even.",
-        "source": "SEC",
         "importance": "Tier 1 — Core"
       }
     }
@@ -3415,28 +3063,6 @@
         "analyst_view": "Operating cash flow remained robust despite a modest YoY decline, keeping cash generation strong.",
         "source": "IR/SEC",
         "importance": "Tier 1 — Core"
-      },
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $279.3M",
-        "last_year_quarter_value": "Q4 2025: $250.6M",
-        "analyst_view": "Operating cash flow increased 11.4% YoY to $279.3M.",
-        "source": "SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Operating Income",
-    "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: -$15.5M",
-        "last_year_quarter_value": "Q4 2025: -$32.2M",
-        "analyst_view": "Operating loss narrowed 52.0% YoY to -$15.5M as leverage improved.",
-        "source": "SEC",
-        "importance": "Tier 1 — Core"
       }
     }
   },
@@ -3467,28 +3093,6 @@
         "analyst_view": "Revenue grew 25% YoY and beat the high end of guidance, supporting strong platform adoption.",
         "source": "IR/SEC",
         "importance": "Tier 1 — Core"
-      },
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $898.2M",
-        "last_year_quarter_value": "Q4 2025: $719.2M",
-        "analyst_view": "Revenue grew 24.9% YoY to $898.2M, confirming continued platform adoption.",
-        "source": "SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Cash",
-    "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $928.4M",
-        "last_year_quarter_value": "Q4 2025: $2.39B",
-        "analyst_view": "Cash ended the quarter at $928.4M after a year of heavy investment.",
-        "source": "SEC",
-        "importance": "Tier 2 — High"
       }
     }
   },
@@ -3538,46 +3142,196 @@
     }
   },
   {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Total Assets",
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Annual Recurring Revenue (ARR)",
     "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $7.87B",
-        "last_year_quarter_value": "Q4 2025: $6.42B",
-        "analyst_view": "Total assets grew 22.5% YoY to $7.87B.",
-        "source": "SEC",
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $1,990.6M",
+        "last_year_quarter_value": "Q1 FY2026: $1,535.4M",
+        "analyst_view": "ARR grew 30% YoY to nearly $2B, demonstrating strong recurring revenue momentum in the Connected Operations platform.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Total Revenue",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $478.8M",
+        "last_year_quarter_value": "Q1 FY2026: $366.9M",
+        "analyst_view": "Revenue grew 31% YoY (29% in constant currency), driven by strong customer adoption and platform expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Net New ARR",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $100.7M",
+        "last_year_quarter_value": "Q1 FY2026: N/A",
+        "analyst_view": "Net new ARR grew 30% YoY (27% in constant currency), showing continued strong demand for the platform.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "GAAP Gross Margin",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 75%",
+        "last_year_quarter_value": "Q1 FY2026: 77%",
+        "analyst_view": "GAAP gross margin declined 200 bps YoY, reflecting investment in platform scaling and hardware costs.",
+        "source": "IR/SEC",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Total Equity",
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Non-GAAP Gross Margin",
     "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $2.60B",
-        "last_year_quarter_value": "Q4 2025: $1.80B",
-        "analyst_view": "Total equity increased 44.4% YoY to $2.60B.",
-        "source": "SEC",
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 76%",
+        "last_year_quarter_value": "Q1 FY2026: 79%",
+        "analyst_view": "Non-GAAP gross margin declined 300 bps YoY, but remains strong at 76%.",
+        "source": "IR/SEC",
         "importance": "Tier 2 — High"
       }
     }
   },
   {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Total Liabilities",
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "GAAP Operating Margin",
     "details_map": {
-      "2026-09-06": {
-        "latest_quarter_value": "Q4 2026: $5.27B",
-        "last_year_quarter_value": "Q4 2025: $4.62B",
-        "analyst_view": "Total liabilities increased 14.0% YoY to $5.27B.",
-        "source": "SEC",
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 2%",
+        "last_year_quarter_value": "Q1 FY2026: -9%",
+        "analyst_view": "GAAP operating margin improved 1100 bps YoY, achieving third consecutive quarter of GAAP operating profitability.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Non-GAAP Operating Margin",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 19%",
+        "last_year_quarter_value": "Q1 FY2026: 14%",
+        "analyst_view": "Non-GAAP operating margin expanded 500 bps YoY, demonstrating strong operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "GAAP Net Income Per Share",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $0.08",
+        "last_year_quarter_value": "Q1 FY2026: -$0.04",
+        "analyst_view": "Achieved GAAP EPS profitability for the third consecutive quarter, turning from a loss to $0.08 per share.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Non-GAAP Net Income Per Share",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $0.17",
+        "last_year_quarter_value": "Q1 FY2026: $0.11",
+        "analyst_view": "Non-GAAP EPS grew 55% YoY to $0.17, reflecting strong operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Operating Cash Flow",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $81.4M",
+        "last_year_quarter_value": "Q1 FY2026: $52.6M",
+        "analyst_view": "Operating cash flow grew 55% YoY to $81.4M with 17% margin, up 300 bps from prior year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Adjusted Free Cash Flow",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $73.2M",
+        "last_year_quarter_value": "Q1 FY2026: $45.7M",
+        "analyst_view": "Adjusted free cash flow grew 60% YoY to $73.2M with 15% margin, up 300 bps from prior year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Fiscal Year 2027 Revenue Outlook",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "FY2027: $2.025B – $2.045B",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Management guided FY2027 revenue of $2.025B-$2.045B, implying ~28-29% YoY growth.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Q2 FY2027 Revenue Outlook",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: $482M – $486M",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Q2 FY2027 revenue guided at $482M-$486M, representing continued strong growth trajectory.",
+        "source": "IR",
         "importance": "Tier 2 — High"
       }
     }
