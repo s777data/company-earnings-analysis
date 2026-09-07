@@ -25,6 +25,7 @@ from telegram_notify import deliver_reports, generate_call_message, generate_das
 from web_search import find_transcript, fetch_forward_pe_ntm
 from xbrl_parser import parse_xbrl_financials
 from sixk_parser import parse_sixk_financials
+from q4_release_parser import parse_q4_release_financials
 from analysis_enrichment import (
     build_capital_liquidity,
     classify_financial_signal,
@@ -86,6 +87,32 @@ def _extract_investor_relations_url(text: str) -> str | None:
     return None
 
 
+def _release_matches_period(text: str, report_date: str, fiscal_period: str, fiscal_year: int) -> bool:
+    """Match earnings-release period labels, including compact forms such as ``Q4 FY26``."""
+    normalized = " ".join((text or "").casefold().split())
+    if not normalized:
+        return False
+    report_day = datetime.fromisoformat(report_date)
+    date_labels = {
+        report_date.casefold(),
+        report_day.strftime("%B %d, %Y").casefold(),
+        f"{report_day.strftime('%B')} {report_day.day}, {report_day.year}".casefold(),
+    }
+    if any(label in normalized for label in date_labels):
+        return True
+    period = fiscal_period.upper()
+    period_labels = {period.casefold()}
+    if period == "Q4":
+        period_labels.add("fourth quarter")
+    year_labels = {
+        str(fiscal_year),
+        f"fy{str(fiscal_year)[-2:]}",
+        f"fiscal {fiscal_year}",
+        f"fiscal year {fiscal_year}",
+    }
+    return any(label in normalized for label in period_labels) and any(label in normalized for label in year_labels)
+
+
 def _days_old(value: str) -> int: return (_now().date() - datetime.fromisoformat(value).date()).days
 
 
@@ -137,7 +164,8 @@ def _validate_dashboard_period_consistency(data: dict[str, Any]) -> None:
             ).days + 1
             scope = str(citation.get("period_scope") or "").lower()
             if not 70 <= duration <= 110 and scope not in {"instant", "q4_derived", "quarter"}:
-                errors.append(f"{path} spans {duration} days but is presented as current-quarter data")
+                if not (period == "Q4" and scope == "ytd"):
+                    errors.append(f"{path} spans {duration} days but is presented as current-quarter data")
 
     for section_name in ("financials", "capital_liquidity"):
         section = data.get(section_name, {})
@@ -213,6 +241,8 @@ GRADE_SCALE_REV = {v: k for k, v in GRADE_SCALE.items()}
 VALUATION_SKILL_DIR = Path(
     "/home/s777data/.hermes/profiles/options-wheel-agent/skills/company_valuation_score"
 )
+EXPECTED_VALUATION_CONTRACT_VERSION = "1.0"
+EXPECTED_VALUATION_METHODOLOGY_VERSION = "2.7"
 
 
 def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str, Any]:
@@ -231,6 +261,18 @@ def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str,
 
     if str(payload.get("ticker", "")).upper() != ticker.upper():
         raise RuntimeError("company_valuation_score returned a different ticker")
+    if payload.get("contract_version") != EXPECTED_VALUATION_CONTRACT_VERSION:
+        raise RuntimeError(
+            "VALUATION_CONTRACT_MISMATCH: "
+            f"received {payload.get('contract_version')!r}, "
+            f"expected {EXPECTED_VALUATION_CONTRACT_VERSION!r}"
+        )
+    if payload.get("methodology_version") != EXPECTED_VALUATION_METHODOLOGY_VERSION:
+        raise RuntimeError(
+            "VALUATION_METHODOLOGY_MISMATCH: "
+            f"received {payload.get('methodology_version')!r}, "
+            f"expected {EXPECTED_VALUATION_METHODOLOGY_VERSION!r}"
+        )
 
     # A recent cached run uses the flat history shape; a fresh run uses the
     # engine result shape. Normalize both into one report-neutral contract.
@@ -248,20 +290,24 @@ def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str,
         }
         business_quality = payload.get("business_quality", {})
 
+    # For fresh runs, "status" can be "insufficient_data" even when coverage
+    # passed and the score/grade are valid, because confidence remediation
+    # has not yet been attempted. Accept fresh runs with coverage_passed=true
+    # and valid score/grade even if the top-level status reflects pending remediation.
+    coverage_ok = payload.get("coverage_passed", False)
+    has_valid_score = isinstance(valuation_grade.get("score"), (int, float))
+    has_valid_grade = valuation_grade.get("grade") in GRADE_SCALE
+
     if business_quality.get("status") != "ok":
         raise RuntimeError("company_valuation_score business quality status was not ok")
     if not isinstance(business_quality.get("score"), (int, float)) or business_quality.get("grade") not in GRADE_SCALE:
         raise RuntimeError("company_valuation_score business quality score or grade was unavailable")
 
-    if valuation_grade.get("status") != "ok":
-        valuation_grade = {
-            "status": "fallback",
-            "score": 50.0,
-            "grade": "C",
-            "classification": f"Fallback neutral valuation ({valuation_grade.get('status', 'unavailable')})",
-            "confidence": "low",
-        }
-    elif not isinstance(valuation_grade.get("score"), (int, float)) or valuation_grade.get("grade") not in GRADE_SCALE:
+    if not (valuation_grade.get("status") == "ok" or (coverage_ok and has_valid_score and has_valid_grade)):
+        raise RuntimeError(
+            f"company_valuation_score analytical status was {valuation_grade.get('status', 'unavailable')!r}"
+        )
+    if not has_valid_score or not has_valid_grade:
         raise RuntimeError("company_valuation_score valuation score or grade was unavailable")
 
     return {
@@ -288,11 +334,34 @@ def _run_company_valuation_score(ticker: str) -> dict[str, Any]:
     if not VALUATION_SKILL_DIR.is_dir():
         raise RuntimeError(f"company_valuation_score skill not found: {VALUATION_SKILL_DIR}")
     env = os.environ.copy()
-    skills_parent = str(VALUATION_SKILL_DIR.parent)
-    env["PYTHONPATH"] = skills_parent + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+    env.pop("PYTHONPATH", None)
+    env["COMPANY_VALUATION_EXPECTED_PACKAGE"] = str(VALUATION_SKILL_DIR.resolve())
+    model = env.get("COMPANY_VALUATION_MODEL", "gpt-5.6-sol")
+    provider = env.get("COMPANY_VALUATION_PROVIDER", "openai-codex")
+    preflight = subprocess.run(
+        [sys.executable, "-m", "company_valuation_score", ticker.upper(), "--preflight"],
+        cwd=VALUATION_SKILL_DIR.parent,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    if preflight.returncode != 0:
+        detail = (preflight.stderr or preflight.stdout).strip()
+        raise RuntimeError(f"company_valuation_score preflight failed: {detail[-2000:]}")
     result = subprocess.run(
-        [sys.executable, "-m", "company_valuation_score", ticker.upper()],
-        cwd=VALUATION_SKILL_DIR,
+        [
+            sys.executable,
+            "-m",
+            "company_valuation_score",
+            ticker.upper(),
+            "--refresh",
+            "--model",
+            model,
+            "--provider",
+            provider,
+        ],
+        cwd=VALUATION_SKILL_DIR.parent,
         env=env,
         capture_output=True,
         text=True,
@@ -603,24 +672,35 @@ class EarningsAnalyzer:
 
     def identify(self):
         self._log("IDENTIFY_START", {})
-        # Try 10-Q first (US issuers), then 6-K (foreign issuers)
-        filings_10q = search_filings(self.ticker, ["10-Q", "10-Q/A"], limit=20)
+        # Search 10-Q, 10-Q/A, 10-K, 10-K/A together; also 6-K for foreign issuers
+        # Q4 is normally reported in a 10-K, not a 10-Q.
+        filings_10q_10k = search_filings(self.ticker, ["10-Q", "10-Q/A", "10-K", "10-K/A"], limit=25)
         filings_6k = search_filings(self.ticker, ["6-K"], limit=20)
         
         # Filter for completed filings with report_date
-        filings_10q = [row for row in filings_10q if row.get("report_date") and row["report_date"] <= _now().date().isoformat()]
+        filings_10q_10k = [row for row in filings_10q_10k if row.get("report_date") and row["report_date"] <= _now().date().isoformat()]
         filings_6k = [row for row in filings_6k if row.get("report_date") and row["report_date"] <= _now().date().isoformat()]
         
-        # Prefer 10-Q if available (US GAAP with XBRL), otherwise use 6-K (foreign issuer, IFRS)
-        if filings_10q:
-            # Cross-reference with StockAnalysis to get the expected latest quarter end date
-            sa_period, sa_quarter_end = self._get_latest_quarter_from_stockanalysis(self.ticker)
+        # Cross-reference with StockAnalysis to get the expected latest quarter end date
+        sa_period, sa_quarter_end = self._get_latest_quarter_from_stockanalysis(self.ticker)
+        
+        # Build period candidates from all filings with metadata
+        def _filing_period(row: dict) -> str | None:
+            rd = row.get("report_date")
+            if not rd:
+                return None
+            # We'll resolve the quarter from report_date + form_type in XBRL/HTML validation
+            return rd
+        
+        # Prefer 10-Q/10-K if available (US GAAP with XBRL), otherwise use 6-K (foreign issuer, IFRS)
+        if filings_10q_10k:
+            self.is_foreign_issuer = False
             
+            # If StockAnalysis gives a specific quarter end, try exact match first
             if sa_quarter_end:
-                # Find the 10-Q that matches the StockAnalysis quarter end date
-                matching_filings = [f for f in filings_10q if f["report_date"] == sa_quarter_end]
+                # Search for exact report_date match across all forms (10-Q, 10-Q/A, 10-K, 10-K/A)
+                matching_filings = [f for f in filings_10q_10k if f["report_date"] == sa_quarter_end]
                 if matching_filings:
-                    # Use the matching filing, preferring amendment
                     self.filing = max(matching_filings, key=lambda row: (row["filing_date"], row["form_type"].endswith("/A")))
                     self._log("IDENTIFY_STOCKANALYSIS_MATCH", {
                         "stockanalysis_period": sa_period,
@@ -629,17 +709,70 @@ class EarningsAnalyzer:
                         "selected_filing_form": self.filing["form_type"]
                     })
                 else:
-                    # Fallback: use latest report_date if no exact match
-                    self._log("IDENTIFY_STOCKANALYSIS_NO_MATCH", {
-                        "stockanalysis_period": sa_period,
-                        "stockanalysis_quarter_end": sa_quarter_end,
-                        "available_report_dates": [f["report_date"] for f in filings_10q]
-                    })
-                    self.filing = max(filings_10q, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
+                    # NO EXACT MATCH: newer quarter claimed but no SEC filing with that report_date.
+                    # Search for 10-K (Q4/FY) with a later report_date than the latest 10-Q.
+                    # If found, it supersedes the older 10-Q.
+                    filings_10k = [f for f in filings_10q_10k if f["form_type"] in {"10-K", "10-K/A"}]
+                    if filings_10k:
+                        latest_10k = max(filings_10k, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
+                        latest_10q = max([f for f in filings_10q_10k if f["form_type"] in {"10-Q", "10-Q/A"}], 
+                                          key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")), 
+                                          default=None)
+                        # If 10-K report_date is >= the claimed quarter end, use it as Q4
+                        if latest_10k["report_date"] >= sa_quarter_end:
+                            self.filing = latest_10k
+                            self._log("IDENTIFY_STOCKANALYSIS_10K_Q4", {
+                                "stockanalysis_period": sa_period,
+                                "stockanalysis_quarter_end": sa_quarter_end,
+                                "selected_filing_report_date": self.filing["report_date"],
+                                "selected_filing_form": self.filing["form_type"],
+                                "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None
+                            })
+                        else:
+                            # No 10-K covering the claimed period; fail closed
+                            self._log("IDENTIFY_STOCKANALYSIS_NO_MATCH", {
+                                "stockanalysis_period": sa_period,
+                                "stockanalysis_quarter_end": sa_quarter_end,
+                                "available_report_dates": [f["report_date"] for f in filings_10q_10k],
+                                "latest_10k_report_date": latest_10k["report_date"],
+                                "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None
+                            })
+                            raise RuntimeError(
+                                f"LATEST_QUARTER_SOURCE_MISMATCH: StockAnalysis reports {sa_period} ending {sa_quarter_end}, "
+                                f"but no matching SEC 10-Q/10-K with that report_date was verified. "
+                                f"Latest 10-K ends {latest_10k['report_date']}, latest 10-Q ends {latest_10q['report_date'] if latest_10q else 'N/A'}."
+                            )
+                    else:
+                        # No 10-K at all; fail closed
+                        self._log("IDENTIFY_STOCKANALYSIS_NO_MATCH", {
+                            "stockanalysis_period": sa_period,
+                            "stockanalysis_quarter_end": sa_quarter_end,
+                            "available_report_dates": [f["report_date"] for f in filings_10q_10k]
+                        })
+                        raise RuntimeError(
+                            f"LATEST_QUARTER_SOURCE_MISMATCH: StockAnalysis reports {sa_period} ending {sa_quarter_end}, "
+                            f"but no matching SEC 10-Q/10-K with that report_date was verified. "
+                            f"Available report dates: {[f['report_date'] for f in filings_10q_10k]}."
+                        )
             else:
-                # No StockAnalysis data, fallback to original logic
-                self.filing = max(filings_10q, key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")))
-            self.is_foreign_issuer = False
+                # No StockAnalysis data; select the latest filing by report_date, preferring 10-K for Q4
+                # If the latest is a 10-K, it's Q4; otherwise it's the latest 10-Q
+                latest_10k = max([f for f in filings_10q_10k if f["form_type"] in {"10-K", "10-K/A"}], 
+                                  key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")), 
+                                  default=None)
+                latest_10q = max([f for f in filings_10q_10k if f["form_type"] in {"10-Q", "10-Q/A"}], 
+                                  key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")), 
+                                  default=None)
+                if latest_10k and latest_10k["report_date"] >= (latest_10q["report_date"] if latest_10q else ""):
+                    self.filing = latest_10k
+                else:
+                    self.filing = latest_10q
+                self._log("IDENTIFY_NO_STOCKANALYSIS", {
+                    "selected_filing_report_date": self.filing["report_date"],
+                    "selected_filing_form": self.filing["form_type"],
+                    "latest_10k_report_date": latest_10k["report_date"] if latest_10k else None,
+                    "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None
+                })
         elif filings_6k:
             # For foreign issuers, find the quarterly earnings 6-K
             # Quarterly earnings 6-Ks are typically filed ~6 weeks after quarter end
@@ -728,7 +861,11 @@ class EarningsAnalyzer:
             xbrl = parse_xbrl_financials(filing_doc["xbrl_content"], self.filing.get("report_date"))
         
         period = (xbrl.get("fiscal_period") or "").upper(); year_text = xbrl.get("fiscal_year")
-        if period not in {"Q1", "Q2", "Q3"}: raise RuntimeError(f"FISCAL_PERIOD_UNVERIFIED: SEC XBRL reported {period or 'no period'}")
+        if period == "FY" and self.filing.get("form_type", "").startswith("10-K"):
+            # 10-K reports FY; we map to Q4 and use official release for standalone values
+            period = "Q4"
+            self.data["_is_q4_10k"] = True
+        if period not in {"Q1", "Q2", "Q3", "Q4"}: raise RuntimeError(f"FISCAL_PERIOD_UNVERIFIED: SEC XBRL reported {period or 'no period'}")
         if not year_text: raise RuntimeError("FISCAL_YEAR_UNVERIFIED: SEC XBRL did not provide DocumentFiscalYearFocus")
         report_date = xbrl.get("report_date") or self.filing.get("report_date")
         if not report_date: raise RuntimeError("REPORT_DATE_UNVERIFIED")
@@ -756,7 +893,7 @@ class EarningsAnalyzer:
             candidate_doc = fetch_filing(candidate["accession_number"], candidate["cik"], candidate["primary_document"], include_exhibits=True)
             release_text = "\n".join(candidate_doc.get("exhibit_content", {}).values())
             normalized = release_text.lower()
-            period_evidence = report_date in normalized or (period.lower() in normalized and str(year_text) in normalized)
+            period_evidence = _release_matches_period(release_text, report_date, period, int(year_text))
             if not release_text or not period_evidence: continue
             score = (3 if "2.02" in candidate.get("items", "") else 0) + (2 if report_date in normalized else 0) + 1
             scored_releases.append((score, candidate["filing_date"], candidate, candidate_doc, release_text))
@@ -788,7 +925,36 @@ class EarningsAnalyzer:
                           "_xbrl": xbrl, "_filing_text": filing_doc["content"],
                           "_release_text": release_text if release_doc else ""})
         
-        self._log("RETRIEVE_COMPLETE", {"has_release": release_doc is not None})
+        # Q4 standalone release extraction: if 10-K was selected and period is Q4,
+        # use the official 8-K Exhibit 99.1 for standalone three-month values
+        if self.data.get("_is_q4_10k") and period == "Q4":
+            if release_doc and release_text:
+                try:
+                    # Determine period start from fiscal calendar (Q4 = May 1 - July 31 for ZS)
+                    # We'll derive from report_date - 91 days
+                    from datetime import date, timedelta
+                    rd = date.fromisoformat(report_date)
+                    period_start = (rd - timedelta(days=91)).isoformat()
+                    q4_data = parse_q4_release_financials(
+                        release_text,
+                        ticker=self.ticker,
+                        fiscal_year=int(year_text),
+                        report_date=report_date,
+                        period_start=period_start,
+                        source_url=release_url or release_doc["filing_url"],
+                    )
+                    self.data["_q4_release"] = q4_data
+                    self._log("RETRIEVE_Q4_RELEASE_PARSED", {
+                        "metrics_count": len(q4_data["metrics"]),
+                        "source_url": q4_data["source_url"]
+                    })
+                except Exception as e:
+                    self._log("RETRIEVE_Q4_RELEASE_FAILED", {"error": str(e)})
+                    self.data["warnings"].append(f"Q4 release parsing failed: {e}")
+            else:
+                self.data["warnings"].append("Q4 10-K selected but no matching 8-K release was verified for standalone Q4 values")
+        
+        self._log("RETRIEVE_COMPLETE", {"has_release": release_doc is not None, "is_q4_10k": self.data.get("_is_q4_10k", False)})
 
     def business_kpis(self):
         """Build source-backed, company-specific operating KPIs.
@@ -836,8 +1002,33 @@ class EarningsAnalyzer:
 
     def financials(self):
         self._log("FINANCIALS_START", {})
-        rows = []; metrics = self.data["_xbrl"]["metrics"]
+        
+        # If we have Q4 standalone release metrics, use those for the current quarter
+        # XBRL metrics from 10-K are annual; Q4 release provides three-month values
+        if self.data.get("_q4_release"):
+            q4_metrics = self.data["_q4_release"]["metrics"]
+            # Merge: use Q4 release for quarter values, XBRL for annual/YTD/balance-sheet
+            xbrl_metrics = self.data["_xbrl"]["metrics"]
+            metrics = dict(xbrl_metrics)  # copy
+            for key, q4_fact in q4_metrics.items():
+                # Override with Q4 standalone value
+                if key in metrics:
+                    metrics[key] = {
+                        **metrics[key],
+                        "value": q4_fact["value"],
+                        "prior_value": q4_fact.get("prior_value"),
+                        "period_scope": "quarter",
+                        "start": q4_fact["start"],
+                        "end": q4_fact["end"],
+                        "duration_days": q4_fact.get("duration_days"),
+                    }
+                    if "components" in q4_fact:
+                        metrics[key]["components"] = q4_fact["components"]
+        else:
+            metrics = self.data["_xbrl"]["metrics"]
+        
         tier1_metrics = {"revenue", "gross_profit", "operating_income", "net_income", "operating_cash_flow", "capex", "stock_based_compensation", "depreciation_amortization", "eps_diluted", "backlog", "cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt", "shares_diluted"}
+        rows = []
         for name, fact in metrics.items():
             value, prior = fact["value"], fact.get("prior_value"); change = _change(value, prior)
             prior_q = fact.get("prior_q_value")
@@ -856,7 +1047,8 @@ class EarningsAnalyzer:
                          "citation": _citation("SEC XBRL", self.data["sources"]["xbrl_url"], concept=fact["concept"],
                                                taxonomy=fact.get("taxonomy"), context=fact["context"], dimensions=fact.get("dimensions", []),
                                                unit=fact.get("unit"), decimals=fact.get("decimals"),
-                                               period_start=fact["start"], period_end=fact["end"])}
+                                               period_start=fact["start"], period_end=fact["end"],
+                                               period_scope=fact.get("period_scope"))}
             if prior_q is not None:
                 row_data["prior_q_value"] = prior_q
                 row_data["change_qoq"] = change_qoq
@@ -1399,11 +1591,16 @@ class EarningsAnalyzer:
         else:
             base_output = Path("/home/s777data/outputs/company-earnings-analysis")
 
-        # Check if this ticker/quarter already has a run
-        ticker_dir = base_output / ticker_period
-        existing_run = ticker_dir.exists() and any(ticker_dir.iterdir())
+        # Always create a fresh output directory; do not reuse existing runs
+        # This ensures each production run regenerates artifacts from current code and data
+        ticker_output_dir = base_output / ticker_period
+        if ticker_output_dir.exists():
+            import shutil
+            backup_suffix = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            backup_dir = base_output / f"{ticker_period}.bak_{backup_suffix}"
+            shutil.move(str(ticker_output_dir), str(backup_dir))
+            self._log("SAVE_BACKUP_EXISTING", {"backup_dir": str(backup_dir)})
 
-        ticker_output_dir = ticker_dir
         ticker_output_dir.mkdir(parents=True, exist_ok=True)
 
         public = {key: value for key, value in self.data.items() if not key.startswith("_")}
@@ -1411,18 +1608,6 @@ class EarningsAnalyzer:
         # Add model name for dashboard footer
         import os
         public["model_name"] = os.environ.get("HERMES_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
-
-        # If existing run and not test mode, just return existing paths
-        if existing_run and not self.data.get("test_run", False):
-            print(f"Found existing run for {self.ticker} {safe_period}, returning existing outputs")
-            paths = {
-                "json": str(ticker_output_dir / f"{self.ticker}_{safe_period}_analysis.json"),
-                "html": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard" / "index.html"),
-                "zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
-                "dashboard_zip": str(ticker_output_dir / f"{self.ticker}_{safe_period}_Interactive_Dashboard.zip"),
-            }
-            self._log("SAVE_COMPLETE_EXISTING", {"paths": paths})
-            return paths
 
         paths = {}
         if self.output_format in {"json", "both"}:

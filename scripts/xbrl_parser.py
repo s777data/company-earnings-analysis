@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from xml.etree import ElementTree as ET
 
 TAGS = {
@@ -100,6 +100,31 @@ def parse_xbrl_financials(content: str, report_date: str | None = None) -> dict:
             eligible.sort(key=lambda entry: (0 if 70 <= entry["duration_days"] <= 110 else 1,
                                              abs(entry["duration_days"] - 91), entry["concept"]))
         chosen = eligible[0]
+        if not instant_metric and not 70 <= chosen["duration_days"] <= 110:
+            ytd_candidates = [
+                entry for entry in entries
+                if entry["instant"] == instant_metric
+                and entry["end"] < chosen["end"]
+                and 110 < entry["duration_days"] < chosen["duration_days"]
+            ]
+            if ytd_candidates:
+                ytd_candidates.sort(key=lambda entry: (entry["duration_days"], entry["end"]), reverse=True)
+                prior_ytd = ytd_candidates[0]
+                derived_start = (date.fromisoformat(prior_ytd["end"]) + timedelta(days=1)).isoformat()
+                chosen = {
+                    **chosen,
+                    "value": chosen["value"] - prior_ytd["value"],
+                    "start": derived_start,
+                    "duration_days": (
+                        date.fromisoformat(chosen["end"]) - date.fromisoformat(derived_start)
+                    ).days + 1,
+                    "period_scope": "quarter",
+                    "derived_from_ytd": True,
+                    "derived_from_period_end": prior_ytd["end"],
+                    "derived_from_period_duration_days": prior_ytd["duration_days"],
+                    "derived_from_period_value": prior_ytd["value"],
+                }
+        chosen.setdefault("period_scope", "instant" if instant_metric else ("quarter" if 70 <= chosen["duration_days"] <= 110 else "ytd"))
         prior_candidates = [entry for entry in entries if entry["instant"] == instant_metric and entry["end"] < chosen["end"]]
         if not instant_metric:
             prior_candidates = [entry for entry in prior_candidates if abs(entry["duration_days"] - chosen["duration_days"]) <= 7]

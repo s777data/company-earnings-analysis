@@ -1,18 +1,18 @@
 window.EARNINGS_REPORT = {
   "schema_version": 2,
   "company": {
-    "ticker": "ZS",
-    "period": "Q3 FY2026",
-    "report_date": "2026-04-30",
-    "call_date": "2026-05-26",
-    "grade": "C+",
+    "ticker": "IREN",
+    "period": "Q4 FY2026",
+    "report_date": "2026-06-30",
+    "call_date": "2026-08-27",
+    "grade": "C",
     "confidence": 0.9500000000000001,
-    "recommendation": "HOLD",
-    "price": 169.8,
-    "market_cap": 27403376600.0,
-    "pe_ttm": -429.55,
-    "high_52": 336.99,
-    "low_52": 114.625,
+    "recommendation": "INSUFFICIENT DATA",
+    "price": 44.68,
+    "market_cap": 17606541429.77383,
+    "pe_ttm": -22.56,
+    "high_52": 76.87,
+    "low_52": 25.31,
     "test_run": false,
     "model_name": "nvidia/nemotron-3-ultra-550b-a55b"
   },
@@ -21,12 +21,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "revenue",
         "name": "Revenue",
-        "raw_value": 850475000.0,
-        "display_value": "$850.5M",
-        "comparison": "+25.4% YoY, -47.0% QoQ",
-        "status": "strong_positive",
-        "tier": "strong_positive",
-        "assessment": "+25.4% YoY, -47.0% QoQ",
+        "raw_value": 707007000.0,
+        "display_value": "$707.0M",
+        "comparison": "+41.1% YoY, QoQ unavailable",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+41.1% YoY, QoQ unavailable",
         "description": "Revenue recognized during the reported period.",
         "why_it_matters": "Shows the scale and growth of the core business.",
         "directionality": "Higher is generally better when growth is profitable.",
@@ -54,29 +54,29 @@ window.EARNINGS_REPORT = {
       {
         "key": "gross_profit",
         "name": "Gross Profit",
-        "raw_value": 657823000.0,
-        "display_value": "$657.8M",
-        "comparison": "+26.0% YoY, -46.4% QoQ",
-        "status": "strong_positive",
-        "tier": "strong_positive",
-        "assessment": "+26.0% YoY, -46.4% QoQ",
+        "raw_value": null,
+        "display_value": "N/A",
+        "comparison": "YoY unavailable, QoQ unavailable",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "YoY unavailable, QoQ unavailable",
         "description": "Revenue remaining after direct costs.",
         "why_it_matters": "Funds operating expenses, investment, and profit.",
         "directionality": "Higher and expanding is generally better.",
         "formula": "Revenue − cost of revenue",
         "scale": [],
-        "source_note": "SEC XBRL",
+        "source_note": "Verified report data",
         "source_date": null
       },
       {
         "key": "operating_income",
         "name": "Operating Income",
-        "raw_value": -29640000.0,
-        "display_value": "-$29.6M",
-        "comparison": "-16.6% YoY, +66.4% QoQ",
-        "status": "negative",
-        "tier": "negative",
-        "assessment": "-16.6% YoY, +66.4% QoQ",
+        "raw_value": -1046714000.0,
+        "display_value": "-$1.05B",
+        "comparison": "-6140.9% YoY, QoQ unavailable",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "-6140.9% YoY, QoQ unavailable",
         "description": "Profit from core operations before interest and taxes.",
         "why_it_matters": "Measures operating execution and cost discipline.",
         "directionality": "Higher is generally better.",
@@ -88,12 +88,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_income",
         "name": "Net Income",
-        "raw_value": -13883000.0,
-        "display_value": "-$13.9M",
-        "comparison": "-236.6% YoY, +69.8% QoQ",
+        "raw_value": -702621000.0,
+        "display_value": "-$702.6M",
+        "comparison": "-908.2% YoY, QoQ unavailable",
         "status": "worst",
         "tier": "worst",
-        "assessment": "-236.6% YoY, +69.8% QoQ",
+        "assessment": "-908.2% YoY, QoQ unavailable",
         "description": "Profit attributable after all recognized expenses.",
         "why_it_matters": "Captures the period's bottom-line result.",
         "directionality": "Higher and durable is generally better.",
@@ -105,12 +105,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "free_cash_flow",
         "name": "Free Cash Flow",
-        "raw_value": 772902000.0,
-        "display_value": "$772.9M",
-        "comparison": "+25.1% YoY, QoQ unavailable",
-        "status": "strong_positive",
-        "tier": "strong_positive",
-        "assessment": "+25.1% YoY, QoQ unavailable",
+        "raw_value": -897588000.0,
+        "display_value": "-$897.6M",
+        "comparison": "-174.0% YoY, QoQ unavailable",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "-174.0% YoY, QoQ unavailable",
         "description": "A verified company-reported financial measure.",
         "why_it_matters": "Provides context for operating performance, financial position, or valuation.",
         "directionality": "Interpret with the company's trend, peers, and business model.",
@@ -122,12 +122,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "operating_cash_flow",
         "name": "Operating Cash Flow",
-        "raw_value": 850369000.0,
-        "display_value": "$850.4M",
-        "comparison": "+17.8% YoY, QoQ unavailable",
-        "status": "positive",
-        "tier": "positive",
-        "assessment": "+17.8% YoY, QoQ unavailable",
+        "raw_value": 2100418000.0,
+        "display_value": "$2.10B",
+        "comparison": "+754.2% YoY, QoQ unavailable",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+754.2% YoY, QoQ unavailable",
         "description": "Cash generated by operating activities.",
         "why_it_matters": "Tests whether accounting earnings convert into cash.",
         "directionality": "Higher and consistent is generally better.",
@@ -139,12 +139,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "capex",
         "name": "Capital Expenditures",
-        "raw_value": 77467000.0,
-        "display_value": "$77.5M",
-        "comparison": "-25.7% YoY, QoQ unavailable",
+        "raw_value": 2998006000.0,
+        "display_value": "$3.00B",
+        "comparison": "+422.8% YoY, QoQ unavailable",
         "status": "positive",
         "tier": "positive",
-        "assessment": "-25.7% YoY, QoQ unavailable",
+        "assessment": "+422.8% YoY, QoQ unavailable",
         "description": "Cash or obligations used for long-lived productive assets.",
         "why_it_matters": "Indicates reinvestment needs and pressure on free cash flow.",
         "directionality": "Context dependent; efficiency matters more than simply lower or higher.",
@@ -156,12 +156,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "eps_diluted",
         "name": "Diluted EPS",
-        "raw_value": -0.09,
-        "display_value": "$-0.09",
-        "comparison": "-200.0% YoY, +67.9% QoQ",
+        "raw_value": -2.22,
+        "display_value": "$-2.22",
+        "comparison": "-669.2% YoY, QoQ unavailable",
         "status": "worst",
         "tier": "worst",
-        "assessment": "-200.0% YoY, +67.9% QoQ",
+        "assessment": "-669.2% YoY, QoQ unavailable",
         "description": "Earnings allocated to each diluted weighted-average share.",
         "why_it_matters": "Connects company profit to shareholder economics.",
         "directionality": "Higher sustainable EPS is generally better.",
@@ -174,247 +174,247 @@ window.EARNINGS_REPORT = {
     "business_kpis": {
       "rows": [
         {
-          "key": "annual_recurring_revenue",
-          "name": "Annual Recurring Revenue",
-          "latest_value": "$3.525B",
-          "latest_period": "Q3 2026",
-          "prior_value": "~$2.820B",
-          "prior_period": "Q3 2025",
-          "display_value": "$3.525B",
-          "comparison": "Q3 2025: ~$2.820B",
-          "analyst_view": "ARR expanded 25% YoY to a record $3.525B, showing durable subscription momentum and strong retention/upsell.",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "positive",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "free_cash_flow",
-          "name": "Free Cash Flow",
-          "latest_value": "$136.0M",
-          "latest_period": "Q3 2026",
-          "prior_value": "$119.5M",
-          "prior_period": "Q3 2025",
-          "display_value": "$136.0M",
-          "comparison": "Q3 2025: $119.5M",
-          "analyst_view": "Free cash flow increased 14% YoY, showing improved conversion even with higher capital intensity.",
-          "source": "IR/SEC",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "positive",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "free_cash_flow_margin",
-          "name": "Free Cash Flow Margin",
-          "latest_value": "16%",
-          "latest_period": "Q3 2026",
-          "prior_value": "18%",
-          "prior_period": "Q3 2025",
-          "display_value": "16%",
-          "comparison": "Q3 2025: 18%",
-          "analyst_view": "Free cash flow margin stayed healthy at 16%, though it declined versus the prior year because of higher CapEx.",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "net_new_arr",
-          "name": "Net New ARR",
-          "latest_value": "$166M",
-          "latest_period": "Q3 2026",
-          "prior_value": "~$134M",
-          "prior_period": "Q3 2025",
-          "display_value": "$166M",
-          "comparison": "Q3 2025: ~$134M",
-          "analyst_view": "Net new ARR of $166M rose 24% YoY, indicating continued expansion across the installed base.",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "non_gaap_income_from_operations",
-          "name": "Non-GAAP Income from Operations",
-          "latest_value": "$195.8M",
-          "latest_period": "Q3 2026",
-          "prior_value": "$146.7M",
-          "prior_period": "Q3 2025",
-          "display_value": "$195.8M",
-          "comparison": "Q3 2025: $146.7M",
-          "analyst_view": "Non-GAAP operating income increased meaningfully year over year, reflecting improved operating leverage.",
-          "source": "IR/SEC",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "positive",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "non_gaap_operating_margin",
-          "name": "Non-GAAP Operating Margin",
-          "latest_value": "23%",
-          "latest_period": "Q3 2026",
-          "prior_value": "22%",
-          "prior_period": "Q3 2025",
-          "display_value": "23%",
-          "comparison": "Q3 2025: 22%",
-          "analyst_view": "Non-GAAP operating margin reached an all-time high of 23%, confirming stronger profitability at scale.",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "operating_cash_flow",
-          "name": "Operating Cash Flow",
-          "latest_value": "$198.0M",
-          "latest_period": "Q3 2026",
-          "prior_value": "$211.1M",
-          "prior_period": "Q3 2025",
-          "display_value": "$198.0M",
-          "comparison": "Q3 2025: $211.1M",
-          "analyst_view": "Operating cash flow remained robust despite a modest YoY decline, keeping cash generation strong.",
-          "source": "IR/SEC",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "negative",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "remaining_performance_obligation",
-          "name": "Remaining Performance Obligation",
-          "latest_value": "~$6.5B",
-          "latest_period": "Q3 2026",
-          "prior_value": "~$5.0B",
-          "prior_period": "Q3 2025",
-          "display_value": "~$6.5B",
-          "comparison": "Q3 2025: ~$5.0B",
-          "analyst_view": "RPO grew about 30% YoY to roughly $6.5B, indicating strong contracted demand visibility.",
-          "source": "IR",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "negative",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "revenue",
-          "name": "Revenue",
-          "latest_value": "$850.5M",
-          "latest_period": "Q3 2026",
-          "prior_value": "~$680.4M",
-          "prior_period": "Q3 2025",
-          "display_value": "$850.5M",
-          "comparison": "Q3 2025: ~$680.4M",
-          "analyst_view": "Revenue grew 25% YoY and beat the high end of guidance, supporting strong platform adoption.",
-          "source": "IR/SEC",
-          "importance": "Tier 1 — Core",
-          "tier": 1,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR/SEC — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "customers_with_100k_arr",
-          "name": "Customers with >$100K ARR",
-          "latest_value": "4,003",
-          "latest_period": "Q3 2026",
-          "prior_value": "~3,366",
-          "prior_period": "Q3 2025",
-          "display_value": "4,003",
-          "comparison": "Q3 2025: ~3,366",
-          "analyst_view": "Customers above the $100K ARR threshold grew 19% YoY, showing broadening enterprise penetration.",
-          "source": "IR",
-          "importance": "Tier 2 — High",
-          "tier": 2,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "customers_with_1m_arr",
-          "name": "Customers with >$1M ARR",
-          "latest_value": "748",
-          "latest_period": "Q3 2026",
-          "prior_value": "~634",
-          "prior_period": "Q3 2025",
-          "display_value": "748",
-          "comparison": "Q3 2025: ~634",
-          "analyst_view": "The number of customers generating more than $1M of ARR increased 18% YoY, reflecting continued enterprise scaling.",
-          "source": "IR",
-          "importance": "Tier 2 — High",
-          "tier": 2,
-          "status": "neutral",
-          "description": "Company-specific operating performance measure.",
-          "why_it_matters": "Provides company-specific operating context.",
-          "directionality": "context",
-          "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
-          "scale": []
-        },
-        {
-          "key": "installed_base_customers",
-          "name": "Installed Base Customers",
-          "latest_value": ">9,400",
-          "latest_period": "Q3 2026",
+          "key": "2026_ai_capacity_sold_status",
+          "name": "2026 AI capacity sold status",
+          "latest_value": "Largely sold out",
+          "latest_period": "Q4 2026",
           "prior_value": "N/A",
-          "prior_period": "Q3 2025",
-          "display_value": ">9,400",
-          "comparison": "Q3 2025: N/A",
-          "analyst_view": "The installed base exceeded 9,400 customers, underscoring continued platform adoption across the enterprise base.",
-          "source": "IR",
+          "prior_period": "Q4 2025",
+          "display_value": "Largely sold out",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "Management reports 2026 capacity is largely sold, reducing near-term demand risk while leaving delivery and acceptance execution risk.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "negative",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "2026_cumulative_it_capacity_target",
+          "name": "2026 cumulative IT capacity target",
+          "latest_value": "~0.3 GW",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "~0.3 GW",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "The 2026 target establishes the near-term commissioned infrastructure milestone supporting contracted demand.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "negative",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "2027_cumulative_it_capacity_target",
+          "name": "2027 cumulative IT capacity target",
+          "latest_value": "~0.8 GW",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "~0.8 GW",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "The 2027 target implies a substantial year-over-year increase in delivered IT capacity and execution requirements.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "adjusted_ebitda",
+          "name": "Adjusted EBITDA",
+          "latest_value": "$19.2M",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "$19.2M",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "Adjusted EBITDA fell from $59.5M in Q3 as employee costs and platform investment preceded the AI Cloud revenue ramp.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "ai_cloud_services_revenue",
+          "name": "AI Cloud Services revenue",
+          "latest_value": "$70.5M",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "$70.5M",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "AI Cloud revenue more than doubled sequentially from $33.6M in Q3, showing the transition toward AI infrastructure is accelerating.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "positive",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "bitcoin_mining_revenue",
+          "name": "Bitcoin Mining revenue",
+          "latest_value": "$66.7M",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "$66.7M",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "Mining revenue declined sequentially from $111.2M in Q3 as the company redirected sites and capital toward AI Cloud.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "negative",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "contracted_arr_for_2026_capacity",
+          "name": "Contracted ARR for 2026 capacity",
+          "latest_value": "$4.0B",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "$4.0B",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "Contracted ARR indicates substantial booked demand, but it remains an operating metric subject to commissioning, testing, acceptance, and GAAP recognition differences.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "negative",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "data_center_development_pipeline",
+          "name": "Data center development pipeline",
+          "latest_value": ">5 GW",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": ">5 GW",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "The global pipeline provides long-duration expansion optionality across North America, Europe, and APAC.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "net_income_loss",
+          "name": "Net income (loss)",
+          "latest_value": "-$684.0M",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "-$684.0M",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "The Q4 loss included a $450.4M non-cash impairment primarily tied to decommissioned mining hardware during AI conversion.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "operating_arr",
+          "name": "Operating ARR",
+          "latest_value": "$1.0B",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "$1.0B",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "Operating ARR as of August 26, 2026 establishes the currently commissioned revenue run-rate before the remaining 2026 capacity comes online.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "total_revenue",
+          "name": "Total revenue",
+          "latest_value": "$137.2M",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "$137.2M",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "Quarterly revenue decreased from $144.8M in Q3 despite rapid AI Cloud growth because Bitcoin Mining declined.",
+          "source": "IR/SEC",
+          "importance": "Tier 1 — Core",
+          "tier": 1,
+          "status": "neutral",
+          "description": "Company-specific operating performance measure.",
+          "why_it_matters": "Provides company-specific operating context.",
+          "directionality": "context",
+          "formula": "Company-reported operating KPI; see cited source.",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+          "scale": []
+        },
+        {
+          "key": "additional_gpu_financings",
+          "name": "Additional GPU financings",
+          "latest_value": "$2.8B",
+          "latest_period": "Q4 2026",
+          "prior_value": "N/A",
+          "prior_period": "Q4 2025",
+          "display_value": "$2.8B",
+          "comparison": "Q4 2025: N/A",
+          "analyst_view": "The new financing package supports non-investment-grade customer deployments and broadens available capital sources.",
+          "source": "IR/SEC",
           "importance": "Tier 2 — High",
           "tier": 2,
           "status": "neutral",
@@ -422,7 +422,7 @@ window.EARNINGS_REPORT = {
           "why_it_matters": "Provides company-specific operating context.",
           "directionality": "context",
           "formula": "Company-reported operating KPI; see cited source.",
-          "source_note": "IR — https://ir.zscaler.com",
+          "source_note": "IR/SEC — https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
           "scale": []
         }
       ],
@@ -433,29 +433,29 @@ window.EARNINGS_REPORT = {
       {
         "key": "gross_margin",
         "name": "Gross Margin",
-        "raw_value": 0.7734771745201211,
-        "display_value": "77.3%",
-        "comparison": "+0.4 pp YoY, +0.8 pp QoQ",
-        "status": "best",
-        "tier": "best",
-        "assessment": "+0.4 pp YoY, +0.8 pp QoQ",
+        "raw_value": null,
+        "display_value": "N/A",
+        "comparison": "YoY unavailable, QoQ unavailable",
+        "status": "neutral",
+        "tier": 1,
+        "assessment": "YoY unavailable, QoQ unavailable",
         "description": "Share of revenue remaining after direct costs.",
         "why_it_matters": "Shows product economics and pricing/cost performance.",
         "directionality": "Higher and durable is generally better.",
         "formula": "Gross profit ÷ revenue",
         "scale": [],
-        "source_note": "SEC XBRL",
+        "source_note": "Verified report data",
         "source_date": null
       },
       {
         "key": "operating_margin",
         "name": "Operating Margin",
-        "raw_value": -0.034851112613539494,
-        "display_value": "-3.5%",
-        "comparison": "+0.3 pp YoY, +2.0 pp QoQ",
-        "status": "negative",
-        "tier": "negative",
-        "assessment": "+0.3 pp YoY, +2.0 pp QoQ",
+        "raw_value": -1.4804860489358662,
+        "display_value": "-148.0%",
+        "comparison": "-151.5 pp YoY",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "-151.5 pp YoY",
         "description": "Share of revenue retained as operating profit.",
         "why_it_matters": "Measures operating efficiency and pricing power.",
         "directionality": "Higher and durable is generally better.",
@@ -467,12 +467,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "net_margin",
         "name": "Net Margin",
-        "raw_value": -0.016323819042299893,
-        "display_value": "-1.6%",
-        "comparison": "-1.0 pp YoY, +1.2 pp QoQ",
-        "status": "negative",
-        "tier": "negative",
-        "assessment": "-1.0 pp YoY, +1.2 pp QoQ",
+        "raw_value": -0.9937963839113333,
+        "display_value": "-99.4%",
+        "comparison": "-116.7 pp YoY",
+        "status": "worst",
+        "tier": "worst",
+        "assessment": "-116.7 pp YoY",
         "description": "Share of revenue retained as net income.",
         "why_it_matters": "Summarizes bottom-line profitability.",
         "directionality": "Higher and durable is generally better.",
@@ -484,12 +484,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "sbc_revenue",
         "name": "SBC / Revenue",
-        "raw_value": 0.24126047208912665,
-        "display_value": "24.1%",
-        "comparison": "+0.6 pp YoY, -1.1 pp QoQ",
-        "status": "caution",
-        "tier": "caution",
-        "assessment": "+0.6 pp YoY, -1.1 pp QoQ",
+        "raw_value": 0.2899872278492292,
+        "display_value": "29.0%",
+        "comparison": "+20.5 pp YoY",
+        "status": "best",
+        "tier": "best",
+        "assessment": "+20.5 pp YoY",
         "description": "Stock-based compensation expense relative to revenue.",
         "why_it_matters": "Highlights equity-compensation intensity and potential dilution pressure.",
         "directionality": "Lower is generally better.",
@@ -503,12 +503,12 @@ window.EARNINGS_REPORT = {
       {
         "key": "ps_annualized",
         "name": "P/S (Annualized)",
-        "raw_value": 7.856690938303212,
-        "display_value": "7.9x",
-        "comparison": "Expensive",
-        "status": "caution",
+        "raw_value": 24.90292377554088,
+        "display_value": "24.9x",
+        "comparison": "Very Expensive",
+        "status": "worst",
         "tier": 1,
-        "assessment": "Expensive",
+        "assessment": "Very Expensive",
         "description": "Market capitalization / annualized revenue.",
         "why_it_matters": "Shows how much equity investors are paying for each dollar of annualized sales. Useful when earnings are negative or too small for P/E to be meaningful.",
         "directionality": "Lower is better",
@@ -541,8 +541,8 @@ window.EARNINGS_REPORT = {
       {
         "key": "ev_revenue",
         "name": "EV / Revenue",
-        "raw_value": 7.575114307677378,
-        "display_value": "7.6x",
+        "raw_value": 16.803681476666892,
+        "display_value": "16.8x",
         "comparison": "Expensive",
         "status": "negative",
         "tier": 1,
@@ -572,27 +572,10 @@ window.EARNINGS_REPORT = {
         "source_date": null
       },
       {
-        "key": "ev_gross_profit",
-        "name": "EV / Gross Profit",
-        "raw_value": 9.793584810537057,
-        "display_value": "9.8x",
-        "comparison": "Context Only",
-        "status": "neutral",
-        "tier": 2,
-        "assessment": "Context Only",
-        "description": "Enterprise value / annualized gross profit.",
-        "why_it_matters": "Shows whether the core product is profitable to make before corporate overhead and management costs.",
-        "directionality": "Lower is better",
-        "formula": "Enterprise value ÷ annualized gross profit",
-        "scale": [],
-        "source_note": "robinhood-trading MCP completed daily regular-session close; SEC filing/XBRL",
-        "source_date": null
-      },
-      {
         "key": "ev_revenue_growth",
         "name": "EV / Revenue / Growth",
-        "raw_value": 29.78517321571855,
-        "display_value": "29.8x",
+        "raw_value": 40.872256604804626,
+        "display_value": "40.9x",
         "comparison": "Context Only",
         "status": "neutral",
         "tier": 2,
@@ -608,8 +591,8 @@ window.EARNINGS_REPORT = {
       {
         "key": "price_to_book",
         "name": "Price to Book (P/B)",
-        "raw_value": 11.57924216014992,
-        "display_value": "11.6x",
+        "raw_value": 4.206442743219172,
+        "display_value": "4.2x",
         "comparison": "Expensive",
         "status": "negative",
         "tier": 2,
@@ -641,8 +624,8 @@ window.EARNINGS_REPORT = {
       {
         "key": "ev_backlog",
         "name": "EV / Backlog",
-        "raw_value": 4.090422274859505,
-        "display_value": "4.1x",
+        "raw_value": 2.3294745940733,
+        "display_value": "2.3x",
         "comparison": "Context Only",
         "status": "neutral",
         "tier": 1,
@@ -660,222 +643,257 @@ window.EARNINGS_REPORT = {
     "short_interest_sbc": [
       {
         "name": "Short Interest % of Float",
-        "detail": "5.9% — Moderate",
-        "signal": "neutral",
+        "detail": "27.7% — Very High",
+        "signal": "worst",
         "tier": 1
       },
       {
         "name": "Short Ratio / Days to Cover",
-        "detail": "2.7d — Moderate",
+        "detail": "2.2d — Moderate",
         "signal": "neutral",
         "tier": 1
       },
       {
         "name": "SBC / Revenue",
-        "detail": "24.1% — Very High",
+        "detail": "29.0% — Very High",
         "signal": "worst",
         "tier": 1
       },
       {
-        "name": "SBC / Free Cash Flow",
-        "detail": "81.4% — Very High",
-        "signal": "negative",
-        "tier": 2
-      },
-      {
         "name": "SBC-Adjusted FCF Yield",
-        "detail": "0.7% — Very Expensive",
+        "detail": "-6.3% — Very Expensive",
         "signal": "worst",
         "tier": 1
       },
       {
         "name": "Net Share Dilution",
-        "detail": "3.8% — High",
-        "signal": "caution",
+        "detail": "41.6% — Very High",
+        "signal": "worst",
         "tier": 1
       }
     ],
     "capital_liquidity": [
       {
-        "name": "Capital Expenditures",
-        "value": "$77.5M",
-        "signal": "positive",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-1",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": "2025-08-01",
-          "period_end": "2026-04-30"
-        }
-      },
-      {
         "name": "Total Equity",
-        "value": "$2.37B",
+        "value": "$4.19B",
         "signal": "best",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
           "start": null,
           "end": null,
           "concept": "StockholdersEquity",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-6",
           "dimensions": [],
           "unit": "usd",
           "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-04-30"
+          "period_end": "2026-06-30",
+          "period_scope": "instant"
         }
       },
       {
         "name": "Cash",
-        "value": "$982.1M",
-        "signal": "neutral",
+        "value": "$5.90B",
+        "signal": "best",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
           "start": null,
           "end": null,
           "concept": "CashAndCashEquivalentsAtCarryingValue",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-6",
           "dimensions": [],
           "unit": "usd",
           "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-04-30"
+          "period_end": "2026-06-30",
+          "period_scope": "instant"
         }
       },
       {
-        "name": "Total Assets",
-        "value": "$7.10B",
-        "signal": "neutral",
-        "citation": {
-          "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
-          "start": null,
-          "end": null,
-          "concept": "Assets",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
-          "dimensions": [],
-          "unit": "usd",
-          "decimals": "-3",
-          "period_start": null,
-          "period_end": "2026-04-30"
-        }
-      },
-      {
-        "name": "Operating Cash Flow",
-        "value": "$850.4M",
+        "name": "Capital Expenditures",
+        "value": "$3.00B",
         "signal": "positive",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
           "start": null,
           "end": null,
-          "concept": "NetCashProvidedByUsedInOperatingActivities",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
+          "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
           "context": "c-1",
           "dimensions": [],
           "unit": "usd",
           "decimals": "-3",
-          "period_start": "2025-08-01",
-          "period_end": "2026-04-30"
+          "period_start": "2025-07-01",
+          "period_end": "2026-06-30",
+          "period_scope": "ytd"
         }
       },
       {
-        "name": "Total Liabilities",
-        "value": "$4.73B",
-        "signal": "neutral",
+        "name": "Total Assets",
+        "value": "$15.79B",
+        "signal": "best",
         "citation": {
           "source": "SEC XBRL",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
           "start": null,
           "end": null,
-          "concept": "Liabilities",
-          "taxonomy": "http://fasb.org/us-gaap/2025",
-          "context": "c-3",
+          "concept": "Assets",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-6",
           "dimensions": [],
           "unit": "usd",
           "decimals": "-3",
           "period_start": null,
-          "period_end": "2026-04-30"
+          "period_end": "2026-06-30",
+          "period_scope": "instant"
         }
+      },
+      {
+        "name": "Long-term Debt",
+        "value": "$169.4M",
+        "signal": "neutral",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "LongTermDebtCurrent",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-6",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": null,
+          "period_end": "2026-06-30",
+          "period_scope": "instant"
+        }
+      },
+      {
+        "name": "Operating Cash Flow",
+        "value": "$2.10B",
+        "signal": "best",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-1",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": "2025-07-01",
+          "period_end": "2026-06-30",
+          "period_scope": "ytd"
+        }
+      },
+      {
+        "name": "Total Liabilities",
+        "value": "$11.60B",
+        "signal": "worst",
+        "citation": {
+          "source": "SEC XBRL",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
+          "start": null,
+          "end": null,
+          "concept": "Liabilities",
+          "taxonomy": "http://fasb.org/us-gaap/2026",
+          "context": "c-6",
+          "dimensions": [],
+          "unit": "usd",
+          "decimals": "-3",
+          "period_start": null,
+          "period_end": "2026-06-30",
+          "period_scope": "instant"
+        }
+      },
+      {
+        "name": "Net cash / (debt)",
+        "value": "$5.73B",
+        "signal": "positive",
+        "citation": [
+          {
+            "source": "SEC XBRL",
+            "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
+            "start": null,
+            "end": null,
+            "concept": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "http://fasb.org/us-gaap/2026",
+            "context": "c-6",
+            "dimensions": [],
+            "unit": "usd",
+            "decimals": "-3",
+            "period_start": null,
+            "period_end": "2026-06-30",
+            "period_scope": "instant"
+          },
+          {
+            "source": "SEC XBRL",
+            "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
+            "start": null,
+            "end": null,
+            "concept": "LongTermDebtCurrent",
+            "taxonomy": "http://fasb.org/us-gaap/2026",
+            "context": "c-6",
+            "dimensions": [],
+            "unit": "usd",
+            "decimals": "-3",
+            "period_start": null,
+            "period_end": "2026-06-30",
+            "period_scope": "instant"
+          }
+        ]
       }
     ],
     "guidance": [
       {
         "name": "Forward outlook",
-        "detail": "For Red Canary, we expect ARR of approximately $137 million in fiscal 2026, up from our prior guidance of $130 million, with net new ARR of approximately $10 million in Q4.",
-        "signal": "neutral",
+        "detail": "We expect first quarter cash SG&A to increase approximately $40 million-$50 million sequentially as we continue to invest for growth across sales and marketing, R&D, development, sites, and cloud operations, and other functions ahead of significant revenue growth over the coming periods.",
+        "signal": "best",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 22464,
-          "end": 22636
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 18182,
+          "end": 18470
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "We expect Red Canary revenue of approximately $137 million in fiscal 2026, up from our prior guidance of $125 million.",
-        "signal": "neutral",
+        "detail": "Within that CapEx estimate, we expect data center and CapEx GPU requirements to be up approximately 15%-20% for ongoing and new deployments, with revenue increases expected to ultimately outpace those increases.",
+        "signal": "strong_positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 22842,
-          "end": 22960
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 15918,
+          "end": 16129
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "For the full year fiscal 2026, we expect ARR of $3.740 billion-$3.749 billion, or year-over-year growth of approximately 24%.",
+        "detail": "Our head count nearly tripled in FY26, including hundreds of colleagues who joined through Mirantis and Nostrum, and we expect similar growth again in FY27.",
         "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 22253,
-          "end": 22378
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 13083,
+          "end": 13239
         }
       },
       {
         "name": "Forward outlook",
-        "detail": "For the fourth quarter, we expect revenue of $875 million-$878 million, reflecting approximately 22% year-over-year growth.",
-        "signal": "positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 21833,
-          "end": 21956
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Looking ahead to fiscal 2027, based on higher prices we see in the market today, we expect CapEx as a percentage of revenue to increase up to 200 basis points compared to fiscal 2026 levels.",
-        "signal": "positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 21137,
-          "end": 21327
-        }
-      },
-      {
-        "name": "Forward outlook",
-        "detail": "Operating profit of $755 million-$757 million, up approximately 30% year-over-year, up from our prior guidance of $742 million-$748 million.",
+        "detail": "We expect more than $4 billion of ARR by the end of the December quarter, which is already under contract and includes delivery of Horizons 2 through 4.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 22961,
-          "end": 23101
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 18678,
+          "end": 18830
         }
       }
     ],
@@ -883,185 +901,170 @@ window.EARNINGS_REPORT = {
       {
         "topic": "Management Tone",
         "category": "outlook",
-        "detail": "Confident → Assured, We are confident that our innovative approach to staying ahead of threat actors will help to drive further share gains.",
+        "detail": "Confident → Assured, Our head count nearly tripled in FY26, including hundreds of colleagues who joined through Mirantis and Nostrum, and we expect similar growth again in FY27.",
         "signal": "positive",
         "tier": "positive",
         "reasoning": "The cited prepared remarks evidence is supportive for management tone.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 15568,
-          "end": 15687
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 13083,
+          "end": 13239
         },
         "confidence_category": "Confident",
         "confidence_subcategory": "Assured",
         "confidence_rank": 4,
-        "confidence_reasoning": "Aggregate management-language scores were Confident 97, Vague 18, and Not Confident 9; the leading assured cues were we expect (10), we believe (2), confident (4)."
+        "confidence_reasoning": "Aggregate management-language scores were Confident 41, Vague 10, and Not Confident 8; the leading assured cues were we expect (5), strong (5)."
       },
       {
         "topic": "Revenue & Demand",
         "category": "revenue",
-        "detail": "Free cash flow margin of approximately 22.8%-23.3%, down from our prior expectations of 26.5%-27%, reflecting CapEx in the high single digits as a percentage of revenue.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for revenue & demand.",
+        "detail": "We expect first quarter cash SG&A to increase approximately $40 million-$50 million sequentially as we continue to invest for growth across sales and marketing, R&D, development, sites, and cloud operations, and other functions ahead of significant revenue growth over the coming periods.",
+        "signal": "best",
+        "tier": "best",
+        "reasoning": "The cited prepared remarks evidence is supportive for revenue & demand.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 23213,
-          "end": 23382
-        }
-      },
-      {
-        "topic": "Margins & Profitability",
-        "category": "margin",
-        "detail": "This equates to a free cash flow margin of 16% this quarter, down from 18% last year, reflecting the timing of cash collections and a free cash flow margin of 29% year to date.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for margins & profitability.",
-        "section": "Prepared Remarks",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 20126,
-          "end": 20302
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 18182,
+          "end": 18470
         }
       },
       {
         "topic": "Guidance",
         "category": "guidance",
-        "detail": "For Red Canary, we expect ARR of approximately $137 million in fiscal 2026, up from our prior guidance of $130 million, with net new ARR of approximately $10 million in Q4.",
-        "signal": "neutral",
-        "tier": "neutral",
-        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for guidance.",
+        "detail": "Our head count nearly tripled in FY26, including hundreds of colleagues who joined through Mirantis and Nostrum, and we expect similar growth again in FY27.",
+        "signal": "positive",
+        "tier": "positive",
+        "reasoning": "The cited prepared remarks evidence is supportive for guidance.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 22464,
-          "end": 22636
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 13083,
+          "end": 13239
         }
       },
       {
         "topic": "Products & Innovation",
         "category": "product",
-        "detail": "The next customer I'll highlight is a seven-figure new logo win with a leading healthcare technology company for a platform-wide adoption.",
+        "detail": "Five C-suite appointments across development, product, marketing, innovation, and information security.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for products & innovation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 12354,
-          "end": 12492
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 13240,
+          "end": 13343
         }
       },
       {
         "topic": "Customers & Engagement",
         "category": "customer",
-        "detail": "Our go-to-market strategy is a key growth lever enabling us to deepen customer relationships, accelerate platform adoption, and expand multi-year engagements.",
-        "signal": "best",
-        "tier": "best",
-        "reasoning": "The cited prepared remarks evidence is supportive for customers & engagement.",
+        "detail": "We are in late-stage discussions with a range of new customers over a significant portion of 2027 capacity, and 2028 conversations are well underway too, both on customers and financing.",
+        "signal": "neutral",
+        "tier": "neutral",
+        "reasoning": "The cited prepared remarks evidence is mixed or monitoring for customers & engagement.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 17897,
-          "end": 18055
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 6276,
+          "end": 6462
         }
       },
       {
         "topic": "Capital Allocation",
         "category": "capital",
-        "detail": "As a result, we expect higher CapEx in Q4, taking fiscal 2026 CapEx to the high single digits as a percentage of revenue, up from our prior expectation of mid-single digits.",
+        "detail": "With prepayments, that is more than 100% of the associated GPU CapEx funded, and $2.8 billion of it needed no investment-grade off-take and still priced in the single digits.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for capital allocation.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 20963,
-          "end": 21136
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 5220,
+          "end": 5394
         }
       },
       {
         "topic": "Competition & Market",
         "category": "competition",
-        "detail": "We offer the industry's only complete Zero Trust SASE solution, a singular Zero Trust platform across users, across cloud workloads, and across branches.",
+        "detail": "Recent three-year contracts are pricing in excess of $20 million per megawatt of IT load, paying back the compute investment in around 2 years.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "The cited prepared remarks evidence is mixed or monitoring for competition & market.",
         "section": "Prepared Remarks",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 3158,
-          "end": 3311
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 8430,
+          "end": 8573
         }
       },
       {
         "topic": "Analyst Q&A",
         "category": "qa",
-        "detail": "Regarding the sales leadership changes, these two leaders were part of our CRO, Mike Rich's team.",
+        "detail": "That covers all the CapEx requirements for the 2026 deployments that contribute towards the $4 billion ARR target.",
         "signal": "neutral",
         "tier": "neutral",
         "reasoning": "This is a substantive management response from the analyst Q&A section.",
         "section": "Analyst Q&A",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 25704,
-          "end": 25801
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 23093,
+          "end": 23207
         }
       }
     ],
     "channels": [
       {
         "name": "Products & platforms",
-        "desc": "Q3 saw 25% ARR growth, record operating margins, and robust customer expansion, driven by AI adoption and Zero Trust platform wins.",
+        "desc": "That will take the platform to around 1.2 GW in 2027 of gross capacity, and we are continuing to build across Texas, British Columbia, Oklahoma, South Australia, and Spain.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 425,
-          "end": 556
-        },
-        "signal": "positive"
-      },
-      {
-        "name": "Customers & engagement",
-        "desc": "Our go-to-market strategy is a key growth lever enabling us to deepen customer relationships, accelerate platform adoption, and expand multi-year engagements.",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 17897,
-          "end": 18055
-        },
-        "signal": "positive"
-      },
-      {
-        "name": "Markets & distribution",
-        "desc": "For fiscal 2026 year to date, we transacted approximately $900 million in TCV through our cloud marketplaces, which more than doubled year-over-year.",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 8735,
-          "end": 8884
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 9489,
+          "end": 9661
         },
         "signal": "neutral"
       },
       {
-        "name": "Business lines",
-        "desc": "In a seven-figure upsell deal, a Fortune 500 financial technology company chose Zscaler to secure rapid enterprise adoption of AI with our AI Protect solution, which we introduced in January.",
+        "name": "Customers & engagement",
+        "desc": "We are in late-stage discussions with a range of new customers over a significant portion of 2027 capacity, and 2028 conversations are well underway too, both on customers and financing.",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 9392,
-          "end": 9583
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 6276,
+          "end": 6462
+        },
+        "signal": "neutral"
+      },
+      {
+        "name": "Markets & distribution",
+        "desc": "Alongside the growing market for GPU financing, attractive customer prepayments, we feel well-placed to scale our fundraising efforts to support the rapid growth of the platform.",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 17094,
+          "end": 17272
+        },
+        "signal": "positive"
+      },
+      {
+        "name": "Business lines",
+        "desc": "We are not chasing headline announcements, we are making long-term decisions about where we want this business to be.",
+        "citation": {
+          "source": "earnings call transcript",
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 6121,
+          "end": 6238
         },
         "signal": "neutral"
       }
@@ -1069,201 +1072,161 @@ window.EARNINGS_REPORT = {
     "strategic_pillars": [
       {
         "name": "Innovation Roadmap",
-        "detail": "We have steadily expanded our zero trust platform beyond users to protect branches, workloads, AI applications, and now AI agents.",
-        "signal": "positive",
+        "detail": "This was down $7.6 million compared to the prior quarter, as we decommissioned mining hardware ahead of GPU installations, partially offset by AI Cloud growth.",
+        "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 16769,
-          "end": 16899
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 17499,
+          "end": 17658
         }
       },
       {
         "name": "Growth Expansion",
-        "detail": "Enterprises don't have the capacity to patch and update existing vulnerabilities, so backlogs are piling up faster than organizations can address them.",
-        "signal": "neutral",
+        "detail": "But it is also who we are signing, how the deals are structured, and what we attach on top in managed services, which Mirantis keeps expanding.",
+        "signal": "positive",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 5957,
-          "end": 6108
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 8772,
+          "end": 8915
         }
       },
       {
         "name": "Customer Value",
-        "detail": "GSIs will be able to leverage Zscaler's AI Protect portfolio to build specialized AI discovery and risk mitigation services.",
+        "detail": "A grid connection is worth more with a data center on it, worth more again with GPUs inside, more again with services wrapped around the customer.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 8547,
-          "end": 8671
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 4098,
+          "end": 4244
         }
       },
       {
         "name": "Operational Excellence",
-        "detail": "In another example, an existing seven-figure ARR Global 2000 semiconductor manufacturing customer increased their annual spend with us by 60% in a three-year, eight-figure Z-Flex deal.",
-        "signal": "positive",
+        "detail": "We currently expect mining operations to be effectively decommissioned by the end of December 2026.",
+        "signal": "caution",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 19222,
-          "end": 19406
-        }
-      },
-      {
-        "name": "Capital Discipline",
-        "detail": "Year to date, with 26% revenue growth and a 29% free cash flow margin, we achieved Rule of 55 performance.",
-        "signal": "positive",
-        "citation": {
-          "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 16009,
-          "end": 16115
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 18082,
+          "end": 18181
         }
       },
       {
         "name": "Long-Term Strategy",
-        "detail": "Building on Jay's earlier comments on enhancements to our go-to-market engine, we are continuing to strengthen our position as a long-term strategic partner and driving deeper customer adoption over time through our account-centric sales motion.",
+        "detail": "Which is good, because that excess is now helping to support data center CapEx on those same and future deployments.",
         "signal": "neutral",
         "citation": {
           "source": "earnings call transcript",
-          "url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
-          "start": 18056,
-          "end": 18301
+          "url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
+          "start": 14406,
+          "end": 14522
         }
       }
     ],
     "risks": [
       {
         "risk": "Competitive pressure",
-        "evidence": "We face intense and increasing competition and could lose market share to our competitors, which could adversely affect our business, financial condition and results of operations.",
+        "evidence": "Competition also occurs at individual layers of the AI infrastructure stack.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
-          "start": 198891,
-          "end": 199071
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630.htm",
+          "start": 93120,
+          "end": 93196
         }
       },
       {
         "risk": "Regulatory / legal exposure",
-        "evidence": "This Quarterly Report on Form 10-Q contains forward-looking statements within the meaning of the Private Securities Litigation Reform Act of 1995, including but not limited to statements regarding our financial outlook and market positioning.",
+        "evidence": "Risks Related to Regulations, Regulatory Frameworks and Political Intervention",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
-          "start": 29064,
-          "end": 29306
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630.htm",
+          "start": 62542,
+          "end": 62620
         }
       },
       {
         "risk": "Demand / macro exposure",
-        "evidence": "Due to uncertainty in the macroeconomic and geopolitical environment, there is ongoing disruption in the global economy and financial markets.",
+        "evidence": "Macroeconomic volatility caused by geopolitical events also has the potential to result in a shortage of diesel fuel in Australia, leading to higher costs or an inability to access sufficient diesel fuel at all.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
-          "start": 50583,
-          "end": 50725
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630.htm",
+          "start": 256740,
+          "end": 256952
         }
       },
       {
         "risk": "Capital intensity / cash-flow pressure",
-        "evidence": "Included in this legislation are provisions that allow for the immediate expensing of domestic research and development expenses, immediate expensing of certain capital expenditures, and other changes to the U.",
+        "evidence": "Our business is capital intensive, we expect to continue to incur substantial capital expenditures to acquire, maintain and upgrade our hardware over time, to acquire and construct data center facilities, and to grow our business, and we may be unable to raise additional capital needed to fulfill our needs, grow our business, or achieve our goals.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
-          "start": 143983,
-          "end": 144194
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630.htm",
+          "start": 57316,
+          "end": 57665
         }
       },
       {
         "risk": "Supply / execution exposure",
-        "evidence": "Due to uncertainty in the macroeconomic and geopolitical environment, there is ongoing disruption in the global economy and financial markets.",
+        "evidence": "Supply chain and logistics issues for us, our contractors or our suppliers may frustrate or delay our expansion plans or increase the cost of acquiring AI hardware or constructing our infrastructure.",
         "probability": null,
         "eps_impact": null,
         "quantification": "Not company-disclosed; no probability or EPS impact invented",
         "signal": "caution",
         "citation": {
           "source": "SEC filing / earnings transcript",
-          "url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
-          "start": 50583,
-          "end": 50725
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630.htm",
+          "start": 58579,
+          "end": 58778
         }
       }
     ],
     "thesis": {
-      "recommendation": "HOLD",
+      "recommendation": "INSUFFICIENT DATA",
       "hurdle_rate": 0.12,
       "scenario_weights": {
         "base_case": 0.5,
         "bull_case": 0.3,
         "bear_case": 0.2
       },
-      "method": "Five-year EPS scenarios use broker-derived TTM EPS when available; when trailing P/E is negative, the model falls back to a normalized earnings proxy built from revenue, gross margin, adjusted EBITDA margin, and diluted shares.",
-      "base_case": {
-        "eps_cagr": 0.2,
-        "exit_multiple": 19.144223437500006,
-        "exit_eps": 10.532491160313795,
-        "exit_price": 201.63636412654097,
-        "irr": 0.0349663609930293,
-        "probability": 0.5,
-        "summary": "EPS $4.23 -> $10.53; EPS CAGR 20.0%; exit P/E 19.1x = $201.64; IRR 3.5%",
-        "detail": "EPS $4.23 -> $10.53; EPS CAGR 20.0%; exit P/E 19.1x = $201.64; IRR 3.5%"
-      },
-      "bull_case": {
-        "eps_cagr": 0.28,
-        "exit_multiple": 26.44790538240001,
-        "exit_eps": 14.54369376252471,
-        "exit_price": 384.6502365418547,
-        "irr": 0.1776755633681466,
-        "probability": 0.3,
-        "summary": "EPS $4.23 -> $14.54; EPS CAGR 28.0%; exit P/E 26.4x = $384.65; IRR 17.8%",
-        "detail": "EPS $4.23 -> $14.54; EPS CAGR 28.0%; exit P/E 26.4x = $384.65; IRR 17.8%"
-      },
-      "bear_case": {
-        "eps_cagr": 0.08000000000000002,
-        "exit_multiple": 11.592740743,
-        "exit_eps": 6.219330705253696,
-        "exit_price": 72.09908846098544,
-        "irr": -0.1574446945627429,
-        "probability": 0.2,
-        "summary": "EPS $4.23 -> $6.22; EPS CAGR 8.0%; exit P/E 11.6x = $72.10; IRR -15.7%",
-        "detail": "EPS $4.23 -> $6.22; EPS CAGR 8.0%; exit P/E 11.6x = $72.10; IRR -15.7%"
-      },
-      "base_cagr": 0.2,
-      "irr": 0.0349663609930293,
+      "method": "Five-year EPS scenarios use broker-derived TTM EPS when available, bounded reported growth, and transparent scenario weights/multiples.",
       "key_risks_summary": "Competitive pressure, Regulatory / legal exposure, Demand / macro exposure"
     }
   },
   "sources": {
-    "filing_url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430.htm",
-    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000096/zs-20260430_htm.xml",
-    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1713683/000171368326000095/zs-04302026_991.htm",
-    "investor_relations_url": "https://ir.zscaler.com",
-    "transcript_url": "https://stockanalysis.com/stocks/zs/transcripts/572342-q3-2026/",
+    "filing_url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630.htm",
+    "xbrl_url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000052/iren-20260630_htm.xml",
+    "earnings_release_url": "https://www.sec.gov/Archives/edgar/data/1878848/000114036126028871/ef20078253_ex99-1.htm",
+    "investor_relations_url": null,
+    "transcript_url": "https://stockanalysis.com/stocks/iren/transcripts/662889-q4-2026/",
     "transcript_provider": "stockanalysis.com",
-    "transcript_call_date": "2026-05-26",
-    "transcript_retrieved_at": "2026-09-05T22:46:45.050689+00:00",
-    "transcript_content_sha256": "f5ec558090f7198d29f3f316989891e3f99535cdf328d0d1db762095060863c2",
-    "short_interest_url": "https://www.nasdaq.com/market-activity/stocks/zs/short-interest"
+    "transcript_call_date": "2026-08-27",
+    "transcript_fiscal_period": "Q4",
+    "transcript_fiscal_year": 2026,
+    "transcript_retrieved_at": "2026-09-07T02:37:08.619772+00:00",
+    "transcript_content_sha256": "e7798832ed9404b9e6cbb1c3a241270aaa3278c6f66eeafe1831c0ab70c99b55",
+    "short_interest_url": "https://www.nasdaq.com/market-activity/stocks/iren/short-interest"
   },
   "warnings": [
-    "Using latest completed daily regular-session close (46.8 hours old) — production data"
+    "Q4 release parsing failed: Q4_RELEASE_PERIOD_MISMATCH: fourth-quarter fiscal-year identity is absent",
+    "Using latest completed daily regular-session close (74.6 hours old) — production data"
   ],
   "grade_breakdown": {
     "financial_metrics": {
@@ -1272,20 +1235,20 @@ window.EARNINGS_REPORT = {
       "weight": 0.1
     },
     "business_quality": {
-      "grade": "B-",
-      "score": 66.71849999999999,
-      "reason": "66.7/100 — Adequate Business Quality",
+      "grade": "F",
+      "score": 26.5,
+      "reason": "26.5/100 — Very Weak Business Quality",
       "weight": 0.4
     },
     "valuation": {
-      "grade": "C",
-      "score": 50.0,
-      "reason": "50.0/100 — Fallback neutral valuation (insufficient_data)",
+      "grade": "B+",
+      "score": 78.95842592287265,
+      "reason": "79.0/100 — Fair / Attractive",
       "weight": 0.4
     },
     "earnings_call": {
-      "grade": "A-",
-      "reason": "Solid call with guidance, minor caution in Q&A",
+      "grade": "A",
+      "reason": "Confident management, good guidance, mostly positive discussion",
       "weight": 0.02
     },
     "management_execution": {
@@ -1294,19 +1257,19 @@ window.EARNINGS_REPORT = {
       "weight": 0.03
     },
     "future_growth": {
-      "grade": "A",
-      "reason": "Strong growth outlook: high revenue growth, backlog building, positive guidance",
+      "grade": "A+",
+      "reason": "Explosive growth trajectory: backlog expanding, >20% revenue growth, strong pipeline, clear secular tailwinds",
       "weight": 0.05
     },
-    "final_grade": "C+",
-    "final_score": 7.46,
+    "final_grade": "C",
+    "final_score": 6.33,
     "all_scores": {
       "financial_metrics": 8,
-      "business_quality": 8,
-      "valuation": 6,
-      "earnings_call": 11,
+      "business_quality": 1,
+      "valuation": 10,
+      "earnings_call": 12,
       "management_execution": 8,
-      "future_growth": 12
+      "future_growth": 13
     }
   }
 };

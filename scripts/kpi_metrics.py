@@ -344,7 +344,7 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
             "citation": {"source": source, "url": primary_url,
                          "filing_url": filing_url if source in {"SEC", "IR/SEC"} else None,
                          "ir_url": ir_url if source in {"IR", "IR/SEC"} else None},
-            "company": company, "ticker": ticker.upper(), "sector": sector,
+            "company": company, "ticker": ticker.upper(), "sector": row["sector"],
             "date_added": row["date_added"],
         })
         if len(selected) == DASHBOARD_KPI_LIMIT:

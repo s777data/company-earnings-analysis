@@ -6,6 +6,7 @@ import io
 import os
 import re
 from typing import Any
+from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -50,6 +51,25 @@ def extract_exhibit_number(filename: str) -> str | None:
     return f"{match.group(1)}.{match.group(2)}" if match else None
 
 
+def extract_index_exhibits(index_html: str, root: str) -> dict[str, dict[str, str]]:
+    """Read exhibit types from the SEC filing-detail table when filenames omit ``ex99``."""
+    soup = BeautifulSoup(index_html, "html.parser")
+    exhibits: dict[str, dict[str, str]] = {}
+    for row in soup.select("table.tableFile tr"):
+        cells = row.find_all("td")
+        if len(cells) < 4:
+            continue
+        exhibit_type = cells[3].get_text(" ", strip=True)
+        match = re.fullmatch(r"EX-(\d{2})\.(\d+)", exhibit_type, re.I)
+        number = f"{match.group(1)}.{match.group(2)}" if match else None
+        link = row.find("a", href=True)
+        if not number or link is None:
+            continue
+        url = urljoin(f"{root}/", str(link.get("href", "")))
+        exhibits[number] = {"name": urlparse(url).path.rsplit("/", 1)[-1], "url": url}
+    return exhibits
+
+
 def _select_instance(files: list[dict[str, Any]]) -> str | None:
     candidates = [f["name"] for f in files if f.get("name", "").lower().endswith(".xml")]
     preferred = [name for name in candidates if name.lower().endswith("_htm.xml")]
@@ -82,6 +102,16 @@ def fetch_filing(accession_number: str, cik: str, primary_document: str | None =
         if not number or (exhibit_filter and number != exhibit_filter):
             continue
         exhibits[number] = {"name": name, "url": f"{root}/{name}"}
+    if include_exhibits or exhibit_filter:
+        detail_name = f"{accession_number}-index.html"
+        try:
+            indexed_exhibits = extract_index_exhibits(_get(f"{root}/{detail_name}").text, root)
+            for number, meta in indexed_exhibits.items():
+                if not exhibit_filter or number == exhibit_filter:
+                    exhibits[number] = meta
+        except requests.RequestException:
+            # Filename detection above remains a valid fallback when the detail page is unavailable.
+            pass
     result: dict[str, Any] = {
         "accession_number": accession, "cik": str(cik).zfill(10), "main_document": main,
         "filing_url": f"{root}/{main}", "content": _document_text(f"{root}/{main}", main),
