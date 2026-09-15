@@ -407,23 +407,8 @@ def _send(message: str, media_path: str, target: str) -> dict[str, Any]:
 def deliver_reports(data: dict[str, Any], html_dir: str, target: str = "telegram", dry_run: bool = False) -> list[dict[str, Any]]:
     messages = [generate_dashboard_message(data), generate_call_message(data)]
     zip_path = _create_html_zip(html_dir)
-    png_path = _dashboard_png_path(html_dir)
-    png_zip_path = _dashboard_png_zip_path(html_dir)
-    try:
-        if not png_path.is_file() or png_path.stat().st_size == 0:
-            render_dashboard_png(zip_path, str(png_path))
-        if not png_zip_path.is_file() or png_zip_path.stat().st_size == 0:
-            _create_png_zip(str(png_path), str(png_zip_path))
-        if dry_run:
-            dry_results = [
-                {"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())}
-                for message in messages
-            ]
-            return dry_results
-        return [_send(message, zip_path, target) for message in messages]
-    finally:
-        if png_path.exists():
-            try:
-                png_path.unlink()
-            except OSError:
-                pass
+    message = "\n\n---\n\n".join(messages)
+    if dry_run:
+        return [{"success": False, "dry_run": True, "message": message,
+                 "media_path": str(Path(zip_path).resolve())}]
+    return [_send(message, zip_path, target)]
