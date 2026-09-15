@@ -1010,8 +1010,19 @@ class SafetyTests(unittest.TestCase):
             dashboard.with_suffix(".png").write_bytes(b"\x89PNG\r\n\x1a\n" + b"x" * 100)
             with patch("telegram_notify.subprocess.run") as run:
                 result = deliver_reports(sample_data(), str(dashboard), dry_run=True)
-            self.assertEqual(len(result), 3); run.assert_not_called()
+            self.assertEqual(len(result), 2); run.assert_not_called()
             self.assertTrue(all(item["dry_run"] for item in result))
+
+    def test_delivery_sends_only_the_two_report_notifications(self):
+        with tempfile.TemporaryDirectory() as directory:
+            dashboard = Path(directory) / "dashboard"; dashboard.mkdir()
+            (dashboard / "index.html").write_text("<html></html>", encoding="utf-8")
+            dashboard.with_suffix(".png").write_bytes(b"\x89PNG\r\n\x1a\n" + b"x" * 100)
+            with patch("telegram_notify._send", return_value={"success": True, "backend_id": "m"}) as send:
+                result = deliver_reports(sample_data(), str(dashboard), dry_run=False)
+            self.assertEqual(len(result), 2)
+            self.assertEqual(send.call_count, 2)
+            self.assertNotIn("PNG-in-ZIP dashboard render", [call.args[0] for call in send.call_args_list])
 
     def test_delivery_rejects_missing_attachment(self):
         with self.assertRaisesRegex(RuntimeError, "HTML directory not found"):
@@ -1279,7 +1290,8 @@ class OutputTests(unittest.TestCase):
             png_path = root.with_suffix(".png")
             png_path.write_bytes(b"\x89PNG\r\n\x1a\n" + b"fakepngdata")
             attachments = deliver_reports(data, str(root), dry_run=True)
-            png_zip = Path(attachments[-1]["media_path"])
+            self.assertEqual(len(attachments), 2)
+            png_zip = root.parent / f"{root.name}_4K.zip"
             self.assertTrue(png_zip.name.endswith("_4K.zip"))
             self.assertTrue(png_zip.is_file())
             self.assertTrue(zipfile.is_zipfile(png_zip))

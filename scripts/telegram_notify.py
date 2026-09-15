@@ -419,11 +419,8 @@ def deliver_reports(data: dict[str, Any], html_dir: str, target: str = "telegram
                 {"success": False, "dry_run": True, "message": message, "media_path": str(Path(zip_path).resolve())}
                 for message in messages
             ]
-            dry_results.append({"success": False, "dry_run": True, "message": "PNG-in-ZIP dashboard render", "media_path": str(png_zip_path.resolve())})
             return dry_results
-        deliveries = [_send(message, zip_path, target) for message in messages]
-        deliveries.append(_send("PNG-in-ZIP dashboard render", str(png_zip_path), target))
-        return deliveries
+        return [_send(message, zip_path, target) for message in messages]
     finally:
         if png_path.exists():
             try:
