@@ -5,63 +5,124 @@ from __future__ import annotations
 import asyncio
 import json
 import os
-from datetime import datetime, timezone
+import shutil
+import subprocess
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
-import yaml
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
+
+# The previous implementation launched /home/s777data/robinhood-mcp as a local
+# stdio server. That path is deprecated. Calls now go through the profile-scoped
+# OAuth bridge, which reads the active hosted robinhood-trading MCP config.
+_PROFILE_HOME = Path(os.getenv("HERMES_PROFILE_HOME", "~/.hermes/profiles/options-wheel-agent")).expanduser()
+_BRIDGE = Path(__file__).with_name("profile_robinhood_mcp_bridge.py")
 
 
-def _server_parameters() -> StdioServerParameters:
-    config_path = Path(os.getenv("HERMES_CONFIG", "~/.hermes/config.yaml")).expanduser()
-    config = yaml.safe_load(config_path.read_text())
-    server = config.get("mcp_servers", {}).get("robinhood-trading")
-    if not server:
-        raise RuntimeError("robinhood-trading MCP is not configured")
-    env = os.environ.copy()
-    for key, value in (server.get("env") or {}).items():
-        if isinstance(value, str) and value.startswith("${") and value.endswith("}"):
-            resolved = os.getenv(value[2:-1])
-            if resolved is not None: env[key] = resolved
-        else: env[key] = str(value)
-    return StdioServerParameters(command=server["command"], args=server.get("args", []), env=env)
+def _hermes_python() -> str:
+    explicit = os.getenv("HERMES_PYTHON")
+    if explicit:
+        return explicit
+    hermes = shutil.which("hermes")
+    if hermes:
+        first_line = Path(hermes).read_text(encoding="utf-8").splitlines()[0]
+        if first_line.startswith("#!"):
+            return first_line[2:].strip()
+    raise RuntimeError("Hermes Python interpreter is required for hosted MCP OAuth")
 
 
-def _decode(result: Any) -> Any:
-    if getattr(result, "isError", getattr(result, "is_error", False)):
-        raise RuntimeError("Robinhood MCP returned an error")
-    structured = getattr(result, "structuredContent", getattr(result, "structured_content", None))
-    if structured is not None: return structured
-    texts = [getattr(item, "text", "") for item in getattr(result, "content", []) if getattr(item, "text", None)]
-    if not texts: return None
-    text = "\n".join(texts)
-    if text.lower().startswith("error executing tool"):
-        raise RuntimeError(text.splitlines()[0])
-    try: return json.loads(text)
-    except json.JSONDecodeError:
-        import ast
-        try: return ast.literal_eval(text)
-        except (ValueError, SyntaxError): return {"text": text}
+def _translate_call(tool: str, arguments: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    symbol = str(arguments.get("symbol", "")).upper()
+    if tool == "get_account_info":
+        return "get_accounts", {}
+    if tool == "get_quote":
+        return "get_equity_quotes", {"symbols": [symbol]}
+    if tool == "get_fundamentals":
+        return "get_equity_fundamentals", {"symbols": [symbol], "bounds": "regular"}
+    if tool == "get_historicals":
+        end = datetime.now(timezone.utc)
+        start = end - timedelta(days=35)
+        return "get_equity_historicals", {
+            "symbols": [symbol],
+            "start_time": start.isoformat().replace("+00:00", "Z"),
+            "end_time": end.isoformat().replace("+00:00", "Z"),
+            "interval": "day",
+            "bounds": "regular",
+        }
+    return tool, arguments
 
 
 async def _call(tool: str, arguments: dict[str, Any]) -> Any:
-    params = _server_parameters()
-    async with stdio_client(params) as (reader, writer):
-        async with ClientSession(reader, writer) as session:
-            await session.initialize()
-            return _decode(await session.call_tool(tool, arguments))
+    remote_tool, remote_args = _translate_call(tool, arguments)
+    env = os.environ.copy()
+    env["HERMES_PROFILE_HOME"] = str(_PROFILE_HOME)
+    env["HERMES_PROFILE_CONFIG"] = str(_PROFILE_HOME / "config.yaml")
+    proc = await asyncio.create_subprocess_exec(
+        _hermes_python(), str(_BRIDGE), remote_tool, json.dumps(remote_args),
+        cwd=str(_PROFILE_HOME), env=env,
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+    )
+    stdout, stderr = await proc.communicate()
+    if proc.returncode != 0:
+        detail = stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(detail or "hosted Robinhood MCP bridge failed")
+    try:
+        return json.loads(stdout.decode("utf-8"))
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("hosted Robinhood MCP bridge returned invalid JSON") from exc
+
+
+def _decode(result: Any) -> Any:
+    """Compatibility decoder retained for existing unit-test imports."""
+    if isinstance(result, (dict, list)):
+        return result
+    structured = getattr(result, "structuredContent", getattr(result, "structured_content", None))
+    if structured is not None:
+        return structured
+    texts = [getattr(item, "text", "") for item in getattr(result, "content", []) if getattr(item, "text", None)]
+    if not texts:
+        return None
+    try:
+        return json.loads("\n".join(texts))
+    except json.JSONDecodeError:
+        return {"text": "\n".join(texts)}
 
 
 def _first_dict(data: Any) -> dict[str, Any]:
-    if isinstance(data, list): return data[0] if data and isinstance(data[0], dict) else {}
+    if isinstance(data, list):
+        if not data or not isinstance(data[0], dict):
+            return {}
+        first = data[0]
+        for key in ("quote", "fundamentals", "data", "result"):
+            if isinstance(first.get(key), dict):
+                return first[key]
+        return first
     if isinstance(data, dict):
-        for key in ("result", "quote", "data"):
+        for key in ("quote", "fundamentals"):
             if isinstance(data.get(key), dict): return data[key]
+        for key in ("result", "data", "results"):
+            value = data.get(key)
+            if isinstance(value, dict): return _first_dict(value)
+            if isinstance(value, list): return _first_dict(value)
         return data
     return {}
+
+
+def _account_matches(data: Any, expected: str) -> bool:
+    if not isinstance(data, dict):
+        return False
+    container = data.get("data") if isinstance(data.get("data"), dict) else data
+    accounts = container.get("accounts") if isinstance(container, dict) else None
+    if not isinstance(accounts, list):
+        accounts = data.get("results") if isinstance(data.get("results"), list) else []
+    for account in accounts:
+        if not isinstance(account, dict):
+            continue
+        number = account.get("account_number") or account.get("account")
+        if str(number) == str(expected) and account.get("agentic_allowed") is True:
+            return True
+    return False
 
 
 def _expected_account(explicit: str | None = None) -> str | None:
@@ -79,10 +140,9 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
     expected = _expected_account(expected_account)
     if not expected:
         raise RuntimeError("ROBINHOOD_EXPECTED_ACCOUNT is required to verify the authorized account")
-    account = _first_dict(asyncio.run(_call("get_account_info", {})))
-    actual = str(account.get("account_number") or account.get("account") or "")
-    if actual != str(expected):
-        raise RuntimeError("Robinhood MCP account does not match the authorized account")
+    account_data = asyncio.run(_call("get_account_info", {}))
+    if not _account_matches(account_data, expected):
+        raise RuntimeError("Robinhood MCP account does not match the authorized agentic account")
     quote = _first_dict(asyncio.run(_call("get_quote", {"symbol": symbol.upper()})))
     fundamentals = _first_dict(asyncio.run(_call("get_fundamentals", {"symbol": symbol.upper()})))
     regular_close_price = None
@@ -92,7 +152,7 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
             "symbol": symbol.upper(), "interval": "day", "span": "month",
         }))
         if isinstance(historicals, dict):
-            historicals = historicals.get("result") or historicals.get("data") or []
+            historicals = historicals.get("result") or historicals.get("data") or historicals.get("results") or []
         completed = [row for row in historicals if isinstance(row, dict) and row.get("close_price")]
         if completed:
             candle = completed[-1]
