@@ -62,6 +62,15 @@ HURDLE_RATE = 0.12
 
 def _now() -> datetime: return datetime.now(timezone.utc)
 
+
+def _parse_timestamp(value: str) -> datetime:
+    normalized = str(value).replace("Z", "+00:00")
+    if "." in normalized:
+        prefix, suffix = normalized.split(".", 1)
+        fraction, offset = suffix.split("+", 1) if "+" in suffix else (suffix, "")
+        normalized = f"{prefix}.{fraction[:6]}" + (f"+{offset}" if offset else "")
+    return datetime.fromisoformat(normalized)
+
 def _validate_transcript_call_date(call_date: str | None, report_date: str) -> tuple[str | None, str | None]:
     if not call_date: return None, None
     try:
@@ -172,7 +181,7 @@ def _validate_dashboard_period_consistency(data: dict[str, Any]) -> None:
             ).days + 1
             scope = str(citation.get("period_scope") or "").lower()
             if not 70 <= duration <= 110 and scope not in {"instant", "q4_derived", "quarter"}:
-                if not (period == "Q4" and scope == "ytd"):
+                if not (period in {"Q1", "Q2", "Q3"} and scope == "ytd") and not (period == "Q4" and scope == "ytd"):
                     errors.append(f"{path} spans {duration} days but is presented as current-quarter data")
 
     for section_name in ("financials", "capital_liquidity"):
@@ -250,7 +259,7 @@ VALUATION_SKILL_DIR = Path(
     "/home/s777data/.hermes/profiles/options-wheel-agent/skills/company_valuation_score"
 )
 EXPECTED_VALUATION_CONTRACT_VERSION = "1.0"
-EXPECTED_VALUATION_METHODOLOGY_VERSION = "2.7"
+EXPECTED_VALUATION_METHODOLOGY_VERSION = "2.8"
 
 
 def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str, Any]:
@@ -1219,7 +1228,7 @@ class EarningsAnalyzer:
             completed_close = "completed" in str(quote.get("source") or "").casefold()
             quote_age_seconds = None
             if timestamp:
-                parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+                parsed = _parse_timestamp(timestamp)
                 quote_age_seconds = max(0, (_now() - parsed.astimezone(timezone.utc)).total_seconds())
                 if quote_age_seconds > 900 and not completed_close:
                     if not self.allow_stale_quote_for_test:
@@ -1239,7 +1248,7 @@ class EarningsAnalyzer:
 
             # Completed daily regular-session close is valid production data regardless of age.
             # Only apply the 15-minute staleness check to live regular-session last trade quotes.
-            is_completed_close = quote.get("source") == "robinhood-trading MCP completed daily regular-session close"
+            is_completed_close = completed_close
             if quote_age_seconds is not None and quote_age_seconds > 900 and not is_completed_close:
                 if not self.allow_stale_quote_for_test:
                     raise RuntimeError("STALE_QUOTE: Robinhood quote is older than 15 minutes")

@@ -20,6 +20,15 @@ _PROFILE_HOME = Path(os.getenv("HERMES_PROFILE_HOME", "~/.hermes/profiles/option
 _BRIDGE = Path(__file__).with_name("profile_robinhood_mcp_bridge.py")
 
 
+def _parse_timestamp(value: str) -> datetime:
+    normalized = str(value).replace("Z", "+00:00")
+    if "." in normalized:
+        prefix, suffix = normalized.split(".", 1)
+        fraction, offset = suffix.split("+", 1) if "+" in suffix else (suffix, "")
+        normalized = f"{prefix}.{fraction[:6]}" + (f"+{offset}" if offset else "")
+    return datetime.fromisoformat(normalized)
+
+
 def _hermes_python() -> str:
     explicit = os.getenv("HERMES_PYTHON")
     if explicit:
@@ -173,8 +182,8 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
     use_daily_close = regular_close_price is not None
     if use_daily_close and live_regular_timestamp and regular_close_timestamp:
         try:
-            live_day = datetime.fromisoformat(live_regular_timestamp.replace("Z", "+00:00")).date()
-            candle_day = datetime.fromisoformat(regular_close_timestamp.replace("Z", "+00:00")).date()
+            live_day = _parse_timestamp(live_regular_timestamp).date()
+            candle_day = _parse_timestamp(regular_close_timestamp).date()
             use_daily_close = candle_day >= live_day
         except ValueError:
             pass
@@ -184,9 +193,7 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
                        else "robinhood-trading MCP regular-session last trade")
     if not use_daily_close and live_regular_timestamp:
         try:
-            trade_time = datetime.fromisoformat(live_regular_timestamp.replace("Z", "+00:00")).astimezone(
-                ZoneInfo("America/New_York")
-            )
+            trade_time = _parse_timestamp(live_regular_timestamp).astimezone(ZoneInfo("America/New_York"))
             now_et = datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York"))
             minutes = trade_time.hour * 60 + trade_time.minute
             if 15 * 60 + 55 <= minutes <= 16 * 60 + 5 and now_et >= trade_time and now_et.date() == trade_time.date():
