@@ -89,6 +89,43 @@ def test_build_business_kpis_derives_current_period_from_xbrl_when_reference_is_
     assert all(row["citation"]["url"] == "https://www.sec.gov/example-10q.htm" for row in selected["rows"])
 
 
+def test_build_business_kpis_prefers_release_specific_operating_metrics(tmp_path):
+    release_text = """
+    Revenue: Management Solutions $ 1,213.1 $ 1,163.3 4 %
+    PEO and Insurance Solutions 367.6 329.1 12 %
+    Total service revenue 1,580.7 1,492.4 6 %
+    Interest on funds held for clients (1) 49.8 47.6 5 %
+    Total revenue 1,630.5 1,540.0 6 %
+    Operating income $ 619.2 $ 541.9 14 %
+    Adjusted operating income* $ 684.7 $ 626.7 9 %
+    Diluted earnings per share $ 1.21 $ 1.06 14 %
+    Adjusted diluted earnings per share* $ 1.34 $ 1.22 10 %
+    Operating margin was 38.0% compared to 35.2%
+    Adjusted operating margin* was 42.0% compared to 40.7%
+    Cash flow from operations was $ 413.5 million
+    Total revenue growth 5% to 6%
+    Management Solutions revenue growth 5% to 6%
+    PEO and Insurance Solutions revenue growth 7% to 8%
+    Adjusted operating margin ~44%
+    Adjusted diluted earnings per share growth 7% to 9%
+    """
+    reference = tmp_path / "KPI_derived_reference.json"
+    selected = build_business_kpis(
+        company="Paychex Inc.", ticker="PAYX", sector="Services",
+        filing_url="https://www.sec.gov/example-10q.htm",
+        release_url="https://www.sec.gov/example-8k.htm", release_text=release_text,
+        fiscal_period="Q1", fiscal_year=2027, source_date="2026-08-31",
+        reference_path=reference, xbrl_metrics={"revenue": {"value": 1}},
+    )
+    metrics = {row["metric"] for row in selected["rows"]}
+    assert selected["selection_status"] == "COMPLETE"
+    assert len(selected["rows"]) == 12
+    assert all(row["source"] == "IR/SEC" for row in selected["rows"])
+    assert "Management Solutions Revenue" in metrics
+    assert "PEO & Insurance Solutions Revenue" in metrics
+    assert "Revenue" not in metrics
+
+
 class FilingSelectionTests(unittest.TestCase):
     """Tests for the filing selection logic in identify() method."""
 

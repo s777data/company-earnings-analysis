@@ -30,6 +30,7 @@ from __future__ import annotations
 import json
 import re
 from datetime import date
+from html import unescape
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -442,6 +443,94 @@ def _derive_xbrl_kpis(*, company: str, ticker: str, sector: str, fiscal_period: 
     return rows
 
 
+def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_period: str,
+                         fiscal_year: int, report_date: str, source_url: str,
+                         release_text: str) -> list[dict[str, Any]]:
+    """Derive company-specific operating KPIs from an official earnings release."""
+    plain_text = unescape(re.sub("<[^>]+>", " ", release_text or ""))
+    text = " ".join(plain_text.split())
+    if not text:
+        return []
+    period_label = f"{fiscal_period.upper()} {fiscal_year}"
+    prior_label = f"{fiscal_period.upper()} {fiscal_year - 1}"
+    rows: list[dict[str, Any]] = []
+
+    def add(metric: str, latest: str, prior: str = "N/A", view: str = "",
+            importance: str = "Tier 1 — Core") -> None:
+        rows.append({
+            "company": company, "ticker": ticker, "sector": sector, "metric": metric,
+            "latest_quarter": latest, "prior_year_quarter": prior,
+            "analyst_view": view, "source": "IR/SEC", "importance": importance,
+            "source_url": source_url, "date_added": report_date,
+        })
+
+    def amount_pair(label: str, metric: str) -> None:
+        match = re.search(
+            rf"{label}(?: revenue)? *[*]? *(?:[(][0-9]+[)])? *[$]? *([0-9,]+(?:[.][0-9]+)?) +[$]? *([0-9,]+(?:[.][0-9]+)?) +([( -]?[0-9]+) *%",
+            text, re.I,
+        )
+        if not match:
+            return
+        current, prior, change = match.groups()
+        direction = "increased" if not change.startswith(("(", "-")) else "decreased"
+        add(metric, f"{period_label}: ${current}M", f"{prior_label}: ${prior}M",
+            f"{metric} was ${current}M, {direction} {change.strip('()')}% year over year.")
+
+    for label, metric in (
+        ("Management Solutions", "Management Solutions Revenue"),
+        ("PEO and Insurance Solutions", "PEO & Insurance Solutions Revenue"),
+        ("Total service revenue", "Total Service Revenue"),
+        ("Interest on funds held for clients", "Interest on Funds Held for Clients"),
+        ("Total revenue", "Total Revenue"),
+        ("Operating income", "Operating Income"),
+        ("Adjusted operating income", "Adjusted Operating Income"),
+    ):
+        amount_pair(label, metric)
+
+    def percent_pair(label: str, metric: str) -> None:
+        match = re.search(rf"{label}[^0-9%]*([0-9]+(?:[.][0-9]+)?)% +compared to +([0-9]+(?:[.][0-9]+)?)%", text, re.I)
+        if match:
+            current, prior = match.groups()
+            add(metric, f"{period_label}: {current}%", f"{prior_label}: {prior}%",
+                f"{metric} was {current}% versus {prior}% in the comparable prior-year period.")
+
+    percent_pair("Operating margin", "Operating Margin")
+    percent_pair("Adjusted operating margin", "Adjusted Operating Margin")
+
+    def eps_pair(label: str, metric: str) -> None:
+        match = re.search(rf"{label}[^$0-9]*[$] *([0-9]+(?:[.][0-9]+)?) +[$] *([0-9]+(?:[.][0-9]+)?) +([0-9]+) *%", text, re.I)
+        if match:
+            current, prior, change = match.groups()
+            add(metric, f"{period_label}: ${current}", f"{prior_label}: ${prior}",
+                f"{metric} increased {change}% year over year.")
+
+    eps_pair("Diluted earnings per share", "Diluted EPS")
+    eps_pair("Adjusted diluted earnings per share", "Adjusted Diluted EPS")
+
+    match = re.search(r"Cash, restricted cash, and total corporate investments[^$0-9]*[$] *([0-9,.]+) *billion", text, re.I)
+    if match:
+        add("Cash, Restricted Cash & Corporate Investments", f"{period_label}: ${match.group(1)}B",
+            view=f"Cash, restricted cash, and corporate investments totaled approximately ${match.group(1)} billion.")
+    match = re.search(r"Cash flow from operations was *[$] *([0-9,.]+) *million", text, re.I)
+    if match:
+        add("Operating Cash Flow", f"{period_label}: ${match.group(1)}M",
+            view=f"Operating cash flow was ${match.group(1)} million.")
+
+    for pattern, metric in (
+        (r"Total revenue growth +([0-9]+% +to +[0-9]+%)", "FY Revenue Growth Guidance"),
+        (r"Management Solutions revenue growth +([0-9]+% +to +[0-9]+%)", "FY Management Solutions Growth Guidance"),
+        (r"PEO and Insurance Solutions revenue growth +([0-9]+% +to +[0-9]+%)", "FY PEO & Insurance Solutions Growth Guidance"),
+        (r"Interest on funds held for clients +[$] *([0-9]+ +million +to +[$]? *[0-9]+ +million)", "FY Interest Income Guidance"),
+        (r"Adjusted operating margin +~?([0-9]+%)", "FY Adjusted Operating Margin Guidance"),
+        (r"Adjusted diluted earnings per share growth +([0-9]+% +to +[0-9]+%)", "FY Adjusted EPS Growth Guidance"),
+    ):
+        match = re.search(pattern, text, re.I)
+        if match:
+            add(metric, f"FY{fiscal_year}: {match.group(1)}",
+                view=f"Management outlook: {metric} is {match.group(1)}.")
+    return rows
+
+
 def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: str,
                         release_url: str | None, fiscal_period: str, fiscal_year: int,
                         ir_url: str | None = None,
@@ -449,6 +538,7 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
                         shareholder_letter_url: str | None = None,
                         shareholder_letter_text: str | None = None,
                         source_date: str | None = None,
+                        release_text: str | None = None,
                         xbrl_metrics: dict[str, Any] | None = None,
                         **_: Any) -> dict[str, Any]:
     """Load the top twelve source-derived KPIs for one company and fiscal period."""
@@ -457,7 +547,18 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
     candidates = [row for row in read_derived_kpis(reference_path)
                   if row["ticker"].casefold() == ticker.casefold()]
     current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
-    if not current_period_rows and xbrl_metrics:
+    if release_text and not any(row.get("source") == "IR/SEC" for row in current_period_rows):
+        release_rows = _derive_release_kpis(
+            company=company, ticker=ticker, sector=sector, fiscal_period=fiscal_period,
+            fiscal_year=fiscal_year, report_date=source_date or date.today().isoformat(),
+            source_url=release_url or filing_url, release_text=release_text,
+        )
+        if release_rows:
+            upsert_derived_kpis(release_rows, reference_path, added_on=source_date or date.today().isoformat())
+            candidates = [row for row in read_derived_kpis(reference_path)
+                          if row["ticker"].casefold() == ticker.casefold()]
+            current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
+    if len(current_period_rows) < DASHBOARD_KPI_LIMIT and xbrl_metrics:
         derived_rows = _derive_xbrl_kpis(
             company=company, ticker=ticker, sector=sector, fiscal_period=fiscal_period,
             fiscal_year=fiscal_year, report_date=source_date or date.today().isoformat(),
@@ -484,7 +585,21 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
                       if row["ticker"].casefold() == ticker.casefold()]
     selected: list[dict[str, Any]] = []
     stale_period_rows = 0
-    for row in sorted(candidates, key=lambda item: (_importance_rank(item["importance"]), item["metric"].casefold())):
+    release_priority = {
+        "Management Solutions Revenue": 0,
+        "PEO & Insurance Solutions Revenue": 1,
+        "Total Service Revenue": 2,
+        "Interest on Funds Held for Clients": 3,
+        "Total Revenue": 4,
+        "Operating Income": 5,
+        "Adjusted Operating Income": 6,
+        "Operating Margin": 7,
+        "Adjusted Operating Margin": 8,
+        "Diluted EPS": 9,
+        "Adjusted Diluted EPS": 10,
+        "Operating Cash Flow": 11,
+    }
+    for row in sorted(candidates, key=lambda item: (_importance_rank(item["importance"]), release_priority.get(item["metric"], 100), item["metric"].casefold())):
         latest_period, latest_value = _period_value(row["latest_quarter"], current_period)
         prior_row_period, prior_value = _period_value(row["prior_year_quarter"], prior_period)
         if latest_period != current_period:
