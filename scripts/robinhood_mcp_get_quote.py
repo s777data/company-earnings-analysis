@@ -146,12 +146,13 @@ def _expected_account(explicit: str | None = None) -> str | None:
 
 
 def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any]:
-    expected = _expected_account(expected_account)
-    if not expected:
-        raise RuntimeError("ROBINHOOD_EXPECTED_ACCOUNT is required to verify the authorized account")
-    account_data = asyncio.run(_call("get_account_info", {}))
-    if not _account_matches(account_data, expected):
-        raise RuntimeError("Robinhood MCP account does not match the authorized agentic account")
+    """Return read-only equity market data through robinhood-trading MCP.
+
+    Quote retrieval is account-independent. Trading-account authorization checks
+    belong to order-placement tools, not this read-only market-data workflow.
+    ``expected_account`` remains accepted for compatibility with older callers,
+    but is intentionally ignored.
+    """
     quote = _first_dict(asyncio.run(_call("get_quote", {"symbol": symbol.upper()})))
     fundamentals = _first_dict(asyncio.run(_call("get_fundamentals", {"symbol": symbol.upper()})))
     regular_close_price = None

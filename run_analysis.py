@@ -1075,6 +1075,7 @@ class EarningsAnalyzer:
             fiscal_period=self.data["fiscal_period"],
             fiscal_year=self.data["fiscal_year"],
             reference_path=reference_path,
+            xbrl_metrics=self.data.get("_xbrl", {}).get("metrics", {}),
         )
         if self.data["business_kpis"]["selection_status"] == "DERIVED_REFERENCE_REQUIRED":
             raise RuntimeError(

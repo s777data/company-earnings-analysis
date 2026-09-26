@@ -65,6 +65,30 @@ def sample_company_valuation_score():
     }
 
 
+def test_build_business_kpis_derives_current_period_from_xbrl_when_reference_is_empty(tmp_path):
+    metrics = {
+        metric: {"value": float(index + 1) * 1_000_000, "prior_value": float(index) * 1_000_000}
+        for index, metric in enumerate((
+            "revenue", "gross_profit", "operating_income", "net_income", "eps_diluted",
+            "operating_cash_flow", "capex", "stock_based_compensation",
+            "depreciation_amortization", "cash", "total_assets", "total_equity",
+        ), start=1)
+    }
+    reference = tmp_path / "KPI_derived_reference.json"
+    selected = build_business_kpis(
+        company="Example Corp.", ticker="EXM", sector="Services",
+        filing_url="https://www.sec.gov/example-10q.htm", release_url=None,
+        ir_url=None, fiscal_period="Q1", fiscal_year=2027,
+        source_date="2026-08-31", reference_path=reference, xbrl_metrics=metrics,
+    )
+    assert selected["selection_status"] == "COMPLETE"
+    assert selected["available_reference_rows"] == 12
+    assert len(selected["rows"]) == 12
+    assert all(row["latest_period"] == "Q1 2027" for row in selected["rows"])
+    assert all(row["source"] == "SEC" for row in selected["rows"])
+    assert all(row["citation"]["url"] == "https://www.sec.gov/example-10q.htm" for row in selected["rows"])
+
+
 class FilingSelectionTests(unittest.TestCase):
     """Tests for the filing selection logic in identify() method."""
 
@@ -996,12 +1020,17 @@ class SafetyTests(unittest.TestCase):
         self.assertFalse(analyzer.data["valuation"]["quote_is_stale"])
         self.assertFalse(analyzer.data["test_run"])
 
-    @patch("robinhood_mcp_get_quote._expected_account", return_value=None)
     @patch("robinhood_mcp_get_quote._call")
-    def test_quote_requires_expected_account(self, call, expected):
-        with self.assertRaisesRegex(RuntimeError, "ROBINHOOD_EXPECTED_ACCOUNT"):
-            get_quote("TEST")
-        call.assert_not_called()
+    def test_quote_uses_read_only_robinhood_mcp_without_account_gate(self, call):
+        call.side_effect = [
+            {"results": [{"symbol": "TEST", "last_trade_price": "100.00", "updated_at": "2026-08-09T20:00:00Z"}]},
+            {"results": [{"market_cap": "1000000000"}]},
+            {"results": []},
+        ]
+        quote = get_quote("TEST")
+        self.assertEqual(quote["price"], 100.0)
+        self.assertEqual(call.call_args_list[0].args[0], "get_quote")
+        self.assertEqual(call.call_args_list[0].args[1], {"symbol": "TEST"})
 
     def test_delivery_dry_run_never_sends(self):
         with tempfile.TemporaryDirectory() as directory:

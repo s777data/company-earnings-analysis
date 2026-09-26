@@ -362,6 +362,86 @@ def _maybe_seed_shareholder_letter_rows(*, company: str, ticker: str, sector: st
     return len(rows)
 
 
+_XBRL_KPI_LABELS = {
+    "revenue": "Revenue",
+    "gross_profit": "Gross Profit",
+    "operating_income": "Operating Income",
+    "net_income": "Net Income",
+    "eps_diluted": "Diluted EPS",
+    "operating_cash_flow": "Operating Cash Flow",
+    "capex": "Capital Expenditures",
+    "stock_based_compensation": "Stock-Based Compensation",
+    "depreciation_amortization": "Depreciation & Amortization",
+    "backlog": "Remaining Performance Obligation / Backlog",
+    "cash": "Cash & Cash Equivalents",
+    "total_assets": "Total Assets",
+    "total_liabilities": "Total Liabilities",
+    "total_equity": "Stockholders' Equity",
+    "long_term_debt": "Long-term Debt",
+    "shares_diluted": "Diluted Shares Outstanding",
+}
+
+
+def _format_xbrl_value(metric: str, value: Any) -> str:
+    """Format a parsed SEC/XBRL fact without changing its numeric meaning."""
+    number = float(value)
+    if metric == "eps_diluted":
+        return f"${number:,.2f}"
+    if metric == "shares_diluted":
+        return f"{number / 1_000_000:,.2f}M shares"
+    absolute = abs(number)
+    if absolute >= 1_000_000_000:
+        return f"${number / 1_000_000_000:,.2f}B"
+    if absolute >= 1_000_000:
+        return f"${number / 1_000_000:,.2f}M"
+    return f"${number:,.0f}"
+
+
+def _derive_xbrl_kpis(*, company: str, ticker: str, sector: str, fiscal_period: str,
+                      fiscal_year: int, report_date: str, filing_url: str,
+                      xbrl_metrics: dict[str, Any]) -> list[dict[str, Any]]:
+    """Derive auditable generic KPIs from the already-selected SEC/XBRL facts.
+
+    This is deliberately limited to facts selected by ``parse_xbrl_financials``:
+    non-dimensional, current-period metrics with a comparable prior value where
+    available. It never invents company-specific operating metrics.
+    """
+    current_period = f"{fiscal_period.upper()} {fiscal_year}"
+    prior_period = f"{fiscal_period.upper()} {fiscal_year - 1}"
+    rows: list[dict[str, Any]] = []
+    for metric, fact in (xbrl_metrics or {}).items():
+        if metric not in _XBRL_KPI_LABELS or not isinstance(fact, dict):
+            continue
+        value = fact.get("value")
+        if not isinstance(value, (int, float)):
+            continue
+        prior_value = fact.get("prior_value")
+        view = f"SEC/XBRL reported {_XBRL_KPI_LABELS[metric]} of {_format_xbrl_value(metric, value)}."
+        if isinstance(prior_value, (int, float)) and prior_value != 0:
+            growth = (float(value) - float(prior_value)) / abs(float(prior_value))
+            direction = "increased" if growth >= 0 else "decreased"
+            view += f" It {direction} {abs(growth):.1%} versus the comparable prior-year fact."
+        else:
+            view += " A comparable prior-year fact was not available in the selected filing."
+        rows.append({
+            "company": company,
+            "ticker": ticker,
+            "sector": sector,
+            "metric": _XBRL_KPI_LABELS[metric],
+            "latest_quarter": f"{current_period}: {_format_xbrl_value(metric, value)}",
+            "prior_year_quarter": (
+                f"{prior_period}: {_format_xbrl_value(metric, prior_value)}"
+                if isinstance(prior_value, (int, float)) else f"{prior_period}: N/A"
+            ),
+            "analyst_view": view,
+            "source": "SEC",
+            "importance": "Tier 1 — Core" if metric in {"revenue", "net_income", "operating_cash_flow", "cash"} else "Tier 2 — Supporting",
+            "source_url": filing_url,
+            "date_added": report_date,
+        })
+    return rows
+
+
 def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: str,
                         release_url: str | None, fiscal_period: str, fiscal_year: int,
                         ir_url: str | None = None,
@@ -369,6 +449,7 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
                         shareholder_letter_url: str | None = None,
                         shareholder_letter_text: str | None = None,
                         source_date: str | None = None,
+                        xbrl_metrics: dict[str, Any] | None = None,
                         **_: Any) -> dict[str, Any]:
     """Load the top twelve source-derived KPIs for one company and fiscal period."""
     current_period = f"{fiscal_period.upper()} {fiscal_year}"
@@ -376,6 +457,17 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
     candidates = [row for row in read_derived_kpis(reference_path)
                   if row["ticker"].casefold() == ticker.casefold()]
     current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
+    if not current_period_rows and xbrl_metrics:
+        derived_rows = _derive_xbrl_kpis(
+            company=company, ticker=ticker, sector=sector, fiscal_period=fiscal_period,
+            fiscal_year=fiscal_year, report_date=source_date or date.today().isoformat(),
+            filing_url=filing_url, xbrl_metrics=xbrl_metrics,
+        )
+        if derived_rows:
+            upsert_derived_kpis(derived_rows, reference_path, added_on=source_date or date.today().isoformat())
+            candidates = [row for row in read_derived_kpis(reference_path)
+                          if row["ticker"].casefold() == ticker.casefold()]
+            current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
     if not current_period_rows and (shareholder_letter_url or shareholder_letter_text):
         _maybe_seed_shareholder_letter_rows(
             company=company,
