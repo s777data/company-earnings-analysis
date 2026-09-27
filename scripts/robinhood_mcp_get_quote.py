@@ -153,21 +153,41 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
     ``expected_account`` remains accepted for compatibility with older callers,
     but is intentionally ignored.
     """
-    quote = _first_dict(asyncio.run(_call("get_quote", {"symbol": symbol.upper()})))
+    raw_quote = asyncio.run(_call("get_quote", {"symbol": symbol.upper()}))
+    quote = _first_dict(raw_quote)
     fundamentals = _first_dict(asyncio.run(_call("get_fundamentals", {"symbol": symbol.upper()})))
     regular_close_price = None
     regular_close_timestamp = None
+    # get_equity_quotes returns the official prior-session close alongside the
+    # quote.  Preserve that nested payload before _first_dict unwraps the
+    # quote object and drops its sibling `close` field.
+    if isinstance(raw_quote, dict):
+        results = raw_quote.get("results")
+        if isinstance(results, list) and results and isinstance(results[0], dict):
+            close = results[0].get("close")
+            if isinstance(close, dict) and close.get("price") not in (None, ""):
+                try:
+                    regular_close_price = float(close["price"])
+                    regular_close_timestamp = close.get("date")
+                except (TypeError, ValueError):
+                    regular_close_price = None
+                    regular_close_timestamp = None
     try:
         historicals = asyncio.run(_call("get_historicals", {
             "symbol": symbol.upper(), "interval": "day", "span": "month",
         }))
         if isinstance(historicals, dict):
             historicals = historicals.get("result") or historicals.get("data") or historicals.get("results") or []
-        completed = [row for row in historicals if isinstance(row, dict) and row.get("close_price")]
-        if completed:
+        completed = [
+            row for row in historicals
+            if isinstance(row, dict) and (row.get("close_price") or row.get("close"))
+        ]
+        if completed and regular_close_price is None:
             candle = completed[-1]
-            regular_close_price = float(candle["close_price"])
-            regular_close_timestamp = candle.get("begins_at")
+            regular_close_price = float(candle.get("close_price") or candle["close"])
+            regular_close_timestamp = (
+                candle.get("begins_at") or candle.get("timestamp") or candle.get("date")
+            )
     except Exception:
         pass
     def number(*keys):
@@ -197,7 +217,10 @@ def get_quote(symbol: str, expected_account: str | None = None) -> dict[str, Any
             trade_time = _parse_timestamp(live_regular_timestamp).astimezone(ZoneInfo("America/New_York"))
             now_et = datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York"))
             minutes = trade_time.hour * 60 + trade_time.minute
-            if 15 * 60 + 55 <= minutes <= 16 * 60 + 5 and now_et >= trade_time and now_et.date() == trade_time.date():
+            in_close_window = 15 * 60 + 55 <= minutes <= 16 * 60 + 5
+            same_session_day = now_et.date() == trade_time.date()
+            outside_regular_hours = not (9 * 60 + 30 <= now_et.hour * 60 + now_et.minute < 16 * 60)
+            if in_close_window and now_et >= trade_time and (same_session_day or outside_regular_hours):
                 selected_source = "robinhood-trading MCP completed regular-session closing trade"
         except ValueError:
             pass

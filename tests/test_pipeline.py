@@ -1069,6 +1069,41 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(call.call_args_list[0].args[0], "get_quote")
         self.assertEqual(call.call_args_list[0].args[1], {"symbol": "TEST"})
 
+    @patch("robinhood_mcp_get_quote._call")
+    def test_quote_accepts_prior_session_closing_trade_when_market_is_closed(self, call):
+        call.side_effect = [
+            {"results": [{"quote": {
+                "symbol": "TEST",
+                "last_trade_price": "100.00",
+                "venue_last_trade_time": "2026-08-07T19:59:59Z",
+            }, "close": {
+                "symbol": "TEST", "date": "2026-08-06", "price": "99.00"
+            }}]},
+            {"results": [{"market_cap": "1000000000"}]},
+            {"results": []},
+        ]
+        quote = get_quote("TEST")
+        self.assertEqual(quote["price"], 100.0)
+        self.assertEqual(quote["updated_at"], "2026-08-07T19:59:59Z")
+        self.assertIn("completed regular-session closing trade", quote["source"])
+
+    @patch("robinhood_mcp_get_quote._call")
+    def test_quote_uses_official_completed_close_payload(self, call):
+        call.side_effect = [
+            {"results": [{"quote": {
+                "symbol": "TEST", "last_trade_price": "100.00",
+                "venue_last_trade_time": "2026-08-04T18:00:00Z",
+            }, "close": {
+                "symbol": "TEST", "date": "2026-08-05", "price": "99.00"
+            }}]},
+            {"results": [{"market_cap": "1000000000"}]},
+            {"results": []},
+        ]
+        quote = get_quote("TEST")
+        self.assertEqual(quote["price"], 99.0)
+        self.assertEqual(quote["updated_at"], "2026-08-05")
+        self.assertEqual(quote["source"], "robinhood-trading MCP completed daily regular-session close")
+
     def test_delivery_dry_run_never_sends(self):
         with tempfile.TemporaryDirectory() as directory:
             dashboard = Path(directory) / "dashboard"; dashboard.mkdir()
