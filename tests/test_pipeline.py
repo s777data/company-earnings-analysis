@@ -65,7 +65,7 @@ def sample_company_valuation_score():
     }
 
 
-def test_build_business_kpis_derives_current_period_from_xbrl_when_reference_is_empty(tmp_path):
+def test_build_business_kpis_does_not_pad_with_generic_xbrl_when_reference_is_empty(tmp_path):
     metrics = {
         metric: {"value": float(index + 1) * 1_000_000, "prior_value": float(index) * 1_000_000}
         for index, metric in enumerate((
@@ -81,12 +81,33 @@ def test_build_business_kpis_derives_current_period_from_xbrl_when_reference_is_
         ir_url=None, fiscal_period="Q1", fiscal_year=2027,
         source_date="2026-08-31", reference_path=reference, xbrl_metrics=metrics,
     )
-    assert selected["selection_status"] == "COMPLETE"
-    assert selected["available_reference_rows"] == 12
-    assert len(selected["rows"]) == 12
-    assert all(row["latest_period"] == "Q1 2027" for row in selected["rows"])
-    assert all(row["source"] == "SEC" for row in selected["rows"])
-    assert all(row["citation"]["url"] == "https://www.sec.gov/example-10q.htm" for row in selected["rows"])
+    assert selected["selection_status"] == "DERIVED_REFERENCE_REQUIRED"
+    assert selected["available_reference_rows"] == 0
+    assert selected["rows"] == []
+
+
+def test_build_business_kpis_filters_persisted_generic_xbrl_rows(tmp_path):
+    reference = tmp_path / "KPI_derived_reference.json"
+    upsert_derived_kpis([
+        {
+            "company": "Example Corp.", "ticker": "EXM", "sector": "Services",
+            "metric": "Revenue", "latest_quarter": "Q1 2027: $1M",
+            "prior_year_quarter": "Q1 2026: $0.8M",
+            "analyst_view": "SEC/XBRL reported Revenue of $1M.", "source": "SEC",
+            "importance": "Tier 1 — Core",
+            "source_url": "https://www.sec.gov/example-10q.htm",
+            "date_added": "2027-01-31",
+        },
+    ], reference, added_on="2027-01-31")
+    selected = build_business_kpis(
+        company="Example Corp.", ticker="EXM", sector="Services",
+        filing_url="https://www.sec.gov/example-10q.htm", release_url=None,
+        ir_url=None, fiscal_period="Q1", fiscal_year=2027,
+        source_date="2027-01-31", reference_path=reference,
+        xbrl_metrics={"revenue": {"value": 1_000_000}},
+    )
+    assert selected["selection_status"] == "DERIVED_REFERENCE_REQUIRED"
+    assert selected["rows"] == []
 
 
 def test_build_business_kpis_prefers_release_specific_operating_metrics(tmp_path):

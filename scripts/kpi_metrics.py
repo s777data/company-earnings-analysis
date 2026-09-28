@@ -546,6 +546,25 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
     prior_period = f"{fiscal_period.upper()} {fiscal_year - 1}"
     candidates = [row for row in read_derived_kpis(reference_path)
                   if row["ticker"].casefold() == ticker.casefold()]
+
+    # The primary KPI section must never be padded with the generic SEC/XBRL
+    # financial-statement facts used by ``financials()``.  Older runs may have
+    # persisted those rows in the derived reference, so filter the exact
+    # fallback labels as well as disabling the fallback below.
+    generic_xbrl_metrics = set(_XBRL_KPI_LABELS.values())
+
+    def source_candidates() -> list[dict[str, Any]]:
+        rows = [row for row in read_derived_kpis(reference_path)
+                if row["ticker"].casefold() == ticker.casefold()]
+        return [
+            row for row in rows
+            if not (
+                row.get("metric") in generic_xbrl_metrics
+                and row.get("source_url") == filing_url
+            )
+        ]
+
+    candidates = source_candidates()
     current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
     if release_text and not any(row.get("source") == "IR/SEC" for row in current_period_rows):
         release_rows = _derive_release_kpis(
@@ -555,20 +574,13 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
         )
         if release_rows:
             upsert_derived_kpis(release_rows, reference_path, added_on=source_date or date.today().isoformat())
-            candidates = [row for row in read_derived_kpis(reference_path)
-                          if row["ticker"].casefold() == ticker.casefold()]
+            candidates = source_candidates()
             current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
-    if len(current_period_rows) < DASHBOARD_KPI_LIMIT and xbrl_metrics:
-        derived_rows = _derive_xbrl_kpis(
-            company=company, ticker=ticker, sector=sector, fiscal_period=fiscal_period,
-            fiscal_year=fiscal_year, report_date=source_date or date.today().isoformat(),
-            filing_url=filing_url, xbrl_metrics=xbrl_metrics,
-        )
-        if derived_rows:
-            upsert_derived_kpis(derived_rows, reference_path, added_on=source_date or date.today().isoformat())
-            candidates = [row for row in read_derived_kpis(reference_path)
-                          if row["ticker"].casefold() == ticker.casefold()]
-            current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
+    # Do not derive or persist generic XBRL facts here.  If the official IR /
+    # SEC release-specific KPI registry has fewer than twelve current-period
+    # rows, return INCOMPLETE and let the production gate stop publication.
+    # The SEC/XBRL facts remain available in ``financials()`` as supplemental
+    # financial statement data, not as business KPIs.
     if not current_period_rows and (shareholder_letter_url or shareholder_letter_text):
         _maybe_seed_shareholder_letter_rows(
             company=company,
@@ -581,8 +593,8 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
             shareholder_letter_text=shareholder_letter_text,
             source_date=source_date,
         )
-        candidates = [row for row in read_derived_kpis(reference_path)
-                      if row["ticker"].casefold() == ticker.casefold()]
+        candidates = source_candidates()
+        current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
     selected: list[dict[str, Any]] = []
     stale_period_rows = 0
     release_priority = {
