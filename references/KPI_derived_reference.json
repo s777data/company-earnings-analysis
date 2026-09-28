@@ -1,9 +1,202 @@
 [
   {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Americas net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $45.781B",
+        "last_year_quarter_value": "Q3 2025: $41.198B",
+        "analyst_view": "Americas revenue grew 11.1% YoY and remained Apple’s largest geographic market.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Europe net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $29.395B",
+        "last_year_quarter_value": "Q3 2025: $24.014B",
+        "analyst_view": "Europe revenue grew 22.4% YoY, outpacing total-company growth and contributing materially to mix.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Greater China net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $18.816B",
+        "last_year_quarter_value": "Q3 2025: $15.369B",
+        "analyst_view": "Greater China revenue grew 22.4% YoY in the reported quarter; the observation is historical and does not quantify future demand.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "iPhone net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $54.252B",
+        "last_year_quarter_value": "Q3 2025: $44.582B",
+        "analyst_view": "iPhone revenue rose 21.7% YoY to a new June-quarter record, making it the primary product growth driver.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Mac net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $10.352B",
+        "last_year_quarter_value": "Q3 2025: $8.046B",
+        "analyst_view": "Mac revenue increased 28.7% YoY to a new June-quarter record, indicating strong product momentum.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Products net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $78.678B",
+        "last_year_quarter_value": "Q3 2025: $66.613B",
+        "analyst_view": "Products revenue increased 18.1% YoY, with iPhone and Mac growth more than offsetting lower iPad sales.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Services net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $30.739B",
+        "last_year_quarter_value": "Q3 2025: $27.423B",
+        "analyst_view": "Services revenue grew 12.1% YoY to a June-quarter record, reinforcing recurring-revenue scale.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "iPad net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $6.191B",
+        "last_year_quarter_value": "Q3 2025: $6.581B",
+        "analyst_view": "iPad revenue declined 5.9% YoY; this was the only reported product category below the prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Japan net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $6.554B",
+        "last_year_quarter_value": "Q3 2025: $5.782B",
+        "analyst_view": "Japan revenue increased 13.4% YoY, contributing to broad geographic growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Rest of Asia Pacific net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $8.871B",
+        "last_year_quarter_value": "Q3 2025: $7.673B",
+        "analyst_view": "Rest of Asia Pacific revenue grew 15.6% YoY, supporting broad regional expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Services mix of net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: 28.1%",
+        "last_year_quarter_value": "Q3 2025: 29.2%",
+        "analyst_view": "Services represented 28.1% of quarterly net sales versus 29.2% a year earlier; absolute Services revenue still grew 12.1% YoY.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Apple Inc.",
+    "TICKER": "AAPL",
+    "SECTOR": "Electronic Computers",
+    "metric": "Wearables, Home and Accessories net sales",
+    "source_url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "details_map": {
+      "2026-07-31": {
+        "latest_quarter_value": "Q3 2026: $7.883B",
+        "last_year_quarter_value": "Q3 2025: $7.404B",
+        "analyst_view": "Wearables, Home and Accessories revenue grew 6.5% YoY, a modest positive contribution.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
     "COMPANY": "Applied Materials, Inc.",
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "AIx-connected Chambers",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: >35,000",
@@ -19,6 +212,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Applied Global Services Growth Outlook",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: Mid-teens or higher",
@@ -34,6 +228,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Applied Global Services Operating Margin",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 29.2%",
@@ -49,6 +244,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Applied Global Services Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: $1.665B",
@@ -64,6 +260,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Calendar 2026 Advanced Packaging Revenue Growth Outlook",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: >50%",
@@ -79,6 +276,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Calendar 2026 Semiconductor Equipment Growth Outlook",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: >30%",
@@ -94,6 +292,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "DRAM Revenue Mix",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 29%",
@@ -109,6 +308,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Flash Memory Revenue Mix",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 4%",
@@ -124,6 +324,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Foundry, Logic and Other Revenue Mix",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 67%",
@@ -139,6 +340,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Leading-edge Foundry/Logic, DRAM and Advanced Packaging Share of 2026 WFE Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: >80%",
@@ -154,6 +356,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Semiconductor Systems Operating Margin",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 35.1%",
@@ -169,6 +372,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Semiconductor Systems Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: $5.965B",
@@ -191,6 +395,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "AIx Customer Response-Time Improvement",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 30% faster",
@@ -206,6 +411,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Applied Global Services Gross Margin",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 34.7%",
@@ -221,6 +427,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Manufacturing Capacity Expansion",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: Nearly 2x",
@@ -236,6 +443,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Semiconductor Systems Gross Margin",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 54.7%",
@@ -251,6 +459,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Employees Using AI",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: >35,000",
@@ -266,6 +475,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "EPIC Center Named Partners",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: 9",
@@ -281,6 +491,7 @@
     "TICKER": "AMAT",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Other Segment Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-16": {
         "latest_quarter_value": "Q2 2026: $280M",
@@ -296,6 +507,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "AI-Driven Revenue Mix",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 35%",
@@ -311,6 +523,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Free Cash Flow Conversion",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 110%",
@@ -326,6 +539,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Gross Margin Expansion",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 48.5%",
@@ -341,6 +555,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Operating Margin",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 18.2%",
@@ -356,6 +571,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Revenue Growth Outlook",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 20%+ YoY growth",
@@ -371,6 +587,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Backlog Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: $2.1B",
@@ -386,6 +603,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Customer Design Wins",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 12 new wins",
@@ -401,6 +619,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "New Product Introductions",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 3 major products",
@@ -416,6 +635,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "R&D Investment Rate",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 12.5% of revenue",
@@ -431,6 +651,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Capital Return Program",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: $150M buybacks",
@@ -446,6 +667,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "International Revenue Mix",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: 65% ex-US",
@@ -461,6 +683,7 @@
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",
     "metric": "Supply Chain Resilience",
+    "source_url": "",
     "details_map": {
       "2026-08-22": {
         "latest_quarter_value": "Q2 2026: No disruptions",
@@ -472,10 +695,427 @@
     }
   },
   {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Average Unit Volume",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: $3.088M",
+        "last_year_quarter_value": "Q2 2025: $2.939M",
+        "analyst_view": "AUV increased from $2.939M to $3.088M, supporting improved unit economics; the metric is defined on a trailing-thirteen-period basis.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "CAVA Restaurant-Level Profit",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: $93.812M",
+        "last_year_quarter_value": "Q2 2025: $73.262M",
+        "analyst_view": "Restaurant-level profit grew 28.1% year over year, showing operating profit growth below reported revenue growth.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "CAVA Restaurant-Level Profit Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 25.7%",
+        "last_year_quarter_value": "Q2 2025: 26.3%",
+        "analyst_view": "Restaurant-level margin declined 60 basis points year over year; the release attributed pressure to input costs and a higher third-party delivery mix.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "CAVA Restaurants, End of Period",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 476",
+        "last_year_quarter_value": "Q2 2025: 398",
+        "analyst_view": "The ending restaurant base increased 19.6% year over year, expanding capacity for future revenue.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Guest Traffic Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 5.3%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Guest traffic contributed 5.3% to same-restaurant sales; a prior-year-quarter comparison was not disclosed in the release.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Net New CAVA Restaurant Openings",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 17",
+        "last_year_quarter_value": "Q2 2025: 16",
+        "analyst_view": "17 net new openings expanded the footprint and supported reported growth; forward opening pace remains company-guided, not guaranteed.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Same Restaurant Sales",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 9.0%",
+        "last_year_quarter_value": "Q2 2025: 2.1%",
+        "analyst_view": "Same-restaurant sales accelerated versus the prior-year quarter, indicating stronger comparable-store demand.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Digital Revenue Mix",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 39.0%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Digital revenue represented 39.0% of CAVA revenue; the company did not disclose a comparable prior-year-quarter figure in the release.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Full-Year Adjusted EBITDA Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: $181M–$191M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management reaffirmed $181M–$191M fiscal 2026 adjusted EBITDA guidance; this non-GAAP outlook is not a reported quarter comparison.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Full-Year Net New Restaurant Opening Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 75–77",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management reaffirmed 75–77 net new openings for fiscal 2026; this is forward guidance rather than a reported quarter comparison.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Full-Year Restaurant-Level Profit Margin Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 23.7%–24.3%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management reaffirmed 23.7%–24.3% fiscal 2026 restaurant-level profit margin guidance; it remains subject to operating-cost execution.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Full-Year Same Restaurant Sales Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 4.5%–6.5%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management reaffirmed 4.5%–6.5% fiscal 2026 same-restaurant sales guidance; actual results may differ materially.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Menu Price and Product Mix Contribution",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 3.7%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Menu price and product mix contributed 3.7% to same-restaurant sales; the company did not disclose a comparable prior-year-quarter figure.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CAVA Group, Inc.",
+    "TICKER": "CAVA",
+    "SECTOR": "Restaurants",
+    "metric": "Restaurant Operating Weeks",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1639438/000162828026055709/earningsrelease2026q2.htm",
+    "details_map": {
+      "2026-07-12": {
+        "latest_quarter_value": "Q2 2026: 5,606",
+        "last_year_quarter_value": "Q2 2025: 4,659",
+        "analyst_view": "Restaurant operating weeks increased with the larger footprint, providing a capacity and maturity context for sales growth.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Active power",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: 1.5 GW",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Active power reached 1.5 GW in Q2 2026, supporting capacity conversion from backlog; the company release does not provide a Q2 2025 comparator in the retrieved evidence.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Adjusted EBITDA margin",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: 59%",
+        "last_year_quarter_value": "Q2 2025: 62%",
+        "analyst_view": "Adjusted EBITDA margin remained very high at 59% but declined from 62% year over year; the release does not quantify the full cause beyond operating-scale investment context.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Adjusted operating income",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: $128M",
+        "last_year_quarter_value": "Q2 2025: $200M",
+        "analyst_view": "Adjusted operating income was $128M versus $200M in Q2 2025; revenue scaled rapidly while reported adjusted operating profit was lower year over year.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Adjusted operating income margin",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: 5%",
+        "last_year_quarter_value": "Q2 2025: 16%",
+        "analyst_view": "Adjusted operating margin was 5% versus 16% a year earlier, indicating that current capacity ramp and investment are absorbing substantial economics.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Backlog with customer delivery commenced",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: >50%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "More than 50% of existing backlog was attached to contracts where customer delivery had commenced; the company did not disclose a prior-year-quarter comparator in the retrieved evidence.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Quarterly revenue",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: $2.575B",
+        "last_year_quarter_value": "Q2 2025: $1.212B",
+        "analyst_view": "Quarterly revenue increased 112.5% year over year from $1.212B to $2.575B, showing rapid monetization of the AI-cloud platform.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Revenue backlog",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: $104B",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Revenue backlog reached approximately $104B as of June 30, 2026, evidencing substantial contracted demand; the company release does not provide the prior-year-quarter balance in the retrieved evidence.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Revenue remaining performance obligations",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000366/crwv-20260630.htm",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: $103.7B",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "SEC XBRL reports $103.7B of remaining performance obligations at June 30, 2026; no comparable prior-year-quarter value was available in the selected evidence.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Adjusted net loss margin",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: (22%)",
+        "last_year_quarter_value": "Q2 2025: (11%)",
+        "analyst_view": "Adjusted net loss margin widened to (22%) from (11%), showing that financing and other below-operating-line costs remain material despite revenue growth.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Non-US revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000366/crwv-20260630.htm",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: $186M",
+        "last_year_quarter_value": "Q2 2025: $64M",
+        "analyst_view": "Non-US revenue increased from $64M to $186M year over year, indicating international contribution is growing from a smaller base.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "Stock-based compensation expense",
+    "source_url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Second-Quarter-2026-Results/default.aspx",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: $165M",
+        "last_year_quarter_value": "Q2 2025: $145M",
+        "analyst_view": "Quarterly stock-based compensation rose to $165M from $145M, a cost and dilution consideration while the company scales.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "CoreWeave, Inc.",
+    "TICKER": "CRWV",
+    "SECTOR": "Services-Prepackaged Software",
+    "metric": "US revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000366/crwv-20260630.htm",
+    "details_map": {
+      "2026-09-17": {
+        "latest_quarter_value": "Q2 2026: $2.389B",
+        "last_year_quarter_value": "Q2 2025: $1.148B",
+        "analyst_view": "US revenue grew from $1.148B to $2.389B year over year, remaining the dominant geographic revenue base.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
     "COMPANY": "Credo Technology Group Holding Ltd",
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "AEC Business Position",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Largest business; continued growth",
@@ -491,6 +1131,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Customer Revenue Concentration",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Top four customers were 33%, 28%, 13%, and 11%",
@@ -506,6 +1147,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Fiscal-Year Optical Revenue Outlook",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: More than $600M expected in FY2027",
@@ -521,6 +1163,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Fiscal-Year Revenue Growth Outlook",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: More than 85% YoY expected for FY2027",
@@ -536,6 +1179,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Hyperscaler AEC Relationships",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: 5 hyperscalers",
@@ -551,6 +1195,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Optical DSP Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Record revenue",
@@ -566,6 +1211,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Retimer Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Record revenue",
@@ -581,6 +1227,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "ZeroFlap Optics Commercialization",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Production shipments underway",
@@ -596,6 +1243,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "1.6T Optical DSP Ramp",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: First revenue on track for later FY2027",
@@ -611,6 +1259,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Active LED Cable Commercialization",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Initial revenue targeted for FY2028",
@@ -626,6 +1275,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Greater-than-10% Customer Count",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: 4 customers",
@@ -641,6 +1291,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "NPO Design-Win Ramp",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Confirmed design wins expected to ramp in FY2028",
@@ -656,6 +1307,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "OmniConnect Commercialization",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: Revenue targeted to begin in FY2028",
@@ -671,6 +1323,7 @@
     "TICKER": "CRDO",
     "SECTOR": "Semiconductors",
     "metric": "Silicon Photonics PIC Commercialization",
+    "source_url": "",
     "details_map": {
       "2026-09-01": {
         "latest_quarter_value": "Q1 2027: First revenue recognized",
@@ -686,6 +1339,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "AI Server Order Backlog",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $24.4B booked",
@@ -701,6 +1355,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "AI-Optimized Server Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $16.1B",
@@ -716,6 +1371,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "CSG Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $14.6B",
@@ -731,6 +1387,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Diluted EPS (GAAP)",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $5.24",
@@ -746,6 +1403,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Free Cash Flow",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $3.1B",
@@ -761,6 +1419,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "FY27 AI Server Revenue Guidance",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: ~$60B",
@@ -776,6 +1435,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "FY27 Revenue Guidance",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $165-169B (midpoint $167B)",
@@ -791,6 +1451,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "ISG Operating Income",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $3.1B",
@@ -806,6 +1467,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "ISG Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $29.0B",
@@ -821,6 +1483,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Non-GAAP Diluted EPS",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $4.86",
@@ -836,6 +1499,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Operating Cash Flow",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $4.1B",
@@ -851,6 +1515,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Total Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $43.8B",
@@ -866,6 +1531,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Capital Return to Shareholders",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $2.1B",
@@ -881,6 +1547,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Commercial Client Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $13.0B",
@@ -896,6 +1563,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "CSG Operating Income",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $1.2B",
@@ -911,6 +1579,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Storage Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $4.3B",
@@ -926,6 +1595,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Traditional Server & Networking Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $8.5B",
@@ -941,6 +1611,7 @@
     "TICKER": "DELL",
     "SECTOR": "Electronic Computers",
     "metric": "Consumer Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-03": {
         "latest_quarter_value": "Q1 FY2027: $1.6B",
@@ -956,6 +1627,7 @@
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
     "metric": "Figure Connect Volume Share",
+    "source_url": "",
     "details_map": {
       "2026-08-17": {
         "latest_quarter_value": "Q2 2026: 40% from repeat customers",
@@ -971,6 +1643,7 @@
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
     "metric": "Marketplace Volume",
+    "source_url": "",
     "details_map": {
       "2026-08-17": {
         "latest_quarter_value": "Q2 2026: $4.3B",
@@ -986,6 +1659,7 @@
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
     "metric": "Operating Margin Target",
+    "source_url": "",
     "details_map": {
       "2026-08-17": {
         "latest_quarter_value": "Q2 2026: Progressing to 60%",
@@ -1001,6 +1675,7 @@
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
     "metric": "AI-Enabled Onboarding Adoption",
+    "source_url": "",
     "details_map": {
       "2026-08-17": {
         "latest_quarter_value": "Q2 2026: Scaling",
@@ -1016,6 +1691,7 @@
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
     "metric": "Loan Book Quality",
+    "source_url": "",
     "details_map": {
       "2026-08-17": {
         "latest_quarter_value": "Q2 2026: Strong post-delinquency recovery",
@@ -1031,6 +1707,7 @@
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
     "metric": "Partner Network Expansion",
+    "source_url": "",
     "details_map": {
       "2026-08-17": {
         "latest_quarter_value": "Q2 2026: Rapid expansion",
@@ -1046,6 +1723,7 @@
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",
     "metric": "Capital Marketplace Pricing Advantage",
+    "source_url": "",
     "details_map": {
       "2026-08-17": {
         "latest_quarter_value": "Q2 2026: Competitive",
@@ -1061,6 +1739,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Credit Karma Revenue Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 15% YoY",
@@ -1076,6 +1755,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Full Year FY2026 Revenue Guidance",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: $21.341-21.374B (13-14% growth)",
@@ -1091,6 +1771,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Mid-Market Online Ecosystem Revenue Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 38% YoY",
@@ -1106,6 +1787,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Non-GAAP Diluted EPS Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 10% YoY ($12.80 vs $11.65)",
@@ -1121,6 +1803,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Online Ecosystem Revenue Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 19% YoY (22% ex-Mailchimp)",
@@ -1136,6 +1819,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Total Online Payment Volume Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 30% YoY",
@@ -1151,6 +1835,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "TurboTax Live Customer Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 38% YoY",
@@ -1166,6 +1851,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "TurboTax Live Revenue Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 36% YoY (FY26 guidance: $2.8B)",
@@ -1181,6 +1867,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "TurboTax Live Revenue Share of TurboTax",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 53%",
@@ -1196,6 +1883,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "AI Agent Transaction Volume",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 50M+ transactions/week",
@@ -1211,6 +1899,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Consumer Money Portfolio Revenue Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 26% YoY (FY guidance)",
@@ -1226,6 +1915,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Intuit Enterprise Suite Contract Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 37% QoQ",
@@ -1241,6 +1931,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "QuickBooks Online Accounting Revenue Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 22% YoY",
@@ -1256,6 +1947,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Share Repurchase Activity",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: $1.6B",
@@ -1271,6 +1963,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "TurboTax Filers Starting in Credit Karma Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 54% YoY (up 25 points)",
@@ -1286,6 +1979,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "TurboTax Online ARPU Growth",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: ~11% YoY (FY guidance)",
@@ -1301,6 +1995,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "Workforce Reduction",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: 17% reduction announced",
@@ -1316,6 +2011,7 @@
     "TICKER": "INTU",
     "SECTOR": "Services-Prepackaged Software",
     "metric": "TurboTax Live Retention",
+    "source_url": "",
     "details_map": {
       "2026-08-26": {
         "latest_quarter_value": "Q3 2026: Up 2 pts YoY",
@@ -1331,6 +2027,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Fair Financing GMV",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $4.7B",
@@ -1346,6 +2043,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "GMV",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $36.6B",
@@ -1361,6 +2059,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Klarna Membership Subscribers",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: 2.0M",
@@ -1376,6 +2075,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Net Profit (Loss)",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $9M",
@@ -1391,6 +2091,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Total Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $1,042M",
@@ -1406,6 +2107,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Transaction Margin Dollars",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $446M",
@@ -1421,6 +2123,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "US GMV",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $7.8B",
@@ -1436,6 +2139,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Consumer Deposits",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $11,673M",
@@ -1451,6 +2155,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Consumer Receivables at Amortized Cost",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $8,831M",
@@ -1466,6 +2171,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Fair Financing Merchant Count",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: 256,000",
@@ -1481,6 +2187,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Klarna Card Active Users",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: 6.5M",
@@ -1496,6 +2203,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Provisions for Credit Losses as % of GMV",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: 0.52%",
@@ -1511,6 +2219,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "Total Equity",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: $2,666M",
@@ -1526,6 +2235,7 @@
     "TICKER": "KLAR",
     "SECTOR": "Financial Technology",
     "metric": "US Transaction Margin % of Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-18": {
         "latest_quarter_value": "Q2 2026: 23%",
@@ -1537,10 +2247,203 @@
     }
   },
   {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Atlas Revenue Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 29%",
+        "last_year_quarter_value": "Q2 2026: N/A",
+        "analyst_view": "MongoDB reported Atlas revenue growth of approximately 29% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Enterprise Advanced & Other Revenue Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 36%",
+        "last_year_quarter_value": "Q2 2026: N/A",
+        "analyst_view": "MongoDB reported Enterprise Advanced and other revenue growth of approximately 36% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Free Cash Flow",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: $137.6M",
+        "last_year_quarter_value": "Q2 2026: $69.9M",
+        "analyst_view": "Free cash flow was $137.6 million, compared with $69.9 million in the year-ago period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "MongoDB Atlas Customers",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 69,300+",
+        "last_year_quarter_value": "Q2 2026: 58,500+",
+        "analyst_view": "MongoDB reported more than 69,300 Atlas customers as of July 31, 2026, versus more than 58,500 a year earlier.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Non-GAAP Operating Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 24%",
+        "last_year_quarter_value": "Q2 2026: 15%",
+        "analyst_view": "Non-GAAP operating margin was 24%, up from 15% in the year-ago quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Remaining Performance Obligations Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 91%",
+        "last_year_quarter_value": "Q2 2026: N/A",
+        "analyst_view": "Remaining Performance Obligations were $1,519.2 million, up 91% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Total Revenue Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 30%",
+        "last_year_quarter_value": "Q2 2026: N/A",
+        "analyst_view": "Total revenue was $771.8 million, up 30% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Current Remaining Performance Obligations Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 73%",
+        "last_year_quarter_value": "Q2 2026: N/A",
+        "analyst_view": "Current Remaining Performance Obligations were $797.3 million, up 73% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Customers Over $100K ARR",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 2,999",
+        "last_year_quarter_value": "Q2 2026: 2,564",
+        "analyst_view": "MongoDB reported 2,999 customers with at least $100,000 in annualized recurring revenue, versus 2,564 a year earlier.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Services Revenue Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 29%",
+        "last_year_quarter_value": "Q2 2026: N/A",
+        "analyst_view": "Services revenue was $24.6 million, up approximately 29% year over year based on the reported quarterly table.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Subscription Revenue Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 31%",
+        "last_year_quarter_value": "Q2 2026: N/A",
+        "analyst_view": "Subscription revenue was $747.1 million, up 31% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "MongoDB, Inc.",
+    "TICKER": "MDB",
+    "SECTOR": "Software",
+    "metric": "Total Customers",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1441816/000162828026059794/mdb-073126xex991xrelease.htm",
+    "details_map": {
+      "2026-09-01": {
+        "latest_quarter_value": "Q2 2027: 70,600+",
+        "last_year_quarter_value": "Q2 2026: 59,900+",
+        "analyst_view": "MongoDB reported more than 70,600 customers as of July 31, 2026, versus more than 59,900 a year earlier.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
     "COMPANY": "Palo Alto Networks, Inc.",
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Adjusted Free Cash Flow (Quarterly)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $910M",
@@ -1556,6 +2459,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Adjusted Free Cash Flow Margin (TTM)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: 38.5%",
@@ -1571,6 +2475,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "CyberArk & Chronosphere NGS ARR Contribution",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $1.6B",
@@ -1586,6 +2491,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "CyberArk & Chronosphere Quarterly Revenue Contribution",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $388M",
@@ -1601,6 +2507,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "FY26 Guidance - NGS ARR",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "FY26: $8.90-8.95B (59-60% YoY)",
@@ -1616,6 +2523,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Net Cash from Operations (Quarterly)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $871M",
@@ -1631,6 +2539,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Net New Platformizations",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: 110",
@@ -1646,6 +2555,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Next-Generation Security ARR",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $8.1B",
@@ -1661,6 +2571,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Non-GAAP Net Income per Share (Diluted)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $0.85",
@@ -1676,6 +2587,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Non-GAAP Operating Income",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $814M",
@@ -1691,6 +2603,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Observability ARR (Chronosphere)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: >$300M",
@@ -1706,6 +2619,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Platformized Customers",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: ~2,280",
@@ -1721,6 +2635,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Remaining Performance Obligation (RPO)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $18.4B",
@@ -1736,6 +2651,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "SASE ARR",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: >$600M",
@@ -1751,6 +2667,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Total Revenue",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $3.002B",
@@ -1766,6 +2683,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "XSIAM ARR",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: >$600M",
@@ -1781,6 +2699,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Cortex Cloud Migration Progress",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: Most Prisma customers by FY end",
@@ -1796,6 +2715,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Daily Telemetry Ingestion",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: 17+ PB",
@@ -1811,6 +2731,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Frontier AI Lab Win (Observability)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: >$200M ARR",
@@ -1826,6 +2747,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Large Deal Momentum",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: $80M power producer, >$20M consulting leader",
@@ -1841,6 +2763,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Multi-Product Adoption Rate (Net New Customers)",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: 80%",
@@ -1856,6 +2779,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Prisma AIRS (AI Security) Traction",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: Record >$20M deal",
@@ -1871,6 +2795,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Secure Browser Licenses",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: 11M licenses",
@@ -1886,6 +2811,7 @@
     "TICKER": "PANW",
     "SECTOR": "Cybersecurity",
     "metric": "Unit 42 Frontier AI Defense Engagement",
+    "source_url": "",
     "details_map": {
       "2026-09-02": {
         "latest_quarter_value": "Q3 2026: 1,200+ outreaches, 800 meetings",
@@ -1897,10 +2823,251 @@
     }
   },
   {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Cash & Cash Equivalents",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $600.90M",
+        "last_year_quarter_value": "Q1 2026: $809.00M",
+        "analyst_view": "SEC/XBRL reported Cash & Cash Equivalents of $600.90M. It decreased 25.7% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Net Income",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $429.70M",
+        "last_year_quarter_value": "Q1 2026: $383.80M",
+        "analyst_view": "SEC/XBRL reported Net Income of $429.70M. It increased 12.0% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Operating Cash Flow",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $413.50M",
+        "last_year_quarter_value": "Q1 2026: $718.40M",
+        "analyst_view": "SEC/XBRL reported Operating Cash Flow of $413.50M. It decreased 42.4% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $1.58B",
+        "last_year_quarter_value": "Q1 2026: $1.49B",
+        "analyst_view": "SEC/XBRL reported Revenue of $1.58B. It increased 5.9% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Capital Expenditures",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $56.10M",
+        "last_year_quarter_value": "Q1 2026: $55.90M",
+        "analyst_view": "SEC/XBRL reported Capital Expenditures of $56.10M. It increased 0.4% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Depreciation & Amortization",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $109.80M",
+        "last_year_quarter_value": "Q1 2026: $109.30M",
+        "analyst_view": "SEC/XBRL reported Depreciation & Amortization of $109.80M. It increased 0.5% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Diluted EPS",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $1.21",
+        "last_year_quarter_value": "Q1 2026: $1.06",
+        "analyst_view": "SEC/XBRL reported Diluted EPS of $1.21. It increased 14.2% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Diluted Shares Outstanding",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: 356.60M shares",
+        "last_year_quarter_value": "Q1 2026: 361.90M shares",
+        "analyst_view": "SEC/XBRL reported Diluted Shares Outstanding of 356.60M shares. It decreased 1.5% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Long-term Debt",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $4.56B",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "SEC/XBRL reported Long-term Debt of $4.56B. A comparable prior-year fact was not available in the selected filing.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Operating Income",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $619.20M",
+        "last_year_quarter_value": "Q1 2026: $541.90M",
+        "analyst_view": "SEC/XBRL reported Operating Income of $619.20M. It increased 14.3% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Remaining Performance Obligation / Backlog",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $90.80M",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "SEC/XBRL reported Remaining Performance Obligation / Backlog of $90.80M. A comparable prior-year fact was not available in the selected filing.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Stock-Based Compensation",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $19.30M",
+        "last_year_quarter_value": "Q1 2026: $26.80M",
+        "analyst_view": "SEC/XBRL reported Stock-Based Compensation of $19.30M. It decreased 28.0% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Stockholders' Equity",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $3.71B",
+        "last_year_quarter_value": "Q1 2026: $3.97B",
+        "analyst_view": "SEC/XBRL reported Stockholders' Equity of $3.71B. It decreased 6.7% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Total Assets",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $15.66B",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "SEC/XBRL reported Total Assets of $15.66B. A comparable prior-year fact was not available in the selected filing.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "PAYCHEX INC",
+    "TICKER": "PAYX",
+    "SECTOR": "Services-Engineering, Accounting, Research, Management",
+    "metric": "Total Liabilities",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723531/000072353126000006/payx-20260831.htm",
+    "details_map": {
+      "2026-08-31": {
+        "latest_quarter_value": "Q1 2027: $11.96B",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "SEC/XBRL reported Total Liabilities of $11.96B. A comparable prior-year fact was not available in the selected filing.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
     "COMPANY": "Reddit, Inc.",
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Ad Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: $762M",
@@ -1916,6 +3083,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Adjusted EBITDA",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: $346M",
@@ -1931,6 +3099,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Adjusted EBITDA Margin",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: 43%",
@@ -1946,6 +3115,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Average Revenue Per Unique User (ARPU)",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: $6.18",
@@ -1961,6 +3131,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Daily Active Users (DAU)",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: 130M+",
@@ -1976,6 +3147,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "International Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: $318M",
@@ -1991,6 +3163,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "New App User Retention",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: Up 50% YoY",
@@ -2006,6 +3179,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Share Repurchase",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: $235M (1.5M shares)",
@@ -2021,6 +3195,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "US Revenue",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: $487M",
@@ -2036,6 +3211,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Weekly Active Users (WAU)",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: 200M+",
@@ -2051,6 +3227,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Free Cash Flow",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: Strong positive",
@@ -2066,6 +3243,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Operating Cash Flow (LTM)",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: >$1B LTM",
@@ -2081,6 +3259,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Other Revenue (Data Licensing)",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: $43M",
@@ -2096,6 +3275,7 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "Revenue Per Employee",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "Q2 2026: >$1M",
@@ -2111,1226 +3291,12 @@
     "TICKER": "RDDT",
     "SECTOR": "Services-Computer Processing & Data Preparation",
     "metric": "SBC Expense Outlook",
+    "source_url": "",
     "details_map": {
       "2026-08-01": {
         "latest_quarter_value": "FY2026: Low to mid-teens % of revenue",
         "last_year_quarter_value": "FY2025: High teens % of revenue",
         "analyst_view": "Lowered full-year SBC expense guide from high teens to low-to-mid teens % of revenue; Q2 SBC was $101M.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Adjusted Diluted EPS",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $5.80",
-        "last_year_quarter_value": "Q2 2025: $2.69",
-        "analyst_view": "Adjusted EPS grew 116% YoY, significantly outpacing revenue growth due to margin expansion and share count stability.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Adjusted EBITDA",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $256.7M",
-        "last_year_quarter_value": "Q2 2025: $126.0M",
-        "analyst_view": "Adjusted EBITDA grew 104% YoY to $256.7M, with margins expanding to 22.0% from 20.5%.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Adjusted EBITDA Margin",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: 22.0%",
-        "last_year_quarter_value": "Q2 2025: 20.5%",
-        "analyst_view": "Adjusted EBITDA margin expanded 150 bps YoY despite integration costs, showing operating leverage in E-infrastructure.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Backlog (Contractual)",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $4.33B",
-        "last_year_quarter_value": "Q2 2025: $2.00B",
-        "analyst_view": "Contractual backlog grew 116% YoY (50% organic), driven by data center and E-infrastructure demand surge.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Combined Backlog",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $5.62B",
-        "last_year_quarter_value": "Q2 2025: $2.25B",
-        "analyst_view": "Combined backlog grew 150% YoY to $5.62B (36% organic), providing exceptional revenue visibility for E-infrastructure and data center projects.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "E-Infrastructure Revenue",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $934M",
-        "last_year_quarter_value": "Q2 2025: $353M",
-        "analyst_view": "E-infrastructure revenue grew 165% YoY, driven by data center construction demand and Stone Ridge acquisition.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Full Year 2026 Revenue Guidance",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "FY2026: $4.0-$4.15B",
-        "last_year_quarter_value": "FY2025: N/A",
-        "analyst_view": "Management raised FY2026 revenue guidance to $4.0-$4.15B (up from prior), implying continued strong growth trajectory.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Operating Cash Flow (6M)",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "H1 2026: $328.0M",
-        "last_year_quarter_value": "H1 2025: $170.3M",
-        "analyst_view": "Operating cash flow nearly doubled YoY to $328M for H1, demonstrating strong cash conversion from E-infrastructure growth.",
-        "source": "SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Organic Revenue Growth",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: ~50%",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Organic revenue grew approximately 50% YoY excluding acquisitions, demonstrating exceptional underlying demand.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Book-to-Burn Ratio (Backlog)",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: 1.4x",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Book-to-burn ratio of 1.4x indicates new awards exceed revenue recognized, supporting continued backlog growth.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Book-to-Burn Ratio (Combined Backlog)",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: 1.3x",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Combined backlog book-to-burn of 1.3x confirms strong award momentum including verbal commitments.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Building Solutions Revenue",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $75M",
-        "last_year_quarter_value": "Q2 2025: $77M",
-        "analyst_view": "Building solutions revenue was flat YoY, reflecting stable residential and commercial construction activity.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Sterling Infrastructure, Inc.",
-    "TICKER": "STRL",
-    "SECTOR": "Construction & Engineering",
-    "metric": "Transportation Revenue",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $159M",
-        "last_year_quarter_value": "Q2 2025: $184M",
-        "analyst_view": "Transportation revenue declined 14% YoY as the segment normalizes after elevated stimulus-driven levels.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Coach Brand Revenue",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: $1.21B",
-        "last_year_quarter_value": "Q3 2025: $0.98B",
-        "analyst_view": "Coach grew 23% YoY, driven by new product innovation and strong DTC performance.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Direct-to-Consumer Revenue",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: $1.15B",
-        "last_year_quarter_value": "Q3 2025: $0.92B",
-        "analyst_view": "DTC channel grew 25% YoY, outpacing wholesale and showing brand engagement.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Global Brand Revenue",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: $1.92B",
-        "last_year_quarter_value": "Q3 2025: $1.58B",
-        "analyst_view": "Global brand revenue grew 21% YoY driven by Coach and Kate Spade strength.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Kate Spade Brand Revenue",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: $0.41B",
-        "last_year_quarter_value": "Q3 2025: $0.36B",
-        "analyst_view": "Kate Spade grew 14% YoY, benefiting from handbag refresh and digital acceleration.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Digital Revenue Mix",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: 38%",
-        "last_year_quarter_value": "Q3 2025: 32%",
-        "analyst_view": "Digital revenue mix expanded 6pp YoY, reflecting successful omnichannel strategy.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Free Cash Flow Conversion",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: 138%",
-        "last_year_quarter_value": "Q3 2025: 112%",
-        "analyst_view": "FCF conversion improved to 138%, demonstrating strong cash generation quality.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Tapestry, Inc.",
-    "TICKER": "TPR",
-    "SECTOR": "Consumer Discretionary",
-    "metric": "Greater China Revenue Growth",
-    "details_map": {
-      "2026-08-18": {
-        "latest_quarter_value": "Q3 2026: +35%",
-        "last_year_quarter_value": "Q3 2025: N/A",
-        "analyst_view": "Greater China revenue grew 35% YoY, driven by Coach brand momentum and new store openings.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Comparable Sales Growth",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: -1.5%",
-        "last_year_quarter_value": "Q1 2025: +2.8%",
-        "analyst_view": "Comp sales declined 1.5% YoY on traffic softness, partially offset by average ticket growth.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Digital Sales Growth",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: +3.4%",
-        "last_year_quarter_value": "Q1 2025: +1.2%",
-        "analyst_view": "Digital growth reaccelerated to 3.4% with same-day services (Drive Up, Order Pickup) up double digits.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Gross Margin Rate",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: 27.1%",
-        "last_year_quarter_value": "Q1 2025: 27.5%",
-        "analyst_view": "Gross margin declined 40 bps from promotional activity and shrink pressure.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Operating Margin Rate",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: 5.2%",
-        "last_year_quarter_value": "Q1 2025: 5.8%",
-        "analyst_view": "Operating margin compressed 60 bps YoY on higher supply chain and wage costs.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Capital Expenditures",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: $0.7B",
-        "last_year_quarter_value": "Q1 2025: $0.6B",
-        "analyst_view": "CapEx focused on store remodels, supply chain automation, and digital infrastructure.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Inventory Turnover",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: 5.8x",
-        "last_year_quarter_value": "Q1 2025: 6.1x",
-        "analyst_view": "Inventory turnover slowed slightly but remains above pre-pandemic levels.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Owned Brand Penetration",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: 34% of sales",
-        "last_year_quarter_value": "Q1 2025: 33% of sales",
-        "analyst_view": "Owned brands (Good & Gather, Threshold, etc.) expanding margin contribution.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Same-Day Services Penetration",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: 12.5% of sales",
-        "last_year_quarter_value": "Q1 2025: 10.8% of sales",
-        "analyst_view": "Same-day services (Drive Up, Order Pickup, Shipt) growing share of digital.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Store Remodel Count",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: 40 remodels",
-        "last_year_quarter_value": "Q1 2025: 35 remodels",
-        "analyst_view": "Remodel pace on track for 170+ full-year target, driving traffic and basket size.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Dividend Per Share",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: $1.12",
-        "last_year_quarter_value": "Q1 2025: $1.10",
-        "analyst_view": "52nd consecutive annual dividend increase; payout ratio ~45% of EPS.",
-        "source": "IR/SEC",
-        "importance": "Tier 3 — Support"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Free Cash Flow",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: $0.9B",
-        "last_year_quarter_value": "Q1 2025: $1.1B",
-        "analyst_view": "FCF declined on higher working capital but full-year guidance reaffirmed.",
-        "source": "IR/SEC",
-        "importance": "Tier 3 — Support"
-      }
-    }
-  },
-  {
-    "COMPANY": "Target Corporation",
-    "TICKER": "TGT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Loyalty Program Members",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2026: 100M+ Circle members",
-        "last_year_quarter_value": "Q1 2025: 95M+ Circle members",
-        "analyst_view": "Target Circle loyalty program adds 5M+ members YoY, driving retention.",
-        "source": "IR",
-        "importance": "Tier 3 — Support"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Adjusted EBITDA",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $221M",
-        "last_year_quarter_value": "Q2 2025: $161M",
-        "analyst_view": "Adjusted EBITDA grew 37% YoY to $221M (inclusive of ~$10M tariff refund benefit), showing strong profitability improvement.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Annualized Recurring Revenue (ARR)",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $2.4B",
-        "last_year_quarter_value": "Q2 2025: $1.92B",
-        "analyst_view": "ARR grew 25% YoY to $2.4B, demonstrating strong recurring revenue momentum from subscription and financial technology solutions.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Gross Payment Volume (GPV)",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $60.7B",
-        "last_year_quarter_value": "Q2 2025: $49.8B",
-        "analyst_view": "GPV grew 22% YoY to $60.7B, reflecting expanding payment processing volume across the restaurant platform.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Net New Locations Added",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: 9,500",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Record 9,500 net new locations added in Q2 2026, signaling strong customer acquisition and market expansion.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Non-GAAP Subscription Services & FinTech Gross Profit",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $595M",
-        "last_year_quarter_value": "Q2 2025: $465M",
-        "analyst_view": "Non-GAAP subscription and FinTech gross profit grew 28% YoY, excluding SBC and D&A for clearer operational view.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Recurring Gross Profit Growth",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: +28% YoY",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Recurring gross profit streams grew 28% YoY, driven by subscription services and FinTech solutions expansion.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Subscription Services & FinTech Gross Profit",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $585M",
-        "last_year_quarter_value": "Q2 2025: $447M",
-        "analyst_view": "Subscription and financial technology solutions gross profit grew 31% YoY, outpacing revenue growth and showing operating leverage.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Total Locations",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: ~180,000",
-        "last_year_quarter_value": "Q2 2025: ~147,500",
-        "analyst_view": "Total locations grew 22% YoY to approximately 180,000, driven by record net new location additions.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Free Cash Flow",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $130M",
-        "last_year_quarter_value": "Q2 2025: $208M",
-        "analyst_view": "FCF declined to $130M from $208M YoY, primarily due to lower operating cash flow ($144M vs $223M) despite similar capex.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Operating Cash Flow",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: $144M",
-        "last_year_quarter_value": "Q2 2025: $223M",
-        "analyst_view": "Operating cash flow decreased 35% YoY to $144M, reflecting working capital dynamics and investment in growth.",
-        "source": "SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Share Repurchase Program",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026 YTD: 19M shares / $486M",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Repurchased 19M shares for $486M year-to-date through June 30, 2026, demonstrating commitment to returning capital.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Toast, Inc.",
-    "TICKER": "TOST",
-    "SECTOR": "Financial Technology",
-    "metric": "Toast IQ Grow Adoption",
-    "details_map": {
-      "2026-08-19": {
-        "latest_quarter_value": "Q2 2026: Fastest-growing new offering",
-        "last_year_quarter_value": "Q2 2025: N/A",
-        "analyst_view": "Toast IQ Grow identified as fastest-growing new offering ever launched, signaling strong AI product traction.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Comparable Sales Growth (US)",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: +3.8%",
-        "last_year_quarter_value": "Q1 2026: +2.4%",
-        "analyst_view": "US comp sales grew 3.8% driven by traffic and ticket growth across all categories.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "E-commerce Sales Growth",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: +21%",
-        "last_year_quarter_value": "Q1 2026: +17%",
-        "analyst_view": "E-commerce accelerated to 21% YoY growth, fueled by marketplace and store-fulfilled pickup/delivery.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Gross Margin Rate",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: 24.5%",
-        "last_year_quarter_value": "Q1 2026: 24.2%",
-        "analyst_view": "Gross margin expanded 30 bps on mix shift and pricing power.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Operating Income Growth",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: +5.6%",
-        "last_year_quarter_value": "Q1 2026: +3.2%",
-        "analyst_view": "Operating income grew faster than revenue, showing operating leverage.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Advertising Revenue (Walmart Connect)",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: +30%",
-        "last_year_quarter_value": "Q1 2026: +24%",
-        "analyst_view": "Walmart Connect ad revenue grew 30%, becoming a meaningful high-margin revenue stream.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Free Cash Flow",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: $4.2B",
-        "last_year_quarter_value": "Q1 2026: $3.8B",
-        "analyst_view": "FCF increased on higher operating cash flow and disciplined capital allocation.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "International Net Sales Growth (CC)",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: +8.5%",
-        "last_year_quarter_value": "Q1 2026: +6.8%",
-        "analyst_view": "International constant-currency sales growth accelerated, led by Walmex and China.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Inventory Growth vs Sales",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: Inv +2.1% vs Sales +4.0%",
-        "last_year_quarter_value": "Q1 2026: Inv +3.5% vs Sales +2.8%",
-        "analyst_view": "Inventory growing slower than sales, indicating improved supply chain efficiency.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Sam's Club Comp Sales (ex fuel)",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: +4.2%",
-        "last_year_quarter_value": "Q1 2026: +3.1%",
-        "analyst_view": "Sam's Club comp sales accelerated, membership income at record high.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Dividend Per Share",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: $0.21",
-        "last_year_quarter_value": "Q1 2026: $0.2075",
-        "analyst_view": "50th consecutive annual dividend increase; payout ratio sustainable at ~35%.",
-        "source": "IR/SEC",
-        "importance": "Tier 3 — Support"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Share Repurchases",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: $2.5B",
-        "last_year_quarter_value": "Q1 2026: $1.8B",
-        "analyst_view": "Buybacks accelerated, reducing share count by ~1.2% YoY.",
-        "source": "IR/SEC",
-        "importance": "Tier 3 — Support"
-      }
-    }
-  },
-  {
-    "COMPANY": "Walmart Inc.",
-    "TICKER": "WMT",
-    "SECTOR": "Consumer Staples",
-    "metric": "Walmart+ Membership Growth",
-    "details_map": {
-      "2026-08-22": {
-        "latest_quarter_value": "Q1 2027: +15% members",
-        "last_year_quarter_value": "Q1 2026: +12% members",
-        "analyst_view": "Walmart+ membership growth accelerating, driving higher frequency and basket size.",
-        "source": "IR",
-        "importance": "Tier 3 — Support"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Annual Recurring Revenue",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: $3.525B",
-        "last_year_quarter_value": "Q3 2025: ~$2.820B",
-        "analyst_view": "ARR expanded 25% YoY to a record $3.525B, showing durable subscription momentum and strong retention/upsell.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Free Cash Flow",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: $136.0M",
-        "last_year_quarter_value": "Q3 2025: $119.5M",
-        "analyst_view": "Free cash flow increased 14% YoY, showing improved conversion even with higher capital intensity.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Free Cash Flow Margin",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: 16%",
-        "last_year_quarter_value": "Q3 2025: 18%",
-        "analyst_view": "Free cash flow margin stayed healthy at 16%, though it declined versus the prior year because of higher CapEx.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Net New ARR",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: $166M",
-        "last_year_quarter_value": "Q3 2025: ~$134M",
-        "analyst_view": "Net new ARR of $166M rose 24% YoY, indicating continued expansion across the installed base.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Non-GAAP Income from Operations",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: $195.8M",
-        "last_year_quarter_value": "Q3 2025: $146.7M",
-        "analyst_view": "Non-GAAP operating income increased meaningfully year over year, reflecting improved operating leverage.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Non-GAAP Operating Margin",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: 23%",
-        "last_year_quarter_value": "Q3 2025: 22%",
-        "analyst_view": "Non-GAAP operating margin reached an all-time high of 23%, confirming stronger profitability at scale.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Operating Cash Flow",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: $198.0M",
-        "last_year_quarter_value": "Q3 2025: $211.1M",
-        "analyst_view": "Operating cash flow remained robust despite a modest YoY decline, keeping cash generation strong.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Remaining Performance Obligation",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: ~$6.5B",
-        "last_year_quarter_value": "Q3 2025: ~$5.0B",
-        "analyst_view": "RPO grew about 30% YoY to roughly $6.5B, indicating strong contracted demand visibility.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Revenue",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: $850.5M",
-        "last_year_quarter_value": "Q3 2025: ~$680.4M",
-        "analyst_view": "Revenue grew 25% YoY and beat the high end of guidance, supporting strong platform adoption.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Customers with >$100K ARR",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: 4,003",
-        "last_year_quarter_value": "Q3 2025: ~3,366",
-        "analyst_view": "Customers above the $100K ARR threshold grew 19% YoY, showing broadening enterprise penetration.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Customers with >$1M ARR",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: 748",
-        "last_year_quarter_value": "Q3 2025: ~634",
-        "analyst_view": "The number of customers generating more than $1M of ARR increased 18% YoY, reflecting continued enterprise scaling.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Zscaler, Inc.",
-    "TICKER": "ZS",
-    "SECTOR": "Security Software",
-    "metric": "Installed Base Customers",
-    "details_map": {
-      "2026-09-05": {
-        "latest_quarter_value": "Q3 2026: >9,400",
-        "last_year_quarter_value": "Q3 2025: N/A",
-        "analyst_view": "The installed base exceeded 9,400 customers, underscoring continued platform adoption across the enterprise base.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Annual Recurring Revenue (ARR)",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: $1,990.6M",
-        "last_year_quarter_value": "Q1 FY2026: $1,535.4M",
-        "analyst_view": "ARR grew 30% YoY to nearly $2B, demonstrating strong recurring revenue momentum in the Connected Operations platform.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Total Revenue",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: $478.8M",
-        "last_year_quarter_value": "Q1 FY2026: $366.9M",
-        "analyst_view": "Revenue grew 31% YoY (29% in constant currency), driven by strong customer adoption and platform expansion.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Net New ARR",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: $100.7M",
-        "last_year_quarter_value": "Q1 FY2026: N/A",
-        "analyst_view": "Net new ARR grew 30% YoY (27% in constant currency), showing continued strong demand for the platform.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "GAAP Gross Margin",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: 75%",
-        "last_year_quarter_value": "Q1 FY2026: 77%",
-        "analyst_view": "GAAP gross margin declined 200 bps YoY, reflecting investment in platform scaling and hardware costs.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Non-GAAP Gross Margin",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: 76%",
-        "last_year_quarter_value": "Q1 FY2026: 79%",
-        "analyst_view": "Non-GAAP gross margin declined 300 bps YoY, but remains strong at 76%.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "GAAP Operating Margin",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: 2%",
-        "last_year_quarter_value": "Q1 FY2026: -9%",
-        "analyst_view": "GAAP operating margin improved 1100 bps YoY, achieving third consecutive quarter of GAAP operating profitability.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Non-GAAP Operating Margin",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: 19%",
-        "last_year_quarter_value": "Q1 FY2026: 14%",
-        "analyst_view": "Non-GAAP operating margin expanded 500 bps YoY, demonstrating strong operating leverage.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "GAAP Net Income Per Share",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: $0.08",
-        "last_year_quarter_value": "Q1 FY2026: -$0.04",
-        "analyst_view": "Achieved GAAP EPS profitability for the third consecutive quarter, turning from a loss to $0.08 per share.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Non-GAAP Net Income Per Share",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: $0.17",
-        "last_year_quarter_value": "Q1 FY2026: $0.11",
-        "analyst_view": "Non-GAAP EPS grew 55% YoY to $0.17, reflecting strong operating leverage.",
-        "source": "IR/SEC",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Operating Cash Flow",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: $81.4M",
-        "last_year_quarter_value": "Q1 FY2026: $52.6M",
-        "analyst_view": "Operating cash flow grew 55% YoY to $81.4M with 17% margin, up 300 bps from prior year.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Adjusted Free Cash Flow",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q1 FY2027: $73.2M",
-        "last_year_quarter_value": "Q1 FY2026: $45.7M",
-        "analyst_view": "Adjusted free cash flow grew 60% YoY to $73.2M with 15% margin, up 300 bps from prior year.",
-        "source": "IR/SEC",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Fiscal Year 2027 Revenue Outlook",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "FY2027: $2.025B – $2.045B",
-        "last_year_quarter_value": "N/A",
-        "analyst_view": "Management guided FY2027 revenue of $2.025B-$2.045B, implying ~28-29% YoY growth.",
-        "source": "IR",
-        "importance": "Tier 1 — Core"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Q2 FY2027 Revenue Outlook",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q2 FY2027: $482M – $486M",
-        "last_year_quarter_value": "N/A",
-        "analyst_view": "Q2 FY2027 revenue guided at $482M-$486M, representing continued strong growth trajectory.",
         "source": "IR",
         "importance": "Tier 2 — High"
       }
@@ -3372,6 +3338,38 @@
     "COMPANY": "Samsara Inc.",
     "TICKER": "IOT",
     "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Adjusted Free Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $73.2M",
+        "last_year_quarter_value": "Q1 FY2026: $45.7M",
+        "analyst_view": "Adjusted free cash flow grew 60% YoY to $73.2M with 15% margin, up 300 bps from prior year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Annual Recurring Revenue (ARR)",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $1,990.6M",
+        "last_year_quarter_value": "Q1 FY2026: $1,535.4M",
+        "analyst_view": "ARR grew 30% YoY to nearly $2B, demonstrating strong recurring revenue momentum in the Connected Operations platform.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
     "metric": "ARR from $100K+ ARR Customers",
     "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
     "details_map": {
@@ -3404,22 +3402,6 @@
     "COMPANY": "Samsara Inc.",
     "TICKER": "IOT",
     "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "ARR per $100K+ ARR Customer",
-    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
-    "details_map": {
-      "2026-09-07": {
-        "latest_quarter_value": "Q2 FY2027: $369K",
-        "last_year_quarter_value": "Q2 FY2026: $349K",
-        "analyst_view": "Average ARR per $100K+ customer increased to $369K, up from $349K a year ago.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
-      }
-    }
-  },
-  {
-    "COMPANY": "Samsara Inc.",
-    "TICKER": "IOT",
-    "SECTOR": "Services-Computer Integrated Systems Design",
     "metric": "Core Customer Dollar-Based Net Retention Rate",
     "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
     "details_map": {
@@ -3427,6 +3409,22 @@
         "latest_quarter_value": "Q2 FY2027: ~115%",
         "last_year_quarter_value": "Q2 FY2026: N/A",
         "analyst_view": "Core customer net retention was approximately 115%, consistent with strong expansion and retention.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Fiscal Year 2027 Revenue Outlook",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "FY2027: $2.025B – $2.045B",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Management guided FY2027 revenue of $2.025B-$2.045B, implying ~28-29% YoY growth.",
         "source": "IR",
         "importance": "Tier 1 — Core"
       }
@@ -3452,15 +3450,15 @@
     "COMPANY": "Samsara Inc.",
     "TICKER": "IOT",
     "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "Emerging Products Share of Net New ACV",
-    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "metric": "GAAP Net Income Per Share",
+    "source_url": "",
     "details_map": {
       "2026-09-07": {
-        "latest_quarter_value": "Q2 FY2027: 20%+",
-        "last_year_quarter_value": "Q2 FY2026: N/A",
-        "analyst_view": "Emerging products contributed 20%+ of net new ACV for the third consecutive quarter.",
-        "source": "IR",
-        "importance": "Tier 2 — High"
+        "latest_quarter_value": "Q1 FY2027: $0.08",
+        "last_year_quarter_value": "Q1 FY2026: -$0.04",
+        "analyst_view": "Achieved GAAP EPS profitability for the third consecutive quarter, turning from a loss to $0.08 per share.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
       }
     }
   },
@@ -3468,13 +3466,93 @@
     "COMPANY": "Samsara Inc.",
     "TICKER": "IOT",
     "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "International Net New ACV Mix",
+    "metric": "GAAP Operating Margin",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 2%",
+        "last_year_quarter_value": "Q1 FY2026: -9%",
+        "analyst_view": "GAAP operating margin improved 1100 bps YoY, achieving third consecutive quarter of GAAP operating profitability.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Net New ARR",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $100.7M",
+        "last_year_quarter_value": "Q1 FY2026: N/A",
+        "analyst_view": "Net new ARR grew 30% YoY (27% in constant currency), showing continued strong demand for the platform.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Non-GAAP Operating Margin",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 19%",
+        "last_year_quarter_value": "Q1 FY2026: 14%",
+        "analyst_view": "Non-GAAP operating margin expanded 500 bps YoY, demonstrating strong operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Operating Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $81.4M",
+        "last_year_quarter_value": "Q1 FY2026: $52.6M",
+        "analyst_view": "Operating cash flow grew 55% YoY to $81.4M with 17% margin, up 300 bps from prior year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Total Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $478.8M",
+        "last_year_quarter_value": "Q1 FY2026: $366.9M",
+        "analyst_view": "Revenue grew 31% YoY (29% in constant currency), driven by strong customer adoption and platform expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "2+ Products Penetration ($100K+ ARR Customers)",
     "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
     "details_map": {
       "2026-09-07": {
-        "latest_quarter_value": "Q2 FY2027: 18%",
-        "last_year_quarter_value": "Q2 FY2026: N/A",
-        "analyst_view": "International markets generated 18% of Q2 net new ACV, tied for a quarterly record.",
+        "latest_quarter_value": "Q2 FY2027: 96%",
+        "last_year_quarter_value": "Q2 FY2026: 95%",
+        "analyst_view": "96% of $100K+ customers subscribed to 2+ products, up from 95% a year ago.",
         "source": "IR",
         "importance": "Tier 2 — High"
       }
@@ -3500,6 +3578,22 @@
     "COMPANY": "Samsara Inc.",
     "TICKER": "IOT",
     "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "3+ Products Penetration ($100K+ ARR Customers)",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 72%",
+        "last_year_quarter_value": "Q2 FY2026: 68%",
+        "analyst_view": "72% of $100K+ customers subscribed to 3+ products, up from 68% a year ago.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
     "metric": "3+ Products Penetration (Core Customers)",
     "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
     "details_map": {
@@ -3516,13 +3610,13 @@
     "COMPANY": "Samsara Inc.",
     "TICKER": "IOT",
     "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "2+ Products Penetration ($100K+ ARR Customers)",
+    "metric": "ARR per $100K+ ARR Customer",
     "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
     "details_map": {
       "2026-09-07": {
-        "latest_quarter_value": "Q2 FY2027: 96%",
-        "last_year_quarter_value": "Q2 FY2026: 95%",
-        "analyst_view": "96% of $100K+ customers subscribed to 2+ products, up from 95% a year ago.",
+        "latest_quarter_value": "Q2 FY2027: $369K",
+        "last_year_quarter_value": "Q2 FY2026: $349K",
+        "analyst_view": "Average ARR per $100K+ customer increased to $369K, up from $349K a year ago.",
         "source": "IR",
         "importance": "Tier 2 — High"
       }
@@ -3532,13 +3626,1389 @@
     "COMPANY": "Samsara Inc.",
     "TICKER": "IOT",
     "SECTOR": "Services-Computer Integrated Systems Design",
-    "metric": "3+ Products Penetration ($100K+ ARR Customers)",
+    "metric": "Emerging Products Share of Net New ACV",
     "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
     "details_map": {
       "2026-09-07": {
-        "latest_quarter_value": "Q2 FY2027: 72%",
-        "last_year_quarter_value": "Q2 FY2026: 68%",
-        "analyst_view": "72% of $100K+ customers subscribed to 3+ products, up from 68% a year ago.",
+        "latest_quarter_value": "Q2 FY2027: 20%+",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "Emerging products contributed 20%+ of net new ACV for the third consecutive quarter.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "GAAP Gross Margin",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 75%",
+        "last_year_quarter_value": "Q1 FY2026: 77%",
+        "analyst_view": "GAAP gross margin declined 200 bps YoY, reflecting investment in platform scaling and hardware costs.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "International Net New ACV Mix",
+    "source_url": "https://s29.q4cdn.com/853855404/files/content_files/Q2-FY27-Shareholder-Letter-4.pdf",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: 18%",
+        "last_year_quarter_value": "Q2 FY2026: N/A",
+        "analyst_view": "International markets generated 18% of Q2 net new ACV, tied for a quarterly record.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Non-GAAP Gross Margin",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: 76%",
+        "last_year_quarter_value": "Q1 FY2026: 79%",
+        "analyst_view": "Non-GAAP gross margin declined 300 bps YoY, but remains strong at 76%.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Non-GAAP Net Income Per Share",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q1 FY2027: $0.17",
+        "last_year_quarter_value": "Q1 FY2026: $0.11",
+        "analyst_view": "Non-GAAP EPS grew 55% YoY to $0.17, reflecting strong operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Samsara Inc.",
+    "TICKER": "IOT",
+    "SECTOR": "Services-Computer Integrated Systems Design",
+    "metric": "Q2 FY2027 Revenue Outlook",
+    "source_url": "",
+    "details_map": {
+      "2026-09-07": {
+        "latest_quarter_value": "Q2 FY2027: $482M – $486M",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Q2 FY2027 revenue guided at $482M-$486M, representing continued strong growth trajectory.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Adjusted Diluted EPS",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $5.80",
+        "last_year_quarter_value": "Q2 2025: $2.69",
+        "analyst_view": "Adjusted EPS grew 116% YoY, significantly outpacing revenue growth due to margin expansion and share count stability.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Adjusted EBITDA",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $256.7M",
+        "last_year_quarter_value": "Q2 2025: $126.0M",
+        "analyst_view": "Adjusted EBITDA grew 104% YoY to $256.7M, with margins expanding to 22.0% from 20.5%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Adjusted EBITDA Margin",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 22.0%",
+        "last_year_quarter_value": "Q2 2025: 20.5%",
+        "analyst_view": "Adjusted EBITDA margin expanded 150 bps YoY despite integration costs, showing operating leverage in E-infrastructure.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Backlog (Contractual)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $4.33B",
+        "last_year_quarter_value": "Q2 2025: $2.00B",
+        "analyst_view": "Contractual backlog grew 116% YoY (50% organic), driven by data center and E-infrastructure demand surge.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Combined Backlog",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $5.62B",
+        "last_year_quarter_value": "Q2 2025: $2.25B",
+        "analyst_view": "Combined backlog grew 150% YoY to $5.62B (36% organic), providing exceptional revenue visibility for E-infrastructure and data center projects.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "E-Infrastructure Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $934M",
+        "last_year_quarter_value": "Q2 2025: $353M",
+        "analyst_view": "E-infrastructure revenue grew 165% YoY, driven by data center construction demand and Stone Ridge acquisition.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Full Year 2026 Revenue Guidance",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "FY2026: $4.0-$4.15B",
+        "last_year_quarter_value": "FY2025: N/A",
+        "analyst_view": "Management raised FY2026 revenue guidance to $4.0-$4.15B (up from prior), implying continued strong growth trajectory.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Operating Cash Flow (6M)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "H1 2026: $328.0M",
+        "last_year_quarter_value": "H1 2025: $170.3M",
+        "analyst_view": "Operating cash flow nearly doubled YoY to $328M for H1, demonstrating strong cash conversion from E-infrastructure growth.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Organic Revenue Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: ~50%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Organic revenue grew approximately 50% YoY excluding acquisitions, demonstrating exceptional underlying demand.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Book-to-Burn Ratio (Backlog)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 1.4x",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Book-to-burn ratio of 1.4x indicates new awards exceed revenue recognized, supporting continued backlog growth.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Book-to-Burn Ratio (Combined Backlog)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 1.3x",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Combined backlog book-to-burn of 1.3x confirms strong award momentum including verbal commitments.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Building Solutions Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $75M",
+        "last_year_quarter_value": "Q2 2025: $77M",
+        "analyst_view": "Building solutions revenue was flat YoY, reflecting stable residential and commercial construction activity.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Sterling Infrastructure, Inc.",
+    "TICKER": "STRL",
+    "SECTOR": "Construction & Engineering",
+    "metric": "Transportation Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $159M",
+        "last_year_quarter_value": "Q2 2025: $184M",
+        "analyst_view": "Transportation revenue declined 14% YoY as the segment normalizes after elevated stimulus-driven levels.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Coach Brand Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $1.21B",
+        "last_year_quarter_value": "Q3 2025: $0.98B",
+        "analyst_view": "Coach grew 23% YoY, driven by new product innovation and strong DTC performance.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Direct-to-Consumer Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $1.15B",
+        "last_year_quarter_value": "Q3 2025: $0.92B",
+        "analyst_view": "DTC channel grew 25% YoY, outpacing wholesale and showing brand engagement.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Global Brand Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $1.92B",
+        "last_year_quarter_value": "Q3 2025: $1.58B",
+        "analyst_view": "Global brand revenue grew 21% YoY driven by Coach and Kate Spade strength.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Kate Spade Brand Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: $0.41B",
+        "last_year_quarter_value": "Q3 2025: $0.36B",
+        "analyst_view": "Kate Spade grew 14% YoY, benefiting from handbag refresh and digital acceleration.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Digital Revenue Mix",
+    "source_url": "",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: 38%",
+        "last_year_quarter_value": "Q3 2025: 32%",
+        "analyst_view": "Digital revenue mix expanded 6pp YoY, reflecting successful omnichannel strategy.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Free Cash Flow Conversion",
+    "source_url": "",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: 138%",
+        "last_year_quarter_value": "Q3 2025: 112%",
+        "analyst_view": "FCF conversion improved to 138%, demonstrating strong cash generation quality.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Tapestry, Inc.",
+    "TICKER": "TPR",
+    "SECTOR": "Consumer Discretionary",
+    "metric": "Greater China Revenue Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-18": {
+        "latest_quarter_value": "Q3 2026: +35%",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "Greater China revenue grew 35% YoY, driven by Coach brand momentum and new store openings.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Comparable Sales Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: -1.5%",
+        "last_year_quarter_value": "Q1 2025: +2.8%",
+        "analyst_view": "Comp sales declined 1.5% YoY on traffic softness, partially offset by average ticket growth.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Digital Sales Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: +3.4%",
+        "last_year_quarter_value": "Q1 2025: +1.2%",
+        "analyst_view": "Digital growth reaccelerated to 3.4% with same-day services (Drive Up, Order Pickup) up double digits.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Gross Margin Rate",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 27.1%",
+        "last_year_quarter_value": "Q1 2025: 27.5%",
+        "analyst_view": "Gross margin declined 40 bps from promotional activity and shrink pressure.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Operating Margin Rate",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 5.2%",
+        "last_year_quarter_value": "Q1 2025: 5.8%",
+        "analyst_view": "Operating margin compressed 60 bps YoY on higher supply chain and wage costs.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Capital Expenditures",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: $0.7B",
+        "last_year_quarter_value": "Q1 2025: $0.6B",
+        "analyst_view": "CapEx focused on store remodels, supply chain automation, and digital infrastructure.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Inventory Turnover",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 5.8x",
+        "last_year_quarter_value": "Q1 2025: 6.1x",
+        "analyst_view": "Inventory turnover slowed slightly but remains above pre-pandemic levels.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Owned Brand Penetration",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 34% of sales",
+        "last_year_quarter_value": "Q1 2025: 33% of sales",
+        "analyst_view": "Owned brands (Good & Gather, Threshold, etc.) expanding margin contribution.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Same-Day Services Penetration",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 12.5% of sales",
+        "last_year_quarter_value": "Q1 2025: 10.8% of sales",
+        "analyst_view": "Same-day services (Drive Up, Order Pickup, Shipt) growing share of digital.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Store Remodel Count",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 40 remodels",
+        "last_year_quarter_value": "Q1 2025: 35 remodels",
+        "analyst_view": "Remodel pace on track for 170+ full-year target, driving traffic and basket size.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Dividend Per Share",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: $1.12",
+        "last_year_quarter_value": "Q1 2025: $1.10",
+        "analyst_view": "52nd consecutive annual dividend increase; payout ratio ~45% of EPS.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Free Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: $0.9B",
+        "last_year_quarter_value": "Q1 2025: $1.1B",
+        "analyst_view": "FCF declined on higher working capital but full-year guidance reaffirmed.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Target Corporation",
+    "TICKER": "TGT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Loyalty Program Members",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2026: 100M+ Circle members",
+        "last_year_quarter_value": "Q1 2025: 95M+ Circle members",
+        "analyst_view": "Target Circle loyalty program adds 5M+ members YoY, driving retention.",
+        "source": "IR",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Adjusted EBITDA",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $221M",
+        "last_year_quarter_value": "Q2 2025: $161M",
+        "analyst_view": "Adjusted EBITDA grew 37% YoY to $221M (inclusive of ~$10M tariff refund benefit), showing strong profitability improvement.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Annualized Recurring Revenue (ARR)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $2.4B",
+        "last_year_quarter_value": "Q2 2025: $1.92B",
+        "analyst_view": "ARR grew 25% YoY to $2.4B, demonstrating strong recurring revenue momentum from subscription and financial technology solutions.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Gross Payment Volume (GPV)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $60.7B",
+        "last_year_quarter_value": "Q2 2025: $49.8B",
+        "analyst_view": "GPV grew 22% YoY to $60.7B, reflecting expanding payment processing volume across the restaurant platform.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Net New Locations Added",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: 9,500",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Record 9,500 net new locations added in Q2 2026, signaling strong customer acquisition and market expansion.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Non-GAAP Subscription Services & FinTech Gross Profit",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $595M",
+        "last_year_quarter_value": "Q2 2025: $465M",
+        "analyst_view": "Non-GAAP subscription and FinTech gross profit grew 28% YoY, excluding SBC and D&A for clearer operational view.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Recurring Gross Profit Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: +28% YoY",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Recurring gross profit streams grew 28% YoY, driven by subscription services and FinTech solutions expansion.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Subscription Services & FinTech Gross Profit",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $585M",
+        "last_year_quarter_value": "Q2 2025: $447M",
+        "analyst_view": "Subscription and financial technology solutions gross profit grew 31% YoY, outpacing revenue growth and showing operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Total Locations",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: ~180,000",
+        "last_year_quarter_value": "Q2 2025: ~147,500",
+        "analyst_view": "Total locations grew 22% YoY to approximately 180,000, driven by record net new location additions.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Free Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $130M",
+        "last_year_quarter_value": "Q2 2025: $208M",
+        "analyst_view": "FCF declined to $130M from $208M YoY, primarily due to lower operating cash flow ($144M vs $223M) despite similar capex.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Operating Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: $144M",
+        "last_year_quarter_value": "Q2 2025: $223M",
+        "analyst_view": "Operating cash flow decreased 35% YoY to $144M, reflecting working capital dynamics and investment in growth.",
+        "source": "SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Share Repurchase Program",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026 YTD: 19M shares / $486M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Repurchased 19M shares for $486M year-to-date through June 30, 2026, demonstrating commitment to returning capital.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Toast, Inc.",
+    "TICKER": "TOST",
+    "SECTOR": "Financial Technology",
+    "metric": "Toast IQ Grow Adoption",
+    "source_url": "",
+    "details_map": {
+      "2026-08-19": {
+        "latest_quarter_value": "Q2 2026: Fastest-growing new offering",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Toast IQ Grow identified as fastest-growing new offering ever launched, signaling strong AI product traction.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Cash & Cash Equivalents",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $1.12B",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "SEC/XBRL reported Cash & Cash Equivalents of $1.12B. A comparable prior-year fact was not available in the selected filing.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Net Income",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $64.39M",
+        "last_year_quarter_value": "Q2 2025: $90.13M",
+        "analyst_view": "SEC/XBRL reported Net Income of $64.39M. It decreased 28.6% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Operating Cash Flow",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $545.40M",
+        "last_year_quarter_value": "Q2 2025: $456.45M",
+        "analyst_view": "SEC/XBRL reported Operating Cash Flow of $545.40M. It increased 19.5% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $715.06M",
+        "last_year_quarter_value": "Q2 2025: $694.04M",
+        "analyst_view": "SEC/XBRL reported Revenue of $715.06M. It increased 3.0% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Capital Expenditures",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $88.21M",
+        "last_year_quarter_value": "Q2 2025: $104.35M",
+        "analyst_view": "SEC/XBRL reported Capital Expenditures of $88.21M. It decreased 15.5% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Depreciation & Amortization",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $61.57M",
+        "last_year_quarter_value": "Q2 2025: $50.69M",
+        "analyst_view": "SEC/XBRL reported Depreciation & Amortization of $61.57M. It increased 21.5% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Diluted EPS",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $0.14",
+        "last_year_quarter_value": "Q2 2025: $0.18",
+        "analyst_view": "SEC/XBRL reported Diluted EPS of $0.14. It decreased 22.2% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Diluted Shares Outstanding",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 469.95M shares",
+        "last_year_quarter_value": "Q2 2025: 495.78M shares",
+        "analyst_view": "SEC/XBRL reported Diluted Shares Outstanding of 469.95M shares. It decreased 5.2% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Operating Income",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $101.58M",
+        "last_year_quarter_value": "Q2 2025: $116.78M",
+        "analyst_view": "SEC/XBRL reported Operating Income of $101.58M. It decreased 13.0% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Stock-Based Compensation",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $109.56M",
+        "last_year_quarter_value": "Q2 2025: $128.88M",
+        "analyst_view": "SEC/XBRL reported Stock-Based Compensation of $109.56M. It decreased 15.0% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Stockholders' Equity",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $2.57B",
+        "last_year_quarter_value": "Q2 2025: $2.70B",
+        "analyst_view": "SEC/XBRL reported Stockholders' Equity of $2.57B. It decreased 4.5% versus the comparable prior-year fact.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Total Assets",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $5.76B",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "SEC/XBRL reported Total Assets of $5.76B. A comparable prior-year fact was not available in the selected filing.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Trade Desk, Inc.",
+    "TICKER": "TTD",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Total Liabilities",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $3.19B",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "SEC/XBRL reported Total Liabilities of $3.19B. A comparable prior-year fact was not available in the selected filing.",
+        "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Comparable Sales Growth (US)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +3.8%",
+        "last_year_quarter_value": "Q1 2026: +2.4%",
+        "analyst_view": "US comp sales grew 3.8% driven by traffic and ticket growth across all categories.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "E-commerce Sales Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +21%",
+        "last_year_quarter_value": "Q1 2026: +17%",
+        "analyst_view": "E-commerce accelerated to 21% YoY growth, fueled by marketplace and store-fulfilled pickup/delivery.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Gross Margin Rate",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: 24.5%",
+        "last_year_quarter_value": "Q1 2026: 24.2%",
+        "analyst_view": "Gross margin expanded 30 bps on mix shift and pricing power.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Operating Income Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +5.6%",
+        "last_year_quarter_value": "Q1 2026: +3.2%",
+        "analyst_view": "Operating income grew faster than revenue, showing operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Advertising Revenue (Walmart Connect)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +30%",
+        "last_year_quarter_value": "Q1 2026: +24%",
+        "analyst_view": "Walmart Connect ad revenue grew 30%, becoming a meaningful high-margin revenue stream.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Free Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: $4.2B",
+        "last_year_quarter_value": "Q1 2026: $3.8B",
+        "analyst_view": "FCF increased on higher operating cash flow and disciplined capital allocation.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "International Net Sales Growth (CC)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +8.5%",
+        "last_year_quarter_value": "Q1 2026: +6.8%",
+        "analyst_view": "International constant-currency sales growth accelerated, led by Walmex and China.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Inventory Growth vs Sales",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: Inv +2.1% vs Sales +4.0%",
+        "last_year_quarter_value": "Q1 2026: Inv +3.5% vs Sales +2.8%",
+        "analyst_view": "Inventory growing slower than sales, indicating improved supply chain efficiency.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Sam's Club Comp Sales (ex fuel)",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +4.2%",
+        "last_year_quarter_value": "Q1 2026: +3.1%",
+        "analyst_view": "Sam's Club comp sales accelerated, membership income at record high.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Dividend Per Share",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: $0.21",
+        "last_year_quarter_value": "Q1 2026: $0.2075",
+        "analyst_view": "50th consecutive annual dividend increase; payout ratio sustainable at ~35%.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Share Repurchases",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: $2.5B",
+        "last_year_quarter_value": "Q1 2026: $1.8B",
+        "analyst_view": "Buybacks accelerated, reducing share count by ~1.2% YoY.",
+        "source": "IR/SEC",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Walmart Inc.",
+    "TICKER": "WMT",
+    "SECTOR": "Consumer Staples",
+    "metric": "Walmart+ Membership Growth",
+    "source_url": "",
+    "details_map": {
+      "2026-08-22": {
+        "latest_quarter_value": "Q1 2027: +15% members",
+        "last_year_quarter_value": "Q1 2026: +12% members",
+        "analyst_view": "Walmart+ membership growth accelerating, driving higher frequency and basket size.",
+        "source": "IR",
+        "importance": "Tier 3 — Support"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Annual Recurring Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: $3.525B",
+        "last_year_quarter_value": "Q3 2025: ~$2.820B",
+        "analyst_view": "ARR expanded 25% YoY to a record $3.525B, showing durable subscription momentum and strong retention/upsell.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Free Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: $136.0M",
+        "last_year_quarter_value": "Q3 2025: $119.5M",
+        "analyst_view": "Free cash flow increased 14% YoY, showing improved conversion even with higher capital intensity.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Free Cash Flow Margin",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: 16%",
+        "last_year_quarter_value": "Q3 2025: 18%",
+        "analyst_view": "Free cash flow margin stayed healthy at 16%, though it declined versus the prior year because of higher CapEx.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Net New ARR",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: $166M",
+        "last_year_quarter_value": "Q3 2025: ~$134M",
+        "analyst_view": "Net new ARR of $166M rose 24% YoY, indicating continued expansion across the installed base.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Non-GAAP Income from Operations",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: $195.8M",
+        "last_year_quarter_value": "Q3 2025: $146.7M",
+        "analyst_view": "Non-GAAP operating income increased meaningfully year over year, reflecting improved operating leverage.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Non-GAAP Operating Margin",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: 23%",
+        "last_year_quarter_value": "Q3 2025: 22%",
+        "analyst_view": "Non-GAAP operating margin reached an all-time high of 23%, confirming stronger profitability at scale.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Operating Cash Flow",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: $198.0M",
+        "last_year_quarter_value": "Q3 2025: $211.1M",
+        "analyst_view": "Operating cash flow remained robust despite a modest YoY decline, keeping cash generation strong.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Remaining Performance Obligation",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: ~$6.5B",
+        "last_year_quarter_value": "Q3 2025: ~$5.0B",
+        "analyst_view": "RPO grew about 30% YoY to roughly $6.5B, indicating strong contracted demand visibility.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Revenue",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: $850.5M",
+        "last_year_quarter_value": "Q3 2025: ~$680.4M",
+        "analyst_view": "Revenue grew 25% YoY and beat the high end of guidance, supporting strong platform adoption.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Customers with >$100K ARR",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: 4,003",
+        "last_year_quarter_value": "Q3 2025: ~3,366",
+        "analyst_view": "Customers above the $100K ARR threshold grew 19% YoY, showing broadening enterprise penetration.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Customers with >$1M ARR",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: 748",
+        "last_year_quarter_value": "Q3 2025: ~634",
+        "analyst_view": "The number of customers generating more than $1M of ARR increased 18% YoY, reflecting continued enterprise scaling.",
+        "source": "IR",
+        "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Zscaler, Inc.",
+    "TICKER": "ZS",
+    "SECTOR": "Security Software",
+    "metric": "Installed Base Customers",
+    "source_url": "",
+    "details_map": {
+      "2026-09-05": {
+        "latest_quarter_value": "Q3 2026: >9,400",
+        "last_year_quarter_value": "Q3 2025: N/A",
+        "analyst_view": "The installed base exceeded 9,400 customers, underscoring continued platform adoption across the enterprise base.",
         "source": "IR",
         "importance": "Tier 2 — High"
       }
