@@ -1623,6 +1623,246 @@
     }
   },
   {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Free Cash Flow",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $370.3M",
+        "last_year_quarter_value": "Q3 2025: $276.2M",
+        "analyst_view": "Free Cash Flow was $370.3M versus $276.2M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "GAAP Diluted EPS",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $10.45",
+        "last_year_quarter_value": "Q3 2025: $7.40",
+        "analyst_view": "GAAP Diluted EPS was $10.45 versus $7.40 in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Non-GAAP Diluted EPS",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $12.18",
+        "last_year_quarter_value": "Q3 2025: $8.57",
+        "analyst_view": "Non-GAAP Diluted EPS was $12.18 versus $8.57 in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Non-GAAP Net Income",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $276.6M",
+        "last_year_quarter_value": "Q3 2025: $210.6M",
+        "analyst_view": "Non-GAAP Net Income was $276.6M versus $210.6M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Non-Platform Software Dollar-Based Net Retention",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: 82%",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported Non-Platform Software Dollar-Based Net Retention of 82%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Operating Cash Flow",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $380,440M",
+        "last_year_quarter_value": "Q3 2025: $286,223M",
+        "analyst_view": "Operating Cash Flow was $380,440M versus $286,223M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Platform Software Dollar-Based Net Retention",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: 148%",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported Platform Software Dollar-Based Net Retention of 148%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Scores Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $458.9$M",
+        "last_year_quarter_value": "Q3 2025: $324.3$M",
+        "analyst_view": "Scores Revenue was $458.9$M, increased 41% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Software ARR Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: 10%",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported Software ARR Growth of 10%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Software Dollar-Based Net Retention",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: 109%",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported Software Dollar-Based Net Retention of 109%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Software Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $215.3$M",
+        "last_year_quarter_value": "Q3 2025: $212.1$M",
+        "analyst_view": "Software Revenue was $215.3$M, increased 10% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "Total Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: $674.2$M",
+        "last_year_quarter_value": "Q3 2025: $536.4$M",
+        "analyst_view": "Total Revenue was $674.2$M, increased 26% year over year.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "FY GAAP EPS Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: FY2026 guidance $36.86",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Updated fiscal-year guidance reported $36.86.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "FY GAAP Net Income Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: FY2026 guidance $850M",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Updated fiscal-year guidance reported $850M.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "FAIR ISAAC CORP",
+    "TICKER": "FICO",
+    "SECTOR": "Services-Business Services, NEC",
+    "metric": "FY Revenue Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/814547/000081454726000031/exhibit991erq32026.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q3 2026: FY2026 guidance $2.53B",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Updated fiscal-year guidance reported $2.53B.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
     "COMPANY": "Figure Technology, Inc.",
     "TICKER": "FIGR",
     "SECTOR": "Financial Technology",

@@ -147,6 +147,39 @@ def test_build_business_kpis_prefers_release_specific_operating_metrics(tmp_path
     assert "Revenue" not in metrics
 
 
+def test_build_business_kpis_generic_release_fallback_extracts_fico_operating_rows(tmp_path):
+    release_text = """
+    The company reported revenues of $674.2 million for the quarter as compared to
+    $536.4 million reported in the prior year period, an increase of 26%.
+    Scores revenues were $458.9 million in the third quarter, compared to $324.3
+    million in the prior year period, an increase of 41%.
+    Software revenues were up 2% year-over-year with $215.3 million in the third
+    quarter, compared to $212.1 million in the prior year period.
+    Software Annual Recurring Revenue (ARR) was up 10% year-over-year.
+    The total Software Dollar-Based Net Retention Rate was 109% on June 30, 2026,
+    with platform software at 148% and non-platform software at 82%.
+    Non-GAAP Net Income for the quarter was $276.6 million versus $210.6 million
+    in the prior year period. Free cash flow was $370.3 million for the current
+    quarter versus $276.2 million in the prior year period.
+    GAAP diluted earnings per share $ 10.45 $ 7.40.
+    Non-GAAP diluted earnings per share $ 12.18 $ 8.57.
+    Updated Fiscal 2026 Guidance Revenues $2.45 billion $2.53 billion
+    GAAP Net Income $825 million $850 million GAAP EPS $35.60 $36.86.
+    """
+    reference = tmp_path / "KPI_derived_reference.json"
+    selected = build_business_kpis(
+        company="Fair Isaac Corporation", ticker="FICO", sector="Technology",
+        filing_url="https://www.sec.gov/example-10q.htm",
+        release_url="https://www.sec.gov/example-8k.htm", release_text=release_text,
+        fiscal_period="Q3", fiscal_year=2026, source_date="2026-06-30",
+        reference_path=reference, xbrl_metrics={"revenue": {"value": 1}},
+    )
+    assert selected["selection_status"] == "COMPLETE"
+    assert len(selected["rows"]) == 12
+    assert "Scores Revenue" in {row["metric"] for row in selected["rows"]}
+    assert all(row["source"] == "IR/SEC" for row in selected["rows"])
+
+
 class FilingSelectionTests(unittest.TestCase):
     """Tests for the filing selection logic in identify() method."""
 

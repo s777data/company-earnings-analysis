@@ -526,8 +526,78 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
     ):
         match = re.search(pattern, text, re.I)
         if match:
-            add(metric, f"FY{fiscal_year}: {match.group(1)}",
+            add(metric, f"{period_label}: FY{fiscal_year} guidance {match.group(1)}",
                 view=f"Management outlook: {metric} is {match.group(1)}.")
+
+    # Generic official-release fallback.  Companies use different labels from
+    # the Paychex-specific rows above; recognize common narrative/table forms
+    # without converting generic XBRL statement facts into business KPIs.
+    def narrative_pair(pattern: str, metric: str, unit: str = "$M", importance: str = "Tier 1 — Core") -> None:
+        match = re.search(pattern, text, re.I)
+        if not match:
+            return
+        current, prior, change = match.groups()
+        direction = "increased" if not change.strip().startswith(("(", "-")) else "decreased"
+        add(metric, f"{period_label}: ${current}{unit}", f"{prior_label}: ${prior}{unit}",
+            f"{metric} was ${current}{unit}, {direction} {change.strip('()')}% year over year.", importance)
+
+    narrative_pair(
+        r"reported revenues? of [$] *([0-9,.]+) +million .*?[$] *([0-9,.]+) +million .*?increase of +([0-9.]+) *%",
+        "Total Revenue",
+    )
+    narrative_pair(
+        r"Scores revenues?.*?[$] *([0-9,.]+) +million .*?[$] *([0-9,.]+) +million .*?increase of +([0-9.]+) *%",
+        "Scores Revenue",
+    )
+    narrative_pair(
+        r"Software revenues?.*?[$] *([0-9,.]+) +million .*?[$] *([0-9,.]+) +million .*?(?:up|increase of) +([0-9.]+) *%",
+        "Software Revenue",
+    )
+
+    for pattern, metric in (
+        (r"Software Annual Recurring Revenue [(]ARR[)] was up +([0-9.]+)% year-over-year", "Software ARR Growth"),
+        (r"total Software Dollar-Based Net Retention Rate was +([0-9.]+)%", "Software Dollar-Based Net Retention"),
+        (r"platform software at +([0-9.]+)%", "Platform Software Dollar-Based Net Retention"),
+        (r"non-platform software at +([0-9.]+)%", "Non-Platform Software Dollar-Based Net Retention"),
+    ):
+        match = re.search(pattern, text, re.I)
+        if match:
+            add(metric, f"{period_label}: {match.group(1)}%", view=f"Official release reported {metric} of {match.group(1)}%.", importance="Tier 1 — Core")
+
+    def amount_narrative(pattern: str, metric: str, importance: str = "Tier 1 — Core") -> None:
+        match = re.search(pattern, text, re.I)
+        if match:
+            current, prior = match.groups()
+            add(metric, f"{period_label}: ${current}M", f"{prior_label}: ${prior}M",
+                f"{metric} was ${current}M versus ${prior}M in the comparable prior-year period.", importance)
+
+    amount_narrative(r"Non-GAAP Net Income for the quarter was [$] *([0-9,.]+) +million versus [$] *([0-9,.]+) +million", "Non-GAAP Net Income")
+    amount_narrative(r"Free cash flow was [$] *([0-9,.]+) +million .*?[$] *([0-9,.]+) +million", "Free Cash Flow")
+    amount_narrative(r"Net cash provided by operating activities [$] *([0-9,.]+) .*?[$] *([0-9,.]+)", "Operating Cash Flow")
+
+    def eps_narrative(label: str, metric: str) -> None:
+        match = re.search(rf"{label}[^$0-9]*[$] *([0-9]+(?:[.][0-9]+)?) +[$] *([0-9]+(?:[.][0-9]+)?)", text, re.I)
+        if match:
+            current, prior = match.groups()
+            add(metric, f"{period_label}: ${current}", f"{prior_label}: ${prior}",
+                f"{metric} was ${current} versus ${prior} in the comparable prior-year period.")
+
+    eps_narrative("GAAP diluted earnings per share", "GAAP Diluted EPS")
+    eps_narrative("Non-GAAP diluted earnings per share", "Non-GAAP Diluted EPS")
+
+    guidance_match = re.search(
+        r"Updated Fiscal [0-9]{4} Guidance .*?Revenues [$] *([0-9,.]+) +billion .*?[$] *([0-9,.]+) +billion .*?GAAP Net Income [$] *([0-9,.]+) +million .*?[$] *([0-9,.]+) +million .*?GAAP EPS [$] *([0-9.]+) .*?[$] *([0-9.]+)",
+        text, re.I,
+    )
+    if guidance_match:
+        values = guidance_match.groups()
+        for metric, value, unit in (
+            ("FY Revenue Guidance", values[1], "B"),
+            ("FY GAAP Net Income Guidance", values[3], "M"),
+            ("FY GAAP EPS Guidance", values[5], ""),
+        ):
+            add(metric, f"{period_label}: FY{fiscal_year} guidance ${value}{unit}",
+                view=f"Updated fiscal-year guidance reported ${value}{unit}.", importance="Tier 2 — Supporting")
     return rows
 
 
