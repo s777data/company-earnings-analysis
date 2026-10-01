@@ -503,6 +503,406 @@
     }
   },
   {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Adjusted EBITDA",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $$1,614M",
+        "last_year_quarter_value": "Q2 2025: $$1,018M",
+        "analyst_view": "Official earnings release reported Adjusted EBITDA of $$1,614M versus $$1,018M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Adjusted EBITDA Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $84%",
+        "last_year_quarter_value": "Q2 2025: $81%",
+        "analyst_view": "Official earnings release reported Adjusted EBITDA Margin of $84% versus $81% in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Basic EPS",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: $3.77",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported Basic EPS of $3.77.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Cash and Cash Equivalents",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $3,053,306K",
+        "last_year_quarter_value": "Prior period: $2,487,096K",
+        "analyst_view": "Official earnings release reported Cash and Cash Equivalents of $3,053,306K versus $2,487,096K in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Continuing Operations Net Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: 66%",
+        "last_year_quarter_value": "Q2 2025: 61%",
+        "analyst_view": "Official release reported Continuing Operations Net Margin of 66% versus 61%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Diluted EPS Continuing Operations",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: $3.76",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported diluted EPS of $3.76.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Finance Lease Principal Payments",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: $4,296K",
+        "last_year_quarter_value": "Q2 2025: $4,121K",
+        "analyst_view": "Official release reported finance-lease principal payments of $4,296 thousand.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Free Cash Flow",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $863,317M",
+        "last_year_quarter_value": "Q2 2025: $768,063M",
+        "analyst_view": "Official earnings release reported Free Cash Flow of $863,317M versus $768,063M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Long-term Debt",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $3,515,072K",
+        "last_year_quarter_value": "Prior period: $3,512,987K",
+        "analyst_view": "Official earnings release reported Long-term Debt of $3,515,072K versus $3,512,987K in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Net Income",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $$1,267M",
+        "last_year_quarter_value": "Q2 2025: $$820M",
+        "analyst_view": "Official earnings release reported Net Income of $$1,267M versus $$820M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Net Income from Continuing Operations",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $$1,267M",
+        "last_year_quarter_value": "Q2 2025: $$772M",
+        "analyst_view": "Official earnings release reported Net Income from Continuing Operations of $$1,267M versus $$772M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Net Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: 66%",
+        "last_year_quarter_value": "Q2 2025: 65%",
+        "analyst_view": "Official release reported Net Margin of 66% versus 65%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Operating Cash Flow",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $869,040M",
+        "last_year_quarter_value": "Q2 2025: $772,226M",
+        "analyst_view": "Official earnings release reported Operating Cash Flow of $869,040M versus $772,226M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Property and Equipment Purchases",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: $1,427K",
+        "last_year_quarter_value": "Q2 2025: $42K",
+        "analyst_view": "Official release reported property and equipment purchases of $1,427 thousand.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Share Repurchase Cost",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: $551.3M",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported total repurchase and withholding cost of $551.3 million.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Shares Outstanding",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: 335M shares",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported 335 million shares outstanding.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Shares Repurchased and Withheld",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: 1.1M shares",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official release reported 1.1 million shares repurchased or withheld.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Stock-Based Compensation",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: $168,981K",
+        "last_year_quarter_value": "Q2 2025: $97,026K",
+        "analyst_view": "Official release reported stock-based compensation of $168,981 thousand versus $97,026 thousand.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Total Assets",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $8,269,131K",
+        "last_year_quarter_value": "Prior period: $7,259,610K",
+        "analyst_view": "Official earnings release reported Total Assets of $8,269,131K versus $7,259,610K in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Total Liabilities",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $5,106,115K",
+        "last_year_quarter_value": "Prior period: $5,124,939K",
+        "analyst_view": "Official earnings release reported Total Liabilities of $5,106,115K versus $5,124,939K in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Total Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $$1,924M",
+        "last_year_quarter_value": "Q2 2025: $$1,259M",
+        "analyst_view": "Official earnings release reported Total Revenue of $$1,924M versus $$1,259M in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Total Stockholders' Equity",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $3,163,016K",
+        "last_year_quarter_value": "Prior period: $2,134,671K",
+        "analyst_view": "Official earnings release reported Total Stockholders' Equity of $3,163,016K versus $2,134,671K in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Q3 Adjusted EBITDA Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: Q3 2026 guidance 1,710–1,740M",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official earnings release reported Q3 Adjusted EBITDA Guidance: 1,710–1,740M.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Q3 Adjusted EBITDA Margin Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: Q3 2026 guidance 83–83",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official earnings release reported Q3 Adjusted EBITDA Margin Guidance: 83–83.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Technology",
+    "metric": "Q3 Revenue Guidance",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
+    "details_map": {
+      "2026-08-05": {
+        "latest_quarter_value": "Q2 2026: Q3 2026 guidance $2,055–$2,085M",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official earnings release reported Q3 Revenue Guidance: $2,055–$2,085M.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
     "COMPANY": "Bull Inc.",
     "TICKER": "BULL",
     "SECTOR": "Semiconductor Equipment",

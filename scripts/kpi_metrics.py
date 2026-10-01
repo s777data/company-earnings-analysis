@@ -549,6 +549,53 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
             add(metric, f"{period_label}: FY{fiscal_year} guidance {match.group(1)}",
                 view=f"Management outlook: {metric} is {match.group(1)}.")
 
+    # APP's release also publishes operating, capital-allocation, per-share,
+    # and forward-guidance rows that are company-specific and valid for the
+    # primary KPI section. Extract them separately from generic summary rows.
+    match = re.search(r'Basic and Diluted earnings per share \("EPS"\) were [$] *([0-9.]+) and [$] *([0-9.]+)', text, re.I)
+    if match:
+        basic, diluted = match.groups()
+        add("Basic EPS", f"{period_label}: ${basic}", view=f"Official release reported Basic EPS of ${basic}.")
+        add("Diluted EPS Continuing Operations", f"{period_label}: ${diluted}", view=f"Official release reported diluted EPS of ${diluted}.")
+    match = re.search(r"repurchased and withheld ([0-9.]+) million shares .*?total cost of [$] *([0-9.]+) million", text, re.I)
+    if match:
+        shares, cost = match.groups()
+        add("Shares Repurchased and Withheld", f"{period_label}: {shares}M shares", view=f"Official release reported {shares} million shares repurchased or withheld.")
+        add("Share Repurchase Cost", f"{period_label}: ${cost}M", view=f"Official release reported total repurchase and withholding cost of ${cost} million.")
+    match = re.search(r"At the end of [0-9A-Za-z ]+, we had ([0-9.]+) million shares .*?outstanding", text, re.I)
+    if match:
+        add("Shares Outstanding", f"{period_label}: {match.group(1)}M shares", view=f"Official release reported {match.group(1)} million shares outstanding.")
+    for pattern, metric, prefix in (
+        (r"Revenue [$] *([0-9,.]+)\s+[$]? *([0-9,.]+)\s+Adjusted EBITDA", "Q3 Revenue Guidance", "Q3 2026 guidance"),
+        (r"Adjusted EBITDA\s+([0-9,.]+)\s+([0-9,.]+)\s+Adjusted EBITDA Margin", "Q3 Adjusted EBITDA Guidance", "Q3 2026 guidance"),
+        (r"Adjusted EBITDA Margin\s+([0-9,.]+)\s+([0-9,.]+)", "Q3 Adjusted EBITDA Margin Guidance", "Q3 2026 guidance"),
+    ):
+        match = re.search(pattern, text, re.I)
+        if match:
+            low, high = match.groups()
+            suffix = "%" if "Margin" in metric else "M"
+            add(metric, f"{period_label}: {prefix} {low}–{high}{suffix}", view=f"Official release reported {metric} of {low}–{high}{suffix}.", importance="Tier 2 — Supporting")
+    for label, metric in (
+        ("Net margin", "Net Margin"),
+        ("Net margin from continuing operations", "Continuing Operations Net Margin"),
+    ):
+        match = re.search(rf"{label}\s+([0-9]+%)\s+([0-9]+%)", text, re.I)
+        if match:
+            current, prior = match.groups()
+            add(metric, f"{period_label}: {current}", f"{prior_label}: {prior}", f"Official release reported {metric} of {current} versus {prior}.")
+    match = re.search(r"Stock-based compensation(?:, excluding cash-settled awards)?\s+([0-9,]+)\s+([0-9,]+)", text, re.I)
+    if match:
+        current, prior = match.groups()
+        add("Stock-Based Compensation", f"{period_label}: ${current}K", f"{prior_label}: ${prior}K", f"Official release reported stock-based compensation of ${current} thousand versus ${prior} thousand.")
+    match = re.search(r"Purchase of property and equipment\s+[(]([0-9,]+)[)]\s+[(]([0-9,]+)[)]", text, re.I)
+    if match:
+        current, prior = match.groups()
+        add("Property and Equipment Purchases", f"{period_label}: ${current}K", f"{prior_label}: ${prior}K", f"Official release reported property and equipment purchases of ${current} thousand.")
+    match = re.search(r"Principal payments of finance leases\s+[(]([0-9,]+)[)]\s+[(]([0-9,]+)[)]", text, re.I)
+    if match:
+        current, prior = match.groups()
+        add("Finance Lease Principal Payments", f"{period_label}: ${current}K", f"{prior_label}: ${prior}K", f"Official release reported finance-lease principal payments of ${current} thousand.")
+
     # Generic official-release fallback.  Companies use different labels from
     # the Paychex-specific rows above; recognize common narrative/table forms
     # without converting generic XBRL statement facts into business KPIs.

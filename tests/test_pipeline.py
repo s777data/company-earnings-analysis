@@ -234,6 +234,39 @@ def test_build_business_kpis_filters_generic_statement_rows_even_with_ir_sec_sou
     assert selected["rows"] == []
 
 
+def test_build_business_kpis_derives_twelve_app_company_specific_rows(tmp_path):
+    release = '''
+    Basic and Diluted earnings per share ("EPS") were $3.77 and $3.76, respectively, for the second quarter 2026.
+    During the second quarter 2026, we repurchased and withheld 1.1 million shares of our Class A common stock, for a total cost of $551.3 million.
+    At the end of 2Q 2026, we had 335 million shares of our Class A and Class B common stock outstanding.
+    Revenue $2,055 $2,085 Adjusted EBITDA 1,710 1,740 Adjusted EBITDA Margin
+    Adjusted EBITDA 1,710 1,740 Adjusted EBITDA Margin
+    Adjusted EBITDA Margin 83 83
+    Net margin 66% 65% 66% 58%
+    Net margin from continuing operations 66% 61% 66% 62%
+    Stock-based compensation 85,783 34,552 169,252 93,667
+    Purchase of property and equipment (1,427) (42)
+    Principal payments of finance leases (4,296) (4,121)
+    '''
+    selected = build_business_kpis(
+        company="AppLovin Corp", ticker="APP", sector="Technology",
+        filing_url="https://www.sec.gov/app-10q.htm",
+        release_url="https://www.sec.gov/app-release.htm", release_text=release,
+        fiscal_period="Q2", fiscal_year=2026, source_date="2026-06-30",
+        reference_path=tmp_path / "KPI_derived_reference.json", xbrl_metrics={},
+    )
+    prohibited = {
+        "Revenue", "Total Revenue", "Net Income", "Net Income from Continuing Operations",
+        "Operating Cash Flow", "Free Cash Flow", "Adjusted EBITDA", "Adjusted EBITDA Margin",
+        "Cash and Cash Equivalents", "Total Assets", "Total Liabilities", "Long-term Debt",
+    }
+    assert selected["selection_status"] == "COMPLETE"
+    assert len(selected["rows"]) == 12
+    assert not prohibited.intersection({row["metric"] for row in selected["rows"]})
+    assert all(row["source"] == "IR/SEC" for row in selected["rows"])
+    assert all(row["latest_period"] == "Q2 2026" for row in selected["rows"])
+
+
 def test_build_business_kpis_rejects_generic_summary_rows_with_ir_sec_provenance(tmp_path):
     reference = tmp_path / "KPI_derived_reference.json"
     generic = (
