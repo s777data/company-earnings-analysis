@@ -180,6 +180,40 @@ def test_build_business_kpis_generic_release_fallback_extracts_fico_operating_ro
     assert all(row["source"] == "IR/SEC" for row in selected["rows"])
 
 
+def test_build_business_kpis_parses_applovin_html_release_tables(tmp_path):
+    release_html = """
+    <table><tr><th>Quarter Ended June 30</th><th>2026</th><th>2025</th></tr>
+      <tr><td>Revenue</td><td>$1,924</td><td>$1,259</td></tr>
+      <tr><td>Net Income</td><td>$1,267</td><td>$820</td></tr>
+      <tr><td>Net Income from Continuing Operations</td><td>$1,267</td><td>$772</td></tr>
+      <tr><td>Adjusted EBITDA</td><td>$1,614</td><td>$1,018</td></tr></table>
+    <table><tr><th>Cash and cash equivalents</th><th>Total assets</th><th>Long-term debt</th></tr>
+      <tr><td>Cash and cash equivalents</td><td>$3,053,306</td><td>$2,487,096</td></tr>
+      <tr><td>Total assets</td><td>$8,269,131</td><td>$7,259,610</td></tr>
+      <tr><td>Total liabilities</td><td>$5,106,115</td><td>$5,124,939</td></tr>
+      <tr><td>Total stockholders’ equity</td><td>3,163,016</td><td>2,134,671</td></tr>
+      <tr><td>Long-term debt</td><td>3,515,072</td><td>3,512,987</td></tr></table>
+    <table><tr><th>Quarter Ended June 30</th><th>Free Cash Flow</th></tr>
+      <tr><td>Net cash provided by operating activities</td><td>869,040</td><td>772,226</td></tr>
+      <tr><td>Free Cash Flow</td><td>$863,317</td><td>$768,063</td></tr></table>
+    <table><tr><th>Quarter Ended June 30</th><th>Adjusted EBITDA margin</th></tr>
+      <tr><td>Adjusted EBITDA margin</td><td>84%</td><td>81%</td></tr></table>
+    """
+    selected = build_business_kpis(
+        company="AppLovin Corp", ticker="APP", sector="Technology",
+        filing_url="https://www.sec.gov/app-10q.htm",
+        release_url="https://www.sec.gov/app-release.htm", release_text=release_html,
+        fiscal_period="Q2", fiscal_year=2026, source_date="2026-06-30",
+        reference_path=tmp_path / "KPI_derived_reference.json",
+        xbrl_metrics={"revenue": {"value": 1}},
+    )
+    assert selected["selection_status"] == "COMPLETE"
+    assert len(selected["rows"]) == 12
+    assert all(row["source"] == "IR/SEC" for row in selected["rows"])
+    assert "Total Revenue" in {row["metric"] for row in selected["rows"]}
+    assert "Revenue" not in {row["metric"] for row in selected["rows"]}
+
+
 class FilingSelectionTests(unittest.TestCase):
     """Tests for the filing selection logic in identify() method."""
 

@@ -30,6 +30,11 @@ from __future__ import annotations
 import json
 import re
 from datetime import date
+
+try:
+    from bs4 import BeautifulSoup
+except ModuleNotFoundError:  # pragma: no cover - runtime dependency is present in production
+    BeautifulSoup = None
 from html import unescape
 from pathlib import Path
 from typing import Any, Iterable
@@ -598,6 +603,138 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
         ):
             add(metric, f"{period_label}: FY{fiscal_year} guidance ${value}{unit}",
                 view=f"Updated fiscal-year guidance reported ${value}{unit}.", importance="Tier 2 — Supporting")
+
+    # Table-aware official-release fallback. APP-style SEC exhibits place the
+    # quarter-comparable metrics in HTML tables, so flattening tags first loses
+    # the row/column relationship needed by the narrative regexes above. This
+    # parser consumes only labeled release rows and never reads generic XBRL.
+    if BeautifulSoup is not None and release_text.lstrip().startswith(("<", "<!")):
+        soup = BeautifulSoup(release_text, "html.parser")
+        tables = soup.find_all("table")
+
+        def table_text(table: Any) -> str:
+            return " ".join(table.get_text(" ", strip=True).split())
+
+        def numeric_cells(row: Any) -> list[str]:
+            values: list[str] = []
+            for cell in row.find_all(["th", "td"]):
+                value = "".join(cell.get_text(" ", strip=True).split())
+                if re.fullmatch(r"(?:[$]?)\(?[0-9][0-9,]*(?:[.][0-9]+)?[%]?\)?", value):
+                    values.append(value)
+            return values
+
+        def table_row(markers: tuple[str, ...], label: str) -> list[str] | None:
+            for table in tables:
+                haystack = table_text(table).casefold()
+                if not all(marker.casefold() in haystack for marker in markers):
+                    continue
+                for row in table.find_all("tr"):
+                    cells = [" ".join(cell.get_text(" ", strip=True).split()) for cell in row.find_all(["th", "td"])]
+                    if not cells or not cells[0].casefold().startswith(label.casefold()):
+                        continue
+                    values = numeric_cells(row)
+                    if len(values) >= 2:
+                        return values
+            return None
+
+        def add_table_pair(markers: tuple[str, ...], label: str, metric: str, unit: str = "M") -> None:
+            values = table_row(markers, label)
+            if not values:
+                return
+            current, prior = values[0], values[1]
+            add(metric, f"{period_label}: ${current}{unit}", f"{prior_label}: ${prior}{unit}",
+                f"Official earnings release reported {metric} of ${current}{unit} versus ${prior}{unit} in the comparable prior-year period.")
+
+        summary_markers = ("Quarter Ended June 30", "Adjusted EBITDA")
+        add_table_pair(summary_markers, "Revenue", "Total Revenue")
+        add_table_pair(summary_markers, "Net Income", "Net Income")
+        add_table_pair(summary_markers, "Net Income from Continuing Operations", "Net Income from Continuing Operations")
+        add_table_pair(summary_markers, "Adjusted EBITDA", "Adjusted EBITDA")
+
+        balance_markers = ("Cash and cash equivalents", "Total assets", "Long-term debt")
+        for label, metric in (
+            ("Cash and cash equivalents", "Cash and Cash Equivalents"),
+            ("Total assets", "Total Assets"),
+            ("Total liabilities", "Total Liabilities"),
+            ("Total stockholders’ equity", "Total Stockholders' Equity"),
+            ("Long-term debt", "Long-term Debt"),
+        ):
+            values = table_row(balance_markers, label)
+            if values:
+                add(metric, f"{period_label}: ${values[0]}K", "Prior period: $" + values[1] + "K",
+                    f"Official earnings release reported {metric} of ${values[0]} thousand.", "Tier 2 — Supporting")
+
+        cash_markers = ("Free Cash Flow", "Quarter Ended June 30")
+        add_table_pair(cash_markers, "Net cash provided by operating activities", "Operating Cash Flow")
+        add_table_pair(cash_markers, "Free Cash Flow", "Free Cash Flow")
+
+        margin_values = table_row(("Adjusted EBITDA margin", "Quarter Ended June 30"), "Adjusted EBITDA margin")
+        if margin_values:
+            add("Adjusted EBITDA Margin", f"{period_label}: {margin_values[0]}", f"{prior_label}: {margin_values[1]}",
+                f"Official earnings release reported Adjusted EBITDA margin of {margin_values[0]} versus {margin_values[1]} in the comparable prior-year period.", "Tier 1 — Core")
+
+        guidance_markers = ("3Q26", "Adjusted EBITDA Margin")
+        for label, metric, unit in (("Revenue", "Q3 Revenue Guidance", "M"), ("Adjusted EBITDA", "Q3 Adjusted EBITDA Guidance", "M"), ("Adjusted EBITDA Margin", "Q3 Adjusted EBITDA Margin Guidance", "")):
+            values = table_row(guidance_markers, label)
+            if values:
+                add(metric, f"{period_label}: Q3 2026 guidance {values[0]}–{values[1]}{unit}",
+                    view=f"Official earnings release reported {metric}: {values[0]}–{values[1]}{unit}.", importance="Tier 2 — Supporting")
+
+    # The SEC fetch adapter supplies the same exhibit as newline-preserving
+    # plain text. Recover its table rows without relying on HTML tags.
+    if not release_text.lstrip().startswith(("<", "<!")):
+        lines = [unescape(line).strip() for line in release_text.splitlines() if unescape(line).strip()]
+
+        def line_numbers(index: int, limit: int = 10) -> list[str]:
+            values: list[str] = []
+            for candidate in lines[index + 1:index + 1 + limit]:
+                compact = candidate.replace(" ", "")
+                if re.fullmatch(r"(?:[$]?)\(?[0-9][0-9,]*(?:[.][0-9]+)?[%]?\)?", compact):
+                    values.append(candidate.strip())
+                    if len(values) >= 2:
+                        break
+                elif values and not candidate.startswith(("%", "$")) and len(values) >= 2:
+                    break
+            return values
+
+        def plain_row(label: str, metric: str, unit: str = "M", prior_text: str | None = None,
+                      occurrence: str = "first") -> None:
+            indexes = [i for i, line in enumerate(lines) if line.casefold() == label.casefold()]
+            if not indexes:
+                return
+            index = indexes[-1] if occurrence == "last" else indexes[0]
+            values = line_numbers(index)
+            if len(values) < 2:
+                return
+            current, prior = values[:2]
+            add(metric, f"{period_label}: ${current}{unit}",
+                prior_text or f"{prior_label}: ${prior}{unit}",
+                f"Official earnings release reported {metric} of ${current}{unit} versus ${prior}{unit} in the comparable prior-year period.")
+
+        for label, metric in (
+            ("Revenue", "Total Revenue"),
+            ("Net Income", "Net Income"),
+            ("Net Income from Continuing Operations", "Net Income from Continuing Operations"),
+            ("Adjusted EBITDA", "Adjusted EBITDA"),
+        ):
+            plain_row(label, metric)
+        for label, metric in (
+            ("Cash and cash equivalents", "Cash and Cash Equivalents"),
+            ("Total assets", "Total Assets"),
+            ("Total liabilities", "Total Liabilities"),
+            ("Total stockholders’ equity", "Total Stockholders' Equity"),
+            ("Long-term debt", "Long-term Debt"),
+        ):
+            indexes = [i for i, line in enumerate(lines) if line.casefold() == label.casefold()]
+            if not indexes:
+                continue
+            values = line_numbers(indexes[0])
+            prior_text = f"Prior period: ${values[1]}K" if len(values) > 1 else "Prior period: N/A"
+            plain_row(label, metric, "K", prior_text)
+        plain_row("Net cash provided by operating activities", "Operating Cash Flow", occurrence="last")
+        plain_row("Free Cash Flow", "Free Cash Flow", occurrence="last")
+        plain_row("Adjusted EBITDA margin", "Adjusted EBITDA Margin", unit="", occurrence="last")
+
     return rows
 
 
