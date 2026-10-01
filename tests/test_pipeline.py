@@ -868,7 +868,24 @@ class ExtractionTests(unittest.TestCase):
         self.assertNotIn("transcript summary record", all_text.lower())
         self.assertTrue(all(row["detail"][0].isupper() for row in result["insights"]))
 
-    def test_line_based_qa_boundary_supports_operator_transitions(self):
+    def test_transcript_enrichment_accepts_stockanalysis_contraction_and_repeated_management_names(self):
+        transcript = (
+            "Adam Foroughi\nCo-founder and CEO, AppLovin\n"
+            "We delivered strong revenue growth across our platform.\n"
+            "We'll now begin the question and answer session.\n"
+            "Jane Smith\nEquity Research Analyst, Example Research\n"
+            "Can you discuss customer demand?\n"
+            "Adam Foroughi\nCo-founder and CEO, AppLovin\n"
+            "Customer demand remains strong and our model improvements are contributing to growth.\n"
+        )
+        result = extract_transcript_sections(
+            transcript,
+            "https://stockanalysis.com/stocks/app/transcripts/661674-q2-2026/",
+        )
+        qa_rows = [row for row in result["insights"] if row["section"] == "Analyst Q&A"]
+        self.assertTrue(qa_rows)
+        self.assertTrue(any("customer demand remains strong" in row["detail"].lower() for row in qa_rows))
+
         transitions = (
             "Your first question today comes from the line of Jane Smith from Example Research.",
             "Our first question comes from Jane Smith with Example Research.",

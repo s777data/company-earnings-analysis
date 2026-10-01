@@ -179,6 +179,9 @@ def _qa_boundary_start(text: str) -> int:
             "take your questions",
             "turn it back over to",
             "we will now begin the",
+            "we'll now begin the",
+            "we ll now begin the",
+            "we're now beginning the",
         )) and ("question" in normalized or "q a" in normalized)
         # A heading may include decorative words, but it must still consist only
         # of Q&A/session vocabulary after punctuation normalization.
@@ -194,14 +197,33 @@ def _qa_boundary_start(text: str) -> int:
 
 
 def _speaker_role_markers(text: str) -> list[tuple[int, str]]:
-    """Return source offsets where transcript speaker roles change."""
+    """Return source offsets where transcript speaker roles change.
+
+    StockAnalysis labels executives with their title in the prepared remarks,
+    then repeats only their names during Q&A. Learn those name/title pairs from
+    adjacent transcript lines before classifying the full transcript so valid
+    management answers are not discarded as unknown speaker text.
+    """
+    lines = list(text.splitlines(keepends=True))
+    normalized_lines = [" ".join(line.casefold().replace(":", " ").split()) for line in lines]
+    management_names: set[str] = set()
+    for index, normalized in enumerate(normalized_lines[:-1]):
+        if not normalized or len(normalized.split()) > 6:
+            continue
+        following = normalized_lines[index + 1]
+        if len(normalized.split()) <= 5 and len(following.split()) <= 24 and any(
+            term in f" {following}" for term in MANAGEMENT_ROLE_TERMS
+        ):
+            management_names.add(normalized)
+
     markers: list[tuple[int, str]] = [(0, "unknown")]
     offset = 0
-    for raw_line in text.splitlines(keepends=True):
-        normalized = " ".join(raw_line.casefold().replace(":", " ").split())
+    for normalized, raw_line in zip(normalized_lines, lines):
         word_count = len(normalized.split())
         role = None
-        if word_count <= 4 and normalized.startswith("operator"):
+        if normalized in management_names:
+            role = "management"
+        elif word_count <= 4 and normalized.startswith("operator"):
             role = "operator"
         elif word_count <= 18 and any(term in normalized for term in ANALYST_ROLE_TERMS):
             role = "analyst"
