@@ -25,6 +25,7 @@ from telegram_notify import (deliver_reports, generate_call_message, generate_da
 from web_search import _validate as _validate_transcript
 from xbrl_parser import parse_xbrl_financials
 from valuation_metrics import build_valuation_sections, MAIN_ORDER, PROFIT_ORDER, RISK_ORDER
+from shareholder_letter_kpi_extractor import discover_ir_kpi_documents
 from analysis_enrichment import (extract_transcript_sections, extract_risks, _sentences, _is_question,
                                  _qa_boundary_start, classify_financial_signal, classify_valuation_signal,
                                  classify_management_confidence, _signal as _transcript_signal)
@@ -294,20 +295,83 @@ def test_build_business_kpis_rejects_generic_summary_rows_with_ir_sec_provenance
     assert selected["rows"] == []
 
 
-def test_analyzer_blocks_publication_when_kpi_selection_is_incomplete():
+def test_build_business_kpis_combines_ir_operating_kpis_with_sec_evidence(tmp_path):
+    ir_text = """
+    Consumer advertiser spend reached $1.28 billion, finishing 28% above Q4 2025 levels.
+    MAX publisher earnings grew double digits quarter-over-quarter.
+    FCF conversion was approximately 54% of adjusted EBITDA.
+    EBITDA flow-through was 70% sequential.
+    Approximately $1.8 billion of buyback authorization remaining.
+    Net leverage was approximately 0.1x trailing EBITDA.
+    Compute cost was approximately 10 cents per incremental revenue dollar.
+    """
+    selected = build_business_kpis(
+        company="AppLovin Corp", ticker="APP", sector="Technology",
+        filing_url="https://www.sec.gov/app-10q.htm", release_url="https://www.sec.gov/app-release.htm",
+        ir_url="https://investors.applovin.com", ir_documents=[{"url": "https://investors.applovin.com/q2-2026-financial-update.pdf", "text": ir_text}],
+        fiscal_period="Q2", fiscal_year=2026, source_date="2026-06-30",
+        reference_path=tmp_path / "KPI_derived_reference.json", xbrl_metrics={},
+    )
+    metrics = {row["metric"] for row in selected["rows"]}
+    expected = {"Consumer Advertiser Spend", "MAX Publisher Earnings Growth", "Q2 FCF Conversion", "EBITDA Flow-Through", "Buyback Authorization Remaining", "Net Leverage", "Incremental Compute Cost"}
+    assert expected <= metrics
+    assert all(row["source"] == "IR" for row in selected["rows"] if row["metric"] in expected)
+    assert all("investors.applovin.com" in row["citation"]["url"] for row in selected["rows"] if row["metric"] in expected)
+
+
+def test_discover_ir_kpi_documents_searches_quarterly_and_events_pages_first():
+    from shareholder_letter_kpi_extractor import _fetch_url as real_fetch
+    pages = {
+        "https://investors.applovin.com/": b'<a href="/financials/quarterly-results/default.aspx">Quarterly Results</a>',
+        "https://investors.applovin.com/financials/quarterly-results/default.aspx": b'<a href="https://cdn.example.com/q2-2026-financial-update.pdf">Q2 2026 Financial Update</a>',
+        "https://investors.applovin.com/events-and-presentations/default.aspx": b'<a href="https://cdn.example.com/q2-2026-transcript.pdf">Q2 2026 Transcript</a><a href="https://cdn.example.com/q1-2026.pdf">Q1 2026</a>',
+    }
+    def fake_fetch(url):
+        if url in pages:
+            return pages[url], "text/html"
+        return (b"Q1 2026 June 30" if "q1-2026" in url else b"Q2 2026 June 30"), "application/pdf"
+    with patch("shareholder_letter_kpi_extractor._fetch_url", side_effect=fake_fetch), \
+         patch("shareholder_letter_kpi_extractor._extract_pdf_text", side_effect=lambda payload: payload.decode()):
+        docs = discover_ir_kpi_documents(page_url="https://investors.applovin.com/", report_date="2026-06-30", fiscal_period="Q2", fiscal_year=2026)
+    assert [doc["url"] for doc in docs] == ["https://cdn.example.com/q2-2026-transcript.pdf", "https://cdn.example.com/q2-2026-financial-update.pdf"]
+
+
+def test_analyzer_requires_ir_kpi_search_before_kpi_selection():
     analyzer = EarningsAnalyzer("TEST")
     analyzer.filing = {"company_name": "Test Corp", "sector": "Technology"}
     analyzer.data.update({
         "fiscal_period": "Q2", "fiscal_year": 2026, "report_date": "2026-06-30",
         "sources": {"filing_url": "https://www.sec.gov/test-10q.htm", "earnings_release_url": "https://www.sec.gov/test-8k.htm"},
-        "_release_text": "",
-        "_xbrl": {"metrics": {}},
+        "_release_text": "", "_xbrl": {"metrics": {}},
+    })
+    with unittest.TestCase().assertRaisesRegex(RuntimeError, "IR_KPI_SOURCE_SEARCH_REQUIRED"):
+        analyzer.business_kpis()
+
+
+def test_analyzer_blocks_when_ir_search_finds_no_quarter_document():
+    analyzer = EarningsAnalyzer("TEST")
+    analyzer.filing = {"company_name": "Test Corp", "sector": "Technology"}
+    analyzer.data.update({
+        "fiscal_period": "Q2", "fiscal_year": 2026, "report_date": "2026-06-30",
+        "sources": {"filing_url": "https://www.sec.gov/test-10q.htm", "earnings_release_url": "https://www.sec.gov/test-8k.htm", "ir_kpi_search_attempted": True, "ir_kpi_document_urls": []},
+        "_release_text": "", "_xbrl": {"metrics": {}},
+    })
+    with unittest.TestCase().assertRaisesRegex(RuntimeError, "IR_KPI_SOURCE_NOT_FOUND"):
+        analyzer.business_kpis()
+
+
+def test_analyzer_blocks_publication_when_kpi_selection_is_incomplete():
+    analyzer = EarningsAnalyzer("TEST")
+    analyzer.filing = {"company_name": "Test Corp", "sector": "Technology"}
+    analyzer.data.update({
+        "fiscal_period": "Q2", "fiscal_year": 2026, "report_date": "2026-06-30",
+        "sources": {"filing_url": "https://www.sec.gov/test-10q.htm", "earnings_release_url": "https://www.sec.gov/test-8k.htm", "ir_kpi_search_attempted": True, "ir_kpi_document_urls": ["https://investors.test/q2.pdf"]},
+        "_release_text": "", "_xbrl": {"metrics": {}},
     })
     incomplete = {"selection_status": "INCOMPLETE", "available_reference_rows": 5, "rows": []}
     with patch("run_analysis.build_business_kpis", return_value=incomplete):
         with unittest.TestCase().assertRaisesRegex(RuntimeError, "KPI_DERIVATION_INCOMPLETE"):
             analyzer.business_kpis()
-
 
 class FilingSelectionTests(unittest.TestCase):
     """Tests for the filing selection logic in identify() method."""

@@ -36,7 +36,8 @@ from analysis_enrichment import (
     _percentile_rank,
 )
 from kpi_metrics import build_business_kpis
-from shareholder_letter_kpi_extractor import discover_shareholder_letter_pdf, extract_shareholder_letter_text
+from shareholder_letter_kpi_extractor import (discover_ir_kpi_documents, discover_shareholder_letter_pdf,
+                                               extract_shareholder_letter_text)
 from valuation_engine import (
     build_valuation_analysis,
     determine_valuation_regime,
@@ -986,6 +987,12 @@ class EarningsAnalyzer:
                 release_doc.get("filing_url"),
             )
         investor_relations_url = _extract_investor_relations_url(release_text) if release_doc else None
+        ir_kpi_documents = discover_ir_kpi_documents(
+            page_url=investor_relations_url,
+            report_date=report_date,
+            fiscal_period=period,
+            fiscal_year=int(year_text),
+        )
         shareholder_letter_url = discover_shareholder_letter_pdf(
             page_url=investor_relations_url,
             release_text=release_text,
@@ -1004,6 +1011,8 @@ class EarningsAnalyzer:
                           "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc.get("xbrl_url"),
                                       "earnings_release_url": release_url,
                                       "investor_relations_url": investor_relations_url,
+                                      "ir_kpi_document_urls": [doc["url"] for doc in ir_kpi_documents],
+                                      "ir_kpi_search_attempted": True,
                                       "shareholder_letter_url": shareholder_letter_url,
                                       "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
                                       "transcript_call_date": transcript_call_date,
@@ -1012,7 +1021,8 @@ class EarningsAnalyzer:
                                       "transcript_retrieved_at": self.transcript["retrieved_at"],
                                       "transcript_content_sha256": self.transcript["content_sha256"]},
                           "_xbrl": xbrl, "_filing_text": filing_doc["content"],
-                          "_release_text": release_text if release_doc else "", "_shareholder_letter_text": shareholder_letter_text})
+                          "_release_text": release_text if release_doc else "", "_ir_kpi_documents": ir_kpi_documents,
+                          "_shareholder_letter_text": shareholder_letter_text})
         
         # Q4 standalone release extraction: if 10-K was selected and period is Q4,
         # use the official 8-K Exhibit 99.1 for standalone three-month values
@@ -1060,6 +1070,17 @@ class EarningsAnalyzer:
                 "and populate the reference using upsert_derived_kpis()."
             )
         
+        sources = self.data.get("sources", {})
+        if not sources.get("ir_kpi_search_attempted"):
+            raise RuntimeError(
+                "IR_KPI_SOURCE_SEARCH_REQUIRED: KPI derivation must search the issuer IR "
+                "quarterly-results/events materials before using SEC fallback evidence."
+            )
+        if not sources.get("ir_kpi_document_urls"):
+            raise RuntimeError(
+                "IR_KPI_SOURCE_NOT_FOUND: no quarter-matched issuer IR financial-update or "
+                "presentation document was verified for KPI derivation."
+            )
         self.data["business_kpis"] = build_business_kpis(
             company=self.filing.get("company_name") or self.ticker,
             ticker=self.ticker,
@@ -1071,6 +1092,7 @@ class EarningsAnalyzer:
             ir_url=self.data["sources"].get("investor_relations_url"),
             shareholder_letter_url=self.data["sources"].get("shareholder_letter_url"),
             shareholder_letter_text=self.data.get("_shareholder_letter_text"),
+            ir_documents=self.data.get("_ir_kpi_documents", []),
             source_date=self.data.get("report_date"),
             fiscal_period=self.data["fiscal_period"],
             fiscal_year=self.data["fiscal_year"],

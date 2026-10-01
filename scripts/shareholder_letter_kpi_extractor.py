@@ -12,6 +12,7 @@ import requests
 from bs4 import BeautifulSoup
 
 PDF_KEYWORDS = ("shareholder", "letter", "earnings", "report", "q1", "q2", "q3", "q4", "fy")
+IR_KPI_KEYWORDS = ("financial", "update", "presentation", "transcript", "earnings", "quarterly")
 
 
 def _normalize(text: str) -> str:
@@ -157,6 +158,60 @@ def discover_shareholder_letter_pdf(
 def extract_shareholder_letter_text(pdf_url: str) -> str:
     body, _ = _fetch_url(pdf_url)
     return _extract_pdf_text(body)
+
+
+def discover_ir_kpi_documents(*, page_url: str | None, report_date: str,
+                              fiscal_period: str, fiscal_year: int) -> list[dict[str, str]]:
+    """Discover quarter-matched IR financial-update/presentation PDFs first.
+
+    This is deliberately separate from shareholder-letter discovery: IR chart
+    packs and call decks contain operating KPIs that are absent from SEC tables.
+    """
+    if not page_url:
+        return []
+    parsed = urlparse(page_url)
+    if parsed.scheme not in {"http", "https"}:
+        return []
+    root = f"{parsed.scheme}://{parsed.netloc}"
+    pages = [page_url, urljoin(root, "/financials/quarterly-results/default.aspx"),
+             urljoin(root, "/events-and-presentations/default.aspx")]
+    candidates: list[str] = []
+    seen: set[str] = set()
+    for page in pages:
+        try:
+            body, content_type = _fetch_url(page)
+            if _looks_like_pdf(page, content_type):
+                links = [page]
+            else:
+                links = _discover_pdf_urls(page, body.decode("utf-8", errors="ignore"))
+        except Exception:
+            continue
+        for url in links:
+            if url not in seen:
+                seen.add(url); candidates.append(url)
+    period = fiscal_period.casefold()
+    quarter = {"q1": "first quarter", "q2": "second quarter", "q3": "third quarter", "q4": "fourth quarter"}.get(period, period)
+    ranked = []
+    for url in candidates:
+        low = url.casefold()
+        score = (5 if low.endswith(".pdf") else 0) + (3 if period in low or quarter in low else 0)
+        score += 2 if str(fiscal_year) in low or f"fy{str(fiscal_year)[-2:]}" in low else 0
+        score += 2 if any(k in low for k in IR_KPI_KEYWORDS) else 0
+        ranked.append((score, url))
+    documents: list[dict[str, str]] = []
+    for _, url in sorted(ranked, reverse=True):
+        try:
+            body, content_type = _fetch_url(url)
+            if not _looks_like_pdf(url, content_type):
+                continue
+            text = _extract_pdf_text(body)
+        except Exception:
+            continue
+        normalized = _casefold(text)
+        if (period not in normalized and quarter not in normalized) or str(fiscal_year) not in normalized:
+            continue
+        documents.append({"url": url, "text": text})
+    return documents
 
 
 def _find(patterns: list[str], text: str, flags: int = re.I) -> re.Match[str] | None:

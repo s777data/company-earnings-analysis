@@ -800,6 +800,35 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
     return rows
 
 
+def _derive_ir_operating_kpis(*, company: str, ticker: str, sector: str,
+                              fiscal_period: str, fiscal_year: int, report_date: str,
+                              source_url: str, text: str) -> list[dict[str, Any]]:
+    """Extract operating KPIs disclosed in IR chart packs/call materials."""
+    period_label = f"{fiscal_period.upper()} {fiscal_year}"
+    rows: list[dict[str, Any]] = []
+    def add(metric: str, value: str, view: str, importance: str = "Tier 1 — Core") -> None:
+        rows.append({"company": company, "ticker": ticker, "sector": sector, "metric": metric,
+                     "latest_quarter": f"{period_label}: {value}", "prior_year_quarter": f"Q{fiscal_period[1]} {fiscal_year-1}: N/A",
+                     "analyst_view": view, "source": "IR", "importance": importance,
+                     "source_url": source_url, "date_added": report_date})
+    clean = re.sub(r"\s+", " ", text or "")
+    patterns = [
+        (r"consumer advertiser spend(?: reached)?\s+\$?([0-9.]+)\s*(?:billion|B).*?(?:record|finishing)\s+([0-9]+)%\s+above\s+Q4\s+2025", "Consumer Advertiser Spend", lambda m: f"${m.group(1)}B; +{m.group(2)}% vs Q4 2025", "Consumer advertiser spend reached ${0}B, {1}% above Q4 2025 levels."),
+        (r"MAX publisher earnings grew\s+(double[- ]digit[s]?|[0-9]+%)\s+(?:quarter[- ]over[- ]quarter|sequentially)", "MAX Publisher Earnings Growth", lambda m: f"{m.group(1)} QoQ", "MAX publisher earnings grew {0} quarter-over-quarter."),
+        (r"(?:free cash flow|FCF) conversion.*?(?:approximately|about|~)?\s*([0-9]+)%\s+of adjusted EBITDA", "Q2 FCF Conversion", lambda m: f"{m.group(1)}% of adjusted EBITDA", "Management disclosed Q2 FCF conversion of approximately {0}% of adjusted EBITDA."),
+        (r"(?:([0-9]+)%\s+(?:quarter[- ]over[- ]quarter|sequential).*?flow[- ]through|flow[- ]through\s+(?:was|of)\s+([0-9]+)%\s+sequential)", "EBITDA Flow-Through", lambda m: f"{m.group(1) or m.group(2)}% QoQ", "Management disclosed {0}% quarter-over-quarter EBITDA flow-through."),
+        (r"\$?([0-9.]+)\s*billion\s+(?:of\s+)?(?:buyback\s+)?authorization remaining", "Buyback Authorization Remaining", lambda m: f"${m.group(1)}B", "Management disclosed approximately ${0}B of buyback authorization remaining."),
+        (r"net leverage.*?([0-9.]+)x", "Net Leverage", lambda m: f"{m.group(1)}x", "Management disclosed net leverage of approximately {0}x trailing EBITDA."),
+        (r"([0-9]+)\s*(?:cents|¢)\s*(?:per|for each) incremental revenue dollar", "Incremental Compute Cost", lambda m: f"${float(m.group(1))/100:.2f} per incremental revenue dollar", "Management disclosed compute cost of approximately {0} cents per incremental revenue dollar."),
+    ]
+    for pattern, metric, formatter, view in patterns:
+        match = re.search(pattern, clean, re.I)
+        if match:
+            groups = tuple(group for group in match.groups() if group is not None)
+            add(metric, formatter(match), view.format(*groups), "Tier 2 — Supporting" if metric in {"MAX Publisher Earnings Growth", "Incremental Compute Cost"} else "Tier 1 — Core")
+    return rows
+
+
 def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: str,
                         release_url: str | None, fiscal_period: str, fiscal_year: int,
                         ir_url: str | None = None,
@@ -809,6 +838,7 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
                         source_date: str | None = None,
                         release_text: str | None = None,
                         xbrl_metrics: dict[str, Any] | None = None,
+                        ir_documents: list[dict[str, str]] | None = None,
                         **_: Any) -> dict[str, Any]:
     """Load the top twelve source-derived KPIs for one company and fiscal period."""
     current_period = f"{fiscal_period.upper()} {fiscal_year}"
@@ -836,6 +866,17 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
             if row.get("metric") not in generic_xbrl_metrics
         ]
 
+    candidates = source_candidates()
+    # IR chart packs and call materials are combined with SEC release evidence.
+    for document in ir_documents or []:
+        ir_rows = _derive_ir_operating_kpis(
+            company=company, ticker=ticker, sector=sector, fiscal_period=fiscal_period,
+            fiscal_year=fiscal_year, report_date=source_date or date.today().isoformat(),
+            source_url=document.get("url") or ir_url or filing_url,
+            text=document.get("text", ""),
+        )
+        if ir_rows:
+            upsert_derived_kpis(ir_rows, reference_path, added_on=source_date or date.today().isoformat())
     candidates = source_candidates()
     current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
     if release_text and len(current_period_rows) < DASHBOARD_KPI_LIMIT:
