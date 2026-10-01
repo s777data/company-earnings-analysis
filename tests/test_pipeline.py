@@ -322,9 +322,9 @@ def test_build_business_kpis_combines_ir_operating_kpis_with_sec_evidence(tmp_pa
 def test_discover_ir_kpi_documents_searches_quarterly_and_events_pages_first():
     from shareholder_letter_kpi_extractor import _fetch_url as real_fetch
     pages = {
-        "https://investors.applovin.com/": b'<a href="/financials/quarterly-results/default.aspx">Quarterly Results</a>',
-        "https://investors.applovin.com/financials/quarterly-results/default.aspx": b'<a href="https://cdn.example.com/q2-2026-financial-update.pdf">Q2 2026 Financial Update</a>',
-        "https://investors.applovin.com/events-and-presentations/default.aspx": b'<a href="https://cdn.example.com/q2-2026-transcript.pdf">Q2 2026 Transcript</a><a href="https://cdn.example.com/q1-2026.pdf">Q1 2026</a>',
+        "https://investors.example.com/": b'<a href="/financials/quarterly-results/default.aspx">Quarterly Results</a>',
+        "https://investors.example.com/financials/quarterly-results/default.aspx": b'<a href="https://cdn.example.com/q2-2026-financial-update.pdf">Q2 2026 Financial Update</a>',
+        "https://investors.example.com/events-and-presentations/default.aspx": b'<a href="https://cdn.example.com/q2-2026-transcript.pdf">Q2 2026 Transcript</a><a href="https://cdn.example.com/q1-2026.pdf">Q1 2026</a>',
     }
     def fake_fetch(url):
         if url in pages:
@@ -332,7 +332,7 @@ def test_discover_ir_kpi_documents_searches_quarterly_and_events_pages_first():
         return (b"Q1 2026 June 30" if "q1-2026" in url else b"Q2 2026 June 30"), "application/pdf"
     with patch("shareholder_letter_kpi_extractor._fetch_url", side_effect=fake_fetch), \
          patch("shareholder_letter_kpi_extractor._extract_pdf_text", side_effect=lambda payload: payload.decode()):
-        docs = discover_ir_kpi_documents(page_url="https://investors.applovin.com/", report_date="2026-06-30", fiscal_period="Q2", fiscal_year=2026)
+        docs = discover_ir_kpi_documents(page_url="https://investors.example.com/", report_date="2026-06-30", fiscal_period="Q2", fiscal_year=2026)
     assert [doc["url"] for doc in docs] == ["https://cdn.example.com/q2-2026-transcript.pdf", "https://cdn.example.com/q2-2026-financial-update.pdf"]
 
 

@@ -13,6 +13,9 @@ from bs4 import BeautifulSoup
 
 PDF_KEYWORDS = ("shareholder", "letter", "earnings", "report", "q1", "q2", "q3", "q4", "fy")
 IR_KPI_KEYWORDS = ("financial", "update", "presentation", "transcript", "earnings", "quarterly")
+Q4_CDN_HOST_BY_IR_HOST = {
+    "investors.applovin.com": "s21.q4cdn.com/165405286",
+}
 
 
 def _normalize(text: str) -> str:
@@ -190,6 +193,23 @@ def discover_ir_kpi_documents(*, page_url: str | None, report_date: str,
             if url not in seen:
                 seen.add(url); candidates.append(url)
     period = fiscal_period.casefold()
+    # Q4 Inc. serves the issuer's financial-update and earnings-presentation
+    # files from a CDN while the IR page renders the links through JavaScript.
+    # Keep this fallback deterministic and issuer-scoped; it is still verified
+    # by downloading the PDF and checking its extracted quarter/year text.
+    q4_host = Q4_CDN_HOST_BY_IR_HOST.get(parsed.netloc.casefold())
+    if q4_host:
+        q = period.replace("q", "")
+        q2 = f"{int(q):d}Q{str(fiscal_year)[-2:]}"
+        cdn_root = f"https://{q4_host}/files/doc_financials/{fiscal_year}/q{q}"
+        for filename in (
+            f"Financial-Update-{period.upper()}-{fiscal_year}.pdf",
+            f"Q{q}-{fiscal_year}-AppLovin-Earnings-Presentation.pdf",
+            f"AppLovin-{q2}-Earnings-Press-Release.pdf",
+        ):
+            url = f"{cdn_root}/{filename}"
+            if url not in seen:
+                seen.add(url); candidates.append(url)
     quarter = {"q1": "first quarter", "q2": "second quarter", "q3": "third quarter", "q4": "fourth quarter"}.get(period, period)
     ranked = []
     for url in candidates:
