@@ -239,6 +239,21 @@ def test_build_business_kpis_filters_generic_statement_rows_even_with_ir_sec_sou
     assert selected["rows"] == []
 
 
+def test_analyzer_blocks_publication_when_kpi_selection_is_incomplete():
+    analyzer = EarningsAnalyzer("TEST")
+    analyzer.filing = {"company_name": "Test Corp", "sector": "Technology"}
+    analyzer.data.update({
+        "fiscal_period": "Q2", "fiscal_year": 2026, "report_date": "2026-06-30",
+        "sources": {"filing_url": "https://www.sec.gov/test-10q.htm", "earnings_release_url": "https://www.sec.gov/test-8k.htm"},
+        "_release_text": "",
+        "_xbrl": {"metrics": {}},
+    })
+    incomplete = {"selection_status": "INCOMPLETE", "available_reference_rows": 5, "rows": []}
+    with patch("run_analysis.build_business_kpis", return_value=incomplete):
+        with unittest.TestCase().assertRaisesRegex(RuntimeError, "KPI_DERIVATION_INCOMPLETE"):
+            analyzer.business_kpis()
+
+
 class FilingSelectionTests(unittest.TestCase):
     """Tests for the filing selection logic in identify() method."""
 

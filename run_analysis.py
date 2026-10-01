@@ -1087,10 +1087,11 @@ class EarningsAnalyzer:
             )
         
         if self.data["business_kpis"]["selection_status"] == "INCOMPLETE":
-            self.data["warnings"].append(
-                f"Source-derived KPI reference has only {self.data['business_kpis']['available_reference_rows']} "
-                f"current-period rows for {self.ticker} (need 12 for COMPLETE). "
-                "Add more Tier 1–4 metrics per BUSINESS_KPI_METRICS_REFERENCE.md."
+            raise RuntimeError(
+                f"KPI_DERIVATION_INCOMPLETE: Source-derived KPI reference has only "
+                f"{self.data['business_kpis']['available_reference_rows']} current-period rows for "
+                f"{self.ticker} (need 12 for COMPLETE). Publication is blocked until "
+                "company-specific release/IR/SEC KPIs are added."
             )
 
     def financials(self):
