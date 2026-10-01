@@ -773,7 +773,7 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
 
     candidates = source_candidates()
     current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
-    if release_text and not any(row.get("source") == "IR/SEC" for row in current_period_rows):
+    if release_text and len(current_period_rows) < DASHBOARD_KPI_LIMIT:
         release_rows = _derive_release_kpis(
             company=company, ticker=ticker, sector=sector, fiscal_period=fiscal_period,
             fiscal_year=fiscal_year, report_date=source_date or date.today().isoformat(),
