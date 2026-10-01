@@ -207,11 +207,36 @@ def test_build_business_kpis_parses_applovin_html_release_tables(tmp_path):
         reference_path=tmp_path / "KPI_derived_reference.json",
         xbrl_metrics={"revenue": {"value": 1}},
     )
-    assert selected["selection_status"] == "COMPLETE"
-    assert len(selected["rows"]) == 12
+    assert selected["selection_status"] == "INCOMPLETE"
+    assert len(selected["rows"]) < 12
     assert all(row["source"] == "IR/SEC" for row in selected["rows"])
-    assert "Total Revenue" in {row["metric"] for row in selected["rows"]}
-    assert "Revenue" not in {row["metric"] for row in selected["rows"]}
+    metrics = {row["metric"] for row in selected["rows"]}
+    assert "Total Revenue" in metrics
+    assert "Revenue" not in metrics
+    assert not metrics.intersection({"Cash and Cash Equivalents", "Total Assets", "Total Liabilities", "Long-term Debt"})
+
+
+def test_build_business_kpis_filters_generic_statement_rows_even_with_ir_sec_source(tmp_path):
+    reference = tmp_path / "KPI_derived_reference.json"
+    upsert_derived_kpis([
+        {
+            "company": "AppLovin Corp", "ticker": "APP", "sector": "Technology",
+            "metric": metric, "latest_quarter": "Q2 2026: $1M",
+            "prior_year_quarter": "Q2 2025: $0.8M", "analyst_view": "Statement fact.",
+            "source": "IR/SEC", "importance": "Tier 1 — Core",
+            "source_url": "https://www.sec.gov/example-release.htm", "date_added": "2026-06-30",
+        }
+        for metric in ("Cash and Cash Equivalents", "Total Assets", "Total Liabilities", "Long-term Debt")
+    ], reference, added_on="2026-06-30")
+    selected = build_business_kpis(
+        company="AppLovin Corp", ticker="APP", sector="Technology",
+        filing_url="https://www.sec.gov/example-10q.htm",
+        release_url="https://www.sec.gov/example-release.htm",
+        fiscal_period="Q2", fiscal_year=2026, source_date="2026-06-30",
+        reference_path=reference, xbrl_metrics={"revenue": {"value": 1}},
+    )
+    assert selected["selection_status"] == "DERIVED_REFERENCE_REQUIRED"
+    assert selected["rows"] == []
 
 
 class FilingSelectionTests(unittest.TestCase):

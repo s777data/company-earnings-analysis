@@ -460,8 +460,16 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
     prior_label = f"{fiscal_period.upper()} {fiscal_year - 1}"
     rows: list[dict[str, Any]] = []
 
+    generic_statement_metrics = {
+        "Cash and Cash Equivalents", "Total Assets", "Total Liabilities",
+        "Total Stockholders' Equity", "Long-term Debt", "Cash", "Total Equity",
+    }
+
     def add(metric: str, latest: str, prior: str = "N/A", view: str = "",
             importance: str = "Tier 1 — Core") -> None:
+        # Statement rows are supplemental financials, never primary business KPIs.
+        if metric in generic_statement_metrics:
+            return
         rows.append({
             "company": company, "ticker": ticker, "sector": sector, "metric": metric,
             "latest_quarter": latest, "prior_year_quarter": prior,
@@ -758,17 +766,17 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
     # financial-statement facts used by ``financials()``.  Older runs may have
     # persisted those rows in the derived reference, so filter the exact
     # fallback labels as well as disabling the fallback below.
-    generic_xbrl_metrics = set(_XBRL_KPI_LABELS.values())
+    generic_xbrl_metrics = set(_XBRL_KPI_LABELS.values()) | {
+        "Cash and Cash Equivalents", "Total Assets", "Total Liabilities",
+        "Total Stockholders' Equity", "Long-term Debt", "Cash", "Total Equity",
+    }
 
     def source_candidates() -> list[dict[str, Any]]:
         rows = [row for row in read_derived_kpis(reference_path)
                 if row["ticker"].casefold() == ticker.casefold()]
         return [
             row for row in rows
-            if not (
-                row.get("metric") in generic_xbrl_metrics
-                and row.get("source_url") == filing_url
-            )
+            if row.get("metric") not in generic_xbrl_metrics
         ]
 
     candidates = source_candidates()
