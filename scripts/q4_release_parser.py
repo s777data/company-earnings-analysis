@@ -100,6 +100,29 @@ def _prior_year_date(value: str) -> str:
         return parsed.replace(year=parsed.year - 1, day=28).isoformat()
 
 
+def extract_fiscal_year(content: str) -> int | None:
+    """Extract an explicit fiscal year from common earnings-release wording.
+
+    The release parser must remain evidence-gated: this helper only accepts
+    year-bearing labels in the release text and never infers a fiscal year from
+    the ticker or from an arbitrary calendar date.
+    """
+    if not content:
+        return None
+    patterns = (
+        r"\bfiscal\s+year\s+(20\d{2})\b",
+        r"\bfull\s+year\s+(20\d{2})\b",
+        r"\bfy\s*[-/]?\s*(20\d{2})\b",
+        r"\bq[1-4]\s+(?:fy\s*)?(20\d{2})\b",
+        r"\b(?:first|second|third|fourth)\s+quarter\s+(?:of\s+)?(?:fiscal\s+)?(?:year\s+)?(20\d{2})\b",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, content, re.I)
+        if match:
+            return int(match.group(1))
+    return None
+
+
 def parse_q4_release_financials(
     content: str,
     *,
@@ -133,13 +156,10 @@ def parse_q4_release_financials(
     if period.casefold() not in lower and quarter_terms[period] not in lower:
         raise RuntimeError(f"QUARTER_RELEASE_PERIOD_MISMATCH: {period} identity is absent")
 
-    inferred_year = fiscal_year
+    inferred_year = fiscal_year if fiscal_year is not None else extract_fiscal_year(content)
     if inferred_year is None:
-        year_match = re.search(r"fiscal\s+year\s+(20\d{2})", lower, re.I) or re.search(r"fy\s*(20\d{2})", lower, re.I)
-        if not year_match:
-            raise RuntimeError("QUARTER_RELEASE_YEAR_MISMATCH: fiscal year identity is absent")
-        inferred_year = int(year_match.group(1))
-    if f"fiscal year {inferred_year}" not in lower and f"fy{str(inferred_year)[-2:]}" not in lower and str(inferred_year) not in lower:
+        raise RuntimeError("QUARTER_RELEASE_YEAR_MISMATCH: fiscal year identity is absent")
+    if extract_fiscal_year(content) != inferred_year:
         raise RuntimeError("QUARTER_RELEASE_YEAR_MISMATCH: fiscal year identity is absent")
 
     date_matches = {_iso_date(*match.groups()) for match in _MONTH_DATE.finditer(content[:12000])}

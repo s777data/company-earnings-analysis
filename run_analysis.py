@@ -25,7 +25,7 @@ from telegram_notify import deliver_reports, generate_call_message, generate_das
 from web_search import find_transcript, fetch_forward_pe_ntm
 from xbrl_parser import parse_xbrl_financials
 from sixk_parser import parse_sixk_financials
-from q4_release_parser import parse_q4_release_financials
+from q4_release_parser import extract_fiscal_year, parse_q4_release_financials
 from analysis_enrichment import (
     build_capital_liquidity,
     classify_financial_signal,
@@ -774,6 +774,7 @@ class EarningsAnalyzer:
                         self.data["_source_mode"] = "quarter_release"
                         self.data["_release_only_report_date"] = sa_quarter_end
                         self.data["_release_only_period"] = sa_period
+                        self.data["_release_only_fiscal_year"] = extract_fiscal_year(release_text)
                         self.data["_release_only_period_start"] = (
                             (datetime.fromisoformat(latest_10q["report_date"]) + timedelta(days=1)).date().isoformat()
                             if latest_10q else None
@@ -900,11 +901,11 @@ class EarningsAnalyzer:
             xbrl = parse_q4_release_financials(
                 release_text,
                 ticker=self.ticker,
-                fiscal_year=None,
+                fiscal_year=self.data.get("_release_only_fiscal_year"),
                 report_date=self.data.get("_release_only_report_date") or self.filing.get("report_date"),
                 period_start=period_start,
                 source_url=release_doc.get("filing_url", filing_doc.get("filing_url")),
-                fiscal_period=self.data.get("_release_only_period") or "Q2",
+                fiscal_period=self.data.get("_release_only_period") or "Q4",
             )
             self.data["_quarter_release"] = xbrl
             self.data["_release_text"] = release_text
