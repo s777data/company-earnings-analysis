@@ -812,20 +812,48 @@ def _derive_ir_operating_kpis(*, company: str, ticker: str, sector: str,
                      "analyst_view": view, "source": "IR", "importance": importance,
                      "source_url": source_url, "date_added": report_date})
     clean = re.sub(r"\s+", " ", text or "")
+    fcf_match = re.search(r"free cash flow for (?:the )?quarter was\s+\$?([0-9.]+)\s*(billion|B|million|M)", clean, re.I)
+    ebitda_match = re.search(r"Adjusted EBITDA was\s+\$?([0-9.]+)\s*(billion|B|million|M)", clean, re.I)
+    added_metrics: set[str] = set()
+    if fcf_match and ebitda_match:
+        def as_millions(amount: str, unit: str) -> float:
+            return float(amount) * (1000 if unit.casefold() in {"billion", "b"} else 1)
+        fcf_amount, fcf_unit = fcf_match.groups()
+        ebitda_amount, ebitda_unit = ebitda_match.groups()
+        ratio = as_millions(fcf_amount, fcf_unit) / as_millions(ebitda_amount, ebitda_unit) * 100
+        add("Q2 FCF Conversion", f"{ratio:.0f}% of adjusted EBITDA",
+            f"Q2 free cash flow was ${fcf_amount}{fcf_unit}, and Adjusted EBITDA was ${ebitda_amount}{ebitda_unit}; derived FCF conversion was approximately {ratio:.0f}% of adjusted EBITDA.")
+        added_metrics.add("Q2 FCF Conversion")
     patterns = [
         (r"consumer advertiser spend(?: reached)?\s+\$?([0-9.]+)\s*(?:billion|B).*?(?:record|finishing)\s+([0-9]+)%\s+above\s+Q4\s+2025", "Consumer Advertiser Spend", lambda m: f"${m.group(1)}B; +{m.group(2)}% vs Q4 2025", "Consumer advertiser spend reached ${0}B, {1}% above Q4 2025 levels."),
-        (r"MAX publisher earnings grew\s+(double[- ]digit[s]?|[0-9]+%)\s+(?:quarter[- ]over[- ]quarter|sequentially)", "MAX Publisher Earnings Growth", lambda m: f"{m.group(1)} QoQ", "MAX publisher earnings grew {0} quarter-over-quarter."),
+        (r"advertiser spend set another record, finishing\s+([0-9]+)%\s+above\s+Q4\s+2025\s+levels", "Consumer Advertiser Spend", lambda m: f"record; +{m.group(1)}% vs Q4 2025", "Advertiser spend set another record, finishing {0}% above Q4 2025 levels."),
+        (r"MAX publisher earnings grew\s+(double[- ]digit[s]?|[0-9]+%)\s+(?:quarter[- ]over[- ]\s*quarter|sequentially)", "MAX Publisher Earnings Growth", lambda m: f"{m.group(1)} QoQ", "MAX publisher earnings grew {0} quarter-over-quarter."),
+        (r"free cash flow for the quarter was\s+\$?([0-9.]+)\s*(billion|B|million|M).*?Adjusted EBITDA was\s+\$?([0-9.]+)\s*(billion|B|million|M)", "Q2 FCF Conversion", lambda m: "derived", "Q2 free cash flow conversion derived from reported free cash flow and Adjusted EBITDA."),
         (r"(?:free cash flow|FCF) conversion.*?(?:approximately|about|~)?\s*([0-9]+)%\s+of adjusted EBITDA", "Q2 FCF Conversion", lambda m: f"{m.group(1)}% of adjusted EBITDA", "Management disclosed Q2 FCF conversion of approximately {0}% of adjusted EBITDA."),
+        (r"quarter[- ]over[- ]quarter flow[- ]through to Adjusted EBITDA was\s+([0-9]+)%", "EBITDA Flow-Through", lambda m: f"{m.group(1)}% QoQ", "Quarter-over-quarter flow-through to Adjusted EBITDA was {0}%."),
         (r"(?:([0-9]+)%\s+(?:quarter[- ]over[- ]quarter|sequential).*?flow[- ]through|flow[- ]through\s+(?:was|of)\s+([0-9]+)%\s+sequential)", "EBITDA Flow-Through", lambda m: f"{m.group(1) or m.group(2)}% QoQ", "Management disclosed {0}% quarter-over-quarter EBITDA flow-through."),
         (r"\$?([0-9.]+)\s*billion\s+(?:of\s+)?(?:buyback\s+)?authorization remaining", "Buyback Authorization Remaining", lambda m: f"${m.group(1)}B", "Management disclosed approximately ${0}B of buyback authorization remaining."),
         (r"net leverage.*?([0-9.]+)x", "Net Leverage", lambda m: f"{m.group(1)}x", "Management disclosed net leverage of approximately {0}x trailing EBITDA."),
         (r"([0-9]+)\s*(?:cents|¢)\s*(?:per|for each) incremental revenue dollar", "Incremental Compute Cost", lambda m: f"${float(m.group(1))/100:.2f} per incremental revenue dollar", "Management disclosed compute cost of approximately {0} cents per incremental revenue dollar."),
     ]
     for pattern, metric, formatter, view in patterns:
+        if metric in added_metrics:
+            continue
         match = re.search(pattern, clean, re.I)
         if match:
             groups = tuple(group for group in match.groups() if group is not None)
-            add(metric, formatter(match), view.format(*groups), "Tier 2 — Supporting" if metric in {"MAX Publisher Earnings Growth", "Incremental Compute Cost"} else "Tier 1 — Core")
+            if metric == "Q2 FCF Conversion" and "free cash flow for the quarter" in match.group(0).casefold():
+                amount_1, unit_1, amount_2, unit_2 = groups
+                def as_millions(amount: str, unit: str) -> float:
+                    return float(amount) * (1000 if unit.casefold() in {"billion", "b"} else 1)
+                ratio = as_millions(amount_1, unit_1) / as_millions(amount_2, unit_2) * 100
+                value = f"{ratio:.0f}% of adjusted EBITDA"
+                view_text = f"Q2 free cash flow was ${amount_1}{unit_1}, and Adjusted EBITDA was ${amount_2}{unit_2}; derived FCF conversion was approximately {ratio:.0f}% of adjusted EBITDA."
+            else:
+                value = formatter(match)
+                view_text = view.format(*groups)
+            add(metric, value, view_text, "Tier 1 — Core")
+            added_metrics.add(metric)
     return rows
 
 

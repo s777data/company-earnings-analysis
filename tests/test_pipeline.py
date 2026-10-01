@@ -30,7 +30,7 @@ from analysis_enrichment import (extract_transcript_sections, extract_risks, _se
                                  _qa_boundary_start, classify_financial_signal, classify_valuation_signal,
                                  classify_management_confidence, _signal as _transcript_signal)
 from kpi_metrics import (ALLOWED_SOURCES, DASHBOARD_KPI_LIMIT, build_business_kpis,
-                         read_derived_kpis, upsert_derived_kpis)
+                         read_derived_kpis, upsert_derived_kpis, _derive_ir_operating_kpis)
 
 XBRL = '''<?xml version="1.0"?>
 <xbrl xmlns="http://www.xbrl.org/2003/instance" xmlns:us-gaap="http://fasb.org/us-gaap/2026" xmlns:dei="http://xbrl.sec.gov/dei/2026">
@@ -334,6 +334,22 @@ def test_discover_ir_kpi_documents_searches_quarterly_and_events_pages_first():
          patch("shareholder_letter_kpi_extractor._extract_pdf_text", side_effect=lambda payload: payload.decode()):
         docs = discover_ir_kpi_documents(page_url="https://investors.example.com/", report_date="2026-06-30", fiscal_period="Q2", fiscal_year=2026)
     assert [doc["url"] for doc in docs] == ["https://cdn.example.com/q2-2026-transcript.pdf", "https://cdn.example.com/q2-2026-financial-update.pdf"]
+
+
+def test_app_q2_ir_wording_derives_actual_fcf_and_flow_through_values():
+    rows = _derive_ir_operating_kpis(
+        company="AppLovin", ticker="APP", sector="Advertising", fiscal_period="Q2", fiscal_year=2026,
+        report_date="2026-06-30", source_url="https://s21.q4cdn.com/app/q2/earnings.pdf",
+        text=("Free cash flow for the quarter was $863 million. Adjusted EBITDA was $1.61 billion. "
+              "Quarter-over-quarter flow-through to Adjusted EBITDA was 70%. "
+              "Advertiser spend set another record, finishing 28% above Q4 2025 levels. "
+              "Max publisher earnings grew double digits quarter-over- quarter."),
+    )
+    values = {row["metric"]: row["latest_quarter"] for row in rows}
+    assert values["Q2 FCF Conversion"].endswith("54% of adjusted EBITDA")
+    assert values["EBITDA Flow-Through"].endswith("70% QoQ")
+    assert values["Consumer Advertiser Spend"].endswith("record; +28% vs Q4 2025")
+    assert values["MAX Publisher Earnings Growth"].endswith("double digits QoQ")
 
 
 def test_analyzer_requires_ir_kpi_search_before_kpi_selection():
