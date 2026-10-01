@@ -2227,6 +2227,12 @@ class Q4RegressionTests(unittest.TestCase):
         # Minimal synthetic release text with three-month tables (4 columns like real release)
         release_text = """
         Fourth quarter fiscal 2026 results
+        Condensed Consolidated Balance Sheets
+        September 30, 2026    September 30, 2025
+        Cash and cash equivalents 100,000 90,000
+        Total assets 500,000 450,000
+        Total liabilities 200,000 180,000
+        Total stockholders’ equity 300,000 270,000
         Condensed Consolidated Statements of Operations
         (in thousands, except per share amounts)
         (unaudited)
@@ -2271,9 +2277,10 @@ class Q4RegressionTests(unittest.TestCase):
         self.assertEqual(m["capex"]["value"], (199_837 + 18_684) * 1000)
         self.assertEqual(m["capex"]["components"]["property_equipment"], 199_837_000)
         self.assertEqual(m["capex"]["components"]["capitalized_internal_use_software"], 18_684_000)
-        # All should be quarter scope
+        # Income-statement and cash-flow facts are quarter scope; balance-sheet facts are instant.
         for key, fact in m.items():
-            self.assertEqual(fact["period_scope"], "quarter")
+            expected_scope = "instant" if key in {"cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt"} else "quarter"
+            self.assertEqual(fact["period_scope"], expected_scope)
 
     def test_ytd_scope_rejected_in_dashboard_gate(self):
         """YTD-period-scope facts should be rejected when presented as current-quarter data."""
