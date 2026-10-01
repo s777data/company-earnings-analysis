@@ -464,11 +464,18 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
         "Cash and Cash Equivalents", "Total Assets", "Total Liabilities",
         "Total Stockholders' Equity", "Long-term Debt", "Cash", "Total Equity",
     }
+    generic_summary_metrics = {
+        "Revenue", "Total Revenue", "Net Income", "Net Income from Continuing Operations",
+        "Operating Cash Flow", "Free Cash Flow", "Adjusted EBITDA", "Adjusted EBITDA Margin",
+        "Diluted EPS", "Adjusted Diluted EPS", "Operating Margin", "Adjusted Operating Margin",
+    }
+    prohibited_primary_metrics = generic_statement_metrics | generic_summary_metrics
 
     def add(metric: str, latest: str, prior: str = "N/A", view: str = "",
             importance: str = "Tier 1 — Core") -> None:
-        # Statement rows are supplemental financials, never primary business KPIs.
-        if metric in generic_statement_metrics:
+        # Statement and undifferentiated summary rows are supplemental financials,
+        # never primary company-specific business KPIs.
+        if metric in prohibited_primary_metrics:
             return
         rows.append({
             "company": company, "ticker": ticker, "sector": sector, "metric": metric,
@@ -769,6 +776,9 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
     generic_xbrl_metrics = set(_XBRL_KPI_LABELS.values()) | {
         "Cash and Cash Equivalents", "Total Assets", "Total Liabilities",
         "Total Stockholders' Equity", "Long-term Debt", "Cash", "Total Equity",
+        "Revenue", "Total Revenue", "Net Income", "Net Income from Continuing Operations",
+        "Operating Cash Flow", "Free Cash Flow", "Adjusted EBITDA", "Adjusted EBITDA Margin",
+        "Diluted EPS", "Adjusted Diluted EPS", "Operating Margin", "Adjusted Operating Margin",
     }
 
     def source_candidates() -> list[dict[str, Any]]:
