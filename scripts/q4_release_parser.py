@@ -40,6 +40,18 @@ def _section(text: str, start: str, end: str | None = None) -> str:
     return result
 
 
+def _statement_scale(section: str, default: float = 1000.0) -> float:
+    """Return the numeric multiplier declared by a statement's unit heading."""
+    header = section[:2000].casefold()
+    if re.search(r"\bin\s+billions?\b", header):
+        return 1_000_000_000.0
+    if re.search(r"\bin\s+millions?\b", header):
+        return 1_000_000.0
+    if re.search(r"\bin\s+thousands?\b", header):
+        return 1_000.0
+    return default
+
+
 def _row_values(
     section: str,
     aliases: tuple[str, ...],
@@ -259,11 +271,14 @@ def parse_q4_release_financials(
         raise RuntimeError("QUARTER_RELEASE_SCOPE_MISMATCH: explicit three-month tables are required")
     cash_flows_have_quarter_scope = bool(quarter_scope_pattern.search(cash_flows[:1500]))
 
+    operations_scale = _statement_scale(operations)
+    cash_flows_scale = _statement_scale(cash_flows)
+    balance_scale = _statement_scale(balance)
     rows: dict[str, tuple[tuple[str, ...], str, float]] = {
-        "revenue": (("Revenue",), "Revenue", 1000.0),
-        "gross_profit": (("Gross profit", "Gross margin"), "GrossProfit", 1000.0),
-        "operating_income": (("Operating income", "Loss from operations", "Income from operations", "Income (loss) from operations"), "OperatingIncomeLoss", 1000.0),
-        "net_income": (("Net loss", "Net income", "Net income (loss)"), "NetIncomeLoss", 1000.0),
+        "revenue": (("Revenue",), "Revenue", operations_scale),
+        "gross_profit": (("Gross profit", "Gross margin"), "GrossProfit", operations_scale),
+        "operating_income": (("Operating income", "Loss from operations", "Income from operations", "Income (loss) from operations"), "OperatingIncomeLoss", operations_scale),
+        "net_income": (("Net loss", "Net income", "Net income (loss)"), "NetIncomeLoss", operations_scale),
         "eps_diluted": (
             ("Net loss per share, basic and diluted", "Net income per share, basic and diluted", "Net income (loss) per share, basic and diluted", "Diluted"),
             "EarningsPerShareDiluted",
@@ -272,20 +287,20 @@ def parse_q4_release_financials(
         "shares_diluted": (
             ("Weighted-average shares used in computing net loss per share, basic and diluted", "Weighted-average shares used in computing net income per share, basic and diluted", "Weighted-average shares used in computing net income (loss) per share, diluted", "Diluted"),
             "WeightedAverageNumberOfDilutedSharesOutstanding",
-            1000.0,
+            operations_scale,
         ),
-        "depreciation_amortization": (("Depreciation and amortization expense", "Depreciation and amortization"), "DepreciationDepletionAndAmortization", 1000.0),
-        "stock_based_compensation": (("Stock-based compensation expense",), "ShareBasedCompensation", 1000.0),
+        "depreciation_amortization": (("Depreciation and amortization expense", "Depreciation and amortization"), "DepreciationDepletionAndAmortization", operations_scale),
+        "stock_based_compensation": (("Stock-based compensation expense",), "ShareBasedCompensation", operations_scale),
     }
     cash_rows: dict[str, tuple[tuple[str, ...], str, float]] = {
-        "operating_cash_flow": (("Net cash provided by operating activities",), "NetCashProvidedByUsedInOperatingActivities", 1000.0),
+        "operating_cash_flow": (("Net cash provided by operating activities",), "NetCashProvidedByUsedInOperatingActivities", cash_flows_scale),
     }
     balance_rows: dict[str, tuple[tuple[str, ...], str, float]] = {
-        "cash": (("Cash and cash equivalents", "Cash and equivalents"), "CashAndCashEquivalentsAtCarryingValue", 1000.0),
-        "total_assets": (("Total assets",), "Assets", 1000.0),
-        "total_liabilities": (("Total liabilities",), "Liabilities", 1000.0),
-        "total_equity": (("Total stockholders’ equity", "Total stockholders' equity", "Total equity"), "StockholdersEquity", 1000.0),
-        "long_term_debt": (("Long-term debt",), "LongTermDebtNoncurrent", 1000.0),
+        "cash": (("Cash and cash equivalents", "Cash and equivalents"), "CashAndCashEquivalentsAtCarryingValue", balance_scale),
+        "total_assets": (("Total assets",), "Assets", balance_scale),
+        "total_liabilities": (("Total liabilities",), "Liabilities", balance_scale),
+        "total_equity": (("Total stockholders’ equity", "Total stockholders' equity", "Total equity"), "StockholdersEquity", balance_scale),
+        "long_term_debt": (("Long-term debt",), "LongTermDebtNoncurrent", balance_scale),
     }
 
     prior_end = _prior_year_date(report_date)
@@ -376,8 +391,8 @@ def parse_q4_release_financials(
         except RuntimeError:
             software = [0.0, 0.0, 0.0, 0.0]
         metrics["capex"] = {
-            "value": (abs(pp_e[0]) + abs(software[0])) * 1000.0,
-            "prior_value": (abs(pp_e[1]) + abs(software[1])) * 1000.0,
+            "value": (abs(pp_e[0]) + abs(software[0])) * cash_flows_scale,
+            "prior_value": (abs(pp_e[1]) + abs(software[1])) * cash_flows_scale,
             "prior_end": prior_end,
             "concept": "PurchasesOfPropertyPlantAndEquipmentPlusCapitalizedInternalUseSoftware",
             "context": "official_release_three_months",
