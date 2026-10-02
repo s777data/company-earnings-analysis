@@ -55,6 +55,7 @@ except ModuleNotFoundError:
     )
 
 ALLOWED_SOURCES = {"IR", "SEC", "IR/SEC"}
+MIN_REQUIRED_KPIS = 6
 DASHBOARD_KPI_LIMIT = 12
 
 # Default JSON reference path
@@ -773,6 +774,53 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
                 prior_text or f"{prior_label}: ${prior}{unit}",
                 f"Official earnings release reported {metric} of ${current}{unit} versus ${prior}{unit} in the comparable prior-year period.")
 
+        def quarter_values(index: int, limit: int = 20) -> list[str]:
+            values: list[str] = []
+            for candidate in lines[index + 1:index + 1 + limit]:
+                compact = candidate.replace(" ", "")
+                if re.fullmatch(r"(?:[$]?)\(?[0-9][0-9,]*(?:[.][0-9]+)?[%]?\)?", compact):
+                    values.append(candidate.strip())
+                    if len(values) >= 5:
+                        break
+                elif values and len(values) >= 3:
+                    break
+            return values
+
+        # Generic quarterly business-unit table shape: current quarter,
+        # prior quarter, prior-year quarter, followed by annual columns.
+        unit_indexes = [
+            (i, re.sub(r"^.*?([A-Za-z][A-Za-z &/-]+Business Unit).*$", r"\1", line, flags=re.I))
+            for i, line in enumerate(lines)
+            if re.search(r"Business Unit", line, re.I)
+        ]
+        for unit_offset, (start, unit_label) in enumerate(unit_indexes):
+            end = unit_indexes[unit_offset + 1][0] if unit_offset + 1 < len(unit_indexes) else len(lines)
+            for label, metric_suffix, unit in (
+                ("Revenue", "Revenue", "$M"),
+                ("Gross margin", "Gross Margin", "%"),
+                ("Operating margin", "Operating Margin", "%"),
+            ):
+                label_indexes = [i for i in range(start, end) if lines[i].casefold() == label.casefold()]
+                if not label_indexes:
+                    continue
+                values = quarter_values(label_indexes[0])
+                if len(values) < 3:
+                    continue
+                metric = f"{unit_label} {metric_suffix}"
+                current, prior_year = values[0], values[2]
+                prefix = "$" if unit == "$M" else ""
+                add(metric, f"{period_label}: {prefix}{current}{unit}", f"{prior_label}: {prefix}{prior_year}{unit}",
+                    f"Official earnings release reported {metric} of {prefix}{current}{unit} versus {prefix}{prior_year}{unit} in the comparable prior-year quarter.")
+
+        capex_match = re.search(
+            r"Investments in capital expenditures, net.*?([0-9,.]+)\s*billion\s+for the fourth quarter.*?([0-9,.]+)\s*billion\s+for the full year",
+            text, re.I,
+        )
+        if capex_match:
+            quarter_capex, _annual_capex = capex_match.groups()
+            add("Net Capital Expenditures", f"{period_label}: ${quarter_capex}B",
+                view=f"Official earnings release reported net capital expenditures of ${quarter_capex} billion for the quarter.")
+
         for label, metric in (
             ("Revenue", "Total Revenue"),
             ("Net Income", "Net Income"),
@@ -975,7 +1023,9 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
         })
         if len(selected) == DASHBOARD_KPI_LIMIT:
             break
-    status = "COMPLETE" if len(selected) == DASHBOARD_KPI_LIMIT else "INCOMPLETE"
+    # Keep up to the display limit, but publication requires only the minimum
+    # number of valid current-period company-specific KPIs.
+    status = "COMPLETE" if len(selected) >= MIN_REQUIRED_KPIS else "INCOMPLETE"
     if not candidates:
         status = "DERIVED_REFERENCE_REQUIRED"
     return {

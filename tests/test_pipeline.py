@@ -140,7 +140,7 @@ def test_build_business_kpis_prefers_release_specific_operating_metrics(tmp_path
         reference_path=reference, xbrl_metrics={"revenue": {"value": 1}},
     )
     metrics = {row["metric"] for row in selected["rows"]}
-    assert selected["selection_status"] == "INCOMPLETE"
+    assert selected["selection_status"] == "COMPLETE"
     assert len(selected["rows"]) < 12
     assert all(row["source"] == "IR/SEC" for row in selected["rows"])
     assert "Management Solutions Revenue" in metrics

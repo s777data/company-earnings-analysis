@@ -1012,7 +1012,10 @@ class EarningsAnalyzer:
                           "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc.get("xbrl_url"),
                                       "earnings_release_url": release_url,
                                       "investor_relations_url": investor_relations_url,
-                                      "ir_kpi_document_urls": [doc["url"] for doc in ir_kpi_documents],
+                                      "ir_kpi_document_urls": list(dict.fromkeys(
+                                          [doc["url"] for doc in ir_kpi_documents]
+                                          + ([release_url] if release_url else [])
+                                      )),
                                       "ir_kpi_search_attempted": True,
                                       "shareholder_letter_url": shareholder_letter_url,
                                       "transcript_url": self.transcript["url"], "transcript_provider": self.transcript["source"],
@@ -1113,7 +1116,7 @@ class EarningsAnalyzer:
             raise RuntimeError(
                 f"KPI_DERIVATION_INCOMPLETE: Source-derived KPI reference has only "
                 f"{self.data['business_kpis']['available_reference_rows']} current-period rows for "
-                f"{self.ticker} (need 12 for COMPLETE). Publication is blocked until "
+                f"{self.ticker} (need at least 6 for COMPLETE). Publication is blocked until "
                 "company-specific release/IR/SEC KPIs are added."
             )
 
