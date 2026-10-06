@@ -569,6 +569,22 @@
   {
     "COMPANY": "AppLovin Corp",
     "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Consumer Advertiser Spend",
+    "source_url": "https://s21.q4cdn.com/165405286/files/doc_financials/2026/q2/Q2-2026-AppLovin-Earnings-Presentation.pdf",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: record; +28% vs Q4 2025",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Advertiser spend set another record, finishing 28% above Q4 2025 levels.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
     "SECTOR": "Technology",
     "metric": "Continuing Operations Net Margin",
     "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
@@ -594,6 +610,22 @@
         "last_year_quarter_value": "N/A",
         "analyst_view": "Official release reported diluted EPS of $3.76.",
         "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "EBITDA Flow-Through",
+    "source_url": "https://s21.q4cdn.com/165405286/files/doc_financials/2026/q2/Q2-2026-AppLovin-Earnings-Presentation.pdf",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 70% QoQ",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Quarter-over-quarter flow-through to Adjusted EBITDA was 70%.",
+        "source": "IR",
         "importance": "Tier 1 — Core"
       }
     }
@@ -650,6 +682,22 @@
     "COMPANY": "AppLovin Corp",
     "TICKER": "APP",
     "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "MAX Publisher Earnings Growth",
+    "source_url": "https://s21.q4cdn.com/165405286/files/doc_financials/2026/q2/Q2-2026-AppLovin-Earnings-Presentation.pdf",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: double digits QoQ",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "MAX publisher earnings grew double digits quarter-over-quarter.",
+        "source": "IR",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
     "metric": "Net Income",
     "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000057/exhibit991-2q26earningspre.htm",
     "details_map": {
@@ -674,6 +722,22 @@
         "last_year_quarter_value": "Q2 2025: $$772M",
         "analyst_view": "Official earnings release reported Net Income from Continuing Operations of $$1,267M versus $$772M in the comparable prior-year period.",
         "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Net Leverage",
+    "source_url": "https://s21.q4cdn.com/165405286/files/doc_financials/2026/q2/Q2-2026-AppLovin-Earnings-Presentation.pdf",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 0.1x",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Management disclosed net leverage of approximately 0.1x trailing EBITDA.",
+        "source": "IR",
         "importance": "Tier 1 — Core"
       }
     }
@@ -722,6 +786,22 @@
         "last_year_quarter_value": "Q2 2025: $42K",
         "analyst_view": "Official release reported property and equipment purchases of $1,427 thousand.",
         "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "AppLovin Corp",
+    "TICKER": "APP",
+    "SECTOR": "Services-Computer Programming, Data Processing, Etc.",
+    "metric": "Q2 FCF Conversion",
+    "source_url": "https://s21.q4cdn.com/165405286/files/doc_financials/2026/q2/Q2-2026-AppLovin-Earnings-Presentation.pdf",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 54% of adjusted EBITDA",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Q2 free cash flow was $863million, and Adjusted EBITDA was $1.61billion; derived FCF conversion was approximately 54% of adjusted EBITDA.",
+        "source": "IR",
         "importance": "Tier 1 — Core"
       }
     }
@@ -1315,6 +1395,118 @@
         "analyst_view": "Restaurant operating weeks increased with the larger footprint, providing a capacity and maturity context for sales growth.",
         "source": "SEC",
         "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "Constellation Energy Corp",
+    "TICKER": "CEG",
+    "SECTOR": "Electric Services",
+    "metric": "Adjusted Operating Earnings Per Share",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827526000097/ceg-20260806991.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $2.55",
+        "last_year_quarter_value": "Q2 2025: $1.91",
+        "analyst_view": "Adjusted operating earnings per share increased to $2.55 from $1.91 in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Constellation Energy Corp",
+    "TICKER": "CEG",
+    "SECTOR": "Electric Services",
+    "metric": "Capacity Factor",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827526000097/ceg-20260806991.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 93.0%",
+        "last_year_quarter_value": "Q2 2025: 94.8%",
+        "analyst_view": "Owned operating assets achieved a 93.0% capacity factor versus 94.8% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Constellation Energy Corp",
+    "TICKER": "CEG",
+    "SECTOR": "Electric Services",
+    "metric": "Equivalent Forced Outage Factor",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827526000097/ceg-20260806991.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 6.2%",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Equivalent Forced Outage Factor was 6.2% for the quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Constellation Energy Corp",
+    "TICKER": "CEG",
+    "SECTOR": "Electric Services",
+    "metric": "GAAP Net Income Per Share",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827526000097/ceg-20260806991.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: $1.42",
+        "last_year_quarter_value": "Q2 2025: $2.67",
+        "analyst_view": "GAAP net income per share decreased to $1.42 from $2.67 in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Constellation Energy Corp",
+    "TICKER": "CEG",
+    "SECTOR": "Electric Services",
+    "metric": "Generation Output",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827526000097/ceg-20260806991.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 44,160 GWh",
+        "last_year_quarter_value": "Q2 2025: 45,170 GWh",
+        "analyst_view": "Operating fleet generation output was 44,160 GWh versus 45,170 GWh in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Constellation Energy Corp",
+    "TICKER": "CEG",
+    "SECTOR": "Electric Services",
+    "metric": "Long-Term PPA Capacity Signed",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827526000097/ceg-20260806991.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 920 MW",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "The company signed an additional 920 MW of long-term power purchase agreements.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Constellation Energy Corp",
+    "TICKER": "CEG",
+    "SECTOR": "Electric Services",
+    "metric": "Renewable Energy Capture",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827526000097/ceg-20260806991.htm",
+    "details_map": {
+      "2026-06-30": {
+        "latest_quarter_value": "Q2 2026: 96.0%",
+        "last_year_quarter_value": "Q2 2025: 96.1%",
+        "analyst_view": "Renewable energy capture was 96.0% versus 96.1% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
       }
     }
   },
@@ -2883,6 +3075,454 @@
         "analyst_view": "US margin improved 9pp YoY, reflecting scale benefits and product mix shift toward Fair Financing and Card.",
         "source": "IR",
         "importance": "Tier 2 — High"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Automotive and Embedded Business Unit Gross Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 84%",
+        "last_year_quarter_value": "Q4 2025: 31%",
+        "analyst_view": "Official earnings release reported Automotive and Embedded Business Unit Gross Margin of 84% versus 31% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Automotive and Embedded Business Unit Operating Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 79%",
+        "last_year_quarter_value": "Q4 2025: 20%",
+        "analyst_view": "Official earnings release reported Automotive and Embedded Business Unit Operating Margin of 79% versus 20% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Automotive and Embedded Business Unit Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $6,824$M",
+        "last_year_quarter_value": "Q4 2025: $1,434$M",
+        "analyst_view": "Official earnings release reported Automotive and Embedded Business Unit Revenue of $6,824$M versus $1,434$M in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Cloud Memory Business Unit Gross Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 83%",
+        "last_year_quarter_value": "Q4 2025: 59%",
+        "analyst_view": "Official earnings release reported Cloud Memory Business Unit Gross Margin of 83% versus 59% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Cloud Memory Business Unit Operating Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 76%",
+        "last_year_quarter_value": "Q4 2025: 48%",
+        "analyst_view": "Official earnings release reported Cloud Memory Business Unit Operating Margin of 76% versus 48% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Cloud Memory Business Unit Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $16,283$M",
+        "last_year_quarter_value": "Q4 2025: $4,543$M",
+        "analyst_view": "Official earnings release reported Cloud Memory Business Unit Revenue of $16,283$M versus $4,543$M in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Core Data Center Business Unit Gross Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 90%",
+        "last_year_quarter_value": "Q4 2025: 41%",
+        "analyst_view": "Official earnings release reported Core Data Center Business Unit Gross Margin of 90% versus 41% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Core Data Center Business Unit Operating Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 85%",
+        "last_year_quarter_value": "Q4 2025: 25%",
+        "analyst_view": "Official earnings release reported Core Data Center Business Unit Operating Margin of 85% versus 25% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Core Data Center Business Unit Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $18,002$M",
+        "last_year_quarter_value": "Q4 2025: $1,577$M",
+        "analyst_view": "Official earnings release reported Core Data Center Business Unit Revenue of $18,002$M versus $1,577$M in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "GAAP Diluted EPS",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $32.87",
+        "last_year_quarter_value": "Q4 2025: $24.67",
+        "analyst_view": "GAAP Diluted EPS was $32.87 versus $24.67 in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Mobile and Client Business Unit Gross Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 90%",
+        "last_year_quarter_value": "Q4 2025: 36%",
+        "analyst_view": "Official earnings release reported Mobile and Client Business Unit Gross Margin of 90% versus 36% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Mobile and Client Business Unit Operating Margin",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: 88%",
+        "last_year_quarter_value": "Q4 2025: 29%",
+        "analyst_view": "Official earnings release reported Mobile and Client Business Unit Operating Margin of 88% versus 29% in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Mobile and Client Business Unit Revenue",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $13,114$M",
+        "last_year_quarter_value": "Q4 2025: $3,760$M",
+        "analyst_view": "Official earnings release reported Mobile and Client Business Unit Revenue of $13,114$M versus $3,760$M in the comparable prior-year quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Net Capital Expenditures",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $10.77B",
+        "last_year_quarter_value": "N/A",
+        "analyst_view": "Official earnings release reported net capital expenditures of $10.77 billion for the quarter.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Non-GAAP Diluted EPS",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $33.42",
+        "last_year_quarter_value": "Q4 2025: $25.11",
+        "analyst_view": "Non-GAAP Diluted EPS was $33.42 versus $25.11 in the comparable prior-year period.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "MICRON TECHNOLOGY INC",
+    "TICKER": "MU",
+    "SECTOR": "Semiconductors & Related Devices",
+    "metric": "Stock-Based Compensation",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000018/a2026q4ex991-pressrelease.htm",
+    "details_map": {
+      "2026-09-03": {
+        "latest_quarter_value": "Q4 2026: $1,333K",
+        "last_year_quarter_value": "Q4 2025: $972K",
+        "analyst_view": "Official release reported stock-based compensation of $1,333 thousand versus $972 thousand.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Adjusted Earnings Per Share",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $1.53",
+        "last_year_quarter_value": "Q1 2026: $1.06",
+        "analyst_view": "Adjusted EPS was $1.53 versus $1.06.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Commercial HVAC Adjusted EBITDA",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $41.6M",
+        "last_year_quarter_value": "Q1 2026: $38.8M",
+        "analyst_view": "Commercial HVAC adjusted EBITDA was $41.6M versus $38.8M.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Commercial HVAC Adjusted EBITDA Margin",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: 15.9%",
+        "last_year_quarter_value": "Q1 2026: 18.1%",
+        "analyst_view": "Commercial HVAC adjusted EBITDA margin was 15.9% versus 18.1%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Commercial HVAC Net Sales",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $261.6M",
+        "last_year_quarter_value": "Q1 2026: $214.2M",
+        "analyst_view": "Commercial HVAC net sales were $261.6M versus $214.2M.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Data Centers Adjusted EBITDA",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $51.7M",
+        "last_year_quarter_value": "Q1 2026: $40.6M",
+        "analyst_view": "Data Centers adjusted EBITDA was $51.7M versus $40.6M.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Data Centers Adjusted EBITDA Margin",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: 14.8%",
+        "last_year_quarter_value": "Q1 2026: 22.1%",
+        "analyst_view": "Data Centers adjusted EBITDA margin was 14.8% versus 22.1%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Data Centers Net Sales",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $348.6M",
+        "last_year_quarter_value": "Q1 2026: $183.7M",
+        "analyst_view": "Data Centers net sales were $348.6M versus $183.7M, supported by strong data-center demand.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "FY27 Adjusted EBITDA Guidance",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $650M to $680M",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Management reaffirmed FY27 adjusted EBITDA guidance of $650M to $680M.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "FY27 Net Sales Growth Guidance",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: +20% to +35%",
+        "last_year_quarter_value": "Q1 2026: N/A",
+        "analyst_view": "Management reaffirmed FY27 net sales growth guidance of +20% to +35%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Performance Technologies Adjusted EBITDA",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $36.2M",
+        "last_year_quarter_value": "Q1 2026: $37.5M",
+        "analyst_view": "Performance Technologies adjusted EBITDA was $36.2M versus $37.5M.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Performance Technologies Adjusted EBITDA Margin",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: 13.0%",
+        "last_year_quarter_value": "Q1 2026: 13.1%",
+        "analyst_view": "Performance Technologies adjusted EBITDA margin was 13.0% versus 13.1%.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Modine Manufacturing Company",
+    "TICKER": "MOD",
+    "SECTOR": "Industrials",
+    "metric": "Performance Technologies Net Sales",
+    "source_url": "https://investors.modine.com/news/news-details/2026/Modine-Reports-First-Quarter-Fiscal-2027-Results/default.aspx",
+    "details_map": {
+      "2026-07-29": {
+        "latest_quarter_value": "Q1 2027: $277.8M",
+        "last_year_quarter_value": "Q1 2026: $285.5M",
+        "analyst_view": "Performance Technologies net sales were $277.8M versus $285.5M.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
       }
     }
   },
@@ -5266,6 +5906,182 @@
         "last_year_quarter_value": "Q2 2025: N/A",
         "analyst_view": "SEC/XBRL reported Total Liabilities of $3.19B. A comparable prior-year fact was not available in the selected filing.",
         "source": "SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "2026 Generation Hedged",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: ~100%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Vistra reported approximately 100% of expected 2026 generation volumes hedged as of Aug. 3, 2026.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "2027 Generation Hedged",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: ~94%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Vistra reported approximately 94% of expected 2027 generation volumes hedged as of Aug. 3, 2026.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "2028 Generation Hedged",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: ~72%",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Vistra reported approximately 72% of expected 2028 generation volumes hedged as of Aug. 3, 2026.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "East Adjusted EBITDA",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: $642M",
+        "last_year_quarter_value": "Q2 2025: $418M",
+        "analyst_view": "East segment Adjusted EBITDA was $642M versus $418M in Q2 2025.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "Ongoing Operations Adjusted EBITDA Growth",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: +30% YoY",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Ongoing Operations Adjusted EBITDA grew more than 30% year over year to $1,767M.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "Retail Adjusted EBITDA",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: $773M",
+        "last_year_quarter_value": "Q2 2025: $756M",
+        "analyst_view": "Retail segment Adjusted EBITDA was $773M versus $756M in Q2 2025.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "Texas Adjusted EBITDA",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: $311M",
+        "last_year_quarter_value": "Q2 2025: $142M",
+        "analyst_view": "Texas segment Adjusted EBITDA was $311M versus $142M in Q2 2025.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "Total Available Liquidity",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: $6,295M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Total available liquidity was approximately $6,295M as of June 30, 2026.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "West Adjusted EBITDA",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: $68M",
+        "last_year_quarter_value": "Q2 2025: $49M",
+        "analyst_view": "West segment Adjusted EBITDA was $68M versus $49M in Q2 2025.",
+        "source": "IR/SEC",
+        "importance": "Tier 1 — Core"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "Share Repurchase Authorization Remaining",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: ~$1.2B",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Approximately $1.2B of share repurchase authorization remained available as of Aug. 3, 2026.",
+        "source": "IR/SEC",
+        "importance": "Tier 2 — Supporting"
+      }
+    }
+  },
+  {
+    "COMPANY": "Vistra Corp.",
+    "TICKER": "VST",
+    "SECTOR": "Utilities - Independent Power Producers",
+    "metric": "Shares Outstanding",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+    "details_map": {
+      "2026-08-07": {
+        "latest_quarter_value": "Q2 2026: ~336M",
+        "last_year_quarter_value": "Q2 2025: N/A",
+        "analyst_view": "Approximately 336M shares were outstanding as of Aug. 3, 2026.",
+        "source": "IR/SEC",
         "importance": "Tier 2 — Supporting"
       }
     }

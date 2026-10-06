@@ -667,6 +667,58 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
             add(metric, f"{period_label}: FY{fiscal_year} guidance ${value}{unit}",
                 view=f"Updated fiscal-year guidance reported ${value}{unit}.", importance="Tier 2 — Supporting")
 
+    # Common utility/asset-operator release disclosures. These are
+    # company-specific operating KPIs, not generic statement facts, and are
+    # intentionally recognized by their labels and quarter-comparable values.
+    match = re.search(
+        r"(?:owned output|fleet).*?produced\s+([0-9,]+)\s+gigawatt-hours.*?compared with\s+([0-9,]+)\s+GWh",
+        text, re.I,
+    )
+    if match:
+        current, prior = match.groups()
+        add("Generation Output", f"{period_label}: {current} GWh", f"{prior_label}: {prior} GWh",
+            f"Operating fleet generation output was {current} GWh versus {prior} GWh in the comparable prior-year quarter.")
+    match = re.search(
+        r"(?:achieved|was)\s+(?:a\s+)?([0-9.]+)%\s+capacity factor.*?compared with\s+([0-9.]+)%",
+        text, re.I,
+    )
+    if match:
+        current, prior = match.groups()
+        add("Capacity Factor", f"{period_label}: {current}%", f"{prior_label}: {prior}%",
+            f"Owned operating assets achieved a {current}% capacity factor versus {prior}% in the comparable prior-year quarter.")
+    match = re.search(
+        r"renewable energy capture.*?([0-9.]+)%\s+in the .*?quarter.*?compared with\s+([0-9.]+)%",
+        text, re.I,
+    )
+    if match:
+        current, prior = match.groups()
+        add("Renewable Energy Capture", f"{period_label}: {current}%", f"{prior_label}: {prior}%",
+            f"Renewable energy capture was {current}% versus {prior}% in the comparable prior-year quarter.")
+    match = re.search(r"Equivalent Forced Outage Factor.*?for the .*?quarter.*?is\s+([0-9.]+)%", text, re.I)
+    if match:
+        add("Equivalent Forced Outage Factor", f"{period_label}: {match.group(1)}%",
+            view=f"Equivalent Forced Outage Factor was {match.group(1)}% for the quarter.")
+    match = re.search(r"signed an additional\s+([0-9,]+)\s+megawatts.*?power purchase agreements", text, re.I)
+    if match:
+        add("Long-Term PPA Capacity Signed", f"{period_label}: {match.group(1)} MW",
+            view=f"The company signed an additional {match.group(1)} MW of long-term power purchase agreements.")
+    match = re.search(
+        r"Adjusted \(non-GAAP\) Operating Earnings.*?second quarter of \d{4}.*?increased to\s+\$([0-9.]+)\s+per share from\s+\$([0-9.]+)",
+        text, re.I,
+    )
+    if match:
+        current, prior = match.groups()
+        add("Adjusted Operating Earnings Per Share", f"{period_label}: ${current}", f"{prior_label}: ${prior}",
+            f"Adjusted operating earnings per share increased to ${current} from ${prior} in the comparable prior-year quarter.")
+    match = re.search(
+        r"GAAP Net Income for the second quarter of \d{4} decreased to\s+\$([0-9.]+)\s+per share from\s+\$([0-9.]+)",
+        text, re.I,
+    )
+    if match:
+        current, prior = match.groups()
+        add("GAAP Net Income Per Share", f"{period_label}: ${current}", f"{prior_label}: ${prior}",
+            f"GAAP net income per share decreased to ${current} from ${prior} in the comparable prior-year quarter.")
+
     # Table-aware official-release fallback. APP-style SEC exhibits place the
     # quarter-comparable metrics in HTML tables, so flattening tags first loses
     # the row/column relationship needed by the narrative regexes above. This

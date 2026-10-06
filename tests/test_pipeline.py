@@ -181,6 +181,34 @@ def test_build_business_kpis_generic_release_fallback_extracts_fico_operating_ro
     assert all(row["source"] == "IR/SEC" for row in selected["rows"])
 
 
+def test_build_business_kpis_extracts_utility_operating_release_rows(tmp_path):
+    release_text = """
+    CONSTELLATION REPORTS SECOND QUARTER 2026 RESULTS
+    GAAP Net Income for the second quarter of 2026 decreased to $1.42 per share from $2.67 per share in the second quarter of 2025.
+    Adjusted (non-GAAP) Operating Earnings for the second quarter of 2026 increased to $2.55 per share from $1.91 per share in the second quarter of 2025.
+    Signed an additional 920 megawatts of long-term power purchase agreements for clean generation.
+    Our nuclear fleet produced 44,160 gigawatt-hours (GWhs) in the second quarter of 2026, compared with 45,170 GWhs in the second quarter of 2025.
+    Our nuclear plants achieved a 93.0% capacity factor for the second quarter of 2026, compared with 94.8% for the second quarter of 2025.
+    Renewable energy capture for our fleet was 96.0% in the second quarter of 2026, compared with 96.1% in the second quarter of 2025.
+    Equivalent Forced Outage Factor for our fleet for the second quarter of 2026 is 6.2%.
+    Raising full-year Adjusted (non-GAAP) Operating Earnings guidance range to $11.50 – $12.50 per share.
+    """
+    selected = build_business_kpis(
+        company="Constellation Energy Corporation", ticker="CEG", sector="Utilities",
+        filing_url="https://www.sec.gov/example-10q.htm",
+        release_url="https://www.sec.gov/example-8k.htm", release_text=release_text,
+        fiscal_period="Q2", fiscal_year=2026, source_date="2026-06-30",
+        reference_path=tmp_path / "KPI_derived_reference.json",
+    )
+    metrics = {row["metric"] for row in selected["rows"]}
+    assert selected["selection_status"] == "COMPLETE"
+    assert len(selected["rows"]) >= 6
+    assert "Generation Output" in metrics
+    assert "Capacity Factor" in metrics
+    assert "Adjusted Operating Earnings Per Share" in metrics
+    assert all(row["source"] == "IR/SEC" for row in selected["rows"])
+
+
 def test_build_business_kpis_parses_applovin_html_release_tables(tmp_path):
     release_html = """
     <table><tr><th>Quarter Ended June 30</th><th>2026</th><th>2025</th></tr>
