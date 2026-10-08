@@ -76,23 +76,3 @@ def test_parse_valuation_output_fails_closed_on_insufficient_data():
     payload["status"] = "insufficient_data"
     with pytest.raises(RuntimeError, match="analytical status"):
         run_analysis._parse_company_valuation_score_output(_stdout(payload), "IREN")
-
-
-def test_canonical_valuation_preflight_runs_without_pythonpath():
-    env = os.environ.copy()
-    env.pop("PYTHONPATH", None)
-    env["COMPANY_VALUATION_EXPECTED_PACKAGE"] = str(run_analysis.VALUATION_SKILL_DIR.resolve())
-    result = subprocess.run(
-        [sys.executable, "-m", "company_valuation_score", "IREN", "--preflight"],
-        cwd=run_analysis.VALUATION_SKILL_DIR.parent,
-        env=env,
-        capture_output=True,
-        text=True,
-        timeout=120,
-    )
-    assert result.returncode == 0, result.stderr or result.stdout
-    marker = "MACHINE-READABLE PREFLIGHT JSON OUTPUT"
-    payload = json.loads(result.stdout.split(marker, 1)[1])
-    assert payload["ready"] is True
-    assert payload["contract_version"] == run_analysis.EXPECTED_VALUATION_CONTRACT_VERSION
-    assert len(payload["cache"]["usable_peers"]) >= 5

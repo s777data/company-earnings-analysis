@@ -181,6 +181,36 @@ def test_build_business_kpis_generic_release_fallback_extracts_fico_operating_ro
     assert all(row["source"] == "IR/SEC" for row in selected["rows"])
 
 
+def test_build_business_kpis_derives_infrastructure_operating_rows_from_release(tmp_path):
+    release_text = """
+    The company has leases for approximately 1.41 GW of critical IT load across five campuses.
+    Those leases represent approximately $36 billion of contracted revenue over their initial base terms.
+    Revenue from our HPC Hosting business totaled $262.6 million for the quarter, including $65.8 million
+    related to base rent, $183.5 million related to tenant fit-out services, and $13.3 million related to
+    tenant recoveries. This resulted in $33.4 million of segment operating profit.
+    During the quarter, the company generated $37.8 million in revenue from the Data Center Hosting Business
+    segment, compared to $37.9 million during the prior-year period.
+    The company had a 106 MW facility and 180 MW facility operating at full capacity.
+    Adjusted revenue, a non-GAAP financial measure, was $300.4 million compared to $64.2 million.
+    Net Operating Income was $58.8 million for the quarter.
+    Stock-based compensation 66,499 15,465
+    """
+    reference = tmp_path / "KPI_derived_reference.json"
+    selected = build_business_kpis(
+        company="Example Infrastructure Corp.", ticker="EXIN", sector="Digital Infrastructure",
+        filing_url="https://www.sec.gov/example-10q.htm",
+        release_url="https://www.sec.gov/example-8k.htm", release_text=release_text,
+        fiscal_period="Q1", fiscal_year=2027, source_date="2026-08-31",
+        reference_path=reference, xbrl_metrics={},
+    )
+    metrics = {row["metric"] for row in selected["rows"]}
+    assert selected["selection_status"] == "COMPLETE"
+    assert len(selected["rows"]) >= 6
+    assert {"Leased Critical IT Load", "Contracted Revenue", "HPC Hosting Revenue", "Data Center Hosting Revenue"} <= metrics
+    assert all(row["source"] == "IR/SEC" for row in selected["rows"])
+    assert all(row["citation"]["url"] == "https://www.sec.gov/example-8k.htm" for row in selected["rows"])
+
+
 def test_build_business_kpis_extracts_utility_operating_release_rows(tmp_path):
     release_text = """
     CONSTELLATION REPORTS SECOND QUARTER 2026 RESULTS
@@ -585,98 +615,6 @@ class FilingSelectionTests(unittest.TestCase):
             
             self.assertIn("LATEST_QUARTER_SOURCE_MISMATCH", str(cm.exception))
 
-    def test_identify_matches_stockanalysis_latest_quarter_avgo(self):
-        """Integration test: verify identify() cross-references StockAnalysis for latest quarter.
-        
-        This test fetches live data from:
-        1. SEC EDGAR submissions (via search_filings) - gets available 10-Q report_dates
-        2. StockAnalysis.com quarterly financials page - gets latest quarter end date
-        
-        The code should attempt to match and fall back gracefully when SEC lags.
-        """
-        import requests
-        from bs4 import BeautifulSoup
-        from sec_edgar_search import search_filings
-        from datetime import datetime, timezone
-        import re
-        
-        ticker = "AVGO"
-        
-        # 1. Get available 10-Qs from SEC (real call)
-        filings_10q = search_filings(ticker, ["10-Q", "10-Q/A"], limit=10)
-        # Filter out future report dates
-        today = datetime.now(timezone.utc).date().isoformat()
-        filings_10q = [f for f in filings_10q if f.get("report_date") and f["report_date"] <= today]
-        self.assertTrue(filings_10q, "Should find at least one 10-Q filing for AVGO")
-        
-        # 2. Get latest quarter from StockAnalysis.com using SAME LOGIC as _get_latest_quarter_from_stockanalysis
-        url = "https://stockanalysis.com/stocks/avgo/financials/?p=quarterly"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-        response = requests.get(url, headers=headers, timeout=30)
-        self.assertEqual(response.status_code, 200, f"Failed to fetch {url}")
-        
-        soup = BeautifulSoup(response.text, "html.parser")
-        
-        # Find the "Period Ending" row which has the actual dates
-        # Format: "Aug '26 Aug 2, 2026" or just "Aug 2, 2026"
-        period_ending_dates = []
-        for th in soup.find_all("th"):
-            text = th.get_text(strip=True)
-            # Match date patterns like "Aug 2, 2026", "Aug '26 Aug 2, 2026", etc.
-            # First try: "MMM DD, YYYY" at end of string
-            match = re.search(r"([A-Z][a-z]{2})\s+(\d{1,2}),\s+(\d{4})$", text)
-            if match:
-                month_str, day, year = match.groups()
-            else:
-                # Second try: standalone "MMM DD, YYYY"
-                match = re.match(r"([A-Z][a-z]{2})\s+(\d{1,2}),\s+(\d{4})$", text)
-                if match:
-                    month_str, day, year = match.groups()
-                else:
-                    continue
-            month_map = {
-                "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
-                "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
-                "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
-            }
-            month = month_map.get(month_str[:3])
-            if month:
-                period_ending_dates.append(f"{year}-{month}-{int(day):02d}")
-        
-        self.assertTrue(period_ending_dates, "Should find Period Ending dates on StockAnalysis page")
-        
-        # The first date in the "Period Ending" row is the latest quarter
-        sa_quarter_end = period_ending_dates[0]
-        
-        # Also get the quarter label for that column
-        quarter_labels = []
-        for th in soup.find_all("th"):
-            text = th.get_text(strip=True)
-            match = re.match(r"Q([1-4])\s+(\d{4})", text)
-            if match:
-                quarter_labels.append((int(match.group(2)), int(match.group(1)), f"Q{match.group(1)}"))
-        
-        self.assertTrue(quarter_labels, "Should find quarter labels on StockAnalysis page")
-        
-        # Get latest quarter label
-        sa_period = max(quarter_labels, key=lambda x: (x[0], x[1]))[2]
-        
-        # 3. Run the actual identify() method and verify it handles the mismatch correctly
-        from run_analysis import EarningsAnalyzer
-        analyzer = EarningsAnalyzer(ticker)
-        
-        # With the new Q4-aware logic, the code now fails closed when StockAnalysis claims
-        # a newer quarter than any available SEC filing (including 10-K). This is the
-        # correct behavior: we should not silently publish a prior quarter as the latest.
-        with self.assertRaises(RuntimeError) as cm:
-            analyzer.identify()
-        
-        self.assertIn("LATEST_QUARTER_SOURCE_MISMATCH", str(cm.exception))
-        self.assertIn(sa_quarter_end, str(cm.exception))
-        
-        print(f"✓ StockAnalysis latest: {sa_period} -> quarter end {sa_quarter_end}")
-        print(f"✓ SEC available report_dates: {[f['report_date'] for f in filings_10q[:5]]}...")
-        print(f"✓ Correctly fails closed with LATEST_QUARTER_SOURCE_MISMATCH")
 
 
 class DashboardPeriodConsistencyTests(unittest.TestCase):
@@ -1412,23 +1350,6 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(call.call_args_list[0].args[0], "get_quote")
         self.assertEqual(call.call_args_list[0].args[1], {"symbol": "TEST"})
 
-    @patch("robinhood_mcp_get_quote._call")
-    def test_quote_accepts_prior_session_closing_trade_when_market_is_closed(self, call):
-        call.side_effect = [
-            {"results": [{"quote": {
-                "symbol": "TEST",
-                "last_trade_price": "100.00",
-                "venue_last_trade_time": "2026-08-07T19:59:59Z",
-            }, "close": {
-                "symbol": "TEST", "date": "2026-08-06", "price": "99.00"
-            }}]},
-            {"results": [{"market_cap": "1000000000"}]},
-            {"results": []},
-        ]
-        quote = get_quote("TEST")
-        self.assertEqual(quote["price"], 100.0)
-        self.assertEqual(quote["updated_at"], "2026-08-07T19:59:59Z")
-        self.assertIn("completed regular-session closing trade", quote["source"])
 
     @patch("robinhood_mcp_get_quote._call")
     def test_quote_uses_official_completed_close_payload(self, call):

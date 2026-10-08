@@ -748,6 +748,89 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
         add("GAAP Net Income Per Share", f"{period_label}: ${current}", f"{prior_label}: ${prior}",
             f"GAAP net income per share decreased to ${current} from ${prior} in the comparable prior-year quarter.")
 
+    # Asset-operator / infrastructure release disclosures. These are
+    # company-specific operating KPIs commonly reported in narrative sections,
+    # even when the release's summary table contains only generic financial
+    # statement rows. They remain source-backed release rows and are never
+    # populated from XBRL facts.
+    match = re.search(
+        r"leases for approximately\s+([0-9,.]+)\s+GW\s+of\s+critical IT load",
+        text, re.I,
+    )
+    if match:
+        value = match.group(1)
+        add("Leased Critical IT Load", f"{period_label}: {value} GW",
+            view=f"The company reported leases for approximately {value} GW of critical IT load.")
+
+    match = re.search(
+        r"leases represent approximately\s+[$]\s*([0-9,.]+)\s+billion\s+of\s+contracted revenue",
+        text, re.I,
+    )
+    if match:
+        value = match.group(1)
+        add("Contracted Revenue", f"{period_label}: ${value}B",
+            view=f"The company's disclosed leases represent approximately ${value} billion of contracted revenue.")
+
+    match = re.search(
+        r"Revenue from our HPC Hosting business totaled\s+[$]\s*([0-9,.]+)\s+million.*?"
+        r"including\s+[$]\s*([0-9,.]+)\s+million related to base rent,\s+"
+        r"[$]\s*([0-9,.]+)\s+million related to tenant fit-out services, and\s+"
+        r"[$]\s*([0-9,.]+)\s+million related to tenant recoveries\.\s+"
+        r"This resulted in\s+[$]\s*([0-9,.]+)\s+million (?:of|in) segment operating profit",
+        text, re.I,
+    )
+    if match:
+        total, base_rent, fitout, recoveries, operating_profit = match.groups()
+        add("HPC Hosting Revenue", f"{period_label}: ${total}M",
+            view=f"HPC Hosting revenue totaled ${total} million, including base rent, tenant fit-out services, and tenant recoveries.")
+        add("HPC Base Rent Revenue", f"{period_label}: ${base_rent}M",
+            view=f"HPC Hosting base-rent revenue was ${base_rent} million.")
+        add("HPC Tenant Fit-Out Revenue", f"{period_label}: ${fitout}M",
+            view=f"HPC Hosting tenant fit-out revenue was ${fitout} million.")
+        add("HPC Tenant Recoveries Revenue", f"{period_label}: ${recoveries}M",
+            view=f"HPC Hosting tenant recoveries were ${recoveries} million.")
+        add("HPC Segment Operating Profit", f"{period_label}: ${operating_profit}M",
+            view=f"HPC Hosting segment operating profit was ${operating_profit} million.")
+
+    match = re.search(
+        r"generated\s+[$]\s*([0-9,.]+)\s+million in revenue from the Data Center Hosting Business segment,?\s+"
+        r"compared to\s+[$]\s*([0-9,.]+)\s+million",
+        text, re.I,
+    )
+    if match:
+        current, prior = match.groups()
+        add("Data Center Hosting Revenue", f"{period_label}: ${current}M", f"{prior_label}: ${prior}M",
+            f"Data Center Hosting revenue was ${current} million versus ${prior} million in the comparable prior-year quarter.")
+
+    match = re.search(
+        r"(?:[0-9,.]+)\s+MW facility.*?and\s+([0-9,.]+)\s+MW facility.*?operating at full capacity",
+        text, re.I,
+    )
+    if match:
+        first = re.search(r"([0-9,.]+)\s+MW facility", text, re.I)
+        second = match.group(1)
+        if first:
+            add("Operating Data Center Capacity", f"{period_label}: {first.group(1)} MW + {second} MW",
+                view=f"Data Center Hosting facilities of {first.group(1)} MW and {second} MW were operating at full capacity.")
+
+    match = re.search(
+        r"Adjusted revenue, a non-GAAP financial measure, was.*?[$]\s*([0-9,.]+)\s+million.*?compared to\s+[$]\s*([0-9,.]+)\s+million",
+        text, re.I,
+    )
+    if match:
+        current, prior = match.groups()
+        add("Adjusted Revenue", f"{period_label}: ${current}M", f"{prior_label}: ${prior}M",
+            f"Adjusted revenue was ${current} million versus ${prior} million in the comparable prior-year quarter.")
+
+    match = re.search(
+        r"Net Operating Income.*?[$]\s*([0-9,.]+)\s+million",
+        text, re.I,
+    )
+    if match:
+        value = match.group(1)
+        add("Net Operating Income", f"{period_label}: ${value}M",
+            view=f"Net Operating Income was ${value} million for the quarter.")
+
     # Table-aware official-release fallback. APP-style SEC exhibits place the
     # quarter-comparable metrics in HTML tables, so flattening tags first loses
     # the row/column relationship needed by the narrative regexes above. This
