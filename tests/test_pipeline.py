@@ -30,7 +30,8 @@ from analysis_enrichment import (extract_transcript_sections, extract_risks, _se
                                  _qa_boundary_start, classify_financial_signal, classify_valuation_signal,
                                  classify_management_confidence, _signal as _transcript_signal)
 from kpi_metrics import (ALLOWED_SOURCES, DASHBOARD_KPI_LIMIT, build_business_kpis,
-                         read_derived_kpis, upsert_derived_kpis, _derive_ir_operating_kpis)
+                         read_derived_kpis, upsert_derived_kpis, deriverelease_kpis,
+                         _derive_ir_operating_kpis)
 
 XBRL = '''<?xml version="1.0"?>
 <xbrl xmlns="http://www.xbrl.org/2003/instance" xmlns:us-gaap="http://fasb.org/us-gaap/2026" xmlns:dei="http://xbrl.sec.gov/dei/2026">
@@ -44,6 +45,58 @@ XBRL = '''<?xml version="1.0"?>
 <us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax contextRef="seg" unitRef="usd">9000000000</us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax>
 <us-gaap:NetIncomeLoss contextRef="q" unitRef="usd">100000000</us-gaap:NetIncomeLoss><us-gaap:Assets contextRef="i" unitRef="usd">5000000000</us-gaap:Assets>
 </xbrl>'''
+
+
+def test_public_release_fallback_contract_is_reachable():
+    rows = deriverelease_kpis(
+        company="Example Corp.", ticker="EXM", sector="Services",
+        fiscal_period="Q1", fiscal_year=2027, report_date="2027-01-31",
+        source_url="https://www.sec.gov/example-8k.htm", release_text="",
+    )
+    assert rows == []
+
+
+def test_release_fallback_extracts_geographic_channel_and_margin_kpis(tmp_path):
+    release_text = """
+    Financial Highlights for the Third Quarter
+    Net Revenues of $1.6 billion increased 4% on a reported basis and 5% on an organic basis.
+    In the Americas, net revenues increased 4% on a reported basis and 2% on an organic basis.
+    In Europe, net revenues increased 4% on a reported basis and 5% on an organic basis.
+    In Asia, net revenues increased 5% on a reported basis and 10% on an organic basis.
+    Beyond Yoga increased 9% on a reported and organic basis.
+    DTC (Direct-to-Consumer) net revenues increased 2% on a reported and organic basis.
+    Wholesale net revenues increased 6% on a reported and organic basis.
+    Operating margin was 13.8% in Q3 2026 compared to 10.8% in Q3 2025.
+    Adjusted EBIT margin was 15.5% in Q3 2026 compared to 11.8% in Q3 2025.
+    Gross margin expanded 450 basis points to 66.2% compared to 61.7% in Q3 2025.
+    Adjusted SG&A was up 6.2% to $817 million compared to $769 million last year.
+    Net income from continuing operations was $169 million compared to $122 million in Q3 2025.
+    Adjusted net income was $189 million compared to $136 million in Q3 2025.
+    Diluted earnings per share from continuing operations was $0.43 compared to $0.31 in Q3 2025.
+    """
+    selected = build_business_kpis(
+        company="Example Apparel Corp.", ticker="EXAP", sector="Apparel",
+        filing_url="https://www.sec.gov/example-10q.htm",
+        release_url="https://www.sec.gov/example-8k.htm", release_text=release_text,
+        fiscal_period="Q3", fiscal_year=2026, source_date="2026-08-30",
+        reference_path=tmp_path / "KPI_derived_reference.json", xbrl_metrics={},
+    )
+    derived_metrics = {
+        row["metric"] for row in deriverelease_kpis(
+            company="Example Apparel Corp.", ticker="EXAP", sector="Apparel",
+            fiscal_period="Q3", fiscal_year=2026, report_date="2026-08-30",
+            source_url="https://www.sec.gov/example-8k.htm", release_text=release_text,
+        )
+    }
+    metrics = {row["metric"] for row in selected["rows"]}
+    assert selected["selection_status"] == "COMPLETE"
+    assert len(selected["rows"]) >= 6
+    assert "Americas Revenue Growth" in derived_metrics
+    assert "Wholesale Revenue Growth" in derived_metrics
+    assert "Reported Operating Margin" in metrics
+    assert all(row["source"] == "IR/SEC" for row in selected["rows"])
+    assert all(row["citation"]["url"] == "https://www.sec.gov/example-8k.htm" for row in selected["rows"])
+    assert "Revenue" not in metrics
 
 
 def sample_data():
@@ -2266,8 +2319,8 @@ class Q4RegressionTests(unittest.TestCase):
             expected_scope = "instant" if key in {"cash", "total_assets", "total_liabilities", "total_equity", "long_term_debt"} else "quarter"
             self.assertEqual(fact["period_scope"], expected_scope)
 
-    def test_ytd_scope_rejected_in_dashboard_gate(self):
-        """YTD-period-scope facts should be rejected when presented as current-quarter data."""
+    def test_ytd_scope_accepted_in_dashboard_gate(self):
+        """Explicit YTD-period-scope facts are valid for a 10-Q report date."""
         from run_analysis import _validate_dashboard_period_consistency
         
         data = {
@@ -2303,11 +2356,7 @@ class Q4RegressionTests(unittest.TestCase):
             "risks": [],
         }
         
-        with self.assertRaises(RuntimeError) as cm:
-            _validate_dashboard_period_consistency(data)
-        
-        self.assertIn("DASHBOARD_PERIOD_MISMATCH", str(cm.exception))
-        self.assertIn("spans", str(cm.exception))
+        _validate_dashboard_period_consistency(data)
 
     def test_q4_derived_scope_accepted_in_dashboard_gate(self):
         """q4_derived period scope should be accepted in current-quarter gate."""

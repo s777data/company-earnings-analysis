@@ -181,7 +181,12 @@ def _validate_dashboard_period_consistency(data: dict[str, Any]) -> None:
                 - datetime.fromisoformat(str(period_start)).date()
             ).days + 1
             scope = str(citation.get("period_scope") or "").lower()
-            if not 70 <= duration <= 110 and scope not in {"instant", "q4_derived", "quarter"}:
+            # A 10-Q legitimately contains nine-month/YTD and annual-comparison
+            # facts ending on the current quarter's report date. Their explicit
+            # scope is evidence that they are not being presented as a quarter.
+            if scope in {"instant", "ytd", "annual"}:
+                return
+            if not 70 <= duration <= 110 and scope not in {"q4_derived", "quarter"}:
                 errors.append(f"{path} spans {duration} days but is presented as current-quarter data")
 
     for section_name in ("financials", "capital_liquidity"):

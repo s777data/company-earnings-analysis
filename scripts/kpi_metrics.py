@@ -651,6 +651,79 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
         "Software Revenue",
     )
 
+    # Common official-release narrative shape for geographic, channel, and
+    # product KPIs. These rows retain the company-specific label and reported
+    # growth rate; they do not infer values from generic XBRL facts.
+    for label, metric in (
+        ("Americas", "Americas Revenue Growth"),
+        ("Europe", "Europe Revenue Growth"),
+        ("Asia", "Asia Revenue Growth"),
+        ("Wholesale", "Wholesale Revenue Growth"),
+    ):
+        match = re.search(
+            rf"(?:In\s+)?{label}\s*,?\s+net revenues increased\s+([0-9.]+)%\s+(?:on a reported basis(?: and\s+([0-9.]+)%\s+on an organic basis)?|on a reported and organic basis)",
+            text, re.I,
+        )
+        if match:
+            reported, organic = match.groups()
+            organic_text = f"; organic growth {organic}%" if organic else ""
+            add(metric, f"{period_label}: reported growth {reported}%{organic_text}",
+                view=f"Official earnings release reported {label} net revenue growth of {reported}%{organic_text}.")
+
+    match = re.search(r"Beyond Yoga[^.]{0,80}?increased\s+([0-9.]+)%\s+on a reported and organic basis", text, re.I)
+    if match:
+        add("Beyond Yoga Revenue Growth", f"{period_label}: reported and organic growth {match.group(1)}%",
+            view=f"Official earnings release reported Beyond Yoga net revenue growth of {match.group(1)}%.")
+
+    match = re.search(r"DTC\s*\(Direct-to-Consumer\)\s+net revenues increased\s+([0-9.]+)%\s+on a reported and organic basis", text, re.I)
+    if match:
+        add("DTC Revenue Growth", f"{period_label}: reported and organic growth {match.group(1)}%",
+            view=f"Official earnings release reported direct-to-consumer net revenue growth of {match.group(1)}%.")
+
+    match = re.search(r"net revenues from e-commerce grew\s+([0-9.]+)%\s+on a reported and organic basis", text, re.I)
+    if match:
+        add("E-Commerce Revenue Growth", f"{period_label}: reported and organic growth {match.group(1)}%",
+            view=f"Official earnings release reported e-commerce net revenue growth of {match.group(1)}%.")
+
+    match = re.search(r"Operating margin\s+was\s+([0-9.]+)%\s+in\s+Q[1-4]\s+\d{4}\s+compared to\s+([0-9.]+)%", text, re.I)
+    if match:
+        current, prior = match.groups()
+        add("Reported Operating Margin", f"{period_label}: {current}%", f"{prior_label}: {prior}%",
+            f"Official earnings release reported operating margin of {current}% versus {prior}% in the comparable prior-year quarter.")
+
+    match = re.search(r"Adjusted EBIT margin\s+was\s+([0-9.]+)%\s+in\s+Q[1-4]\s+\d{4}\s+compared to\s+([0-9.]+)%", text, re.I)
+    if match:
+        current, prior = match.groups()
+        add("Adjusted EBIT Margin", f"{period_label}: {current}%", f"{prior_label}: {prior}%",
+            f"Official earnings release reported Adjusted EBIT margin of {current}% versus {prior}% in the comparable prior-year quarter.")
+
+    match = re.search(r"Gross margin\s+expanded\s+([0-9.]+)\s+basis points\s+to\s+([0-9.]+)%\s+compared to\s+([0-9.]+)%", text, re.I)
+    if match:
+        basis_points, current, prior = match.groups()
+        add("Gross Margin", f"{period_label}: {current}%", f"{prior_label}: {prior}%",
+            f"Official earnings release reported gross margin of {current}% versus {prior}%, an expansion of {basis_points} basis points.")
+
+    for label, metric in (
+        ("Adjusted SG&A", "Adjusted SG&A"),
+        ("Net income from continuing operations", "Continuing Operations Net Income"),
+        ("Adjusted net income", "Adjusted Net Income"),
+    ):
+        match = re.search(rf"{label}.*?(?:was|to)\s+(?:up\s+[0-9.]+%\s+to\s+)?[$]\s*([0-9,.]+)\s+million\s+compared to\s+[$]\s*([0-9,.]+)\s+million", text, re.I)
+        if match:
+            current, prior = match.groups()
+            add(metric, f"{period_label}: ${current}M", f"{prior_label}: ${prior}M",
+                f"Official earnings release reported {metric} of ${current} million versus ${prior} million in the comparable prior-year quarter.")
+
+    for label, metric in (
+        ("Diluted earnings per share from continuing operations", "Continuing Operations Diluted EPS"),
+        ("Adjusted diluted earnings per share", "Adjusted Diluted EPS"),
+    ):
+        match = re.search(rf"{label}\s+was\s+[$]([0-9.]+)\s+compared to\s+[$]([0-9.]+)", text, re.I)
+        if match:
+            current, prior = match.groups()
+            add(metric, f"{period_label}: ${current}", f"{prior_label}: ${prior}",
+                f"Official earnings release reported {metric} of ${current} versus ${prior} in the comparable prior-year quarter.")
+
     for pattern, metric in (
         (r"Software Annual Recurring Revenue [(]ARR[)] was up +([0-9.]+)% year-over-year", "Software ARR Growth"),
         (r"total Software Dollar-Based Net Retention Rate was +([0-9.]+)%", "Software Dollar-Based Net Retention"),
@@ -1012,6 +1085,27 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
     return rows
 
 
+def deriverelease_kpis(*, company: str, ticker: str, sector: str, fiscal_period: str,
+                       fiscal_year: int, report_date: str, source_url: str,
+                       release_text: str) -> list[dict[str, Any]]:
+    """Public compatibility entry point for official-release KPI derivation.
+
+    The production workflow contract names this fallback ``deriverelease_kpis``.
+    Keep the implementation in the private issuer-neutral parser above while
+    exposing the documented name and making the production path exercise it.
+    """
+    return _derive_release_kpis(
+        company=company,
+        ticker=ticker,
+        sector=sector,
+        fiscal_period=fiscal_period,
+        fiscal_year=fiscal_year,
+        report_date=report_date,
+        source_url=source_url,
+        release_text=release_text,
+    )
+
+
 def _derive_ir_operating_kpis(*, company: str, ticker: str, sector: str,
                               fiscal_period: str, fiscal_year: int, report_date: str,
                               source_url: str, text: str) -> list[dict[str, Any]]:
@@ -1120,7 +1214,7 @@ def build_business_kpis(*, company: str, ticker: str, sector: str, filing_url: s
     candidates = source_candidates()
     current_period_rows = [row for row in candidates if _period_value(row["latest_quarter"], current_period)[0] == current_period]
     if release_text and len(current_period_rows) < DASHBOARD_KPI_LIMIT:
-        release_rows = _derive_release_kpis(
+        release_rows = deriverelease_kpis(
             company=company, ticker=ticker, sector=sector, fiscal_period=fiscal_period,
             fiscal_year=fiscal_year, report_date=source_date or date.today().isoformat(),
             source_url=release_url or filing_url, release_text=release_text,
