@@ -182,8 +182,7 @@ def _validate_dashboard_period_consistency(data: dict[str, Any]) -> None:
             ).days + 1
             scope = str(citation.get("period_scope") or "").lower()
             if not 70 <= duration <= 110 and scope not in {"instant", "q4_derived", "quarter"}:
-                if not (period in {"Q1", "Q2", "Q3"} and scope == "ytd") and not (period == "Q4" and scope == "ytd"):
-                    errors.append(f"{path} spans {duration} days but is presented as current-quarter data")
+                errors.append(f"{path} spans {duration} days but is presented as current-quarter data")
 
     for section_name in ("financials", "capital_liquidity"):
         section = data.get(section_name, {})
@@ -791,6 +790,16 @@ class EarningsAnalyzer:
                             "latest_10q_report_date": latest_10q["report_date"] if latest_10q else None,
                         })
                     else:
+                        latest_verified = max(
+                            (row["report_date"] for row in filings_10q_10k if row.get("report_date")),
+                            default=None,
+                        )
+                        if latest_verified and sa_quarter_end and sa_quarter_end > latest_verified:
+                            raise RuntimeError(
+                                "LATEST_QUARTER_SOURCE_MISMATCH: StockAnalysis reports a newer quarter "
+                                f"({sa_quarter_end}) than the latest verified SEC filing ({latest_verified}), "
+                                "and no matching earnings release was verified."
+                            )
                         fallback = max(
                             filings_10q_10k,
                             key=lambda row: (row["report_date"], row["filing_date"], row["form_type"].endswith("/A")),
@@ -981,6 +990,22 @@ class EarningsAnalyzer:
             else:
                 _, _, self.release, release_doc, release_text = scored_releases[0]
         if not release_doc: self.data["warnings"].append("No quarter-matched earnings 8-K exhibit was verified")
+        # Some issuers' SEC XBRL fiscal-year focus lags the explicit year in
+        # the quarter-matched earnings release. Prefer the release year when
+        # it is explicit and re-resolve transcript evidence for that year.
+        release_year = extract_fiscal_year(release_text) if release_doc else None
+        if release_year and int(year_text) != release_year:
+            self._log("RETRIEVE_RELEASE_YEAR_OVERRIDE", {
+                "xbrl_fiscal_year": int(year_text),
+                "release_fiscal_year": release_year,
+            })
+            year_text = str(release_year)
+            self.transcript = find_transcript(self.ticker, period, release_year)
+            transcript_call_date, call_date_warning = _validate_transcript_call_date(
+                self.transcript.get("call_date"), report_date
+            )
+            if call_date_warning:
+                self.data["warnings"].append(call_date_warning)
         release_url = None
         if release_doc:
             release_url = next(

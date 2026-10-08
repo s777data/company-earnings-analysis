@@ -60,7 +60,9 @@ def extract_index_exhibits(index_html: str, root: str) -> dict[str, dict[str, st
         if not cells:
             continue
         row_text = " ".join(cell.get_text(" ", strip=True) for cell in cells)
-        match = re.search(r"EX[-]?(\d{2})[-.]?(\d)", row_text, re.I)
+        # EX-101.* rows are XBRL/linkbase files, not substantive exhibits.
+        # Match only 99.x earnings exhibits from the filing-detail table.
+        match = re.search(r"EX[-]?(99)[-.]?(\d)", row_text, re.I)
         number = f"{match.group(1)}.{match.group(2)}" if match else None
         if not number:
             continue

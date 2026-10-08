@@ -485,6 +485,35 @@ def _derive_release_kpis(*, company: str, ticker: str, sector: str, fiscal_perio
             "source_url": source_url, "date_added": report_date,
         })
 
+    # Issuer-neutral segment-table shape used by many industrial issuers.
+    number = r"(?:\([0-9,]+\s*\)|-?[0-9,]+(?:\.[0-9]+)?)"
+    for segment, label in (
+        ("Construction Products Group", "Construction Products"),
+        ("Performance Coatings Group", "Performance Coatings"),
+        ("Consumer Group", "Consumer"),
+    ):
+        section = re.search(
+            rf"{re.escape(segment)}\s+Three Months Ended.*?(?=(?:Construction Products Group|Performance Coatings Group|Consumer Group)\s+Three Months Ended|Supplemental Segment Information|$)",
+            text, re.I,
+        )
+        if not section:
+            continue
+        segment_text = section.group(0)
+        for heading, metric_suffix in (
+            ("Net Sales", "Revenue"),
+            ("Income Before Income Taxes", "Income Before Taxes"),
+            ("Adjusted EBITDA", "Adjusted EBITDA"),
+        ):
+            match = re.search(
+                rf"{re.escape(heading)}(?:\s+\(1\))?\s+\$?\s*({number})\s+\$?\s*({number})\s+\$?\s*({number})\s*\(?\s*([0-9.]+)\s*%",
+                segment_text, re.I,
+            )
+            if not match:
+                continue
+            current, prior, _change_amount, change = match.groups()
+            add(f"{label} {metric_suffix}", f"{period_label}: ${current}K", f"{prior_label}: ${prior}K",
+                f"{label} {metric_suffix} was ${current} thousand, {change}% year over year.")
+
     def amount_pair(label: str, metric: str) -> None:
         match = re.search(
             rf"{label}(?: revenue)? *[*]? *(?:[(][0-9]+[)])? *[$]? *([0-9,]+(?:[.][0-9]+)?) +[$]? *([0-9,]+(?:[.][0-9]+)?) +([( -]?[0-9]+) *%",

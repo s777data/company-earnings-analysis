@@ -147,12 +147,17 @@ def extract_fiscal_year(content: str) -> int | None:
         r"\bfull\s+year\s+(20\d{2})\b",
         r"\bfy\s*[-/]?\s*(20\d{2})\b",
         r"\bq[1-4]\s+(?:fy\s*)?(20\d{2})\b",
-        r"\b(?:first|second|third|fourth)\s+quarter\s+(?:of\s+)?(?:fiscal\s+)?(?:year\s+)?(20\d{2})\b",
+        r"\b(?:first|second|third|fourth)[- ]quarter\s+(20\d{2})\b",
+        r"\bfiscal\s+(20\d{2})\s+(?:first|second|third|fourth)[- ]quarter\b",
+        r"\b(?:first|second|third|fourth)[- ]quarter\s+(?:of\s+)?(?:fiscal\s+)?(?:year\s+)?(20\d{2})\b",
     )
+    candidates: list[int] = []
     for pattern in patterns:
-        match = re.search(pattern, content, re.I)
-        if match:
-            return int(match.group(1))
+        candidates.extend(int(match.group(1)) for match in re.finditer(pattern, content, re.I))
+    if candidates:
+        # Release headers and repeated result references outweigh a single
+        # prior-year/recast mention embedded later in the document.
+        return max(set(candidates), key=lambda year: (candidates.count(year), candidates.index(year)))
     return None
 
 
