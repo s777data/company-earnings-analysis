@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 
 import fitz  # PyMuPDF
 import pdfplumber
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import ViewportSize, sync_playwright
 
 
 SELECTOR = "#income-cards .metric-card"
@@ -60,7 +60,7 @@ PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 PNG_MIN_WIDTH = 2400
 PNG_MIN_HEIGHT = 3400
 PNG_DEVICE_SCALE_FACTOR = 3.125
-PNG_VIEWPORT = {"width": 1280, "height": 1800}
+PNG_VIEWPORT: ViewportSize = {"width": 1280, "height": 1800}
 PNG_SELECTOR = "#report"
 
 
@@ -193,7 +193,7 @@ def _layout_issues(page) -> list[dict[str, object]]:
                 });
             });
             document.querySelectorAll(
-                '.kpi-card,.metric-card,.gauge-card,.dense-list,.channel-card,.pillar-card'
+                '.kpi-card,.metric-card,.gauge-card,.dense-list,.channel-card,.pillar-card,.company-overview,.grade-explanation p'
             ).forEach((el) => {
                 if (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) {
                     problems.push({
@@ -203,6 +203,24 @@ def _layout_issues(page) -> list[dict[str, object]]:
                     });
                 }
             });
+            const regions = Array.from(document.querySelectorAll(
+                '#report > .company-band,#report > section,#report > .analysis-grid,#report > .bottom-grid,#report > footer'
+            ));
+            for (let i = 0; i < regions.length; i += 1) {
+                const a = regions[i].getBoundingClientRect();
+                for (let j = i + 1; j < regions.length; j += 1) {
+                    const b = regions[j].getBoundingClientRect();
+                    const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+                    const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+                    if (overlapX > 1 && overlapY > 1) {
+                        problems.push({
+                            type: 'section-overlap',
+                            first: regions[i].className || regions[i].tagName,
+                            second: regions[j].className || regions[j].tagName,
+                        });
+                    }
+                }
+            }
             return problems;
         }
         """

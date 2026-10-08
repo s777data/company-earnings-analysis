@@ -297,6 +297,7 @@ def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str,
         valuation_block = payload["valuation"]
         valuation_grade = valuation_block.get("grade", {})
         business_quality = valuation_block.get("business_quality", {})
+        valuation_explanation = valuation_grade.get("valuation_grade_explanation")
     else:
         valuation_grade = {
             "status": payload.get("status", "ok"),
@@ -306,6 +307,7 @@ def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str,
             "confidence": payload.get("confidence"),
         }
         business_quality = payload.get("business_quality", {})
+        valuation_explanation = payload.get("valuation_grade_explanation")
 
     # For fresh runs, "status" can be "insufficient_data" even when coverage
     # passed and the score/grade are valid, because confidence remediation
@@ -335,6 +337,7 @@ def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str,
             "grade": valuation_grade["grade"],
             "classification": valuation_grade.get("classification", "Classification unavailable"),
             "confidence": valuation_grade.get("confidence"),
+            "explanation": valuation_explanation or valuation_grade.get("explanation"),
         },
         "business_quality": {
             "status": "ok",
@@ -342,6 +345,8 @@ def _parse_company_valuation_score_output(stdout: str, ticker: str) -> dict[str,
             "grade": business_quality["grade"],
             "classification": business_quality.get("classification", "Classification unavailable"),
             "confidence": business_quality.get("confidence"),
+            "explanation": business_quality.get("business_quality_grade_explanation") or business_quality.get("explanation"),
+            "company_overview_and_moat_explanation": business_quality.get("company_overview_and_moat_explanation"),
         },
     }
 
@@ -1032,7 +1037,8 @@ class EarningsAnalyzer:
                 shareholder_letter_text = extract_shareholder_letter_text(shareholder_letter_url)
             except Exception as exc:
                 self.data.setdefault("warnings", []).append(f"Could not extract shareholder-letter PDF text: {exc}")
-        self.data.update({"fiscal_period": period, "fiscal_year": int(year_text), "report_date": report_date,
+        self.data.update({"company_name": self.filing.get("company_name") or self.ticker,
+                          "fiscal_period": period, "fiscal_year": int(year_text), "report_date": report_date,
                           "filing_date": self.filing["filing_date"], "accession_number": self.filing["accession_number"],
                           "sources": {"filing_url": filing_doc["filing_url"], "xbrl_url": filing_doc.get("xbrl_url"),
                                       "earnings_release_url": release_url,
@@ -1555,6 +1561,9 @@ class EarningsAnalyzer:
             self.data["company_valuation_score"] = valuation_skill
         business_quality_result = valuation_skill["business_quality"]
         valuation_result = valuation_skill["valuation"]
+        self.data["company_overview_and_moat_explanation"] = (
+            business_quality_result.get("company_overview_and_moat_explanation")
+        )
 
         # Compute granular grades. Business Quality and Valuation come directly
         # from the canonical company_valuation_score skill; the other four
@@ -1585,7 +1594,7 @@ class EarningsAnalyzer:
             "management_execution": _letter_to_score(management_grade),
             "future_growth": _letter_to_score(growth_grade),
         }
-        final_score = (
+        final_score_12 = (
             grade_scores["financial_metrics"] * 0.10 +
             grade_scores["business_quality"] * 0.40 +
             grade_scores["valuation"] * 0.40 +
@@ -1593,7 +1602,8 @@ class EarningsAnalyzer:
             grade_scores["management_execution"] * 0.03 +
             grade_scores["future_growth"] * 0.05
         )
-        final_letter = _score_to_letter(round(final_score))
+        final_score = final_score_12 / 12 * 100
+        final_letter = _score_to_letter(round(final_score_12))
         
         # Store granular grades and reasoning
         self.data["grade_breakdown"] = {
@@ -1602,19 +1612,23 @@ class EarningsAnalyzer:
                 "grade": business_quality_grade,
                 "score": business_quality_result["score"],
                 "reason": business_quality_reason,
+                "explanation": business_quality_result.get("explanation") or business_quality_reason,
                 "weight": 0.40,
             },
             "valuation": {
                 "grade": valuation_grade,
                 "score": valuation_result["score"],
                 "reason": valuation_reason,
+                "explanation": valuation_result.get("explanation") or valuation_reason,
                 "weight": 0.40,
             },
             "earnings_call": {"grade": earnings_call_grade, "reason": earnings_call_reason, "weight": 0.02},
             "management_execution": {"grade": management_grade, "reason": management_reason, "weight": 0.03},
             "future_growth": {"grade": growth_grade, "reason": growth_reason, "weight": 0.05},
             "final_grade": final_letter,
-            "final_score": round(final_score, 2),
+            "final_score": round(final_score, 1),
+            "final_score_12": round(final_score_12, 2),
+            "score_scale": 100,
             "all_scores": grade_scores,
         }
         
@@ -1628,7 +1642,9 @@ class EarningsAnalyzer:
             "management_grade": management_grade,
             "growth_grade": growth_grade,
             "final_grade": final_letter,
-            "final_score": round(final_score, 2)
+            "final_score": round(final_score, 1),
+            "final_score_12": round(final_score_12, 2),
+            "score_scale": 100,
         })
         
         self.data["grade"] = {"letter": final_letter, "confidence": confidence,

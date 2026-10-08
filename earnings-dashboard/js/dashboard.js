@@ -447,7 +447,9 @@
   }
 
   function fitNarrativeSections() {
-    ["capital-content", "short-interest-content", "guidance-content", "call-content", "grade-reasoning-content"].forEach((id) => fitText($(id), 3.65));
+    ["capital-content", "short-interest-content", "guidance-content", "call-content"].forEach((id) => fitText($(id), 3.65));
+    fitText($("company-overview"), 6.3, 0.1);
+    document.querySelectorAll(".grade-explanation p").forEach((paragraph) => fitText(paragraph, 5.7, 0.1));
     document.querySelectorAll(".channel-card, .pillar-card").forEach((card) => fitText(card, 3.55));
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -467,66 +469,57 @@
   }
 
   function renderGradeReasoning(gradeBreakdown) {
-      const container = $("grade-reasoning-content");
-      if (!gradeBreakdown) {
-        container.append(emptyState("Grade breakdown not available."));
-        return;
-      }
-    
-      const rows = [];
-
-      const categories = [
-        { key: "financial_metrics", label: "Financial Metrics", icon: "📊" },
-        { key: "business_quality", label: "Business Quality", icon: "🏢" },
-        { key: "valuation", label: "Valuation", icon: "💰" },
-        { key: "earnings_call", label: "Earnings Call", icon: "📞" },
-        { key: "management_execution", label: "Management Execution", icon: "👔" },
-        { key: "future_growth", label: "Future Growth", icon: "🚀" },
-      ];
-    
-      for (const cat of categories) {
-        const data = gradeBreakdown[cat.key];
-        if (!data) continue;
-      
-        const grade = data.grade || "N/A";
-        const reason = data.reason || "No reasoning available";
-        const weight = data.weight || 0;
-      
-        // Signal based on grade
-        let signal = "neutral";
-        if (grade.startsWith("A")) signal = "positive";
-        else if (grade.startsWith("B")) signal = "positive";
-        else if (grade.startsWith("C+")) signal = "neutral";
-        else if (grade.startsWith("C")) signal = "caution";
-        else if (grade.startsWith("D")) signal = "negative";
-        else if (grade === "F") signal = "worst";
-      
-        rows.push({ 
-          name: `${cat.icon} ${cat.label} (${Math.round(weight * 100)}%)`, 
-          detail: `${grade} — ${reason}`, 
-          signal 
-        });
-      }
-    
-      // Final grade
-      const finalGrade = gradeBreakdown.final_grade || "N/A";
-      const finalScoreVal = gradeBreakdown.final_score || 0;
-      let finalSignal = "neutral";
-      if (finalGrade.startsWith("A")) finalSignal = "best";
-      else if (finalGrade.startsWith("B")) finalSignal = "positive";
-      else if (finalGrade.startsWith("C+")) finalSignal = "neutral";
-      else if (finalGrade.startsWith("C")) finalSignal = "caution";
-      else if (finalGrade.startsWith("D")) finalSignal = "negative";
-      else if (finalGrade === "F") finalSignal = "worst";
-    
-      rows.push({ 
-        name: "🏁 Final Grade (weighted)", 
-        detail: `${finalGrade} (score: ${finalScoreVal.toFixed(2)})`, 
-        signal: finalSignal 
-      });
-
-      renderList("grade-reasoning-content", rows, 7, 200);
+    const container = $("grade-reasoning-content");
+    container.replaceChildren();
+    if (!gradeBreakdown) {
+      container.append(emptyState("Grade breakdown not available."));
+      return;
     }
+
+    const categories = [
+      ["financial_metrics", "Financial"], ["business_quality", "Quality"],
+      ["valuation", "Valuation"], ["earnings_call", "Call"],
+      ["management_execution", "Execution"], ["future_growth", "Growth"],
+    ];
+    const summary = document.createElement("div");
+    summary.className = "grade-summary";
+    for (const [key, label] of categories) {
+      const data = gradeBreakdown[key];
+      if (!data) continue;
+      const chip = document.createElement("span");
+      const grade = text(data.grade);
+      chip.className = statusClass(grade.startsWith("A") ? "best" : grade.startsWith("B") ? "positive" : grade.startsWith("C") ? "caution" : "negative");
+      const weight = Number(data.weight);
+      chip.textContent = `${label} ${grade}${Number.isFinite(weight) ? ` (${Math.round(weight * 100)}%)` : ""}`;
+      summary.append(chip);
+    }
+
+    const explanations = document.createElement("div");
+    explanations.className = "grade-explanations";
+    for (const [label, data] of [
+      ["Business Quality", gradeBreakdown.business_quality],
+      ["Valuation", gradeBreakdown.valuation],
+    ]) {
+      const grade = text(data?.grade);
+      const article = document.createElement("article");
+      article.className = `grade-explanation ${statusClass(grade.startsWith("A") ? "best" : grade.startsWith("B") ? "positive" : "neutral")}`;
+      const heading = document.createElement("h3");
+      const weight = Number(data?.weight);
+      heading.textContent = `${label} · ${grade}${Number.isFinite(weight) ? ` · ${Math.round(weight * 100)}%` : ""}`;
+      const paragraph = document.createElement("p");
+      paragraph.textContent = text(data?.explanation || data?.reason, "Explanation unavailable.");
+      article.append(heading, paragraph);
+      explanations.append(article);
+    }
+
+    const finalGrade = text(gradeBreakdown.final_grade);
+    const finalScore = Number(gradeBreakdown.final_score);
+    const final = document.createElement("span");
+    final.className = `grade-final ${statusClass(finalGrade.startsWith("A") ? "best" : finalGrade.startsWith("B") ? "positive" : "neutral")}`;
+    const scoreScale = Number(gradeBreakdown.score_scale) || 100;
+    final.textContent = `Final ${finalGrade}\n${Number.isFinite(finalScore) ? `${finalScore.toFixed(1)}/${scoreScale}` : "N/A"}`;
+    container.append(summary, explanations, final);
+  }
 
   function sourceLinks(sources) {
     const container = $("source-links");
@@ -551,8 +544,12 @@
     $("grade").textContent = text(company.grade);
     $("confidence").textContent = Number.isFinite(company.confidence) ? `${Math.round(company.confidence * 100)}% CONF.` : "CONF. N/A";
     $("recommendation").textContent = text(company.recommendation);
-    $("ticker").textContent = text(company.ticker);
-    document.title = `${text(company.ticker)} ${text(company.period)} Earnings Dashboard`;
+    const companyTitle = company.name && company.name !== company.ticker
+      ? `${company.name} (${text(company.ticker)})`
+      : text(company.ticker);
+    $("company-title").textContent = companyTitle;
+    $("company-overview").textContent = text(company.overview_and_moat, "Company overview and moat assessment unavailable.");
+    document.title = `${companyTitle} ${text(company.period)} Earnings Dashboard`;
     const market = [
       company.report_date ? `Quarter Ended ${company.report_date}` : null,
       company.call_date ? `Call: ${company.call_date}` : null,

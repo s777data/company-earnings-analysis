@@ -26,12 +26,15 @@ def _valid_payload() -> dict:
         "grade": "B+",
         "classification": "Fair / Attractive",
         "confidence": "low",
+        "valuation_grade_explanation": "IREN trades at a discount to peers. One-Sentence Summary: Valuation is attractive.",
         "business_quality": {
             "status": "ok",
             "score": 26.5,
             "grade": "F",
             "classification": "Very Weak Business Quality",
             "confidence": "medium",
+            "business_quality_grade_explanation": "The underlying business earns 26.5/100. One-Sentence Summary: Quality is weak.",
+            "company_overview_and_moat_explanation": "IREN develops data-center infrastructure with an execution-based moat.",
         },
     }
 
@@ -40,7 +43,25 @@ def test_parse_valuation_output_accepts_expected_contract():
     result = run_analysis._parse_company_valuation_score_output(_stdout(_valid_payload()), "IREN")
     assert result["valuation"]["status"] == "ok"
     assert result["valuation"]["grade"] == "B+"
+    assert result["valuation"]["explanation"].startswith("IREN trades")
     assert result["business_quality"]["status"] == "ok"
+    assert result["business_quality"]["explanation"].startswith("The underlying business")
+    assert "data-center" in result["business_quality"]["company_overview_and_moat_explanation"]
+
+
+def test_parse_valuation_output_accepts_nested_history_explanations():
+    payload = _valid_payload()
+    payload["valuation"] = {
+        "grade": {
+            "status": "ok", "score": 78.95, "grade": "B+",
+            "classification": "Fair / Attractive", "confidence": "low",
+            "valuation_grade_explanation": "Nested valuation explanation.",
+        },
+        "business_quality": payload["business_quality"],
+    }
+    result = run_analysis._parse_company_valuation_score_output(_stdout(payload), "IREN")
+    assert result["valuation"]["explanation"] == "Nested valuation explanation."
+    assert result["business_quality"]["company_overview_and_moat_explanation"].startswith("IREN develops")
 
 
 def test_parse_valuation_output_rejects_contract_mismatch():

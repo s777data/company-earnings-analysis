@@ -17,7 +17,11 @@
   <main id="report" class="a4-sheet" aria-live="polite">
     <header class="company-band">
       <div class="grade-block"><strong id="grade">—</strong><span id="confidence">—</span></div>
-      <div class="identity"><div><span id="recommendation">—</span> <strong id="ticker">—</strong></div><p id="period-line">Loading verified report data…</p></div>
+      <div class="identity">
+        <div><span id="recommendation">—</span> <strong id="company-title">—</strong></div>
+        <p id="period-line">Loading verified report data…</p>
+        <p id="company-overview" class="company-overview">Loading company overview and moat assessment…</p>
+      </div>
       <div id="test-banner" class="test-banner" hidden>TEST ONLY — STALE MARKET DATA — NOT ACTIONABLE</div>
     </header>
 
@@ -54,10 +58,10 @@
       <section aria-labelledby="thesis-heading"><h2 id="thesis-heading">Investment Thesis</h2><div id="thesis-content" class="dense-list"></div></section>
     </div>
 
-    <section aria-labelledby="grade-reasoning-heading"><h2 id="grade-reasoning-heading">Grade Reasoning</h2><div id="grade-reasoning-content" class="dense-list"></div></section>
+    <section class="grade-reasoning-section" aria-labelledby="grade-reasoning-heading"><h2 id="grade-reasoning-heading">Grade Reasoning</h2><div id="grade-reasoning-content"></div></section>
 
     <footer>
-      <span id="source-links"></span>
+      <span class="source-area"><strong>Sources:</strong> <span id="source-links"></span></span>
       <span id="model-info" style="float: right; font-size: 5px; color: var(--muted); font-weight: 600;">AI:ModelName</span>
       <span>Interactive research summary • Verify source evidence before decisions</span>
     </footer>

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import shutil
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -263,6 +264,48 @@ def _channel_signal(row: dict[str, Any]) -> dict[str, Any]:
     return enriched
 
 
+def _company_name(data: dict[str, Any]) -> str:
+    """Return a presentation-safe issuer name without altering the ticker."""
+    name = str(data.get("company_name") or "").strip()
+    if not name:
+        rows = data.get("business_kpis", {}).get("rows", [])
+        name = str(rows[0].get("company") or "").strip() if rows else ""
+    if not name:
+        return str(data.get("ticker", "N/A")).upper()
+    name = name.replace("/DE/", "").replace("/NEW/", "").strip(" /,")
+    was_upper = name.isupper()
+    if was_upper:
+        name = name.title().replace(" Inc", " Inc.").replace(" Corp", " Corp.")
+    ticker = str(data.get("ticker") or "").upper()
+    if was_upper and ticker and name.casefold().startswith(ticker.casefold() + " "):
+        name = ticker + name[len(ticker):]
+    return name
+
+
+def _grade_breakdown(data: dict[str, Any]) -> dict[str, Any]:
+    """Normalize legacy 12-point weighted scores to an auditable 100-point scale."""
+    breakdown = deepcopy(data.get("grade_breakdown") or {})
+    weighted_score_12 = 0.0
+    applied_weight = 0.0
+    all_scores = breakdown.get("all_scores") or {}
+    for key, score in all_scores.items():
+        component = breakdown.get(key) or {}
+        weight = component.get("weight")
+        if isinstance(score, (int, float)) and isinstance(weight, (int, float)):
+            weighted_score_12 += float(score) * float(weight)
+            applied_weight += float(weight)
+    if applied_weight > 0:
+        weighted_score_12 /= applied_weight
+    else:
+        legacy_score = breakdown.get("final_score")
+        weighted_score_12 = float(legacy_score) if isinstance(legacy_score, (int, float)) and legacy_score <= 12 else 0.0
+    if weighted_score_12:
+        breakdown["final_score_12"] = round(weighted_score_12, 2)
+        breakdown["final_score"] = round(weighted_score_12 / 12 * 100, 1)
+        breakdown["score_scale"] = 100
+    return breakdown
+
+
 def _call_rows(data: dict[str, Any]) -> list[dict[str, Any]]:
     rows = data.get("earnings_call_summary", {}).get("insights") or data.get("transcript_insights", [])
     output: list[dict[str, Any]] = []
@@ -295,6 +338,9 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
         "schema_version": 2,
         "company": {
             "ticker": data.get("ticker", "N/A"),
+            "name": _company_name(data),
+            "overview_and_moat": data.get("company_overview_and_moat_explanation")
+                or data.get("company_valuation_score", {}).get("business_quality", {}).get("company_overview_and_moat_explanation"),
             "period": f"{data.get('fiscal_period', 'N/A')} FY{data.get('fiscal_year', 'N/A')}",
             "report_date": data.get("report_date"),
             "call_date": sources.get("transcript_call_date"),
@@ -332,7 +378,7 @@ def build_dashboard_data(data: dict[str, Any]) -> dict[str, Any]:
         },
         "sources": sources,
         "warnings": data.get("warnings", []),
-        "grade_breakdown": data.get("grade_breakdown", {}),
+        "grade_breakdown": _grade_breakdown(data),
     }
 
 

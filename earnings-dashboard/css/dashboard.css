@@ -79,19 +79,28 @@ button, input { font: inherit; }
   display: grid;
   grid-template-columns: 22mm 1fr;
   align-items: center;
-  min-height: 18mm;
+  height: 22.5mm;
   margin-bottom: 1.5mm;
   padding: 1.6mm 2.2mm;
   background: var(--header-blue);
   border-left: 2mm solid var(--navy);
 }
 .grade-block { display: grid; justify-items: center; border-right: 1px solid #b7cada; }
-.grade-block strong { color: var(--navy); font-size: 20px; line-height: 1; }
-.grade-block span { margin-top: 1px; color: var(--muted); font-size: 6.5px; font-weight: 750; letter-spacing: .04em; }
-.identity { padding-left: 3mm; }
-.identity > div { color: var(--navy); font-size: 15px; font-weight: 500; letter-spacing: -.02em; }
-.identity strong { margin-left: 1.4mm; font-size: 19px; }
-.identity p { margin: 1mm 0 0; color: var(--muted); font-size: 6.6px; font-weight: 620; }
+.grade-block strong { color: var(--navy); font-size: 30px; line-height: 1; }
+.grade-block span { margin-top: 1px; color: var(--muted); font-size: 9.75px; font-weight: 750; letter-spacing: .04em; }
+.identity { min-width: 0; padding-left: 3mm; overflow: hidden; }
+.identity > div { overflow: hidden; color: var(--navy); font-size: 12px; font-weight: 650; letter-spacing: -.02em; text-overflow: ellipsis; white-space: nowrap; }
+.identity strong { margin-left: 1.4mm; font-size: 18.75px; font-weight: 790; }
+.identity #period-line { margin: .5mm 0 0; color: var(--muted); font-size: 7.8px; font-weight: 620; }
+.company-overview {
+  height: 10.9mm;
+  margin: .65mm 0 0;
+  overflow: hidden;
+  color: #263b50;
+  font-size: 7.95px;
+  font-weight: 500;
+  line-height: 1.13;
+}
 .test-banner { position: absolute; right: 2mm; top: 1.5mm; color: var(--worst); font-size: 5.8px; font-weight: 800; }
 
 section { min-width: 0; break-inside: avoid; }
@@ -482,17 +491,22 @@ h2 {
 .bottom-grid .dense-item { grid-template-columns: 1.2mm 1fr; min-width: 0; overflow-wrap: anywhere; line-height: 1; }
 .bottom-grid .dense-item > span:last-child { min-width: 0; white-space: normal; }
 
-#grade-reasoning-heading { margin-top: .6mm; }
+.grade-reasoning-section { position: relative; height: 19.5mm; margin-top: .6mm; overflow: hidden; }
+#grade-reasoning-heading { margin: 0; }
 #grade-reasoning-content {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  height: 10mm;
-  gap: .2mm .7mm;
-  padding: .3mm .6mm;
-  font-size: 3.8px;
+  position: relative;
+  display: grid;
+  grid-template-rows: 2.2mm 1fr;
+  height: 14.5mm;
+  gap: .25mm;
+  padding: .3mm 14mm .3mm .6mm;
 }
-#grade-reasoning-content .dense-item { grid-template-columns: 1.4mm 1fr; min-width: 0; overflow-wrap: anywhere; line-height: 1; }
-#grade-reasoning-content .dense-item > span:last-child { min-width: 0; white-space: normal; }
+.grade-summary { display: flex; gap: 1.4mm; min-width: 0; overflow: hidden; font-size: 4.8px; font-weight: 720; white-space: nowrap; }
+.grade-explanations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8mm; min-height: 0; }
+.grade-explanation { min-width: 0; min-height: 0; padding: .35mm .55mm; overflow: hidden; border-left: .75mm solid currentColor; border-radius: .5mm; background: #f4f7f9; }
+.grade-explanation h3 { margin: 0 0 .2mm; font-size: 6.3px; line-height: 1; }
+.grade-explanation p { height: 9.8mm; margin: 0; overflow: hidden; color: #2f4358; font-size: 6.75px; line-height: 1.08; }
+.grade-final { position: absolute; top: .55mm; right: .6mm; width: 12.8mm; font-size: 5.4px; font-weight: 840; line-height: 1.05; text-align: center; white-space: pre-line; }
 
 footer {
   display: flex;
@@ -506,6 +520,8 @@ footer {
   white-space: nowrap;
 }
 footer a { color: var(--navy); font-weight: 700; }
+.source-area { color: var(--navy); font-size: 6px; font-weight: 650; }
+.source-area strong { font-weight: 850; text-transform: uppercase; letter-spacing: .04em; }
 
 #metric-dialog {
   width: min(430px, calc(100vw - 28px));

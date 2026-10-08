@@ -47,7 +47,7 @@ XBRL = '''<?xml version="1.0"?>
 
 
 def sample_data():
-    return {"ticker":"TEST","fiscal_period":"Q2","fiscal_year":2026,"report_date":"2026-06-30",
+    return {"ticker":"TEST","company_name":"Test Holdings, Inc.","fiscal_period":"Q2","fiscal_year":2026,"report_date":"2026-06-30",
             "grade":{"letter":"B","confidence":.9,"justification":"Verified evidence."},
             "thesis":{"recommendation":"HOLD","base_case":{"summary":"Base evidence"},"bull_case":{"summary":"Bull evidence"},"bear_case":{"summary":"Bear evidence"}},
             "financials":{"rows":[{"label":"Revenue","display":"$1.20B","tier":"best","comparison":"+20.0% YoY"}]},
@@ -844,6 +844,41 @@ class BusinessKpiTests(unittest.TestCase):
 
 class DashboardRenderTests(unittest.TestCase):
     """Tests for dashboard data structure and rendering."""
+
+    def test_company_identity_overview_and_grade_explanations_are_preserved(self):
+        sample = sample_data()
+        sample["company_overview_and_moat_explanation"] = "A complete source-backed company overview and moat assessment."
+        sample["grade_breakdown"] = {
+            "business_quality": {"grade": "B", "reason": "Short reason", "explanation": "Detailed business-quality explanation.", "weight": 0.4},
+            "valuation": {"grade": "B+", "reason": "Short reason", "explanation": "Detailed valuation explanation.", "weight": 0.4},
+            "financial_metrics": {"grade": "A", "weight": 0.1},
+            "earnings_call": {"grade": "A-", "weight": 0.02},
+            "management_execution": {"grade": "A-", "weight": 0.03},
+            "future_growth": {"grade": "A", "weight": 0.05},
+            "final_grade": "B+", "final_score": 9.95,
+            "all_scores": {"financial_metrics": 12, "business_quality": 9, "valuation": 10, "earnings_call": 11, "management_execution": 11, "future_growth": 12},
+        }
+        dashboard = build_dashboard_data(sample)
+        self.assertEqual(dashboard["company"]["name"], "Test Holdings, Inc.")
+        self.assertEqual(dashboard["company"]["overview_and_moat"], sample["company_overview_and_moat_explanation"])
+        self.assertEqual(dashboard["grade_breakdown"]["valuation"]["explanation"], "Detailed valuation explanation.")
+        self.assertEqual(dashboard["grade_breakdown"]["final_score_12"], 9.95)
+        self.assertEqual(dashboard["grade_breakdown"]["final_score"], 82.9)
+        self.assertEqual(dashboard["grade_breakdown"]["score_scale"], 100)
+
+        html = (ROOT / "earnings-dashboard" / "index.html").read_text(encoding="utf-8")
+        script = (ROOT / "earnings-dashboard" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        self.assertIn("Sources:</strong>", html)
+        self.assertIn("Math.round(weight * 100)", script)
+        self.assertIn("/${scoreScale}", script)
+
+    def test_company_name_falls_back_to_kpi_issuer_and_cleans_sec_suffix(self):
+        sample = sample_data()
+        sample.pop("company_name")
+        sample["ticker"] = "RPM"
+        sample["business_kpis"] = {"rows": [{"company": "RPM INTERNATIONAL INC/DE/"}]}
+        dashboard = build_dashboard_data(sample)
+        self.assertEqual(dashboard["company"]["name"], "RPM International Inc.")
 
     def test_business_kpis_object_format_in_dashboard_data(self):
         """Test that business_kpis is an object with rows, selection_status, and note."""
